@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Página Pessoal - Carlos Martins</title>
+
+    <!-- Adiciona o Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Adiciona o jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Adiciona o JavaScript do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/vars.css" />
+    <link rel="stylesheet" href="styles/main-content.css" />
+    <link rel="stylesheet" href="styles/sidebar-footer.css" />
+    <link rel="stylesheet" href="styles/media-query.css" />
+    <!--Media queries devem ser chamados depois do CSS principal -->
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
+        integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/fontawesome.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="css/estilo.css">
+
+</head>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: #f4f4f4;
+    }
+
+    header {
+        background: #333;
+        color: white;
+        padding: 15px;
+        text-align: center;
+    }
+
+    nav {
+        background: #555;
+        text-align: center;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 10px;
+        padding: 8px 15px;
+    }
+
+    nav a:hover {
+        background: #ddd;
+        color: black;
+    }
+
+    .banner {
+        text-align: center;
+        background: black;
+    }
+
+    .banner img {
+        width: 100%;
+        max-height: 350px;
+        object-fit: cover;
+    }
+
+    .perfil {
+        display: flex;
+        padding: 30px;
+        align-items: center;
+        background: white;
+    }
+
+    .perfil img {
+        width: 100px;
+        border-radius: 10px;
+        margin-right: 30px;
+    }
+
+    .apps {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        width: 220px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-sistema {
+
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-sistema:hover {
+
+        background: #0056b3;
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    footer {
+        background: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+    }
+
+    .barra-menu {
+        display: flex;
+        justify-content: center;
+        gap: 80px;
+        background: #666;
+        padding: 30px;
+        color: white;
+    }
+
+    .menu-item {
+        text-align: center;
+    }
+
+    .menu-item a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .menu-item a:hover {
+        color: yellow;
+    }
+
+    .painel-datahora {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #1f2a38;
+        color: white;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .data {
+        font-weight: bold;
+    }
+
+    .hora {
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h2><img src="Imagens/carlos1.gif" width="30">
+            Página Pessoal</h2>
+    </header>
+
+    <nav>
+
+        <body>
+
+            <div id="dataHora"></div>
+
+            <div class="painel-datahora">
+
+                <div class="data">
+                    <span id="dataCompleta"></span>
+                </div>
+
+                <div class="hora">
+                    <span id="horaAtual"></span>
+                </div>
+
+            </div>
+
+            <script>
+
+                function atualizarDataHora() {
+
+                    const agora = new Date();
+
+                    const dias = [
+                        "Domingo", "Segunda-feira", "Terça-feira",
+                        "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
+                    ];
+
+                    const meses = [
+                        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+                    ];
+
+                    const diaSemana = dias[agora.getDay()];
+                    const dia = agora.getDate();
+                    const mes = meses[agora.getMonth()];
+                    const ano = agora.getFullYear();
+
+                    const hora = agora.toLocaleTimeString("pt-BR");
+
+                    document.getElementById("dataCompleta").innerHTML =
+                        "📅 " + diaSemana + ", " + dia + " de " + mes + " de " + ano;
+
+                    document.getElementById("horaAtual").innerHTML =
+                        "⏰ " + hora;
+
+                }
+
+                setInterval(atualizarDataHora, 1000);
+
+                atualizarDataHora();
+
+            </script>
+
+        </body>
+
+        <div class="barra-menu">
+
+            <div class="menu-item">
+                <h2>Aplicativos de Gestão</h2>
+                <a href="GestãodeMidias.html">Mídias de Shows e Filmes</a><br>
+                <a href="GestãodeProjetos.html">Projetos Elétricos</a><br>
+                <a href="GestaoAtivosFamiliar.html">Ativos Familiar</a><br>
+                <a href="GestãodeContatos.html">Contatos Pessoais</a>
+            </div>
+
+            <div class="menu-item">
+                <h2>Aplicativos Elétricos</h2>
+                <a href="CalculosdeProjetoEletrico.html">Cálculos de Projetos Elétricos</a><br>
+                <a href="CalculosEletrico.html">Cálculos Elétricos</a><br>
+                <a href="telaMTS.html">Diagrama Unifilar</a><br>
+                <a href="SimuladorAlbras.html">Simulador ALBRAS</a>
+            </div>
+
+            <div class="menu-item">
+                <h2>Galeria de Imagens</h2>
+                <a href="AlbumPessoal.html">Album Pessoal</a><br>
+                <a href="Contato.html">Meus Contatos</a>
+            </div>
+
+        </div>
+
+        <div class="banner">
+            <img id="bannerImg" src="Imagens/banner1.jpg">
+        </div>
+
+        <script>
+
+            const banners = [
+                "Imagens/banner.jpg",
+                "Imagens/banner1.jpg",
+                "Imagens/monitor.jpg"
+            ];
+
+            let i = 0;
+
+            function trocarBanner() {
+
+                i++;
+
+                if (i >= banners.length) {
+                    i = 0;
+                }
+
+                document.getElementById("bannerImg").src = banners[i];
+
+            }
+
+            setInterval(trocarBanner, 4000);
+
+        </script>
+
+        <section class="perfil">
+
+            <img src="Imagens/carlos1.gif">
+
+            <div>
+
+                <h2>Carlos Mardônio Bezerra Martins</h2>
+
+                <p>
+                    Bem-vindo à minha página pessoal.
+                    Aqui estão disponíveis meus aplicativos de gestão,
+                    aplicativos elétricos e sistemas desenvolvidos.
+                </p>
+
+            </div>
+        </section><br><br>
+
+        <section class="box-acompanhe">
+            <div class="container">
+
+                <form id="searchForm" onsubmit="search(event)">
+                    <input type="text" id="searchQuery" placeholder="Digite sua pesquisa">
+                    <button type="submit">
+                        <span class="fa fa-search"></span> Buscar
+                    </button>
+                </form>
+
+                <div id="searchResults">
+
+                    <script>
+                        async function search(event) {
+                            event.preventDefault(); // Evita o envio padrão do formulário
+
+                            const query = document.getElementById('searchQuery').value;
+
+                            if (query.trim() === "") {
+                                alert("Digite uma palavra para buscar");
+                                return;
+                            }
+
+                            try {
+                                const response = await fetch('ApresentaçãoPessoal.php?query=' + encodeURIComponent(query));
+                                const result = await response.text(); // Pode ser JSON ou HTML, dependendo do back-end
+
+                                // Atualiza o conteúdo com os resultados
+                                document.getElementById('searchResults').innerHTML = result;
+                            } catch (error) {
+                                console.error('Erro ao buscar:', error);
+                                document.getElementById('searchResults').innerHTML = "Erro ao realizar a pesquisa.";
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+        </section>
+        <br>
+
+        <div class="acompanhe">
+            <p><strong>Siga as Redes Sociais:</strong></p>
+            <a href="https://www.instagram.com/carlosmardoniomartins/" target="_blank"> <img
+                    src="Imagens/instagram4.jpg" class="ico-redesocial"></a>
+            <a href="http://www.youtube.com" target="_blank"> <img src="Imagens/youtube.png" class="tv-ico"></a>
+            <a href="http://www.youtube.com/feed/playlists" target="_blank"> <img src="Imagens/youtube1.png"
+                    class="tv-ico">
+            </a>
+            <a href="https://www.flickr.com" target="_blank"> <img src="Imagens/flickr-ico.png"
+                    class="ico-redesocial"></a>
+            <a href="Contato.html" target="_blank"> <img src="Imagens/carlos2.png" class="ico-redesocial"></a>
+        </div>
+
+        <!-- DESTAQUES -->
+
+        <div class="container destaques">
+
+            <h2>Destaques</h2>
+
+            <div class="row">
+
+                <div class="col-md-3">
+
+                    <img src="Imagens/patio.PNG" class="img-responsive">
+
+                    <p>Pátio Subestação 230kV</p>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <img src="Imagens/TechGov.jpg" class="img-responsive">
+
+                    <p>Tech Gov Forum</p>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <img src="Imagens/TechGov1.jpg" class="img-responsive">
+
+                    <p>Tech Gov Fórum</p>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <img src="Imagens/ALAPDIGITAL.jpg" class="img-responsive">
+
+                    <p>Destaques de Carlos Martins</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--radio-->
+
+        <section class="box-radio"></section>
+        <div class="container">
+            <h2>Link para Rádio</h2>
+            <!--<div class="container radio">-->
+            <div class="play-radio">
+                <button id="playButton">
+                    <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" target="_blank"> <img
+                            src="Imagens/cbn.png" class="icon"></a>
+
+                    <!--<path d="youtube.png"></path>--> <!-- Ícone de play -->
+                    </svg>
+                </button>
+                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054"></a>
+            </div>
+            <div class="info-radio">
+                <div class="aovivo">ao vivo</div>
+                <p>93.9 FM <strong>Rádio CBN Macapá</strong> </p>
+            </div>
+        </div>
+
+        <!--end radio-->
+
+        <section class="apps">
+
+            <h2>Meus Sistemas</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <h3>Sistema de Gestão</h3>
+                    <p>Cadastro de Mídias.</p>
+                    <a href="GestãodeMidias.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                    <p>Cadastro de Projetos.</p>
+                    <a href="GestãodeProjetos.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                </div>
+
+                <div class="card">
+                    <h3>Simulador ALBRAS</h3>
+                    <p>Painel Principal do Simulador</p>
+                    <a href="SimuladorALBRAS.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                    <p>Tela dos MTS.</p>
+                    <a href="telaMTS.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                </div>
+
+                <div class="card">
+                    <h3>Gestão de Usuários</h3>
+                    <p>Cadastro de usuários.</p>
+                    <a href="GestãodeUsuarios.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                    <p>Realizar Login</p>
+                    <a href="Login.html" class="btn-sistema">
+                        <i class="fa fa-users"></i> Acessar
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer>
+
+            <p>© 2026 Carlos Martins</p>
+
+        </footer>
+
+        <script src="js/script.js">
+
+            function abrirSimulador() {
+
+                window.location.href = "SimuladorALBRAS.html";
+
+            }
+
+            function abrirProjetos() {
+                window.open("GestãodeProjetos.html", "_blank");
+            }
+
+        </script>
+</body>
+
+
+</html>

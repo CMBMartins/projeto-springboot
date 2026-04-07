@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Contatos Pessoais </title>
+    <!-- Adiciona o Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Adiciona o jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Adiciona o JavaScript do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/vars.css" />
+    <link rel="stylesheet" href="styles/main-content.css" />
+    <link rel="stylesheet" href="styles/sidebar-footer.css" />
+    <link rel="stylesheet" href="styles/media-query.css" />
+    <!--Media queries devem ser chamados depois do CSS principal -->
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
+        integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/fontawesome.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
+
+    <style>
+        body {
+            background-color: #f6f6f6;
+        }
+
+        .topo {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .botoes {
+            margin-top: 20px;
+        }
+
+        .botoes button {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        img {
+            max-width: 150px;
+            display: block;
+            margin: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="topo">
+
+        <img src="Imagens/Carlos1.gif" width="50">
+        Gestão de Contatos Pessoais
+    </div>
+
+    <a href="PaginaPessoal.html" class="btn btn-default">
+        <span class="glyphicon glyphicon-home"></span> Página Principal
+    </a>
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="logo">
+                <img src="Imagens/Carlos.png" width="250">
+            </div>
+
+            <h1 class="text-center">Cadastrar Contatos Pessoais</h1>
+
+            <form id="formulario" action="GestaoContatosPessoais.php" method="post">
+
+                <label>Código</label>
+                <input type="text" class="form-control" name="codigo">
+
+                <label>Nome</label>
+                <input type="text" class="form-control" name="nome">
+
+                <label>Telefone</label>
+                <input type="text" class="form-control" name="telefone">
+
+                <label>Endereço</label>
+                <input type="text" class="form-control" name="endereco">
+
+                <div class="botoes">
+
+                    <button class="btn btn-primary" type="submit" name="inserir">
+                        Inserir
+                    </button>
+
+                    <button class="btn btn-warning" type="submit" name="atualizar">
+                        Atualizar
+                    </button>
+
+                    <button class="btn btn-danger" type="submit" name="apagar" onclick="return confirmarExclusao()">
+                        Excluir
+                    </button>
+
+                    <button class="btn btn-info" type="submit" name="consultaporcodigo">
+                        Consultar Código
+                    </button>
+
+                    <button class="btn btn-info" type="submit" name="consultapornome">
+                        Consultar Nome
+                    </button>
+
+                    <button class="btn btn-success" type="submit" name="consultaTabela">
+                        Consultar Todos
+                    </button>
+
+                    <button class="btn btn-default" type="button" onclick="limparFormulario()">
+                        Limpar
+                    </button>
+
+                </div>
+
+            </form>
+            <script src="scripts/formulario.js">
+                function confirmarExclusao() {
+                    return confirm("Deseja realmente excluir este contato?");
+                }
+
+                function limparFormulario() {
+                    document.getElementById("formulario").reset();
+                }
+
+                function mensagem(texto) {
+                    alert(texto);
+                }
+            </script>
+        </div>
+
+</body>
+
+</html>

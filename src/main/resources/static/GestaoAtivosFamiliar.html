@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Ativos Familiar</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<style>
+    body {
+        background-color: #f6f6f6;
+        font-family: Arial;
+    }
+
+    .topo {
+        background: #2c3e50;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 8px gray;
+        margin-bottom: 20px;
+    }
+
+    /* LOGO */
+
+    .logo {
+        text-align: center;
+    }
+
+    .campo-direita {
+        text-align: right;
+    }
+
+    #usuariologado {
+        text-align: right;
+        float: right;
+        padding: 6px 10px;
+        text-align: right;
+        font-weight: bold;
+        font-size: 14px;
+        color: #003366;
+        background: #e6f2ff;
+        border: 2px solid #007bff;
+        border-radius: 6px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* INPUTS */
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+    }
+
+    /* GRID FORM */
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* BOTÕES */
+
+    .botoes {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    /* padrão de botão */
+    .botoes button {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    /* padrão de botão */
+    .login button {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        color: white;
+        background-color: #007bff;
+        /* azul padrão */
+    }
+
+    button {
+        padding: 10px 15px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #salvar {
+        background: #27ae60;
+        color: white;
+    }
+
+    #editar {
+        background: #58ae27;
+        color: white;
+    }
+
+    #limparCampos {
+        background: #f39c12;
+        color: white;
+    }
+
+    #buscarIntegrante {
+        background: #f37712;
+        color: white;
+    }
+
+    #listarTodos {
+        background: #2980b9;
+        color: white;
+    }
+
+    /* TABELA */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background: #34495e;
+        color: white;
+    }
+</style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="campo-direita">
+                <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+            </div>
+
+            <a href="PaginaPessoal.html" class="btn btn-default">
+                <span class="glyphicon glyphicon-home"></span> Página Principal
+            </a>
+
+            <div class="logo">
+                <h1><img src="Imagens/carlos1.gif" width="60">
+                    Gestão de Ativos Familiar</h1>
+            </div>
+
+            <h2>Cadastrar ou alterar Integrantes</h2>
+
+            <div class="grid">
+
+                <input type="text" id="id" placeholder="ID">
+
+                <input type="text" id="cpf" placeholder="CPF">
+
+                <input type="text" id="integrante" placeholder="Integrante">
+
+                <input type="text" id="telefone" placeholder="Telefone">
+
+                <input type="text" id="bemcadastrado" placeholder="Bem">
+
+                <input type="text" id="documento" placeholder="Documento">
+            </div>
+
+            <div class="botoes">
+
+                <button id="salvar" onclick="salvar()">Salvar</button>
+
+                <button id="editar" onclick="editar()">Atualizar os Dados</button>
+
+                <button id="limparCampos" onclick="limparCampos()">Limpar</button>
+
+                <button id="buscarIntegrante" onclick="buscarIntegrante()">Buscar Integrante</button>
+
+                <button id="listarTodos" onclick="listarTodos()">Listar Integrantes</button>
+
+            </div>
+
+            <div class="login">
+
+                <h2>Realizar Login</h2>
+
+                <input type="text" id="usuario" placeholder="usuario" style="width:33%;">
+
+                <input type="text" id="senha" placeholder="senha" style="width:33%;">
+
+                <button onclick="autenticar()">Entrar</button>
+                <button onclick="logout()">Sair</button>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Lista de Familiares</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>CPF</th>
+                        <th>Integrante</th>
+                        <th>Telefone</th>
+                        <th>Bem Cadastrado</th>
+                        <th>Documento</th>
+                        <th>Ação</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabelaFamilia">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script>
+        const id = document.getElementById("id").value;
+
+        const api = "http://localhost:8084/familia";
+
+        window.onload = function () {
+
+            if (localStorage.getItem("usuariologado")) {
+                liberarFuncoes();
+
+            } else {
+
+                bloquearFuncoes();
+            }
+
+        }
+
+        function liberarFuncoes() {
+
+            document.getElementById("salvar").disabled = false;
+            document.getElementById("editar").disabled = false;
+            document.getElementById("listarTodos").disabled = false;
+
+        }
+
+        function bloquearFuncoes() {
+
+            document.getElementById("salvar").disabled = true;
+            document.getElementById("editar").disabled = true;
+            document.getElementById("listarTodos").disabled = true;
+
+        }
+
+
+        function listarTodos() {
+
+            fetch(api)
+                .then(response => response.json())
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaFamilia");
+                    tabela.innerHTML = "";
+
+                    data.forEach(show => {
+
+                        tabela.innerHTML += `
+<tr>
+
+<td>${show.cpf}</td>
+<td>${show.integrante}</td>
+<td>${show.telefone}</td>
+<td>${show.bemcadastrado}</td>
+<td>${show.documento}</td>
+
+<td>
+<button class="btn btn-danger btn-sm"
+onclick="editar(${show.id})">
+Editar
+</button>
+
+<button class="btn btn-danger btn-sm"
+onclick="deletar(${show.id})">
+Excluir
+</button>
+</td>
+
+</tr>
+`;
+
+                    });
+
+                });
+
+        }
+
+        // FUNÇÃO PARA SALVAR
+        function salvar() {
+
+            const cpf = document.getElementById("cpf").value;
+            const integrante = document.getElementById("integrante").value;
+            const telefone = document.getElementById("telefone").value;
+            const bemcadastrado = document.getElementById("bemcadastrado").value;
+            const documento = document.getElementById("documento").value;
+
+            fetch(api, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    cpf,
+                    integrante,
+                    telefone,
+                    bemcadastrado,
+                    documento
+
+                })
+
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    alert("Projeto salvo com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+
+                });
+
+        }
+
+        // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
+        function editar() {
+
+            const id = document.getElementById("id").value;
+
+            if (!id) {
+                alert("Selecione um registro para editar.");
+                return;
+            }
+
+            const dados = {
+
+                cpf: document.getElementById("cpf").value,
+                integrante: document.getElementById("integrante").value,
+                telefone: document.getElementById("telefone").value,
+                bemcadastrado: document.getElementById("bemcadastrado").value,
+                documento: document.getElementById("documento").value
+
+            };
+
+            if (confirm("Deseja realmente atualizar este registro?")) {
+
+                fetch(api + "/" + id, {
+
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(dados)
+
+                })
+
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Erro ao atualizar");
+                        }
+                        return response.json();
+                    })
+
+                    .then(() => {
+
+                        alert("Dados atualizados com sucesso!");
+
+                        limparCampos();
+
+                        listarTodos();
+
+                    })
+
+                    .catch(error => {
+
+                        console.error("Erro:", error);
+
+                        alert("Erro ao atualizar o registro.");
+
+                    });
+
+            }
+
+        }
+
+        // FUNÇÃO PARA EXCLUIR
+        function deletar(id) {
+
+            if (confirm("Tem certeza que deseja excluir este registro?")) {
+
+                fetch(`${api}/${id}`, {
+                    method: "DELETE"
+                })
+                    .then(() => {
+                        alert("Registro excluído com sucesso!");
+                        listarTodos();
+                    })
+                    .catch(error => {
+                        console.error("Erro ao excluir:", error);
+                        alert("Erro ao excluir o registro.");
+                    });
+
+            }
+
+        }
+
+        function limparCampos() {
+
+            document.getElementById("cpf").value = "";
+            document.getElementById("integrante").value = "";
+            document.getElementById("telefone").value = "";
+            document.getElementById("bemcadastrado").value = "";
+            document.getElementById("documento").value = "";
+
+        }
+
+
+
+        // FUNÇÃO PARA CONSULTAR POR INTEGRANTE
+        function buscarIntegrante() {
+            const integrante = document.getElementById("integrante").value;
+
+            if (integrante === "") {
+                alert("⚠️ Informe o integrante a ser consultado!");
+                return;
+            }
+
+            fetch("http://localhost:8084/familia/buscar?integrante=" + encodeURIComponent(integrante))
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaFamilia");
+
+                    tabela.innerHTML = "";
+
+                    if (data.length === 0) {
+
+                        tabela.innerHTML = `
+<tr>
+<td colspan="7">Nenhum resultado encontrado</td>
+</tr>
+`;
+
+                        return;
+                    }
+
+                    data.forEach(show => {
+
+                        tabela.innerHTML += `
+<tr>
+<td>${show.cpf}</td>
+<td>${show.integrante}</td>
+<td>${show.telefone}</td>
+<td>${show.bemcadastrado}</td>
+<td>${show.documento}</td>
+
+<td>
+
+<button class="btn btn-danger btn-sm"
+onclick="editar(${show.id})">
+Editar
+</button>
+
+<button class="btn btn-danger btn-sm"
+onclick="deletar(${show.id})">
+Excluir
+</button>
+</td>
+
+</tr>
+`;
+
+                    });
+
+                });
+
+        }
+
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function autenticar() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Informe usuario e senha para realizar Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            fetch("http://localhost:8084/usuario/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    usuario,
+                    senha
+                })
+
+            })
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Login inválido");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    // Mostra o usuário no campo Default
+
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    liberarFuncoes();
+                    limparLogin();
+
+                })
+
+
+                .catch(error => {
+
+                    alert("Usuário ou senha incorretos");
+
+                });
+
+        }
+
+
+        // FUNÇÃO EFETUAR O LOGOUT
+        function logout() {
+
+            localStorage.removeItem("usuariologado");
+
+            document.getElementById("usuariologado").value = "";
+
+            bloquearFuncoes();
+
+        }
+
+
+        // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
+        function limparLogin() {
+            document.getElementById("usuario").value = "";
+            document.getElementById("senha").value = "";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

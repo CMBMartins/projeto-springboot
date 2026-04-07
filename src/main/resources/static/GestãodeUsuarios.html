@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Gestão de Usuários</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: Arial;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 50px;
+        }
+
+        .perfil {
+            width: 320px;
+            border-radius: 50%;
+            margin-top: 10px;
+        }
+
+        .card-form {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+            max-width: 400px;
+
+            margin: auto;
+
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .botoes {
+
+            margin-top: 20px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+        }
+
+        .btn {
+
+            min-width: 10px;
+
+        }
+
+        .home {
+
+            margin-top: 20px;
+
+        }
+
+        /* TABELA */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card-form">
+
+        <a href="PaginaPessoal.html" class="btn btn-default">
+            <span class="glyphicon glyphicon-home"></span> Página Principal
+        </a>
+
+        <h3><img src="Imagens/carlos1.gif" width="40">
+            Cadastro e Administração de Usuários</h3>
+
+        <div class="grid">
+
+            <input type="hidden" id="id">
+
+            <input type="text" id="usuario" placeholder="Usuario">
+
+            <input type="text" id="senha" placeholder="Senha">
+
+            <input type="text" id="perfil" placeholder="Perfil">
+
+        </div>
+
+        <div class="botoes">
+
+            <button class="btn btn-success" onclick="salvar()">
+                <i class="fa fa-save"></i> Salvar
+            </button>
+
+            <button class="btn btn-secondary" onclick="limparCampos()">
+                <i class="fa fa-eraser"></i> Limpar
+            </button>
+
+            <button class="btn btn-primary" onclick="usuario()">
+                <i class="fa fa-search"></i> Buscar Usuario
+            </button>
+
+            <button class="btn btn-info" onclick="listarTodos()">
+                <i class="fa fa-list"></i> Listar Usuarios
+            </button>
+
+        </div>
+
+
+        <br>
+
+        <div class="card">
+
+            <h2>Lista de Usuários</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Usuário</th>
+                        <th>Perfil</th>
+                        <th>Ação</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabelaUsuario">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <script>
+
+            const api = "http://localhost:8084/usuario";
+
+            //Função carregar
+            function carregar() {
+                //listarTodos();
+            }
+
+            //Função para Listar Toda a tabela
+            function listarTodos() {
+
+                fetch(api)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        const tabela = document.getElementById("tabelaUsuario");
+                        tabela.innerHTML = "";
+
+                        data.forEach(show => {
+
+                            tabela.innerHTML += `
+<tr>
+
+<td>${show.id}</td>
+<td>${show.usuario}</td>
+<td>${show.perfil}</td>
+
+<td>
+<button class="btn btn-danger btn-sm"
+onclick="editar(${show.id})">
+Editar
+</button>
+
+<button class="btn btn-danger btn-sm"
+onclick="deletar(${show.id})">
+Excluir
+</button>
+</td>
+
+</tr>
+`;
+
+                            limparCampos();
+
+                        });
+
+                    });
+
+            }
+
+            //Função para Salvar
+            function salvar() {
+
+                if (confirm("Tem certeza que deseja salvar esses dados?")) {
+                    const usuario = document.getElementById("usuario").value;
+                    const senha = document.getElementById("senha").value;
+                    const perfil = document.getElementById("perfil").value;
+
+                    // Validação de campos vazios
+                    if (usuario === "" && senha === "") {
+                        alert("⚠️ Informe o usuário, senha e perfil!");
+                        return;
+                    }
+
+                    if (usuario === "") {
+                        alert("⚠️ Informe o usuário!");
+                        return;
+                    }
+
+                    if (senha === "") {
+                        alert("⚠️ Informe a senha!");
+                        return;
+                    }
+
+                    if (perfil === "") {
+                        alert("⚠️ Informe o Perfil!");
+                        return;
+                    }
+
+                    // Se passou na validação
+                    //alert("✅ Dados preenchidos! Validando login...");
+
+                    fetch(api, {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            usuario,
+                            senha,
+                            perfil,
+
+                        })
+
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+
+                            alert("Projeto salvo com sucesso!");
+
+                            limparCampos();
+                            listarTodos();
+
+                        });
+
+                }
+            }
+
+
+            //Função para Editar Usuário
+            function editar() {
+
+                if (confirm("Tem certeza que deseja editar esses dados?")) {
+                    const usuario = document.getElementById("usuario").value;
+
+                    if (!usuario) {
+                        alert("Selecione um registro para editar.");
+                        return;
+                    }
+
+                    const dados = {
+
+                        id: document.getElementById("id").value,
+                        usuario: document.getElementById("usuario").value,
+                        senha: document.getElementById("senha").value,
+                        perfil: document.getElementById("perfil").value,
+
+                    };
+
+                    if (confirm("Deseja realmente atualizar este registro?")) {
+
+                        fetch(api + "/" + id, {
+
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify(dados)
+
+                        })
+
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Erro ao atualizar");
+                                }
+                                return response.json();
+                            })
+
+                            .then(() => {
+
+                                alert("Dados atualizados com sucesso!");
+
+                                limparCampos();
+
+                                listarTodos();
+
+                            })
+
+                            .catch(error => {
+
+                                console.error("Erro:", error);
+
+                                alert("Erro ao atualizar o registro.");
+
+                            });
+
+                    }
+
+                }
+            }
+
+            //Função para Deletar Usuário
+            function deletar(id) {
+
+                if (confirm("Tem certeza que deseja excluir este registro?")) {
+
+                    fetch(`${api}/${id}`, {
+                        method: "DELETE"
+                    })
+                        .then(() => {
+                            alert("Registro excluído com sucesso!");
+                            listarTodos();
+                        })
+                        .catch(error => {
+                            console.error("Erro ao excluir:", error);
+                            alert("Erro ao excluir o registro.");
+                        });
+
+                }
+
+            }
+
+            //Função para limpar os campos do formulario
+            function limparCampos() {
+
+                document.getElementById("usuario").value = "";
+                document.getElementById("senha").value = "";
+                document.getElementById("perfil").value = "";
+
+            }
+
+
+            //Função para pesquisar por Usuário
+            function usuario() {
+
+                const usuario = document.getElementById("usuario").value;
+
+                if (usuario === "") {
+                    alert("⚠️ Informe o nome do usuario a ser consultado!");
+                    return;
+                }
+
+                fetch("http://localhost:8084/usuario/buscar?usuario=" + encodeURIComponent(usuario))
+
+                    .then(response => response.json())
+
+                    .then(data => {
+
+                        const tabela = document.getElementById("tabelaUsuario");
+
+                        tabela.innerHTML = "";
+
+                        if (data.length === 0) {
+
+                            tabela.innerHTML = `
+<tr>
+<td colspan="7">Nenhum resultado encontrado</td>
+</tr>
+`;
+
+                            return;
+                        }
+
+                        data.forEach(show => {
+
+                            tabela.innerHTML += `
+<tr>
+<td>${show.id}</td>
+<td>${show.usuario}</td>
+<td>${show.perfil}</td>
+
+<td>
+
+<button class="btn btn-danger btn-sm"
+onclick="editar(${show.id})">
+Editar
+</button>
+
+<button class="btn btn-danger btn-sm"
+onclick="deletar(${show.id})">
+Excluir
+</button>
+</td>
+
+</tr>
+`;
+                            limparCampos();
+
+                        });
+
+                    });
+
+            }
+
+        </script>
+
+</body>
+
+</html>
