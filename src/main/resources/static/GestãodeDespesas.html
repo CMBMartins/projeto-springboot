@@ -359,7 +359,9 @@
 
         const id = document.getElementById("id").value;
 
-        const api = "http://localhost:8084/despesas";
+        const API = "https://projeto-springboot.onrender.com";
+
+        //const api = "http://localhost:8084/despesas";
 
 
         // FUNÇÃO PARA LISTAR TODAS DESPESAS
@@ -632,7 +634,7 @@ Excluir
                 return;
             }
 
-            fetch("http://dpg-d7aevoqa214c739q1bpg-a:8080/usuario/login", {
+            fetch(fetch("https://projeto-springboot.onrender.com/usuario/login"), {
 
                 method: "POST",
 
