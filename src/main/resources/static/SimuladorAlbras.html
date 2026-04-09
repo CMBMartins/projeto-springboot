@@ -33,7 +33,7 @@
         width: 1500px;
         height: 850px;
         font-family: Arial, sans-serif;
-        background: #aaaaaa;
+        background: #f2f2f2;
         margin: 0;
         padding: 0;
         top: 50px;
@@ -110,7 +110,7 @@
     .container {
         width: 1495px;
         height: 250px;
-        background: #aaa;
+        background: #f2f2f2;
         display: flex;
         justify-content: space-between;
         padding: 20px;
@@ -175,31 +175,20 @@
 
     #email {
         position: absolute;
-        top: 1120px;
-        left: 1070px;
+        top: 960px;
+        left: 1370px;
         font-style: italic;
         font-size: 10px;
         color: gray;
     }
 
-    body {
-        background: #aaa;
-        font-family: Arial, sans-serif;
-        background: #aaa;
-        margin: 0;
-        padding: 0;
-        border: 2px solid black;
-    }
-
+    
     /* Container flexível */
     .container {
         background: #aaa;
-        display: flex;
-        /* Ativa o Flexbox */
-        justify-content: space-between;
-        /* Espaço entre as colunas */
-        gap: 20px;
-        /* Espaço entre as divs */
+        display: flex; /* Ativa o Flexbox */
+        justify-content: space-between; /* Espaço entre as colunas */
+        gap: 20px; /* Espaço entre as divs */
         padding: 20px;
     }
 
@@ -210,7 +199,7 @@
         border-radius: 3px;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         flex: 1;
-        /* Faz com que todas as colunas tenham largura igual */
+        border: 2px solid black;
     }
 
     .section-title {
@@ -437,6 +426,14 @@
         font-family: Arial;
     }
 
+    .painel {
+        position: relative;
+        height: 290px;
+        display: flex;
+        justify-content: center; 
+        gap: 120px;       
+        margin-top: 60px;
+    }
 
     /* COLUNAS */
     .coluna {
@@ -516,6 +513,86 @@
         border: 1px solid black;
     }
 
+    /* LINHA VERTICAL */
+    .linha-verticalred1 {
+        position: absolute;
+        top: 20px;
+        width: 4px;
+        height: 180px;
+        background: rgb(255, 145, 0);
+        left: -70%;
+    }
+
+    /* Barramento */
+    .linhared1 {
+        position: absolute;
+        top: 200px;
+        left: -84%;
+        width: 30%;
+        height: 4px;
+        background-color: orange;
+    }
+
+    /* LINHA VERTICAL */
+    .linha-verticalred2 {
+        position: absolute;
+        top: 20px;
+        width: 4px;
+        height: 180px;
+        background: rgb(255, 145, 0);
+        left: -70%;
+    }
+
+    /* Barramento */
+    .linhared2 {
+        position: absolute;
+        top: 200px;
+        left: -84%;
+        width: 30%;
+        height: 4px;
+        background-color: orange;
+    }
+
+    /* LINHA VERTICAL */
+    .linha-verticalred3 {
+        position: absolute;
+        top: 20px;
+        width: 4px;
+        height: 180px;
+        background: rgb(255, 145, 0);
+        left: -70%;
+    }
+
+    /* Barramento */
+    .linhared3 {
+        position: absolute;
+        top: 200px;
+        left: -84%;
+        width: 30%;
+        height: 4px;
+        background-color: orange;
+    }
+
+    /* LINHA VERTICAL */
+    .linha-verticalred4 {
+        position: absolute;
+        top: 20px;
+        width: 4px;
+        height: 180px;
+        background: rgb(255, 145, 0);
+        left: -70%;
+    }
+
+    /* Barramento */
+    .linhared4 {
+        position: absolute;
+        top: 200px;
+        left: -84%;
+        width: 30%;
+        height: 4px;
+        background-color: orange;
+    }
+
     /* CAIXA */
     .caixa {
         border: 1px solid #888;
@@ -550,17 +627,49 @@
 
     /* LABEL EMBAIXO */
     .label {
+        margin-top: 300px;
+        margin-left: -280px;
+        font-weight: bold;
+        color: blue;
+    }
+
+     /* LABEL EMBAIXO */
+    .labelred1 {
         margin-top: 10px;
+        margin-left: -270px;
+        font-weight: bold;
+        color: blue;
+    }
+
+     /* LABEL EMBAIXO */
+    .labelred2 {
+        margin-top: 10px;
+        margin-left: -274px;
+        font-weight: bold;
+        color: blue;
+    }
+
+     /* LABEL EMBAIXO */
+    .labelred3 {
+        margin-top: 10px;
+        margin-left: -270px;
+        font-weight: bold;
+        color: blue;
+    }
+
+     /* LABEL EMBAIXO */
+    .labelred4 {
+        margin-top: 10px;
+        margin-left: -274px;
         font-weight: bold;
         color: blue;
     }
 
     .labelprocesso {
-        margin-top: 0px;
+        margin-top: -30px;
         font-weight: bold;
         color: blue;
-        margin-left: 150px;
-
+        margin-left: 160px;
     }
 
     .processo .caixa {
@@ -571,16 +680,7 @@
         justify-content: space-between;
     }
 
-    .painel {
-        position: relative;
-        height: 290px;
-        display: flex;
-        justify-content: center;
-        /* centraliza geral */
-        gap: 120px;
-        /* espaço entre colunas */
-        margin-top: 60px;
-    }
+    
 </style>
 
 <body>
@@ -589,8 +689,8 @@
         <div class="divider top-divider"></div>
         <div class="divider bottom-divider"></div>
 
-        <img src="imagensAlbras/Carlos1.PNG" alt="Carlos GIF"
-            style="position: absolute; top: 1000px; left: 1400px; width: 70px; height: 70px;">
+        <img src="imagensAlbras/carlos1.gif" alt="Carlos GIF"
+            style="position: absolute; top: 890px; left: 1400px; width: 70px; height: 70px;">
         <img src="imagensAlbras/Albras1.JPG" alt="Logo"
             style="position: absolute; top: 5px; left: 2px; width: 255px; height: 50px;">
 
@@ -830,6 +930,8 @@
         <!-- RED 1 -->
         <div class="coluna">
             <div class="linha-vertical"></div>
+            <div class="linha-verticalred1"></div>
+            <div class="linhared1"></div>
             <div class="caixa">
                 <h4>Reducao I</h4>
                 <p>Dem <span id="dem">182.1</span></p>
@@ -838,12 +940,14 @@
                 <p>VDC <span id="vdc">1028.5</span></p>
                 <p>DV <span id="dv">1.35</span></p>
             </div>
-            <div class="label">RED1</div>
+            <div class="labelred1">RED1</div>
         </div>
 
         <!-- RED 2 -->
         <div class="coluna">
             <div class="linha-vertical"></div>
+            <div class="linha-verticalred2"></div>
+            <div class="linhared2"></div>
             <div class="caixa">
                 <h4>Reducao II</h4>
                 <p>Dem <span id="dem2">194.1</span></p>
@@ -852,13 +956,15 @@
                 <p>VDC <span id="vdc2">1044.2</span></p>
                 <p>DV <span id="dv2">-7.22</span></p>
             </div>
-            <div class="label">RED2</div>
+            <div class="labelred2">RED2</div>
         </div>
 
         <!-- RED 3 -->
         <div class="coluna">
             <div class="linha-vertical"></div>
-            <div class="caixa">
+             <div class="linha-verticalred3"></div>
+            <div class="linhared3"></div>
+            <div class="caixa">           
                 <h4>Reducao III</h4>
                 <p>Dem <span id="dem3">196.7</span></p>
                 <p>Iset <span id="iset3">180.0</span></p>
@@ -866,12 +972,14 @@
                 <p>VDC <span id="vdc3">1064.1</span></p>
                 <p>DV <span id="dv3">0.22</span></p>
             </div>
-            <div class="label">RED3</div>
+            <div class="labelred3">RED3</div>
         </div>
 
         <!-- RED 4 -->
         <div class="coluna">
             <div class="linha-vertical"></div>
+             <div class="linha-verticalred4"></div>
+            <div class="linhared4"></div>
             <div class="caixa">
                 <h4>Reducao IV</h4>
                 <p>Dem <span id="dem4">195.8</span></p>
@@ -880,7 +988,7 @@
                 <p>VDC <span id="vdc4">1056.1</span></p>
                 <p>DV <span id="dv4">0.40</span></p>
             </div>
-            <div class="label">RED4</div>
+            <div class="labelred4">RED4</div>
         </div>
 
         <!-- PROCESSO -->
@@ -1002,7 +1110,7 @@
             // Se passou na validação
             //alert("✅ Dados preenchidos! Validando login...");
 
-            fetch("http://localhost:8084/usuario/login", {
+            fetch("http://localhost:8084/usuario", {
 
                 method: "POST",
 
