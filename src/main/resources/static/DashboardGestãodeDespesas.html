@@ -287,10 +287,8 @@
 
     <script>
 
-        //const id = document.getElementById("id").value;
-
-        const API = "http://localhost:8084/despesas";
-
+        const API = "https://projeto-springboot.onrender.com";        
+        
         // 🚀 CARREGAMENTO INICIAL
         window.onload = function () {
             carregarDashboard();
@@ -735,7 +733,7 @@
                 return;
             }
 
-            fetch("http://localhost:8080/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -802,6 +800,8 @@
             document.getElementById("senha").value = "";
 
         }
+
+        window.login = login;
 
     </script>
 
