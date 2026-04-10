@@ -670,43 +670,49 @@
         // 📋 FUNÇÃO LISTAR TODAS DESPESAS
         function listarTodos() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        return;
+    }
+
+    fetch(API + "/despesas?usuario=" + usuario) // 🔥 CORRIGIDO
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            console.log("RETORNO:", data); // 👈 DEBUG
+
+            const tabela = document.getElementById("ultimasDespesas");
+
+            if (!tabela) {
+                console.error("Tabela não encontrada!");
                 return;
             }
 
-            fetch(API + "/usuario?usuario=" + usuario)
-                .then(response => response.json())
-                .then(data => {
+            tabela.innerHTML = "";
 
-                    const tabela = document.getElementById("ultimasDespesas");
+            data.forEach(d => {
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
-
-                    tabela.innerHTML = "";
-
-                    data.forEach(d => {
-                        tabela.innerHTML += `
+                tabela.innerHTML += `
                 <tr>
-                <td>${d.data}</td>
-                <td>${d.descricao}</td>
-                <td>R$ ${(d.valor ?? 0).toFixed(2)}</td>
-                <td>${d.status}</td>
-                <td>
-                    <button onclick="deletar(${d.id})">Excluir</button>
+                    <td>${d.data || ""}</td>
+                    <td>${d.descricao || ""}</td>
+                    <td>R$ ${Number(d.valor ?? 0).toFixed(2)}</td>
+                    <td>${d.status || ""}</td>
+                    <td>
+                        <button onclick="deletar(${d.id})">Excluir</button>
                     </td>
-                    </tr>
-                    `;
-                    });
-                })
-                .catch(error => console.error("Erro:", error));
-        }
+                </tr>
+                `;
+            });
 
+        })
+
+        .catch(error => console.error("Erro:", error));
+}
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
