@@ -629,7 +629,7 @@ Excluir
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login"), {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -673,8 +673,7 @@ Excluir
                 });
 
         }
-
-        window.login = login;
+        
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
@@ -711,7 +710,9 @@ Excluir
             document.getElementById("tipo").value = "";
             document.getElementById("valor").value = "";
             document.getElementById("status").value = "";
-        }        
+        }
+
+        window.login = login;
 
     </script>
 
