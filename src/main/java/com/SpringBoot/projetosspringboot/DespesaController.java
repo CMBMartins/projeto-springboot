@@ -86,7 +86,7 @@ public class DespesaController {
         }
 
         // TOTAL DE RENDAS
-        @GetMapping("/renda")
+        @GetMapping("/renda-total")
         public Double totalEntradas(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
                                 // return repository.findAll()
@@ -188,8 +188,9 @@ public class DespesaController {
 
                                 // 💰 FILTRO POR STATUS (AGORA SIM)
                                 .filter(d -> d.getStatus() != null &&
+                                                .filter(d -> d.getStatus() != null &&
                                                 (d.getStatus().equalsIgnoreCase("PAGA") ||
-                                                                d.getStatus().equalsIgnoreCase("PENDENTE")))
+                                                 d.getStatus().equalsIgnoreCase("PENDENTE")))
 
                                 // 💸 SOMA
                                 .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
