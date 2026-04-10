@@ -310,13 +310,16 @@
         console.warn("Usuário não definido!");
         return;
     }
+            
 
     function formatarMoeda(valor) {
-        return Number(valor || 0).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
-    }
+    const numero = Number(valor) || 0;
+
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}    
 
     // TOTAL DESPESAS
     fetch(API + "/despesas/total?usuario=" + usuario)
