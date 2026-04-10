@@ -547,69 +547,78 @@
         // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
         function buscarDespesa() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
+    if (!usuario) {
+        alert("⚠️ Faça Login!");
+        return;
+    }
+
+    const descricao = document.getElementById("descricao").value;
+
+    if (!descricao) {
+        alert("⚠️ Informe o lançamento a ser consultado!");
+        return;
+    }
+
+    fetch(`${API}/buscar?usuario=${usuario}&descricao=${encodeURIComponent(descricao)}`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            console.log("Resultado busca:", data);
+
+            const tabela = document.getElementById("tabelaDespesas");
+
+            if (!tabela) {
+                console.error("Tabela não encontrada!");
                 return;
             }
 
-            const descricao = document.getElementById("descricao").value;
-
-            if (!descricao) {
-                alert("⚠️ Informe o lançamento a ser consultado!");
+            if (!Array.isArray(data)) {
+                console.error("Retorno inválido:", data);
                 return;
             }
 
-            fetch(`${API}/buscar?usuario=${usuario}&descricao=${encodeURIComponent(descricao)}`)
-                .then(response => response.json())
-                .then(data => {
+            limparCampos();
+            tabela.innerHTML = "";
 
-                    const tabela = document.getElementById("tabelaDespesas");
+            if (data.length === 0) {
+                tabela.innerHTML = `
+                <tr>
+                    <td colspan="8">Nenhum resultado encontrado</td>
+                </tr>`;
+                return;
+            }
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
-                    limparCampos();
+            data.forEach(show => {
 
-                    tabela.innerHTML = "";
+                tabela.innerHTML += `
+                <tr>
+                    <td>${show.id || ""}</td>
+                    <td>${show.data || ""}</td>
+                    <td>${show.descricao || ""}</td>
+                    <td>${show.categoria || ""}</td>
+                    <td>${show.tipo || ""}</td>
+                    <td>R$ ${Number(show.valor ?? 0).toFixed(2)}</td>
+                    <td>${show.status || ""}</td>
+                    <td>
+                        <button onclick="deletar(${show.id})">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+                `;
+            });
 
-                    if (data.length === 0) {
-                        tabela.innerHTML = `
-<tr>
-<td colspan="8">Nenhum resultado encontrado</td>
-</tr>
-`;
-                        return;
-                    }
+        })
 
-                    data.forEach(show => {
-
-                        tabela.innerHTML += `
-<tr>
-<td>${show.id}</td>
-<td>${show.data}</td>
-<td>${show.descricao}</td>
-<td>${show.categoria}</td>
-<td>${show.tipo}</td>
-<td>${show.valor}</td>
-<td>${show.status}</td>
-<td>
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-</tr>
-`;
-                    });
-
-                })
-                .catch(error => console.error("Erro na busca:", error));
-        }
-
+        .catch(error => {
+            console.error("Erro na busca:", error);
+            alert("Erro ao buscar despesas!");
+        });
+}
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
