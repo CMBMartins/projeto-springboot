@@ -406,143 +406,127 @@
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
-                return;
-            }
+    if (!usuario) {
+        alert("⚠️ Faça Login!");
+        return;
+    }
 
-            if (confirm("Tem certeza que deseja salvar esses dados?")) {
+    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-                const data = document.getElementById("data").value;
-                const descricao = document.getElementById("descricao").value;
-                const categoria = document.getElementById("categoria").value;
-                const tipo = document.getElementById("tipo").value;
-                const valor = document.getElementById("valor").value;
-                const status = document.getElementById("status").value;
-                const usuario = document.getElementById("usuariologado").value // 🔥 AQUI                
+    const dados = {
+        data: document.getElementById("data").value,
+        descricao: document.getElementById("descricao").value,
+        categoria: document.getElementById("categoria").value,
+        tipo: document.getElementById("tipo").value,
+        valor: Number(document.getElementById("valor").value),
+        status: document.getElementById("status").value,
+        usuario: usuario
+    };
 
-                //alert("Dados salvos com sucesso!");
-
-                fetch(API, {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        data,
-                        descricao,
-                        categoria,
-                        tipo,
-                        valor,
-                        status,
-                        usuario
-
-                    })
-
-                })
-
-                    .then(response => response.json())
-
-                    .then(data => {
-
-                        limparCampos();
-
-                        listarTodos();
-
-                    });
-
-            }
-        }
+    fetch(API, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erro ao salvar");
+        return response.json();
+    })
+    .then(() => {
+        limparCampos();
+        listarTodos();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao salvar!");
+    });
+}
 
 
         // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
         function editar() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
-                return;
-            }
+    if (!usuario) {
+        alert("⚠️ Faça Login!");
+        return;
+    }
 
-            if (confirm("Tem certeza que deseja editar estes dados?")) {
+    if (!confirm("Tem certeza que deseja editar estes dados?")) return;
 
-                const id = document.getElementById("id").value;
+    const id = document.getElementById("id").value;
 
-                const dados = {
+    if (!id) {
+        alert("Selecione um registro para editar!");
+        return;
+    }
 
-                    data: document.getElementById("data").value,
-                    descricao: document.getElementById("descricao").value,
-                    categoria: document.getElementById("categoria").value,
-                    tipo: document.getElementById("tipo").value,
-                    valor: document.getElementById("valor").value,
-                    status: document.getElementById("status").value,
-                    usuario: document.getElementById("usuariologado").value
+    const dados = {
+        data: document.getElementById("data").value,
+        descricao: document.getElementById("descricao").value,
+        categoria: document.getElementById("categoria").value,
+        tipo: document.getElementById("tipo").value,
+        valor: Number(document.getElementById("valor").value),
+        status: document.getElementById("status").value,
+        usuario: usuario
+    };
 
-                };
-
-                fetch(API + "/" + id, {
-
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(dados)
-
-                })
-
-                    .then(() => {
-
-                        //alert("Dados atualizados com sucesso!");
-
-                        limparCampos();
-                        listarTodos();
-
-                    });
-
-            }
-        }
-
+    fetch(API + "/" + id, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erro ao editar");
+    })
+    .then(() => {
+        limparCampos();
+        listarTodos();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao editar!");
+    });
+}
 
         // FUNÇÃO PARA EXCLUIR
         function deletar(id) {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
-                return;
-            }
+    if (!usuario) {
+        alert("⚠️ Faça Login!");
+        return;
+    }
 
-            if (confirm("Tem certeza que deseja excluir este registro?")) {
+    if (!id) {
+        alert("ID inválido!");
+        return;
+    }
 
-                fetch(`${API}/${id}`, {
-                    method: "DELETE"
-                })
-                    .then(() => {
-                        //alert("Registro excluído com sucesso!");
-                        listarTodos();
-                    })
-                    .catch(error => {
-                        console.error("Erro ao excluir:", error);
-                        alert("Erro ao excluir o registro.");
-                    });
+    if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-            }
-
-        }
-
+    fetch(`${API}/${id}`, {
+        method: "DELETE"
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erro ao excluir");
+    })
+    .then(() => {
+        listarTodos();
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Erro ao excluir o registro.");
+    });
+}
 
         // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
         function buscarDespesa() {
