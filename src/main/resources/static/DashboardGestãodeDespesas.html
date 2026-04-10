@@ -356,6 +356,7 @@
 
 
     // MÊS ATUAL
+    //fetch(API + "/despesas/mes?usuario=" + usuario)
     fetch(API + "/despesas/mes?usuario=" + usuario)
     //fetch(API + "/mes?usuario=" + usuario)       
     .then(res => res.json())
@@ -372,8 +373,7 @@
 
 
     // SALDO
-    fetch(API + "/despesas/saldo?usuario=" + usuario)
-    //fetch(API + "/saldo?usuario=" + usuario)
+    fetch(API + "/despesas/saldo?usuario=" + usuario)    
     .then(res => res.json())
     .then(total => {
 
@@ -388,19 +388,17 @@
 
 
     // STATUS
-    //fetch(API + "/status?usuario=" + usuario)
-    fetch(API + "/despesas/status?usuario=" + usuario)
-        .then(res => res.json())
-        .then(data => {
+    .then(data => {
 
-           const pagas = Number(data.PAGA ?? data.Paga ?? data.paga ?? 0);
-           const pendentes = Number(data.PENDENTE ?? data.Pendente ?? data.pendente ?? 0);
+    const pagas = Number(data.PAGA ?? data.paga ?? 0);
+    const pendentes = Number(data.PENDENTE ?? data.pendente ?? 0);
 
-            if (elPagas) elPagas.innerText = pagas;
-            if (elPend) elPend.innerText = pendentes;
-        })
-        .catch(err => console.error("Erro status:", err));
-}
+    const elPagas = document.getElementById("pagas");
+    const elPend = document.getElementById("pendentes");
+
+    if (elPagas) elPagas.innerText = pagas;
+    if (elPend) elPend.innerText = pendentes;
+    })
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
@@ -417,7 +415,8 @@
                 return;
             }
 
-            fetch(API + "/categoria?usuario=" + usuario)
+            //fetch(API + "/categoria?usuario=" + usuario)
+                fetch(API + "/despesas/categoria?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) throw new Error("Erro categoria: " + res.status);
                     return res.json();
@@ -461,7 +460,8 @@
                 return;
             }
 
-            fetch(API + "/mensal?usuario=" + usuario)
+            //fetch(API + "/mensal?usuario=" + usuario)
+                fetch(API + "/despesas/mensal?usuario=" + usuario)
                 //fetch(API + "/mensal")
                 .then(res => res.json())
                 .then(data => {
@@ -519,7 +519,8 @@
                 return;
             }
 
-            fetch(API + "/total?usuario=" + usuario)
+            //fetch(API + "/total?usuario=" + usuario)
+                fetch(API + "/despesas/total?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -557,7 +558,8 @@
                 return;
             }
 
-            fetch(API + "/renda?usuario=" + usuario)
+            //fetch(API + "/renda?usuario=" + usuario)
+                fetch(API + "/despesas/renda?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -596,7 +598,8 @@
                 return;
             }
 
-            fetch(API + "/comparativo-mensal?usuario=" + usuario)
+            //fetch(API + "/comparativo-mensal?usuario=" + usuario)
+                fetch(API + "/despesas/comparativo-mensal?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -657,7 +660,8 @@
                 return;
             }
 
-            fetch(API + "/status?usuario=" + usuario)
+              //fetch(API + "/status?usuario=" + usuario)
+                fetch(API + "/despesas/status?usuario=" + usuario)
                 //fetch(API + "/status")
                 .then(res => res.json())
                 .then(data => {
