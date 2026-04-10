@@ -22,16 +22,7 @@ public class DespesaController {
     public Double renda(@RequestParam String usuario) {
         return repository.sumByUsuarioETipo(usuario, "RENDA");
     }
-
-    // 💳 SALDO
-    @GetMapping("/saldo")
-    public Double saldo(@RequestParam String usuario) {
-        Double renda = repository.sumByUsuarioETipo(usuario, "RENDA");
-        Double despesa = repository.sumByUsuarioETipo(usuario, "DESPESA");
-
-        return (renda != null ? renda : 0) - (despesa != null ? despesa : 0);
-    }
-
+   
         @GetMapping
         public List<Despesa> listar() {
                 return repository.findAll();
