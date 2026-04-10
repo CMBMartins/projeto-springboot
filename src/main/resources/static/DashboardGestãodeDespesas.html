@@ -319,7 +319,8 @@
     }
 
     // TOTAL DESPESAS
-    fetch(API + "/total")
+    fetch(API + "/despesas/total?usuario=" + usuario)
+    //fetch(API + "/total")
    .then(res => res.json())
    .then(total => {
 
@@ -335,8 +336,9 @@
 });
 
 
-    // RENDA
-    fetch(API + "/renda?usuario=" + usuario)
+    // RENDA    
+    fetch(API + "/despesas/renda?usuario=" + usuario)
+    //fetch(API + "/renda?usuario=" + usuario)
     .then(res => res.json())
     .then(total => {
 
@@ -351,7 +353,8 @@
 
 
     // MÊS ATUAL
-    fetch(API + "/mes?usuario=" + usuario)       
+    fetch(API + "/despesas/mes?usuario=" + usuario)
+    //fetch(API + "/mes?usuario=" + usuario)       
     .then(res => res.json())
     .then(total => {
 
@@ -366,7 +369,8 @@
 
 
     // SALDO
-    fetch(API + "/saldo?usuario=" + usuario)
+    fetch(API + "/despesas/saldo?usuario=" + usuario)
+    //fetch(API + "/saldo?usuario=" + usuario)
     .then(res => res.json())
     .then(total => {
 
@@ -381,7 +385,8 @@
 
 
     // STATUS
-    fetch(API + "/status?usuario=" + usuario)
+    //fetch(API + "/status?usuario=" + usuario)
+    fetch(API + "/despesas/status?usuario=" + usuario)
         .then(res => res.json())
         .then(data => {
 
