@@ -28,12 +28,6 @@ public class DespesaController {
         return repository.sumByUsuarioETipo(usuario, "RENDA");
     }
 
-    // 📅 MÊS ATUAL
-    @GetMapping("/mes")
-    public Double mes(@RequestParam String usuario) {
-        return repository.totalMesAtual(usuario);
-    }
-
     // 💳 SALDO
     @GetMapping("/saldo")
     public Double saldo(@RequestParam String usuario) {
