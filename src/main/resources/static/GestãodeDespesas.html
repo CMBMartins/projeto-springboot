@@ -560,9 +560,8 @@
         alert("⚠️ Informe o lançamento a ser consultado!");
         return;
     }
-
-    fetch(`${API}/buscar?usuario=${usuario}&descricao=${encodeURIComponent(descricao)}`)
-
+            fetch(`${API}/despesas/buscar?usuario=${usuario}&descricao=${descricao}`)
+    
         .then(response => response.json())
 
         .then(data => {
