@@ -17,6 +17,39 @@ public class DespesaController {
         @Autowired
         private DespesaRepository repository;
 
+        // 🔥 TOTAL DESPESAS
+    @GetMapping("/total")
+    public Double total(@RequestParam String usuario) {
+        return repository.sumByUsuarioETipo(usuario, "DESPESA");
+    }
+
+    // 💰 RENDA
+    @GetMapping("/renda")
+    public Double renda(@RequestParam String usuario) {
+        return repository.sumByUsuarioETipo(usuario, "RENDA");
+    }
+
+    // 📅 MÊS ATUAL
+    @GetMapping("/mes")
+    public Double mes(@RequestParam String usuario) {
+        return repository.totalMesAtual(usuario);
+    }
+
+    // 💳 SALDO
+    @GetMapping("/saldo")
+    public Double saldo(@RequestParam String usuario) {
+        Double renda = repository.sumByUsuarioETipo(usuario, "RENDA");
+        Double despesa = repository.sumByUsuarioETipo(usuario, "DESPESA");
+
+        return (renda != null ? renda : 0) - (despesa != null ? despesa : 0);
+    }
+
+    // 📊 STATUS
+    @GetMapping("/status")
+    public Map<String, Long> status(@RequestParam String usuario) {
+        return repository.contarPorStatus(usuario);
+    }
+
         @GetMapping
         public List<Despesa> listar() {
                 return repository.findAll();
