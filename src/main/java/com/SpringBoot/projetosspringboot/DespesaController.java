@@ -15,18 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class DespesaController {
 
         @Autowired
-        private DespesaRepository repository;
-       
-    // 💰 RENDA
-    @GetMapping("/renda")
-    public Double renda(@RequestParam String usuario) {
-        return repository.sumByUsuarioETipo(usuario, "RENDA");
-    }
-   
-        @GetMapping
-        public List<Despesa> listar() {
-                return repository.findAll();
-        }
+        private DespesaRepository repository;   
 
         @PostMapping
         public Despesa salvar(@RequestBody Despesa despesa) {
@@ -36,16 +25,7 @@ public class DespesaController {
         @DeleteMapping("/{id}")
         public void deletar(@PathVariable Integer id) {
                 repository.deleteById(id);
-        }
-
-        @GetMapping("/buscar")
-        public List<Despesa> buscar(
-                        @RequestParam String usuario,
-                        @RequestParam String descricao) {
-
-                return repository
-                                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
-        }
+        }        
 
         @PutMapping("/{id}")
         public Despesa editar(@PathVariable Integer id, @RequestBody Despesa nova) {
@@ -60,6 +40,26 @@ public class DespesaController {
                 existente.setData(nova.getData());
 
                 return repository.save(existente);
+        }
+
+        @GetMapping("/buscar")
+        public List<Despesa> buscar(
+                        @RequestParam String usuario,
+                        @RequestParam String descricao) {
+
+                return repository
+                                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
+        }
+
+        // 💰 RENDA
+    @GetMapping("/renda")
+    public Double renda(@RequestParam String usuario) {
+        return repository.sumByUsuarioETipo(usuario, "RENDA");
+    }
+   
+        @GetMapping
+        public List<Despesa> listar() {
+                return repository.findAll();
         }
 
         @GetMapping("/usuario")
@@ -186,11 +186,10 @@ public class DespesaController {
                                                 d.getData().getMonthValue() == hoje.getMonthValue() &&
                                                 d.getData().getYear() == hoje.getYear())
 
-                                // 💰 FILTRO POR STATUS (AGORA SIM)
+                                // 💰 FILTRO POR STATUS                                               
                                 .filter(d -> d.getStatus() != null &&
-                                                .filter(d -> d.getStatus() != null &&
-                                                (d.getStatus().equalsIgnoreCase("PAGA") ||
-                                                 d.getStatus().equalsIgnoreCase("PENDENTE")))
+                                (d.getStatus().equalsIgnoreCase("PAGA") ||
+                                d.getStatus().equalsIgnoreCase("PENDENTE")))
 
                                 // 💸 SOMA
                                 .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
