@@ -406,7 +406,7 @@
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-    const usuario = getUsuario();
+        const usuario = getUsuario();
 
     if (!usuario) {
         alert("⚠️ Faça Login!");
@@ -425,7 +425,7 @@
         usuario: usuario
     };
 
-    fetch(API, {
+    fetch(API + "/despesas", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
