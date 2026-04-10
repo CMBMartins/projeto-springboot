@@ -319,43 +319,65 @@
     }
 
     // TOTAL DESPESAS
-    fetch(API + "/total?usuario=" + usuario)
-        .then(res => res.json())
-        .then(total => {
-            const el = document.getElementById("total");
-            if (el) el.innerText = formatarMoeda(total);
-        })
-        .catch(err => console.error("Erro total:", err));
+    fetch(API + "/total")
+   .then(res => res.json())
+   .then(total => {
+
+    console.log("TOTAL RECEBIDO:", total); // 🔥 DEBUG
+
+    const valor = Number(total) || 0;
+
+    document.getElementById("total").innerText =
+        valor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+});
 
 
     // RENDA
     fetch(API + "/renda?usuario=" + usuario)
-        .then(res => res.json())
-        .then(total => {
-            const el = document.getElementById("renda");
-            if (el) el.innerText = formatarMoeda(total);
-        })
-        .catch(err => console.error("Erro renda:", err));
+    .then(res => res.json())
+    .then(total => {
+
+        console.log("RENDA:", total); // 🔥 DEBUG
+
+        const valor = Number(total) || 0;
+
+        const el = document.getElementById("renda");
+        if (el) el.innerText = formatarMoeda(valor);
+    })
+    .catch(err => console.error("Erro renda:", err));
 
 
     // MÊS ATUAL
-    fetch(API + "/mes?usuario=" + usuario)
-        .then(res => res.json())
-        .then(total => {
-            const el = document.getElementById("mesAtual");
-            if (el) el.innerText = formatarMoeda(total);
-        })
-        .catch(err => console.error("Erro mês:", err));
+    fetch(API + "/mes?usuario=" + usuario)       
+    .then(res => res.json())
+    .then(total => {
+
+        console.log("RENDA:", total); // 🔥 DEBUG
+
+        const valor = Number(total) || 0;
+
+        const el = document.getElementById("renda");
+        if (el) el.innerText = formatarMoeda(valor);
+    })
+    .catch(err => console.error("Erro renda:", err));
 
 
     // SALDO
     fetch(API + "/saldo?usuario=" + usuario)
-        .then(res => res.json())
-        .then(total => {
-            const el = document.getElementById("saldo");
-            if (el) el.innerText = formatarMoeda(total);
-        })
-        .catch(err => console.error("Erro saldo:", err));
+    .then(res => res.json())
+    .then(total => {
+
+        console.log("RENDA:", total); // 🔥 DEBUG
+
+        const valor = Number(total) || 0;
+
+        const el = document.getElementById("renda");
+        if (el) el.innerText = formatarMoeda(valor);
+    })
+    .catch(err => console.error("Erro renda:", err));
 
 
     // STATUS
@@ -363,11 +385,8 @@
         .then(res => res.json())
         .then(data => {
 
-            const pagas = data.PAGA || data.paga || 0;
-            const pendentes = data.PENDENTE || data.pendente || 0;
-
-            const elPagas = document.getElementById("pagas");
-            const elPend = document.getElementById("pendentes");
+           const pagas = Number(data.PAGA ?? data.Paga ?? data.paga ?? 0);
+           const pendentes = Number(data.PENDENTE ?? data.Pendente ?? data.pendente ?? 0);
 
             if (elPagas) elPagas.innerText = pagas;
             if (elPend) elPend.innerText = pendentes;
