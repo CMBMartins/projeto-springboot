@@ -681,11 +681,14 @@ function listarTodos() {
 
     if (!verificarLogin()) return; // 🔒 trava aqui
 
-    carregarTotal();
-    carregarRenda();
-    carregarComparativoMensal();
-    gerarGraficoStatus();
+    carregarDashboard();
     listarTodos();
+    carregarGraficoCategoria();    
+    carregarGraficoMensal();
+    gerarGraficoStatus();
+    carregarComparativoMensal();
+    carregarTotal();
+    carregarmesAtual();
     };
       
 
