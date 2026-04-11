@@ -278,34 +278,16 @@ th, td {
 
     </main>
 
-</div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        carregarDashboard();
-        carregarGraficoCategoria();
-        carregarGraficoMensal();
-        listarTodos();
-            });
-        </script>
+</div>   
 
   <script>
 
     const API = "https://projeto-springboot.onrender.com";
 
     function getUsuario() {
-
-    const campo = document.getElementById("usuario");
-
-    if (!campo) {
-        console.warn("Campo usuário não encontrado");
-        return localStorage.getItem("usuario"); // 🔥 usa o salvo
-    }
-
-    return campo.value || localStorage.getItem("usuario");
-}    
-
-        const id = document.getElementById("id").value;  
+    return localStorage.getItem("usuario");
+        }
+      
 
     // 🚀 CARREGAMENTO INICIAL
     window.onload = function () {
