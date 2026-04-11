@@ -330,21 +330,24 @@ th, td {
     }
 
     // 🔥 TOTAL
-    fetchSeguro(API + "/total?usuario=" + usuario)
+        //fetchSeguro(API + "/total?usuario=" + usuario)
+        fetch(API + "/despesas/total?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("total");
             if (el) el.innerText = formatar(total);
         });
 
     // 🔥 RENDA
-    fetchSeguro(API + "/renda?usuario=" + usuario)
+    //fetchSeguro(API + "/renda?usuario=" + usuario)
+        fetch(API + "/despesas/renda?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("renda");
             if (el) el.innerText = formatar(total);
         });
 
     // 🔥 MÊS
-    fetchSeguro(API + "/mes?usuario=" + usuario)
+    //fetchSeguro(API + "/mes?usuario=" + usuario)
+        fetch(API + "/despesas/mes?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("mesAtual");
             if (el) el.innerText = formatar(total);
@@ -352,14 +355,16 @@ th, td {
         .catch(err => console.error("Erro mês:", err));
 
     // 🔥 SALDO
-    fetchSeguro(API + "/saldo?usuario=" + usuario)
+    //fetchSeguro(API + "/saldo?usuario=" + usuario)
+        fetch(API + "/despesas/saldo?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("saldo");
             if (el) el.innerText = formatar(total);
         });
 
     // 🔥 STATUS
-    fetchSeguro(API + "/status?usuario=" + usuario)
+     //fetchSeguro(API + "/status?usuario=" + usuario)
+         fetch(API + "/despesas/status?usuario=" + usuario)
         .then(data => {
 
             const pagas = Number(data?.PAGA ?? data?.paga ?? 0);
@@ -383,7 +388,8 @@ th, td {
         return;
     }
 
-    fetch(API + "/categoria?usuario=" + usuario)
+    //fetch(API + "/categoria?usuario=" + usuario)
+        fetch(API + "/despesas/categoria?usuario=" + usuario)
         .then(async res => {
 
             if (!res.ok) {
@@ -440,8 +446,8 @@ th, td {
         return;
     }
 
-    fetch(API + "/mensal?usuario=" + usuario)
-
+    //fetch(API + "/mensal?usuario=" + usuario)
+        fetch(API + "/despesas/mensal?usuario=" + usuario)
         .then(async res => {
             if (!res.ok) {
                 const erro = await res.text();
@@ -524,7 +530,8 @@ th, td {
         return;
     }
 
-    fetch(API + "/total?usuario=" + usuario)
+    //fetch(API + "/total?usuario=" + usuario)
+        fetch(API + "/despesas/total?usuario=" + usuario)
         .then(res => {
             if (!res.ok) {
                 throw new Error("Erro na API: " + res.status);
@@ -562,7 +569,8 @@ th, td {
         return;
     }
 
-    fetch(API + "/renda?usuario=" + usuario)
+    //fetch(API + "/renda?usuario=" + usuario)
+        fetch(API + "/despesas/renda?usuario=" + usuario)
         .then(res => {
             if (!res.ok) {
                 throw new Error("Erro na API: " + res.status);
@@ -600,7 +608,8 @@ th, td {
         return;
     }
 
-    fetch(API + "/comparativo-mensal?usuario=" + usuario)
+    //fetch(API + "/comparativo-mensal?usuario=" + usuario)
+        fetch(API + "/despesas/comparativo-mensal?usuario=" + usuario)
         .then(res => {
             if (!res.ok) {
                 throw new Error("Erro na API: " + res.status);
@@ -661,8 +670,8 @@ function gerarGraficoStatus() {
         return;
     }
 
-    fetch(API + "/status?usuario=" + usuario)
-    //fetch(API + "/status")
+    //fetch(API + "/status?usuario=" + usuario)
+    fetch(API + "/despesas/status?usuario=" + usuario)
         .then(res => res.json())
         .then(data => {
 
@@ -696,7 +705,8 @@ function listarTodos() {
         return;
     }
 
-    fetch(API + "/usuario?usuario=" + usuario)
+    //fetch(API + "/usuario?usuario=" + usuario)
+        fetch(API + "/despesas/usuario?usuario=" + usuario)
         .then(response => response.json())
         .then(data => {
 
