@@ -297,11 +297,7 @@ th, td {
     carregarComparativoMensal();
     carregarTotal();
     //carregarmesAtual();
-    };
-
-    function getUsuario() {
-    return localStorage.getItem("usuario");
-        }
+    };    
     
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
@@ -389,6 +385,13 @@ th, td {
         .catch(err => console.error("Erro status:", err));
 }
 
+      // 🔥 FUNÇÃO PARA CARREGAR USUARIO
+    function getUsuario() {
+    return localStorage.getItem("usuario");
+        }
+      
+
+    // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
 
     const usuario = getUsuario();
@@ -542,7 +545,8 @@ th, td {
     });
 }
 
-function formatar(valor) {
+      // 🔥 FUNÇÃO PARA FORMATAR OS VALORES
+    function formatar(valor) {
     return (Number(valor) || 0).toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
