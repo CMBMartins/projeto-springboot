@@ -287,7 +287,7 @@ th, td {
     function getUsuario() {
     return localStorage.getItem("usuario");
         }
-      
+
 
     // 🚀 CARREGAMENTO INICIAL
     window.onload = function () {
@@ -681,6 +681,31 @@ function listarTodos() {
         .catch(error => console.error("Erro:", error));
 }
 
+      // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO
+    window.onload = () => {
+
+    if (!verificarLogin()) return; // 🔒 trava aqui
+
+    carregarTotal();
+    carregarRenda();
+    carregarComparativoMensal();
+    gerarGraficoStatus();
+    listarTodos();
+    };
+      
+
+      // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
+     function verificarLogin() {
+    const usuario = localStorage.getItem("usuario");
+
+    if (!usuario) {
+        // ❌ Não está logado → volta pro login
+        window.location.href = "login.html";
+        return false;
+    }
+
+    return true;
+    }
 
     // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
@@ -750,14 +775,15 @@ function listarTodos() {
         }
 
         // FUNÇÃO EFETUAR O LOGOUT
-        function logout() {
+        //function logout() {
+            //localStorage.removeItem("usuariologado");
+            //document.getElementById("usuariologado").value = "";
+        //}
 
-            localStorage.removeItem("usuariologado");
-
-            document.getElementById("usuariologado").value = "";
-
-            //bloquearFuncoes();
-        }
+      function logout() {
+          localStorage.removeItem("usuario");
+          window.location.href = "login.html";
+          }
 
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
