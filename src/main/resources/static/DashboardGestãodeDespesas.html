@@ -311,92 +311,78 @@ th, td {
 };
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {   
+        function carregarDashboard() {
 
-            // CARD TOTAL DESPESAS
-           fetch(API + "/total?usuario=" + getUsuario())
-           //fetch(API + "/total")
-             .then(res => res.json())
-             .then(total => {
+    const usuario = getUsuario();
 
-            const valor = Number(total) || 0;
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        return;
+    }
 
-            document.getElementById("total").innerText =
-            valor.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-            });
+    function formatar(valor) {
+        return (Number(valor) || 0).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+    }
 
+    function fetchSeguro(url) {
+        return fetch(url).then(async res => {
+            if (!res.ok) {
+                const erro = await res.text();
+                console.error("Erro API:", erro);
+                throw new Error("Erro na API");
+            }
+            return res.json();
+        });
+    }
 
-           // CARD TOTAL DE RECEBIDOS - RENDA
-           fetch(API + "/renda?usuario=" + getUsuario())
-           //fetch(API + "/renda")
-             .then(res => res.json())
-             .then(total => {
-
-            const valor = Number(total) || 0;
-
-            document.getElementById("renda").innerText =
-            valor.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-    });
-
-    
-    // CARD DESPESAS DO MÊS ATUAL
-    fetch(API + "/mes?usuario=" + getUsuario())
-    //fetch(API + "/mes")
-    .then(res => res.json())
-    .then(total => {
-
-        const valor = Number(total) || 0;
-
-        document.getElementById("mesAtual").innerText =
-            valor.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-
-    })
-    .catch(err => console.error("Erro mês:", err));
-
-
-    // CARD SALDO TOTAL    
-    fetch(API + "/saldo?usuario=" + getUsuario())
-    //fetch(API + "/saldo")
-   .then(res => res.json())
-             .then(total => {
-
-            const valor = Number(total) || 0;
-
-            document.getElementById("saldo").innerText =
-            valor.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-
+    // 🔥 TOTAL
+    fetchSeguro(API + "/total?usuario=" + usuario)
+        .then(total => {
+            const el = document.getElementById("total");
+            if (el) el.innerText = formatar(total);
         });
 
+    // 🔥 RENDA
+    fetchSeguro(API + "/renda?usuario=" + usuario)
+        .then(total => {
+            const el = document.getElementById("renda");
+            if (el) el.innerText = formatar(total);
+        });
 
-    // CARD STATUS - PAGAS E RECEBIDOS
-    fetch(API + "/status?usuario=" + getUsuario()) 
-    //fetch(API + "/status")
-    .then(res => res.json())
-    .then(data => {
+    // 🔥 MÊS
+    fetchSeguro(API + "/mes?usuario=" + usuario)
+        .then(total => {
+            const el = document.getElementById("mesAtual");
+            if (el) el.innerText = formatar(total);
+        })
+        .catch(err => console.error("Erro mês:", err));
 
-        const pagas = data?.PAGA ?? 0;
-        const pendentes = data?.PENDENTE ?? 0;
+    // 🔥 SALDO
+    fetchSeguro(API + "/saldo?usuario=" + usuario)
+        .then(total => {
+            const el = document.getElementById("saldo");
+            if (el) el.innerText = formatar(total);
+        });
 
-        document.getElementById("pagas").innerText = pagas;
-        document.getElementById("pendentes").innerText = pendentes;
-    })
-    .catch(err => console.error("Erro status:", err));
-    }
-    
-    
-    //FUNÇÃO PARA GERAR GRÁFICO POR CATEGORIA
+    // 🔥 STATUS
+    fetchSeguro(API + "/status?usuario=" + usuario)
+        .then(data => {
+
+            const pagas = Number(data?.PAGA ?? data?.paga ?? 0);
+            const pendentes = Number(data?.PENDENTE ?? data?.pendente ?? 0);
+
+            const elPagas = document.getElementById("pagas");
+            const elPend = document.getElementById("pendentes");
+
+            if (elPagas) elPagas.innerText = pagas;
+            if (elPend) elPend.innerText = pendentes;
+        })
+        .catch(err => console.error("Erro status:", err));
+}
+
     function carregarGraficoCategoria() {
 
     const usuario = getUsuario();
@@ -407,20 +393,33 @@ th, td {
     }
 
     fetch(API + "/categoria?usuario=" + usuario)
-        .then(res => {
-            if (!res.ok) throw new Error("Erro categoria: " + res.status);
+        .then(async res => {
+
+            if (!res.ok) {
+                const erro = await res.text();
+                console.error("Erro categoria:", erro);
+                throw new Error("Erro ao carregar categorias");
+            }
+
             return res.json();
         })
         .then(data => {
 
+            console.log("CATEGORIA:", data); // 🔥 debug
+
             const canvas = document.getElementById("graficoCategoria");
 
             if (!canvas) {
-                console.error("Canvas graficoCategoria não encontrado!");
+                console.error("Canvas não encontrado!");
                 return;
             }
 
-            // 🔥 destruir gráfico anterior (IMPORTANTE)
+            if (!data || Object.keys(data).length === 0) {
+                console.warn("Sem dados para gráfico");
+                return;
+            }
+
+            // 🔥 destruir gráfico anterior
             if (window.graficoCategoria instanceof Chart) {
                 window.graficoCategoria.destroy();
             }
@@ -436,9 +435,9 @@ th, td {
             });
 
         })
-        .catch(err => console.error(err));
-        }
-        
+        .catch(err => console.error("Erro gráfico:", err));
+}
+    
 
     // FUNÇÃO PARA GERAR GRÁFICO DE DESPESAS MENSAIS
     function carregarGraficoMensal() {
@@ -451,39 +450,64 @@ th, td {
     }
 
     fetch(API + "/mensal?usuario=" + usuario)
-    //fetch(API + "/mensal")
-        .then(res => res.json())
+
+        .then(async res => {
+            if (!res.ok) {
+                const erro = await res.text();
+                console.error("Erro API:", erro);
+                throw new Error("Erro mensal");
+            }
+            return res.json();
+        })
+
         .then(data => {
+
+            console.log("MENSAL:", data); // 🔥 debug
+
+            if (!data || Object.keys(data).length === 0) {
+                console.warn("Sem dados mensais");
+                return;
+            }
 
             const mesesNomes = [
                 "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
                 "Jul", "Ago", "Set", "Out", "Nov", "Dez"
             ];
 
-            // ordenar meses corretamente
+            // ordenar meses
             const meses = Object.keys(data)
                 .map(m => parseInt(m))
                 .sort((a, b) => a - b);
 
             const labels = meses.map(m => mesesNomes[m - 1]);
-            const valores = meses.map(m => data[m]);
+            const valores = meses.map(m => Number(data[m]) || 0);
 
-            // 🔥 ATUALIZA CARD "ESTE MÊS"
+            // 🔥 ATUALIZA CARD (SEPARADO)
             const mesAtual = new Date().getMonth() + 1;
-            const valorMes = data[mesAtual] || 0;
+            const valorMes = Number(data[mesAtual]) || 0;
 
-            document.getElementById("graficoMes").innerText =
-                "R$ " + valorMes.toFixed(2);
+            const elValorMes = document.getElementById("valorMes");
+            if (elValorMes) {
+                elValorMes.innerText = valorMes.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+            }
 
             // 🔥 GRÁFICO
-            const ctx = document.getElementById("graficoMes");
+            const canvas = document.getElementById("graficoMes");
 
-            if (window.graficoMes && typeof window.graficoMes.destroy === "function") {
-             window.graficoMes.destroy();
-             }
+            if (!canvas) {
+                console.error("Canvas não encontrado!");
+                return;
+            }
 
-            window.graficoMes = new Chart(ctx, {
-                type: "pie",
+            if (window.graficoMes instanceof Chart) {
+                window.graficoMes.destroy();
+            }
+
+            window.graficoMes = new Chart(canvas, {
+                type: "bar", // 🔥 MELHOR que pie para mensal
                 data: {
                     labels: labels,
                     datasets: [{
@@ -494,6 +518,7 @@ th, td {
             });
 
         })
+
         .catch(err => console.error("Erro mensal:", err));
 }
 
