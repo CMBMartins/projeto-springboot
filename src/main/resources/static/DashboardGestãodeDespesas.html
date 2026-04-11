@@ -286,15 +286,16 @@ th, td {
     const API = "https://projeto-springboot.onrender.com";
 
     function getUsuario() {
-        
-        const usuario = document.getElementById("usuariologado")?.value;
-        // 🔥 BLOQUEIO TOTAL
-            if (!usuario) {
-                alert("⚠️ Faça login primeiro!");
-                throw new Error("Usuário não logado");
-            }
-            return usuario;
-        }
+
+    const campo = document.getElementById("usuario");
+
+    if (!campo) {
+        console.warn("Campo usuário não encontrado");
+        return localStorage.getItem("usuario"); // 🔥 usa o salvo
+    }
+
+    return campo.value || localStorage.getItem("usuario");
+}    
 
         const id = document.getElementById("id").value;  
 
