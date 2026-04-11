@@ -699,7 +699,7 @@ function listarTodos() {
     const usuario = localStorage.getItem("usuario");
     if (!usuario) {
          ❌ Não está logado → volta pro login
-        window.location.href = "login.html";
+        window.location.href = "usuario.html";
         return false;
     }
     return true;
@@ -707,7 +707,6 @@ function listarTodos() {
 
     // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
-
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
 
@@ -721,41 +720,30 @@ function listarTodos() {
                 alert("⚠️ Informe o usuário!");
                 return;
             }
-
             if (senha === "") {
                 alert("⚠️ Informe a senha!");
                 return;
             }
-
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
-
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
                     usuario,
                     senha
                 })
-
             })
-
                 .then(response => {
 
                     if (!response.ok) {
                         throw new Error("Login inválido");
                     }
-
                     return response.json();
-
                 })
-
                 .then(data => {
 
                     // Mostra o usuário no campo Default
-
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
                     carregarDashboard();
@@ -767,14 +755,11 @@ function listarTodos() {
                     carregarTotal();
                     limparLogin();
                 })
-
                 .catch(error => {
-
                     alert("Usuário ou senha incorretos");
-
                 });
-
         }
+      
 
         // FUNÇÃO EFETUAR O LOGOUT
         //function logout() {
