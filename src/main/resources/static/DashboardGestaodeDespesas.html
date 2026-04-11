@@ -180,7 +180,7 @@ th, td {
         
             <!-- LOGO -->
             <div class="usuario">                
-            <h3>Usuário
+            <h3>Login
            <input type="text" id="usuario" placeholder="Usuario">            
            <input type="password" id="senha" placeholder="Senha"> </h3><br>
 
@@ -697,8 +697,8 @@ function listarTodos() {
      function verificarLogin() {
     const usuario = localStorage.getItem("usuario");
     if (!usuario) {
-         ❌ Não está logado → volta pro login
-        window.location.href = "usuario.html";
+        //Não está logado → volta pro login
+        window.location.href = "GestãodeUsuarios.html";
         return false;
     }
     return true;
