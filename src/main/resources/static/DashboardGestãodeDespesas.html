@@ -280,8 +280,16 @@ th, td {
 
 </div>
 
-  
-<script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        carregarDashboard();
+        carregarGraficoCategoria();
+        carregarGraficoMensal();
+        listarTodos();
+            });
+        </script>
+
+  <script>
 
     const API = "https://projeto-springboot.onrender.com";
 
