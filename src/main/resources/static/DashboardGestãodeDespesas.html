@@ -389,15 +389,26 @@
     // STATUS
     .then(data => {
 
-    const pagas = Number(data.PAGA ?? data.paga ?? 0);
-    const pendentes = Number(data.PENDENTE ?? data.pendente ?? 0);
+    console.log("STATUS RECEBIDO:", data); // 🔥 debug
+
+    if (!data) {
+        console.warn("Status vazio");
+        return;
+    }
+
+    const pagas = Number(data.PAGA ?? data.Paga ?? data.paga ?? 0);
+    const pendentes = Number(data.PENDENTE ?? data.Pendente ?? data.pendente ?? 0);
 
     const elPagas = document.getElementById("pagas");
     const elPend = document.getElementById("pendentes");
 
     if (elPagas) elPagas.innerText = pagas;
     if (elPend) elPend.innerText = pendentes;
-    })
+
+})
+.catch(err => {
+    console.error("Erro status:", err);
+});
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
@@ -414,8 +425,8 @@
                 return;
             }
 
-            //fetch(API + "/categoria?usuario=" + usuario)
-                fetch(API + "/despesas/categoria?usuario=" + usuario)
+            fetch(API + "/categoria?usuario=" + usuario)
+                //fetch(API + "/despesas/categoria?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) throw new Error("Erro categoria: " + res.status);
                     return res.json();
@@ -459,9 +470,8 @@
                 return;
             }
 
-            //fetch(API + "/mensal?usuario=" + usuario)
-                fetch(API + "/despesas/mensal?usuario=" + usuario)
-                //fetch(API + "/mensal")
+                  fetch(API + "/mensal?usuario=" + usuario)
+                //fetch(API + "/despesas/mensal?usuario=" + usuario)               
                 .then(res => res.json())
                 .then(data => {
 
@@ -518,8 +528,8 @@
                 return;
             }
 
-            //fetch(API + "/total?usuario=" + usuario)
-                fetch(API + "/despesas/total?usuario=" + usuario)
+                 fetch(API + "/total?usuario=" + usuario)
+                //fetch(API + "/despesas/total?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -557,8 +567,8 @@
                 return;
             }
 
-            //fetch(API + "/renda?usuario=" + usuario)
-                fetch(API + "/despesas/renda?usuario=" + usuario)
+                  fetch(API + "/renda?usuario=" + usuario)
+                //fetch(API + "/despesas/renda?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -597,8 +607,8 @@
                 return;
             }
 
-            //fetch(API + "/comparativo-mensal?usuario=" + usuario)
-                fetch(API + "/despesas/comparativo-mensal?usuario=" + usuario)
+                  fetch(API + "/comparativo-mensal?usuario=" + usuario)
+                //fetch(API + "/despesas/comparativo-mensal?usuario=" + usuario)
                 .then(res => {
                     if (!res.ok) {
                         throw new Error("Erro na API: " + res.status);
@@ -659,8 +669,8 @@
                 return;
             }
 
-              //fetch(API + "/status?usuario=" + usuario)
-                fetch(API + "/despesas/status?usuario=" + usuario)
+                  fetch(API + "/status?usuario=" + usuario)
+                //fetch(API + "/despesas/status?usuario=" + usuario)
                 //fetch(API + "/status")
                 .then(res => res.json())
                 .then(data => {
@@ -695,13 +705,20 @@
         return;
     }
 
-    fetch(API + "/despesas?usuario=" + usuario) // 🔥 CORRIGIDO
+    fetch(API + "/despesas?usuario=" + usuario)
 
-        .then(response => response.json())
+        .then(async response => {
+            if (!response.ok) {
+                const erro = await response.text();
+                console.error("Erro API:", erro);
+                throw new Error("Erro ao buscar despesas");
+            }
+            return response.json();
+        })
 
         .then(data => {
 
-            console.log("RETORNO:", data); // 👈 DEBUG
+            console.log("RETORNO:", data);
 
             const tabela = document.getElementById("ultimasDespesas");
 
@@ -710,16 +727,29 @@
                 return;
             }
 
+            if (!Array.isArray(data)) {
+                console.warn("Resposta não é lista!");
+                return;
+            }
+
             tabela.innerHTML = "";
+
+            let linhas = "";
 
             data.forEach(d => {
 
-                tabela.innerHTML += `
+                const valor = Number(d.valor) || 0;
+
+                const dataFormatada = d.data
+                    ? new Date(d.data).toLocaleDateString("pt-BR")
+                    : "";
+
+                linhas += `
                 <tr>
-                    <td>${d.data || ""}</td>
-                    <td>${d.descricao || ""}</td>
-                    <td>R$ ${Number(d.valor ?? 0).toFixed(2)}</td>
-                    <td>${d.status || ""}</td>
+                    <td>${dataFormatada}</td>
+                    <td>${d.descricao ?? ""}</td>
+                    <td>R$ ${valor.toFixed(2)}</td>
+                    <td>${d.status ?? ""}</td>
                     <td>
                         <button onclick="deletar(${d.id})">Excluir</button>
                     </td>
@@ -727,85 +757,76 @@
                 `;
             });
 
+            tabela.innerHTML = linhas;
+
         })
 
-        .catch(error => console.error("Erro:", error));
+        .catch(error => {
+            console.error("Erro:", error);
+        });
 }
 
-        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-        function login() {
+    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+    function login() {
 
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
+    const usuario = document.getElementById("usuario").value.trim();
+    const senha = document.getElementById("senha").value.trim();
 
-            // salva no localStorage
-            localStorage.setItem("usuario", usuario);
+    // 🔒 Validação
+    if (!usuario || !senha) {
+        alert("⚠️ Informe usuário e senha!");
+        return;
+    }
 
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
-                alert("⚠️ Informe usuario e senha para realizar Login!");
-                return;
-            }
+    fetch("https://projeto-springboot.onrender.com/usuario/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ usuario, senha })
+    })
 
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
+    .then(async response => {
 
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
-                return;
-            }
-
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    usuario,
-                    senha
-                })
-
-            })
-
-                .then(response => {
-
-                    if (!response.ok) {
-                        throw new Error("Login inválido");
-                    }
-
-                    return response.json();
-
-                })
-
-                .then(data => {
-
-                    // Mostra o usuário no campo Default                    
-                    document.getElementById("usuariologado").value = usuario;
-
-                    //document.getElementById("usuariologado").value = data.usuario;
-                    alert("Login realizado com sucesso!");
-                    carregarDashboard();
-                    limparLogin();
-                    carregarComparativoMensal()
-                    carregarGraficoCategoria()
-                    carregarGraficoMensal();
-                    listarTodos();
-
-                })
-
-
-                .catch(error => {
-
-                    alert("Usuário ou senha incorretos");
-
-                });
-
+        if (!response.ok) {
+            const erro = await response.text();
+            console.error("Erro login:", erro);
+            throw new Error("Login inválido");
         }
+
+        return response.json();
+    })
+
+    .then(data => {
+
+        console.log("LOGIN:", data); // 🔥 debug
+
+        // ✅ Agora sim salva (login válido)
+        localStorage.setItem("usuario", usuario);
+
+        const campoUsuario = document.getElementById("usuariologado");
+        if (campoUsuario) {
+            campoUsuario.value = usuario;
+        }
+
+        alert("Login realizado com sucesso!");
+
+        // 🚀 Carrega tudo
+        carregarDashboard();
+        carregarComparativoMensal();
+        carregarGraficoCategoria();
+        carregarGraficoMensal();
+        listarTodos();
+
+        limparLogin();
+
+    })
+
+    .catch(error => {
+        console.error(error);
+        alert("Usuário ou senha incorretos");
+    });
+}
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
