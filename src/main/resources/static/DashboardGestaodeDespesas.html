@@ -382,8 +382,13 @@ th, td {
         })
         .catch(err => console.error("Erro status:", err));
 }
+    
+      // 🔥 FUNÇÃO PARA CARREGAR USUARIO
+    function getUsuario() {
+    return localStorage.getItem("usuario");
+    } 
 
-      // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
+       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
@@ -420,28 +425,21 @@ th, td {
                     return response.json();
                 })
                 .then(data => {
-
-                    // Mostra o usuário no campo Default
-                    document.getElementById("usuariologado").value = data.usuario;
-                    alert("Login realizado com sucesso!");
-                    carregarDashboard();
-                    listarTodos();
-                    carregarGraficoCategoria();    
-                    carregarGraficoMensal();
-                    gerarGraficoStatus();
-                    carregarComparativoMensal();
-                    carregarTotal();
-                    limparLogin();
-                })
-                .catch(error => {
-                    alert("Usuário ou senha incorretos");
-                });
+              // 🔥 salva login
+             ocalStorage.setItem("usuario", data.usuario);
+            // Mostra no campo
+            document.getElementById("usuariologado").value = data.usuario;
+                    
+            alert("Login realizado com sucesso!");
+            carregarDashboard();
+            istarTodos();
+            carregarGraficoCategoria();    
+            carregarGraficoMensal();
+            gerarGraficoStatus();
+            arregarComparativoMensal();
+            carregarTotal();
+            limparLogin();
         }
-    
-      // 🔥 FUNÇÃO PARA CARREGAR USUARIO
-    function getUsuario() {
-    return localStorage.getItem("usuario");
-    }    
       
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
