@@ -384,14 +384,14 @@ th, td {
         .catch(err => console.error("Erro status:", err));
 }
       //FUNÇÃO PARA INICIAR USUARIO
-    function getUsuario() {
-    return document.getElementById("usuariologado").value;
-    }    
+    //function getUsuario() {
+   // return document.getElementById("usuariologado").value;
+    //}    
 
       // 🔥 FUNÇÃO PARA CARREGAR USUARIO
-    //function getUsuario() {
-    //return localStorage.getItem("usuario");
-        //}    
+    function getUsuario() {
+    return localStorage.getItem("usuario");
+    }    
       
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
