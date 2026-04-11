@@ -12,14 +12,14 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
 
-    @PostMapping
-    public Usuario salvar(@RequestBody Usuario usuario) {
-        return repository.save(usuario);
-    }
-
     @GetMapping
     public List<Usuario> listar() {
         return repository.findAll();
+    }
+
+    @PostMapping
+    public Usuario salvar(@RequestBody Usuario usuario) {
+        return repository.save(usuario);
     }
 
     @DeleteMapping("/{id}")
@@ -27,16 +27,29 @@ public class UsuarioController {
         repository.deleteById(id);
     }
 
+    @GetMapping("/{id}")
+    public Usuario buscarPorId(@PathVariable Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @PostMapping("/login")
+    public Usuario login(@RequestBody Usuario usuario){
+
+    return repository
+        .findByUsuarioAndSenha(usuario.getUsuario(), usuario.getSenha())
+        .orElse(null);
+
+}
+
+    // BUSCAR POR Integrante
+    @GetMapping("/buscar")
+    public List<Usuario> buscarPorNome(@RequestParam String usuario) {
+        return repository.findByUsuarioContainingIgnoreCase(usuario);
+    }
+
     @PutMapping("/{id}")
-    public Usuario editar(@PathVariable Integer id, @RequestBody Usuario novo) {
-
-        Usuario existente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        existente.setUsuario(novo.getUsuario());
-        existente.setSenha(novo.getSenha());
-        existente.setPerfil(novo.getPerfil());
-
-        return repository.save(existente);
+    public Usuario editar(@PathVariable Integer id, @RequestBody Usuario usuario) {
+        usuario.setId(id);
+        return repository.save(usuario);
     }
 }
