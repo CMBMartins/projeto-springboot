@@ -51,10 +51,13 @@ public class DespesaController {
                                 .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
 
-        // 💰 RENDA
+        // 💰 RENDA   
     @GetMapping("/renda")
     public Double renda(@RequestParam String usuario) {
-        return repository.sumByUsuarioETipo(usuario, "RENDA");
+
+    Double total = repository.somarRenda(usuario);
+
+    return total != null ? total : 0.0;
     }
    
         @GetMapping
@@ -73,17 +76,13 @@ public class DespesaController {
                 return repository.findTop5ByOrderByDataDesc();
         }
 
-        @GetMapping("/total")
-        public Double totalSaidas(@RequestParam String usuario) {
-                return repository.findByUsuario(usuario)
-                                // return repository.findAll()
-                                .stream()
-                                .filter(d -> d.getStatus() != null &&
-                                                d.getStatus().equalsIgnoreCase("PAGA") ||
-                                                (d.getStatus().equalsIgnoreCase("PENDENTE")))
-                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-                                .sum();
-        }
+    @GetMapping("/total")
+    public Double total(@RequestParam String usuario) {
+
+    Double total = repository.somarTotal(usuario);
+
+    return total != null ? total : 0.0;
+}
 
         // TOTAL DE RENDAS
         @GetMapping("/renda-total")
@@ -97,27 +96,13 @@ public class DespesaController {
                                 .sum();
         }
 
-        // SALDO TOTAL
-        @GetMapping("/saldo")
-        public Double calcularSaldo(@RequestParam String usuario) {
-                double despesas = repository.findByUsuario(usuario)
-                                // double despesas = repository.findAll()
-                                .stream()
-                                .filter(d -> d.getStatus() != null &&
-                                                (d.getStatus().equalsIgnoreCase("PAGA") ||
-                                                                d.getStatus().equalsIgnoreCase("PENDENTE")))
-                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-                                .sum();
+    @GetMapping("/saldo")
+    public Double saldo(@RequestParam String usuario) {
 
-                double receitas = repository.findByUsuario(usuario)
-                                .stream()
-                                .filter(d -> d.getStatus() != null &&
-                                                d.getStatus().equalsIgnoreCase("RECEBIDO"))
-                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-                                .sum();
+    Double total = repository.calcularSaldo(usuario);
 
-                return receitas - despesas;
-        }
+    return total != null ? total : 0.0;
+    }
 
         // GRAFICO POR CATEGORIA
         @GetMapping("/categoria")
@@ -172,29 +157,14 @@ public class DespesaController {
                                                 })));
         }
 
-        // VALOR DE DESPESAS POR MÊS
-        @GetMapping("/mes")
-        public Double totalPagoNoMes(@RequestParam String usuario) {
+    // VALOR DE DESPESAS POR MÊS
+    @GetMapping("/mes")
+    public Double mes(@RequestParam String usuario) {
 
-                LocalDate hoje = LocalDate.now();
+    Double total = repository.somarMes(usuario);
 
-                return repository.findByUsuario(usuario)
-                                .stream()
-
-                                // 📅 FILTRO DE DATA (mês atual)
-                                .filter(d -> d.getData() != null &&
-                                                d.getData().getMonthValue() == hoje.getMonthValue() &&
-                                                d.getData().getYear() == hoje.getYear())
-
-                                // 💰 FILTRO POR STATUS                                               
-                                .filter(d -> d.getStatus() != null &&
-                                (d.getStatus().equalsIgnoreCase("PAGA") ||
-                                d.getStatus().equalsIgnoreCase("PENDENTE")))
-
-                                // 💸 SOMA
-                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-                                .sum();
-        }
+    return total != null ? total : 0.0;
+}
 
         // COMPARATIVO DE DESPESAS MENSAIS
         @GetMapping("/comparativo-mensal")
