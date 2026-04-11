@@ -121,7 +121,7 @@
 
             <input type="text" id="usuario" placeholder="Usuario">
 
-            <input type="text" id="senha" placeholder="Senha">
+            <input type="password" id="senha" placeholder="Senha">
 
             <input type="text" id="perfil" placeholder="Perfil">
 
@@ -137,7 +137,7 @@
                 <i class="fa fa-eraser"></i> Limpar
             </button>
 
-            <button class="btn btn-primary" onclick="usuario()">
+            <button class="btn btn-primary" onclick="buscarUsuario()">
                 <i class="fa fa-search"></i> Buscar Usuario
             </button>
 
@@ -180,7 +180,7 @@
         <script>
 
             //const api = "http://localhost:8084/usuario";
-            const API = "https://projeto-springboot.onrender.com";
+            const API = "https://projeto-springboot.onrender.com/usuarios";
 
             //Função carregar
             function carregar() {
@@ -190,7 +190,7 @@
             //Função para Listar Toda a tabela
             function listarTodos() {
 
-                fetch(api)
+                fetch(API)
                     .then(response => response.json())
                     .then(data => {
 
@@ -231,52 +231,32 @@ Excluir
 
     //Função para Salvar
     function salvar() {
+
     if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
     const usuario = document.getElementById("usuario").value.trim();
     const senha = document.getElementById("senha").value.trim();
     const perfil = document.getElementById("perfil").value.trim();
 
-    // 🔒 Validação simples e eficiente
     if (!usuario || !senha || !perfil) {
         alert("⚠️ Preencha todos os campos!");
         return;
     }
 
-    fetch(API + "/usuario", { // 🔥 corrigido
+    fetch(API, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            usuario,
-            senha,
-            perfil
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, senha, perfil })
     })
-
-    .then(async response => {
-
-        if (!response.ok) {
-            const erro = await response.text();
-            console.error("Erro API:", erro);
-            throw new Error("Erro ao salvar usuário");
-        }
-
-        return response.json();
+    .then(res => {
+        if (!res.ok) throw new Error("Erro ao salvar");
+        return res.json();
     })
-
-    .then(data => {
-
-        console.log("SALVO:", data); // 🔥 debug
-
+    .then(() => {
         alert("Usuário salvo com sucesso!");
-
         limparCampos();
         listarTodos();
-
     })
-
     .catch(err => {
         console.error(err);
         alert("Erro ao salvar usuário!");
@@ -284,48 +264,41 @@ Excluir
 }
 
     //Função para Editar Usuário
-    function editar() {
-
-    const id = document.getElementById("id").value;
+    function editar(id) {
 
     if (!id) {
-        alert("Selecione um registro para editar.");
+        alert("ID inválido!");
         return;
     }
 
-    if (!confirm("Deseja realmente atualizar este registro?")) return;
+    if (!confirm("Deseja atualizar este registro?")) return;
 
     const dados = {
-        id: id,
+        id,
         usuario: document.getElementById("usuario").value,
         senha: document.getElementById("senha").value,
         perfil: document.getElementById("perfil").value
     };
 
-    fetch(`${api}/${id}`, {
+    fetch(`${API}/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dados)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Erro ao atualizar");
-        }
-        return response.json();
+    .then(res => {
+        if (!res.ok) throw new Error("Erro ao atualizar");
+        return res.json();
     })
     .then(() => {
-        alert("Dados atualizados com sucesso!");
+        alert("Atualizado com sucesso!");
         limparCampos();
         listarTodos();
     })
-    .catch(error => {
-        console.error("Erro:", error);
-        alert("Erro ao atualizar o registro.");
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao atualizar!");
     });
 }
-
             
     //Função para Deletar Usuário
     function deletar(id) {
@@ -335,21 +308,20 @@ Excluir
         return;
     }
 
-    if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+    if (!confirm("Deseja excluir?")) return;
 
-    fetch(`${api}/${id}`, {
+    fetch(`${API}/${id}`, {
         method: "DELETE"
     })
     .then(() => {
-        alert("Registro excluído com sucesso!");
+        alert("Excluído com sucesso!");
         listarTodos();
     })
-    .catch(error => {
-        console.error("Erro ao excluir:", error);
-        alert("Erro ao excluir o registro.");
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao excluir!");
     });
 }
-
     //Função para Limpar os campos
    function limparCampos() {
     document.getElementById("id").value = "";
@@ -359,46 +331,30 @@ Excluir
 
 }
 
-            //Função para pesquisar por Usuário
-            function usuario() {
+    //Função para pesquisar por Usuário
+    function buscarUsuario() {
 
     const usuario = document.getElementById("usuario").value;
 
     if (!usuario) {
-        alert("⚠️ Informe o nome do usuário a ser consultado!");
+        alert("Informe o usuário!");
         return;
     }
 
-    fetch(API + "/usuarios?usuario=" + encodeURIComponent(usuario))
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erro na requisição");
-            }
-            return response.json();
-        })
-        .then(data => {
+    fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))
+    .then(res => res.json())
+    .then(data => {
 
-            const tabela = document.getElementById("tabelaUsuario");
+        const tabela = document.getElementById("tabelaUsuario");
+        tabela.innerHTML = "";
 
-            if (!tabela) {
-                console.error("Tabela não encontrada!");
-                return;
-            }
+        if (!data.length) {
+            tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
+            return;
+        }
 
-            tabela.innerHTML = "";
-
-            if (!data || data.length === 0) {
-                tabela.innerHTML = `
-                    <tr>
-                        <td colspan="4">Nenhum resultado encontrado</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            data.forEach(show => {
-
-                tabela.innerHTML += `
+        data.forEach(show => {
+            tabela.innerHTML += `
                 <tr>
                     <td>${show.id}</td>
                     <td>${show.usuario}</td>
@@ -408,14 +364,11 @@ Excluir
                         <button onclick="deletar(${show.id})">Excluir</button>
                     </td>
                 </tr>
-                `;
-            });
-
-        })
-        .catch(error => {
-            console.error("Erro:", error);
-            alert("Erro ao buscar usuários");
+            `;
         });
+
+    })
+    .catch(() => alert("Erro ao buscar usuários"));
 }
 
 </script>
