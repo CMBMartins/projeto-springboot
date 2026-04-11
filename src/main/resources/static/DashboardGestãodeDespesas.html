@@ -285,10 +285,10 @@ th, td {
     const API = "https://projeto-springboot.onrender.com";
 
     // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    window.onload = () => {
-    if (!verificarLogin()) return; // 🔒 trava aqui
+    //window.onload = () => {
+    //if (!verificarLogin()) return; // 🔒 trava aqui
       
-    //window.onload = function () {
+    window.onload = function () {
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -383,11 +383,15 @@ th, td {
         })
         .catch(err => console.error("Erro status:", err));
 }
+      //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+    return document.getElementById("usuariologado").value;
+    }    
 
       // 🔥 FUNÇÃO PARA CARREGAR USUARIO
-    function getUsuario() {
-    return localStorage.getItem("usuario");
-        }    
+    //function getUsuario() {
+    //return localStorage.getItem("usuario");
+        //}    
       
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
