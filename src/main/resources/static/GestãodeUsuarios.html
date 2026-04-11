@@ -179,7 +179,8 @@
 
         <script>
 
-            const api = "http://localhost:8084/usuario";
+            //const api = "http://localhost:8084/usuario";
+            const API = "https://projeto-springboot.onrender.com";
 
             //Função carregar
             function carregar() {
@@ -228,68 +229,59 @@ Excluir
 
             }
 
-            //Função para Salvar
-            function salvar() {
+    //Função para Salvar
+    function salvar() {
+    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-                if (confirm("Tem certeza que deseja salvar esses dados?")) {
-                    const usuario = document.getElementById("usuario").value;
-                    const senha = document.getElementById("senha").value;
-                    const perfil = document.getElementById("perfil").value;
+    const usuario = document.getElementById("usuario").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const perfil = document.getElementById("perfil").value.trim();
 
-                    // Validação de campos vazios
-                    if (usuario === "" && senha === "") {
-                        alert("⚠️ Informe o usuário, senha e perfil!");
-                        return;
-                    }
+    // 🔒 Validação simples e eficiente
+    if (!usuario || !senha || !perfil) {
+        alert("⚠️ Preencha todos os campos!");
+        return;
+    }
 
-                    if (usuario === "") {
-                        alert("⚠️ Informe o usuário!");
-                        return;
-                    }
+    fetch(API + "/usuarios", { // 🔥 corrigido
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            usuario,
+            senha,
+            perfil
+        })
+    })
 
-                    if (senha === "") {
-                        alert("⚠️ Informe a senha!");
-                        return;
-                    }
+    .then(async response => {
 
-                    if (perfil === "") {
-                        alert("⚠️ Informe o Perfil!");
-                        return;
-                    }
+        if (!response.ok) {
+            const erro = await response.text();
+            console.error("Erro API:", erro);
+            throw new Error("Erro ao salvar usuário");
+        }
 
-                    // Se passou na validação
-                    //alert("✅ Dados preenchidos! Validando login...");
+        return response.json();
+    })
 
-                    fetch(api, {
+    .then(data => {
 
-                        method: "POST",
+        console.log("SALVO:", data); // 🔥 debug
 
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
+        alert("Usuário salvo com sucesso!");
 
-                        body: JSON.stringify({
+        limparCampos();
+        listarTodos();
 
-                            usuario,
-                            senha,
-                            perfil,
+    })
 
-                        })
-
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-
-                            alert("Projeto salvo com sucesso!");
-
-                            limparCampos();
-                            listarTodos();
-
-                        });
-
-                }
-            }
-
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao salvar usuário!");
+    });
+}
 
             //Função para Editar Usuário
             function editar() {
