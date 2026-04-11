@@ -287,31 +287,19 @@ th, td {
     function getUsuario() {
     return localStorage.getItem("usuario");
         }
-
-
-    // 🚀 CARREGAMENTO INICIAL
-    window.onload = function () {
-    carregarDashboard();
-    listarTodos();
-    carregarGraficoCategoria();    
-    carregarGraficoMensal();
-    gerarGraficoStatus();
-    carregarComparativoMensal();
-    carregarTotal();
-    carregarmesAtual();
-};
+    
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
         function carregarDashboard() {
-
-    const usuario = getUsuario();
-
-    if (!usuario) {
+        
+        const usuario = getUsuario();
+            
+        if (!usuario) {
         console.warn("Usuário não definido!");
         return;
-    }
+        }
 
-    function formatar(valor) {
+       function formatar(valor) {
         return (Number(valor) || 0).toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL"
@@ -681,7 +669,7 @@ function listarTodos() {
         .catch(error => console.error("Erro:", error));
 }
 
-      // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO
+      // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
     window.onload = () => {
 
     if (!verificarLogin()) return; // 🔒 trava aqui
