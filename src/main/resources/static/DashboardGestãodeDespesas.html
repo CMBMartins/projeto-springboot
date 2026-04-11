@@ -187,7 +187,7 @@ th, td {
         <div class="login-botoes">
         <button onclick="fazerLogin()">Entrar</button>
         <button onclick="logout()">Sair</button>
-        <button onclick="abrirUsuarios()">Cadastrar</button>
+        <button onclick="abrirUsuarios()">Cadastrar Usuarios</button>
     </div>             
                 <input type="text" id="usuariologado" placeholder="Usuario" readonly>
             </div> 
@@ -382,11 +382,62 @@ th, td {
         })
         .catch(err => console.error("Erro status:", err));
 }
-      //FUNÇÃO PARA INICIAR USUARIO
-    //function getUsuario() {
-   // return document.getElementById("usuariologado").value;
-    //}    
 
+      // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
+        function fazerLogin() {
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Informe usuario e senha para realizar Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    usuario,
+                    senha
+                })
+            })
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Login inválido");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    // Mostra o usuário no campo Default
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    carregarDashboard();
+                    listarTodos();
+                    carregarGraficoCategoria();    
+                    carregarGraficoMensal();
+                    gerarGraficoStatus();
+                    carregarComparativoMensal();
+                    carregarTotal();
+                    limparLogin();
+                })
+                .catch(error => {
+                    alert("Usuário ou senha incorretos");
+                });
+        }
+    
       // 🔥 FUNÇÃO PARA CARREGAR USUARIO
     function getUsuario() {
     return localStorage.getItem("usuario");
@@ -706,75 +757,19 @@ function listarTodos() {
         return false;
     }
     return true;
-    }
-
-    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
-        function fazerLogin() {
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
-
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
-                alert("⚠️ Informe usuario e senha para realizar Login!");
-                return;
-            }
-
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
-                return;
-            }
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    usuario,
-                    senha
-                })
-            })
-                .then(response => {
-
-                    if (!response.ok) {
-                        throw new Error("Login inválido");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-
-                    // Mostra o usuário no campo Default
-                    document.getElementById("usuariologado").value = data.usuario;
-                    alert("Login realizado com sucesso!");
-                    carregarDashboard();
-                    listarTodos();
-                    carregarGraficoCategoria();    
-                    carregarGraficoMensal();
-                    gerarGraficoStatus();
-                    carregarComparativoMensal();
-                    carregarTotal();
-                    limparLogin();
-                })
-                .catch(error => {
-                    alert("Usuário ou senha incorretos");
-                });
-        }
+    }   
       
 
         // FUNÇÃO EFETUAR O LOGOUT
-        //function logout() {
-            //localStorage.removeItem("usuariologado");
-            //document.getElementById("usuariologado").value = "";
-        //}
+        function logout() {
+            localStorage.removeItem("usuariologado");
+            document.getElementById("usuariologado").value = "";
+        }
 
-      function logout() {
-          localStorage.removeItem("usuario");
-          window.location.href = "login.html";
-          }
-
+      //function logout() {
+          //localStorage.removeItem("usuario");
+          //window.location.href = "login.html";
+          //}
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
         function limparLogin() {
