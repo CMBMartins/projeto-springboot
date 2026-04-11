@@ -178,17 +178,21 @@ th, td {
     <!-- CONTEÚDO -->
     <main class="conteudo">        
             <!-- LOGO -->
-             <div class="usuario">
+            <div class="usuario">
+            <h3>Usuário</h3>
 
-            <h3>Login
-            <input type="text" id="usuario" placeholder="Usuario">            
-            <input type="password" id="senha" placeholder="Senha"></h3>
+           <input type="text" id="usuario" placeholder="Usuario">            
+           <input type="password" id="senha" placeholder="Senha">
 
-            <div class="login-botoes">
-                <button onclick="loin()">Entrar</button>
-                <button onclick="logout()">Sair</button>
-                <button onclick="cadastrar()">Cadastrar</button>
-            </div>
+        <div class="login-botoes">
+        <button onclick="fazerLogin()">Entrar</button>
+        <button onclick="logout()">Sair</button>
+        <button onclick="abrirUsuarios()">Cadastrar</button>
+    </div>
+
+    <input type="text" id="usuariologado" placeholder="Usuario logado" readonly>
+
+</div>
             
                 <input type="text" id="usuariologado" placeholder="Usuario" readonly>
             </div> 
@@ -709,8 +713,8 @@ function listarTodos() {
     return true;
     }
 
-    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-        function login() {
+    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
+        function fazerLogin() {
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
 
