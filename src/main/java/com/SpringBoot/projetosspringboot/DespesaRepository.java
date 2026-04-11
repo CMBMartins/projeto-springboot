@@ -30,25 +30,22 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
     Double somarTotal(@Param("usuario") String usuario);
 
     // 💰 SALDO
-    @Query("""
-    SELECT COALESCE(SUM(
-        CASE 
-            WHEN d.tipo = 'RECEITA' THEN d.valor 
-            ELSE -d.valor 
-        END
-    ), 0)
-    FROM Despesa d 
-    WHERE d.usuario = :usuario
-    """)
-    Double calcularSaldo(@Param("usuario") String usuario);
+@Query("""
+@Query("SELECT COALESCE(SUM(d.valor), 0) FROM Despesa d WHERE d.usuario = :usuario AND LOWER(d.tipo) = 'entrada'")
+Double somarRenda(@Param("usuario") String usuario);
 
-    // 📅 MÊS ATUAL
-    @Query("""
-    SELECT COALESCE(SUM(d.valor), 0)
-    FROM Despesa d
-    WHERE d.usuario = :usuario
-    AND EXTRACT(MONTH FROM d.data) = EXTRACT(MONTH FROM CURRENT_DATE)
-    AND EXTRACT(YEAR FROM d.data) = EXTRACT(YEAR FROM CURRENT_DATE)
-    """)
-    Double somarMes(@Param("usuario") String usuario);
+@Query("SELECT COALESCE(SUM(d.valor), 0) FROM Despesa d WHERE d.usuario = :usuario AND LOWER(d.tipo) = 'saida'")
+Double somarTotal(@Param("usuario") String usuario);
+
+@Query("""
+SELECT COALESCE(SUM(
+    CASE 
+        WHEN LOWER(d.tipo) = 'entrada' THEN d.valor 
+        ELSE -d.valor 
+    END
+), 0)
+FROM Despesa d 
+WHERE d.usuario = :usuario
+""")
+Double calcularSaldo(@Param("usuario") String usuario);
 }
