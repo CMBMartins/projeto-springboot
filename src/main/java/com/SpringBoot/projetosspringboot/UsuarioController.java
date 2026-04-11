@@ -6,21 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 @CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
     private UsuarioRepository repository;
 
-    @GetMapping
-    public List<Usuario> listar() {
-        return repository.findAll();
-    }
-
     @PostMapping
     public Usuario salvar(@RequestBody Usuario usuario) {
         return repository.save(usuario);
+    }
+
+    @GetMapping
+    public List<Usuario> listar() {
+        return repository.findAll();
     }
 
     @DeleteMapping("/{id}")
@@ -28,29 +28,16 @@ public class UsuarioController {
         repository.deleteById(id);
     }
 
-    @PostMapping("/login")
-    public Usuario login(@RequestBody Usuario usuario) {
-
-        return repository
-                .findByUsuarioAndSenha(usuario.getUsuario(), usuario.getSenha())
-                .orElse(null);
-
-    }
-
-    @GetMapping("/{id}")
-    public Usuario buscarPorId(@PathVariable Integer id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    // BUSCAR POR Integrante
-    @GetMapping("/buscar")
-    public List<Usuario> buscarPorUsuario(@RequestParam String usuario) {
-        return repository.findByUsuarioContainingIgnoreCase(usuario);
-    }
-
     @PutMapping("/{id}")
-    public Usuario editar(@PathVariable Integer id, @RequestBody Usuario usuario) {
-        usuario.setId(id);
-        return repository.save(usuario);
+    public Usuario editar(@PathVariable Integer id, @RequestBody Usuario novo) {
+
+        Usuario existente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        existente.setUsuario(novo.getUsuario());
+        existente.setSenha(novo.getSenha());
+        existente.setPerfil(novo.getPerfil());
+
+        return repository.save(existente);
     }
 }
