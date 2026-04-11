@@ -655,13 +655,10 @@ function gerarGraficoStatus() {
 
 // 📋 FUNÇÃO LISTAR TODAS DESPESAS
 function listarTodos() {
-
     const usuario = getUsuario();
     if (!usuario) return;
-
     fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
         .then(data => {
-
             const tabela = document.getElementById("ultimasDespesas");
             if (!tabela) return;
 
@@ -669,7 +666,6 @@ function listarTodos() {
                 tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
                 return;
             }
-
             let linhas = "";
 
             data.forEach(d => {
@@ -696,17 +692,15 @@ function listarTodos() {
       
 
       // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
-     function verificarLogin() {
-    const usuario = localStorage.getItem("usuario");
-
-    if (!usuario) {
+     //function verificarLogin() {
+    //const usuario = localStorage.getItem("usuario");
+    //if (!usuario) {
         // ❌ Não está logado → volta pro login
-        window.location.href = "login.html";
-        return false;
-    }
-
-    return true;
-    }
+        //window.location.href = "login.html";
+        //return false;
+    //}
+    //return true;
+    //}
 
     // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
