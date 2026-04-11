@@ -286,161 +286,139 @@ Excluir
             //Função para Editar Usuário
             function editar() {
 
-                if (confirm("Tem certeza que deseja editar esses dados?")) {
-                    const usuario = document.getElementById("usuario").value;
+    const id = document.getElementById("id").value;
 
-                    if (!usuario) {
-                        alert("Selecione um registro para editar.");
-                        return;
-                    }
+    if (!id) {
+        alert("Selecione um registro para editar.");
+        return;
+    }
 
-                    const dados = {
+    if (!confirm("Deseja realmente atualizar este registro?")) return;
 
-                        id: document.getElementById("id").value,
-                        usuario: document.getElementById("usuario").value,
-                        senha: document.getElementById("senha").value,
-                        perfil: document.getElementById("perfil").value,
+    const dados = {
+        id: id,
+        usuario: document.getElementById("usuario").value,
+        senha: document.getElementById("senha").value,
+        perfil: document.getElementById("perfil").value
+    };
 
-                    };
+    fetch(`${api}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erro ao atualizar");
+        }
+        return response.json();
+    })
+    .then(() => {
+        alert("Dados atualizados com sucesso!");
+        limparCampos();
+        listarTodos();
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+        alert("Erro ao atualizar o registro.");
+    });
+}
 
-                    if (confirm("Deseja realmente atualizar este registro?")) {
+            
+    //Função para Deletar Usuário
+    function deletar(id) {
 
-                        fetch(api + "/" + id, {
+    if (!id) {
+        alert("ID inválido!");
+        return;
+    }
 
-                            method: "PUT",
+    if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+    fetch(`${api}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        alert("Registro excluído com sucesso!");
+        listarTodos();
+    })
+    .catch(error => {
+        console.error("Erro ao excluir:", error);
+        alert("Erro ao excluir o registro.");
+    });
+}
 
-                            body: JSON.stringify(dados)
+    //Função para Limpar os campos
+   function limparCampos() {
+    document.getElementById("id").value = "";
+    document.getElementById("usuario").value = "";
+    document.getElementById("senha").value = "";
+    document.getElementById("perfil").value = "";
 
-                        })
-
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Erro ao atualizar");
-                                }
-                                return response.json();
-                            })
-
-                            .then(() => {
-
-                                alert("Dados atualizados com sucesso!");
-
-                                limparCampos();
-
-                                listarTodos();
-
-                            })
-
-                            .catch(error => {
-
-                                console.error("Erro:", error);
-
-                                alert("Erro ao atualizar o registro.");
-
-                            });
-
-                    }
-
-                }
-            }
-
-            //Função para Deletar Usuário
-            function deletar(id) {
-
-                if (confirm("Tem certeza que deseja excluir este registro?")) {
-
-                    fetch(`${api}/${id}`, {
-                        method: "DELETE"
-                    })
-                        .then(() => {
-                            alert("Registro excluído com sucesso!");
-                            listarTodos();
-                        })
-                        .catch(error => {
-                            console.error("Erro ao excluir:", error);
-                            alert("Erro ao excluir o registro.");
-                        });
-
-                }
-
-            }
-
-            //Função para limpar os campos do formulario
-            function limparCampos() {
-
-                document.getElementById("usuario").value = "";
-                document.getElementById("senha").value = "";
-                document.getElementById("perfil").value = "";
-
-            }
-
+}
 
             //Função para pesquisar por Usuário
             function usuario() {
 
-                const usuario = document.getElementById("usuario").value;
+    const usuario = document.getElementById("usuario").value;
 
-                if (usuario === "") {
-                    alert("⚠️ Informe o nome do usuario a ser consultado!");
-                    return;
-                }
+    if (!usuario) {
+        alert("⚠️ Informe o nome do usuário a ser consultado!");
+        return;
+    }
 
-                fetch("http://localhost:8084/usuario/buscar?usuario=" + encodeURIComponent(usuario))
+    fetch(API + "/usuarios?usuario=" + encodeURIComponent(usuario))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erro na requisição");
+            }
+            return response.json();
+        })
+        .then(data => {
 
-                    .then(response => response.json())
+            const tabela = document.getElementById("tabelaUsuario");
 
-                    .then(data => {
-
-                        const tabela = document.getElementById("tabelaUsuario");
-
-                        tabela.innerHTML = "";
-
-                        if (data.length === 0) {
-
-                            tabela.innerHTML = `
-<tr>
-<td colspan="7">Nenhum resultado encontrado</td>
-</tr>
-`;
-
-                            return;
-                        }
-
-                        data.forEach(show => {
-
-                            tabela.innerHTML += `
-<tr>
-<td>${show.id}</td>
-<td>${show.usuario}</td>
-<td>${show.perfil}</td>
-
-<td>
-
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
-
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-
-</tr>
-`;
-                            limparCampos();
-
-                        });
-
-                    });
-
+            if (!tabela) {
+                console.error("Tabela não encontrada!");
+                return;
             }
 
-        </script>
+            tabela.innerHTML = "";
+
+            if (!data || data.length === 0) {
+                tabela.innerHTML = `
+                    <tr>
+                        <td colspan="4">Nenhum resultado encontrado</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            data.forEach(show => {
+
+                tabela.innerHTML += `
+                <tr>
+                    <td>${show.id}</td>
+                    <td>${show.usuario}</td>
+                    <td>${show.perfil}</td>
+                    <td>
+                        <button onclick="editar(${show.id})">Editar</button>
+                        <button onclick="deletar(${show.id})">Excluir</button>
+                    </td>
+                </tr>
+                `;
+            });
+
+        })
+        .catch(error => {
+            console.error("Erro:", error);
+            alert("Erro ao buscar usuários");
+        });
+}
+
+</script>
 
 </body>
 
