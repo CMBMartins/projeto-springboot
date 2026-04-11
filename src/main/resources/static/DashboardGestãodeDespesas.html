@@ -513,9 +513,11 @@ th, td {
 
         .catch(err => console.error("Erro mensal:", err));
 }
+      
 
+      // FUNÇÃO FETCH SEGURO
       function fetchSeguro(url) {
-    return fetch(url).then(async res => {
+      return fetch(url).then(async res => {
         if (!res.ok) {
             const erro = await res.text();
             console.error("Erro API:", erro);
@@ -634,6 +636,7 @@ function gerarGraficoStatus() {
         })
         .catch(error => console.error("Erro gráfico status:", error));
 }
+      
 
 // 📋 FUNÇÃO LISTAR TODAS DESPESAS
 function listarTodos() {
@@ -676,7 +679,7 @@ function listarTodos() {
         .catch(error => console.error("Erro:", error));
 }
 
-      // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
+    // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
     window.onload = () => {
 
     if (!verificarLogin()) return; // 🔒 trava aqui
@@ -762,7 +765,6 @@ function listarTodos() {
                     limparLogin();
 
                 })
-
 
                 .catch(error => {
 
