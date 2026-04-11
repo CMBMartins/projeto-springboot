@@ -307,15 +307,22 @@ th, td {
     }
 
     function fetchSeguro(url) {
-        return fetch(url).then(async res => {
-            if (!res.ok) {
-                const erro = await res.text();
-                console.error("Erro API:", erro);
-                throw new Error("Erro na API");
-            }
-            return res.json();
-        });
-    }
+    return fetch(url).then(async res => {
+
+        if (!res.ok) {
+            const erro = await res.text();
+            console.error("Erro API:", erro);
+            throw new Error("Erro na API");
+        }
+
+        const texto = await res.text();
+
+        // 🔥 evita erro JSON vazio
+        if (!texto) return 0;
+
+        return JSON.parse(texto);
+    });
+}
 
     // 🔥 TOTAL
         //fetchSeguro(API + "/total?usuario=" + usuario)
@@ -326,12 +333,12 @@ th, td {
         });
 
     // 🔥 RENDA
-    //fetchSeguro(API + "/renda?usuario=" + usuario)
-        fetch(API + "/despesas/renda?usuario=" + usuario)
-        .then(total => {
-            const el = document.getElementById("renda");
-            if (el) el.innerText = formatar(total);
-        });
+    fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
+    .then(total => {
+        const el = document.getElementById("renda");
+        if (el) el.innerText = formatar(total);
+    })
+    .catch(err => console.error("Erro renda:", err));
 
     // 🔥 MÊS
     //fetchSeguro(API + "/mes?usuario=" + usuario)
