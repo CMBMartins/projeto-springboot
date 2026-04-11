@@ -283,12 +283,12 @@ th, td {
   <script>
 
     const API = "https://projeto-springboot.onrender.com";
-      
+
     // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    //window.onload = () => {
-    //if (!verificarLogin()) return; // 🔒 trava aqui
+    window.onload = () => {
+    if (!verificarLogin()) return; // 🔒 trava aqui
       
-    window.onload = function () {
+    //window.onload = function () {
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -297,8 +297,7 @@ th, td {
     carregarComparativoMensal();
     carregarTotal();
     //carregarmesAtual();
-    };    
-    
+    };   
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
         function carregarDashboard() {
@@ -388,7 +387,7 @@ th, td {
       // 🔥 FUNÇÃO PARA CARREGAR USUARIO
     function getUsuario() {
     return localStorage.getItem("usuario");
-        }
+        }    
       
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
@@ -696,15 +695,15 @@ function listarTodos() {
       
 
       // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
-     //function verificarLogin() {
-    //const usuario = localStorage.getItem("usuario");
-    //if (!usuario) {
-        // ❌ Não está logado → volta pro login
-        //window.location.href = "login.html";
-        //return false;
-    //}
-    //return true;
-    //}
+     function verificarLogin() {
+    const usuario = localStorage.getItem("usuario");
+    if (!usuario) {
+         ❌ Não está logado → volta pro login
+        window.location.href = "login.html";
+        return false;
+    }
+    return true;
+    }
 
     // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
