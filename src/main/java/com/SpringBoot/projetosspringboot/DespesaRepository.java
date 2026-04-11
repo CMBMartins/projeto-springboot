@@ -14,12 +14,14 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
     List<Despesa> findByUsuarioAndDescricaoContainingIgnoreCase(String usuario, String descricao);
 
     // 🔥 RENDA
-    @Query("SELECT COALESCE(SUM(d.valor), 0) FROM Despesa d WHERE d.usuario = :usuario AND d.tipo = 'RECEITA'")
-    Double somarRenda(@Param("usuario") String usuario);
-
-    // 🔥 TOTAL DESPESAS
-    @Query("SELECT COALESCE(SUM(d.valor), 0) FROM Despesa d WHERE d.usuario = :usuario AND d.tipo = 'DESPESA'")
-    Double somarTotal(@Param("usuario") String usuario);
+   @Query("""
+   SELECT COALESCE(SUM(d.valor), 0)
+   FROM Despesa d
+   WHERE d.usuario = :usuario
+   AND EXTRACT(MONTH FROM d.data) = EXTRACT(MONTH FROM CURRENT_DATE)
+   AND EXTRACT(YEAR FROM d.data) = EXTRACT(YEAR FROM CURRENT_DATE)
+   """)
+   Double somarMes(@Param("usuario") String usuario);
 
     // 🔥 SALDO
     @Query("""
