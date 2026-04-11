@@ -283,6 +283,21 @@ th, td {
   <script>
 
     const API = "https://projeto-springboot.onrender.com";
+      
+    // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
+    //window.onload = () => {
+    //if (!verificarLogin()) return; // 🔒 trava aqui
+      
+    window.onload = function () {
+    carregarDashboard();
+    listarTodos();
+    carregarGraficoCategoria();    
+    carregarGraficoMensal();
+    gerarGraficoStatus();
+    carregarComparativoMensal();
+    carregarTotal();
+    //carregarmesAtual();
+    };
 
     function getUsuario() {
     return localStorage.getItem("usuario");
@@ -678,21 +693,6 @@ function listarTodos() {
         })
         .catch(error => console.error("Erro:", error));
 }
-
-    // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    window.onload = () => {
-
-    if (!verificarLogin()) return; // 🔒 trava aqui
-
-    carregarDashboard();
-    listarTodos();
-    carregarGraficoCategoria();    
-    carregarGraficoMensal();
-    gerarGraficoStatus();
-    carregarComparativoMensal();
-    carregarTotal();
-    //carregarmesAtual();
-    };
       
 
       // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
@@ -761,9 +761,14 @@ function listarTodos() {
 
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
-                    liberarFuncoes();
+                    carregarDashboard();
+                    listarTodos();
+                    carregarGraficoCategoria();    
+                    carregarGraficoMensal();
+                    gerarGraficoStatus();
+                    carregarComparativoMensal();
+                    carregarTotal();
                     limparLogin();
-
                 })
 
                 .catch(error => {
