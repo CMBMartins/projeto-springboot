@@ -283,12 +283,23 @@ th, td {
   
 <script>
 
-//const id = document.getElementById("id").value;
+    const API = "https://projeto-springboot.onrender.com";
 
-const API = "http://localhost:8084/despesas";
+    function getUsuario() {
+        
+        const usuario = document.getElementById("usuariologado")?.value;
+        // 🔥 BLOQUEIO TOTAL
+            if (!usuario) {
+                alert("⚠️ Faça login primeiro!");
+                throw new Error("Usuário não logado");
+            }
+            return usuario;
+        }
 
-// 🚀 CARREGAMENTO INICIAL
-window.onload = function () {
+        const id = document.getElementById("id").value;  
+
+    // 🚀 CARREGAMENTO INICIAL
+    window.onload = function () {
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -384,11 +395,6 @@ window.onload = function () {
     .catch(err => console.error("Erro status:", err));
     }
     
-    
-    //FUNÇÃO PARA INICIAR USUARIO
-    function getUsuario() {
-    return document.getElementById("usuariologado").value;
-    }
     
     //FUNÇÃO PARA GERAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
@@ -705,14 +711,11 @@ function listarTodos() {
             }
 
 
-         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-         function login() {
-            
+    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function login() {
+
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
-
-            // salva no localStorage
-            localStorage.setItem("usuario", usuario);
 
             // Validação de campos vazios
             if (usuario === "" && senha === "") {
@@ -730,7 +733,7 @@ function listarTodos() {
                 return;
             }
 
-            fetch("http://localhost:8084/usuario", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -757,17 +760,12 @@ function listarTodos() {
 
                 .then(data => {
 
-                    // Mostra o usuário no campo Default                    
-                    document.getElementById("usuariologado").value = usuario;
-                    
-                    //document.getElementById("usuariologado").value = data.usuario;
+                    // Mostra o usuário no campo Default
+
+                    document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
-                    carregarDashboard();
+                    liberarFuncoes();
                     limparLogin();
-                    carregarComparativoMensal()
-                    carregarGraficoCategoria()
-                    carregarGraficoMensal();
-                    listarTodos();                  
 
                 })
 
@@ -796,7 +794,9 @@ function listarTodos() {
             document.getElementById("usuario").value = "";
             document.getElementById("senha").value = "";
 
-        }       
+        }
+
+    window.login = login;
         
 </script>
 
