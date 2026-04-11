@@ -243,7 +243,7 @@ Excluir
         return;
     }
 
-    fetch(API + "/usuarios", { // 🔥 corrigido
+    fetch(API + "/usuario", { // 🔥 corrigido
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -283,8 +283,8 @@ Excluir
     });
 }
 
-            //Função para Editar Usuário
-            function editar() {
+    //Função para Editar Usuário
+    function editar() {
 
     const id = document.getElementById("id").value;
 
