@@ -714,15 +714,15 @@ function listarTodos() {
                     }
                     return response.json();
                 })
-                .then(data => {
-              // 🔥 salva login
+                .then(data => {                    
+                    
             localStorage.setItem("usuario", data.usuario);
-            // Mostra no campo
+            
             document.getElementById("usuariologado").value = data.usuario;
                     
             alert("Login realizado com sucesso!");
             carregarDashboard();
-            istarTodos();
+            listarTodos();
             carregarGraficoCategoria();    
             carregarGraficoMensal();
             gerarGraficoStatus();
