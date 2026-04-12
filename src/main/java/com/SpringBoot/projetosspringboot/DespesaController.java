@@ -162,18 +162,19 @@ public class DespesaController {
                                                 })));
         }
 
-   @GetMapping("/mes")
-   public Double totalPagoNoMes(@RequestParam String usuario) {
+  @GetMapping("/mes")
+  public Double totalPagoNoMes(@RequestParam String usuario) {
 
     LocalDate hoje = LocalDate.now();
 
     return repository.findByUsuario(usuario)
         .stream()
-        .filter(d -> d.getData() != null) // 🔥 evita null
+        .filter(d -> d.getData() != null)
+        .filter(d -> d.getValor() != null)
         .filter(d -> d.getData().getMonthValue() == hoje.getMonthValue())
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0)
+        .mapToDouble(Despesa::getValor)
         .sum();
-   }
+        }
 
         // COMPARATIVO DE DESPESAS MENSAIS
         @GetMapping("/comparativo-mensal")
