@@ -53,13 +53,16 @@ public class DespesaController {
                                 .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
 
-        // 💰 RENDA   
+        // 💰 RENDA     
     @GetMapping("/renda")
-    public Double renda(@RequestParam String usuario) {
-
-    Double total = repository.somarRenda(usuario);
-
-    return total != null ? total : 0.0;
+    public Double totalEntradas(@RequestParam String usuario) {
+    return repository.findByUsuario(usuario)
+    //return repository.findAll()
+            .stream()
+            .filter(d -> d.getStatus() != null &&                   
+                   (d.getStatus().equalsIgnoreCase("RECEBIDO")))
+            .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+            .sum();
     }
    
         @GetMapping
