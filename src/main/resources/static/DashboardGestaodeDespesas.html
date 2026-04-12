@@ -297,32 +297,38 @@ th, td {
             console.log("TOTAL:", data);
         });
 
-    // MÊS
-    fetch(API + "/despesas/mes?usuario=" + encodeURIComponent(usuario))
-        .then(res => res.json())
-        .then(data => {
-            console.log("MES:", data);
-        });
-
-    // STATUS
-    fetch(API + "/despesas/status?usuario=" + encodeURIComponent(usuario))
-        .then(res => res.json())
-        .then(data => {
-            console.log("STATUS:", data);
-        });
-
-    // SALDO
-    fetch(API + "/despesas/saldo?usuario=" + encodeURIComponent(usuario))
-        .then(res => res.json())
-        .then(data => {
-            console.log("SALDO:", data);
-        });
-
     // RENDA
-    fetch(API + "/despesas/renda?usuario=" + encodeURIComponent(usuario))
+    fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
             console.log("RENDA:", data);
+            document.getElementById("renda").innerText = data || 0;
+        });
+
+    // MÊS
+    fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("MES:", data);
+            document.getElementById("mes").innerText = data || 0;
+        });
+
+    // STATUS
+    fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("STATUS:", data);
+
+            document.getElementById("pagas").innerText = data.PAGA || 0;
+            document.getElementById("pendentes").innerText = data.PENDENTE || 0;
+        });
+
+   // SALDO
+    fetch(`${API}/despesas/saldo?usuario=${encodeURIComponent(usuario)}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("SALDO:", data);
+            document.getElementById("saldo").innerText = data || 0;
         });
         }     
 
