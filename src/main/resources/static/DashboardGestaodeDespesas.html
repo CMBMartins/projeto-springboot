@@ -512,7 +512,7 @@ th, td {
     fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("renda");
-            if (el) el.innerText = formatar(total);
+            if (el) el.innerText = formatar(renda);
         })
         .catch(err => console.error("Erro renda:", err));
     }
@@ -571,7 +571,7 @@ th, td {
             const pagas = Number(data?.PAGA ?? data?.paga ?? 0);
             const pendentes = Number(data?.PENDENTE ?? data?.pendente ?? 0);
 
-            const canvas = document.getElementById("graficoStatus");
+            const canvas = document.getElementById("status");
             if (!canvas) return;
 
             if (window.graficoStatus instanceof Chart) {
