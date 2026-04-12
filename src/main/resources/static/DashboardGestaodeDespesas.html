@@ -284,9 +284,9 @@ th, td {
     const API = "https://projeto-springboot.onrender.com";
 
     // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    window.onload = () => {
-    if (!verificarLogin()) return; // 🔒 trava aqui      
-    //window.onload = function () {
+    //window.onload = () => {
+    //if (!verificarLogin()) return; // 🔒 trava aqui      
+    window.onload = function () {
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -298,37 +298,7 @@ th, td {
     };   
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {        
-        const usuario = getUsuario();            
-        if (!usuario) {
-        console.warn("Usuário não definido!");
-        return;
-        }
-
-       function formatar(valor) {
-        return (Number(valor) || 0).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
-    }
-
-    function fetchSeguro(url) {
-    return fetch(url).then(async res => {
-
-        if (!res.ok) {
-            const erro = await res.text();
-            console.error("Erro API:", erro);
-            throw new Error("Erro na API");
-        }
-
-        const texto = await res.text();
-
-        // 🔥 evita erro JSON vazio
-        if (!texto) return 0;
-
-        return JSON.parse(texto);
-    });
-}
+        function carregarDashboard() {       
 
     // 🔥 TOTAL
         //fetchSeguro(API + "/total?usuario=" + usuario)
@@ -336,15 +306,19 @@ th, td {
         .then(total => {
             const el = document.getElementById("total");
             if (el) el.innerText = formatar(total);
-        });
+            });
+         });
 
     // 🔥 RENDA
     fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
     .then(total => {
         const el = document.getElementById("renda");
         if (el) el.innerText = formatar(total);
-    })
-    .catch(err => console.error("Erro renda:", err));
+        });
+    });
+    //.catch(err => console.error("Erro renda:", err));
+      });
+      
 
     // 🔥 MÊS
     //fetchSeguro(API + "/mes?usuario=" + usuario)
@@ -352,7 +326,8 @@ th, td {
         .then(total => {
             const el = document.getElementById("mesAtual");
             if (el) el.innerText = formatar(total);
-        })
+        });
+      });
         .catch(err => console.error("Erro mês:", err));
 
     // 🔥 SALDO
@@ -361,8 +336,9 @@ th, td {
         .then(total => {
             const el = document.getElementById("saldo");
             if (el) el.innerText = formatar(total);
-        });
-
+         });
+      });
+      
     // 🔥 STATUS
      //fetchSeguro(API + "/status?usuario=" + usuario)
          fetch(API + "/despesas/status?usuario=" + usuario)
@@ -378,7 +354,7 @@ th, td {
             if (elPend) elPend.innerText = pendentes;
         })
         .catch(err => console.error("Erro status:", err));
-}
+  }
     
       // 🔥 FUNÇÃO PARA CARREGAR USUARIO
     function getUsuario() {
@@ -388,7 +364,6 @@ th, td {
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
-
     const usuario = getUsuario();
 
     if (!usuario) {
@@ -441,7 +416,7 @@ th, td {
 
         })
         .catch(err => console.error("Erro gráfico:", err));
-}
+       }
     
 
     // FUNÇÃO PARA GERAR GRÁFICO DE DESPESAS MENSAIS
@@ -523,10 +498,8 @@ th, td {
             });
 
         })
-
         .catch(err => console.error("Erro mensal:", err));
-}
-      
+        }      
 
       // FUNÇÃO FETCH SEGURO
       function fetchSeguro(url) {
@@ -575,9 +548,10 @@ th, td {
             if (el) el.innerText = formatar(total);
         })
         .catch(err => console.error("Erro renda:", err));
-}
+    }
+      
 
-        //FUNÇÃO PARA O CARD DE COMPARATIVO MENSAL
+    //FUNÇÃO PARA O CARD DE COMPARATIVO MENSAL
         function carregarComparativoMensal() {
 
     const usuario = getUsuario();
@@ -649,7 +623,7 @@ function gerarGraficoStatus() {
 
         })
         .catch(error => console.error("Erro gráfico status:", error));
-}
+       }
       
 
 // 📋 FUNÇÃO LISTAR TODAS DESPESAS
@@ -687,19 +661,19 @@ function listarTodos() {
 
         })
         .catch(error => console.error("Erro:", error));
-}
+     }
       
 
       // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
-     function verificarLogin() {
-    const usuario = localStorage.getItem("usuario");
-    if (!usuario) {
+    //function verificarLogin() {
+    //const usuario = localStorage.getItem("usuario");
+    //if (!usuario) {
         //Não está logado → volta pro login
-        window.location.href = "GestãodeUsuarios.html";
-        return false;
-    }
-    return true;
-    } 
+        //window.location.href = "GestãodeUsuarios.html";
+        //return false;
+    //}
+    //return true;
+    //} 
 
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
@@ -774,12 +748,11 @@ function listarTodos() {
         }
 
       // FUNÇÃO CADASTRAR USUÁRIOS
-        function cadastrar() {            
+        function cadastrar() {
             window.open("GestãodeUsuarios.html", "_blank");
-
             }
 
-    window.login = login;
+    //window.login = login;
         
 </script>
 
