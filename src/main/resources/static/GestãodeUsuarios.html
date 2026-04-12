@@ -180,53 +180,52 @@
 
             //const api = "http://localhost:8084/usuario";
             const API = "https://projeto-springboot.onrender.com/usuario";
-
+            
             //Função carregar
             function carregar() {
                 //listarTodos();
             }
 
-            //Função para Listar Toda a tabela
-            function listarTodos() {
+        //Função para Listar Toda a tabela
+        function listarTodos() {
+         fetch(API)
+        .then(response => response.json())
+        .then(data => {
 
-                fetch(API)
-                    .then(response => response.json())
-                    .then(data => {
+            const tabela = document.getElementById("tabelaUsuario");
+            tabela.innerHTML = "";
 
-                        const tabela = document.getElementById("tabelaUsuario");
-                        tabela.innerHTML = "";
+            data.forEach(show => {
 
-                        data.forEach(show => {
+                tabela.innerHTML += `
+                    <tr>
+                        <td>${show.id}</td>
+                        <td>${show.usuario}</td>
+                        <td>${show.perfil}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm"
+                                onclick="editar(${show.id})">
+                                Editar
+                            </button>
 
-                            tabela.innerHTML += `
-<tr>
+                            <button class="btn btn-danger btn-sm"
+                                onclick="deletar(${show.id})">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
 
-<td>${show.id}</td>
-<td>${show.usuario}</td>
-<td>${show.perfil}</td>
+            // ✅ aqui sim está correto
+            limparCampos();
 
-<td>
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
-
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-
-</tr>
-`;
-
-                            limparCampos();
-
-                        });
-
-                    });
-
-            }
+        })
+        .catch(error => {
+            console.error("Erro ao listar usuários:", error);
+            alert("Erro ao carregar usuários!");
+        });
+}
 
     //Função para Salvar
     function salvar() {
@@ -347,7 +346,7 @@ Excluir
         const tabela = document.getElementById("tabelaUsuario");
         tabela.innerHTML = "";
 
-        if (!data.length) {
+       if (!Array.isArray(data) || data.length === 0) {
             tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
             return;
         }
