@@ -46,12 +46,13 @@ public class DespesaController {
 
         @GetMapping("/buscar")
         public List<Despesa> buscar(
-                        @RequestParam String usuario,
-                        @RequestParam String descricao) {
-
+        @RequestParam String usuario,
+        @RequestParam String descricao) {
+                
                 return repository
-                                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
+                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
+        
 
     // 💰 RENDA
     @GetMapping("/renda")
