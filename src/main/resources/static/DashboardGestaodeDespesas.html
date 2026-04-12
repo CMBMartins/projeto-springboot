@@ -281,7 +281,12 @@ th, td {
 
   <script>
 
-    const API = "https://projeto-springboot.onrender.com";    
+    const API = "https://projeto-springboot.onrender.com";
+
+    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    window.onload = function () {    
+    //carregarDashboard();
+    }
 
     //DASHBOARD COMPLETO (usa endpoints específicos)
     function carregarDashboard() { 
@@ -299,7 +304,7 @@ th, td {
         .then(res => res.json())
         .then(data => {
             console.log("RENDA:", data);
-            //document.getElementById("renda").innerText = data || 0;
+            document.getElementById("renda").innerText = data || 0;
         });        
         
     // MÊS
@@ -310,7 +315,7 @@ th, td {
         const valor =
         typeof data === "number" ? data :
         data.mes || data.total || 0;
-        //document.getElementById("mes").innerText = valor;
+        document.getElementById("mes").innerText = valor;
     });        
     
 
@@ -328,14 +333,10 @@ th, td {
         .then(res => res.json())
         .then(data => {
             console.log("SALDO:", data);
-            //document.getElementById("saldo").innerText = data || 0;
+            document.getElementById("saldo").innerText = data || 0;
         });
         }
-
-    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {    
-    carregarDashboard();
-    }
+    
        //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
     return document.getElementById("usuariologado").value;
@@ -350,7 +351,6 @@ th, td {
         return;
     }
 
-    //fetch(API + "/categoria?usuario=" + usuario)
         fetch(API + "/despesas/categoria?usuario=" + usuario)
         .then(async res => {
 
