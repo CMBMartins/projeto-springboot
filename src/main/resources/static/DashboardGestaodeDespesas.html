@@ -324,13 +324,8 @@ th, td {
         .then(data => {
             console.log("RENDA:", data);
         });
-        }   
-    
+        }     
 
-      //FUNÇÃO PARA CARREGAR USUARIO
-     //function getUsuario() {
-    //return localStorage.getItem("usuario");
-//}  
 
        //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
@@ -683,6 +678,7 @@ th, td {
     gerarGraficoStatus();
     carregarComparativoMensal();
     carregarTotal();
+    listarTodos();                
     limparLogin();
      })
             .catch(error => {
