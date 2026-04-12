@@ -359,13 +359,14 @@ th, td {
     // 🔥 FUNÇÃO PARA CARREGAR USUARIO
     //function getUsuario() {        
         //return document.getElementById("usuario").value;
-    //}      
+    //}
 
+      //FUNÇÃO PARA CARREGAR UUSUARIO
      function getUsuario() {
     return localStorage.getItem("usuario");
 }  
 
-    // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
+    //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
     const usuario = getUsuario();
 
@@ -445,7 +446,7 @@ th, td {
 
         .then(data => {
 
-            console.log("MENSAL:", data); // 🔥 debug
+            console.log("MENSAL:", data); // debug
 
             if (!data || Object.keys(data).length === 0) {
                 console.warn("Sem dados mensais");
@@ -465,7 +466,7 @@ th, td {
             const labels = meses.map(m => mesesNomes[m - 1]);
             const valores = meses.map(m => Number(data[m]) || 0);
 
-            // 🔥 ATUALIZA CARD (SEPARADO)
+            // ATUALIZA CARD (SEPARADO)
             const mesAtual = new Date().getMonth() + 1;
             const valorMes = Number(data[mesAtual]) || 0;
 
@@ -477,7 +478,7 @@ th, td {
                 });
             }
 
-            // 🔥 GRÁFICO
+            // GRÁFICO
             const canvas = document.getElementById("graficoMes");
 
             if (!canvas) {
@@ -490,7 +491,7 @@ th, td {
             }
 
             window.graficoMes = new Chart(canvas, {
-                type: "bar", // 🔥 MELHOR que pie para mensal
+                type: "bar", // MELHOR que pie para mensal
                 data: {
                     labels: labels,
                     datasets: [{
@@ -526,7 +527,6 @@ th, td {
 
     // FUNÇÃO DE CARD DO TOTAL GERAL DAS DESPESAS          
     function carregarTotal() {
-
     const usuario = getUsuario();
     if (!usuario) return;
 
@@ -725,7 +725,7 @@ function listarTodos() {
             carregarGraficoCategoria();    
             carregarGraficoMensal();
             gerarGraficoStatus();
-            arregarComparativoMensal();
+            carregarComparativoMensal();
             carregarTotal();
             limparLogin();
             })
