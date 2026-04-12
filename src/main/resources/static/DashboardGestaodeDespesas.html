@@ -356,11 +356,14 @@ th, td {
         //.catch(err => console.error("Erro status:", err));
   }
     
-      // 🔥 FUNÇÃO PARA CARREGAR USUARIO
-    function getUsuario() {        
-        return document.getElementById("usuario").value;
-    } 
-      
+    // 🔥 FUNÇÃO PARA CARREGAR USUARIO
+    //function getUsuario() {        
+        //return document.getElementById("usuario").value;
+    //}      
+
+     function getUsuario() {
+    return localStorage.getItem("usuario");
+}  
 
     // 🔥 FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
@@ -713,7 +716,7 @@ function listarTodos() {
                 })
                 .then(data => {
               // 🔥 salva login
-             ocalStorage.setItem("usuario", data.usuario);
+            localStorage.setItem("usuario", data.usuario);
             // Mostra no campo
             document.getElementById("usuariologado").value = data.usuario;
                     
