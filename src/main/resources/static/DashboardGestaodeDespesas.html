@@ -285,8 +285,13 @@ th, td {
 
     // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
     //window.onload = () => {
-    //if (!verificarLogin()) return; // 🔒 trava aqui      
+    //if (!verificarLogin()) return; 
+      
     window.onload = function () {
+    const usuarioSalvo = localStorage.getItem("usuario");
+
+    if (usuarioSalvo) {
+        document.getElementById("usuariologado").value = usuarioSalvo;     
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -300,62 +305,55 @@ th, td {
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
         function carregarDashboard() {
 
-        const usuario = document.getElementById("usuariologado").value;
-        if (!usuario) {
+        const usuario = getUsuarioLogado();
+
+    if (!usuario) {
         console.warn("Usuário não definido!");
         return;
-    }        
+    }
 
-    // 🔥 TOTAL       
-        fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
+    const usuario = getUsuarioLogado();
+
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        return;
+    }
+
+    // TOTAL
+    fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
         .then(res => res.json())
         .then(data => {
             console.log("TOTAL:", data);
-        })
-        .catch(err => console.error(err));
-
-    // 🔥 RENDA
-    fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
-    .then(total => {
-        const el = document.getElementById("renda");
-        if (el) el.innerText = formatar(total);
-        });      
-
-    // 🔥 MÊS
-    //fetchSeguro(API + "/mes?usuario=" + usuario)
-        fetch(API + "/despesas/mes?usuario=" + usuario)
-        .then(total => {
-            const el = document.getElementById("mesAtual");
-            if (el) el.innerText = formatar(total);
         });
-      //});
-        //.catch(err => console.error("Erro mês:", err));
 
-    // 🔥 SALDO
-    //fetchSeguro(API + "/saldo?usuario=" + usuario)
-        fetch(API + "/despesas/saldo?usuario=" + usuario)
-        .then(total => {
-            const el = document.getElementById("saldo");
-            if (el) el.innerText = formatar(total);
-         });
-      //});
-      
-    // 🔥 STATUS
-     //fetchSeguro(API + "/status?usuario=" + usuario)
-         fetch(API + "/despesas/status?usuario=" + usuario)
+    // MÊS
+    fetch(API + "/despesas/mes?usuario=" + encodeURIComponent(usuario))
+        .then(res => res.json())
         .then(data => {
+            console.log("MES:", data);
+        });
 
-            const pagas = Number(data?.PAGA ?? data?.paga ?? 0);
-            const pendentes = Number(data?.PENDENTE ?? data?.pendente ?? 0);
+    // STATUS
+    fetch(API + "/despesas/status?usuario=" + encodeURIComponent(usuario))
+        .then(res => res.json())
+        .then(data => {
+            console.log("STATUS:", data);
+        });
 
-            const elPagas = document.getElementById("pagas");
-            const elPend = document.getElementById("pendentes");
+    // SALDO
+    fetch(API + "/despesas/saldo?usuario=" + encodeURIComponent(usuario))
+        .then(res => res.json())
+        .then(data => {
+            console.log("SALDO:", data);
+        });
 
-            if (elPagas) elPagas.innerText = pagas;
-            if (elPend) elPend.innerText = pendentes;
-        })
-        //.catch(err => console.error("Erro status:", err));
-  }   
+    // RENDA
+    fetch(API + "/despesas/renda?usuario=" + encodeURIComponent(usuario))
+        .then(res => res.json())
+        .then(data => {
+            console.log("RENDA:", data);
+        });
+        }   
     
 
       //FUNÇÃO PARA CARREGAR UUSUARIO
@@ -709,10 +707,9 @@ th, td {
                     }
                     return response.json();
                 })
-                .then(data => {                    
+                .then(data => {
                     
-            localStorage.setItem("usuario", data.usuario);
-            
+            localStorage.setItem("usuario", data.usuario);            
             document.getElementById("usuariologado").value = data.usuario;
                     
             alert("Login realizado com sucesso!");
