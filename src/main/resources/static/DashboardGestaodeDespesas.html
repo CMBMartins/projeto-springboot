@@ -288,7 +288,8 @@ th, td {
     }
 
     //DASHBOARD COMPLETO (usa endpoints específicos)
-    function carregarDashboard() {    
+    function carregarDashboard() { 
+    const usuario = localStorage.getItem("usuario"); 
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
