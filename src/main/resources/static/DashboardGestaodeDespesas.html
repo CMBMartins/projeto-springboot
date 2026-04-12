@@ -283,34 +283,11 @@ th, td {
 
     const API = "https://projeto-springboot.onrender.com";
 
-    // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    //window.onload = () => {
-    //if (!verificarLogin()) return; 
-      
     window.onload = function () {    
-    //document.getElementById("usuariologado").value = usuarioSalvo;     
-    carregarDashboard();
-    //listarTodos();
-    //carregarGraficoCategoria();    
-    //carregarGraficoMensal();
-    //gerarGraficoStatus();
-    //carregarComparativoMensal();
-    //carregarTotal();
-    //carregarmesAtual();
-    };   
+    carregarDashboard();   
 
-    // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-    function carregarDashboard() {
-    //const usuario = getUsuarioLogado();
-    //if (!usuario) {
-        //console.warn("Usuário não definido!");
-        //return;
-    //}
-    //const usuario = getUsuarioLogado();
-    //if (!usuario) {
-        //console.warn("Usuário não definido!");
-        //return;
-    //}
+    //DASHBOARD COMPLETO (usa endpoints específicos)
+    function carregarDashboard() {    
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
@@ -408,8 +385,7 @@ th, td {
 
         })
         .catch(err => console.error("Erro gráfico:", err));
-       }
-    
+       }    
 
     // FUNÇÃO PARA GERAR GRÁFICO DE DESPESAS MENSAIS
     function carregarGraficoMensal() {
@@ -651,19 +627,9 @@ th, td {
 
         })
         .catch(error => console.error("Erro:", error));
-     }      
+     }  
 
-      // 📋 FUNÇÃO PARA BLOQUEAR OS DADOS
-    //function verificarLogin() {
-    //const usuario = localStorage.getItem("usuario");
-    //if (!usuario) {
-        //Não está logado → volta pro login
-        //window.location.href = "GestãodeUsuarios.html";
-        //return false;
-    //}
-    //return true;
-    //} 
-
+    
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
             const usuario = document.getElementById("usuario").value;
