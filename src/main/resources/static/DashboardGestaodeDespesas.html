@@ -287,10 +287,8 @@ th, td {
     //window.onload = () => {
     //if (!verificarLogin()) return; 
       
-    window.onload = function () {
-    //const usuarioSalvo = localStorage.getItem("usuario");
-    //if (usuarioSalvo) {
-    document.getElementById("usuariologado").value = usuarioSalvo;     
+    window.onload = function () {    
+    //document.getElementById("usuariologado").value = usuarioSalvo;     
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -302,21 +300,17 @@ th, td {
     };   
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {
-
-        const usuario = getUsuarioLogado();
-
-    if (!usuario) {
-        console.warn("Usuário não definido!");
-        return;
-    }
-
-    const usuario = getUsuarioLogado();
-
-    if (!usuario) {
-        console.warn("Usuário não definido!");
-        return;
-    }
+    function carregarDashboard() {
+    //const usuario = getUsuarioLogado();
+    //if (!usuario) {
+        //console.warn("Usuário não definido!");
+        //return;
+    //}
+    //const usuario = getUsuarioLogado();
+    //if (!usuario) {
+        //console.warn("Usuário não definido!");
+        //return;
+    //}
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
