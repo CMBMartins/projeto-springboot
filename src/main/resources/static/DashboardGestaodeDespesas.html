@@ -284,10 +284,9 @@ th, td {
     const API = "https://projeto-springboot.onrender.com";
 
     // 📋 FUNÇÃO PARA MOSTRAR APÓS LOGADO      
-    //window.onload = () => {
-    //if (!verificarLogin()) return; // 🔒 trava aqui
-      
-    window.onload = function () {
+    window.onload = () => {
+    if (!verificarLogin()) return; // 🔒 trava aqui      
+    //window.onload = function () {
     carregarDashboard();
     listarTodos();
     carregarGraficoCategoria();    
@@ -299,10 +298,8 @@ th, td {
     };   
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {
-        
-        const usuario = getUsuario();
-            
+        function carregarDashboard() {        
+        const usuario = getUsuario();            
         if (!usuario) {
         console.warn("Usuário não definido!");
         return;
