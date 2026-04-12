@@ -567,18 +567,12 @@ th, td {
 
     fetchSeguro(API + "/despesas/status?usuario=" + usuario)
         .then(data => {
+            const pagas = data.PAGA || data.Paga || 0;
+            const pendentes = data.PENDENTE || data.Pendente || 0;
 
-            const pagas = Number(data?.PAGA ?? data?.paga ?? 0);
-            const pendentes = Number(data?.PENDENTE ?? data?.pendente ?? 0);
+            const ctx = document.getElementById("graficoStatus");
 
-            const canvas = document.getElementById("status");
-            if (!canvas) return;
-
-            if (window.graficoStatus instanceof Chart) {
-                window.graficoStatus.destroy();
-            }
-
-            window.graficoStatus = new Chart(canvas, {
+            new Chart(ctx, {
                 type: "doughnut",
                 data: {
                     labels: ["Pagas", "Pendentes"],
