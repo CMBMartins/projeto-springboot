@@ -303,8 +303,8 @@ th, td {
         .then(data => {
             console.log("RENDA:", data);
             document.getElementById("renda").innerText = data || 0;
-        });
-
+        });        
+        
     // MÊS
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
@@ -570,7 +570,7 @@ th, td {
 
     const usuario = getUsuario();
     if (!usuario) return;
-
+       
     fetchSeguro(API + "/despesas/status?usuario=" + usuario)
         .then(data => {
             const pagas = data.PAGA || data.Paga || 0;
