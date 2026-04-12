@@ -298,27 +298,29 @@ th, td {
     };   
 
     // 🔥 DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {       
+        function carregarDashboard() {
+
+        const usuario = document.getElementById("usuariologado").value;
+        if (!usuario) {
+        console.warn("Usuário não definido!");
+        return;
+    }        
 
     // 🔥 TOTAL
-        //fetchSeguro(API + "/total?usuario=" + usuario)
-        fetch(API + "/despesas/total?usuario=" + usuario)
-        .then(total => {
-            const el = document.getElementById("total");
-            if (el) el.innerText = formatar(total);
-            });
-         //});
+       
+        fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
+        .then(res => res.json())
+        .then(data => {
+            console.log("TOTAL:", data);
+        })
+        .catch(err => console.error(err));
 
     // 🔥 RENDA
     fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
     .then(total => {
         const el = document.getElementById("renda");
         if (el) el.innerText = formatar(total);
-        });
-    //});
-    //.catch(err => console.error("Erro renda:", err));
-      //});
-      
+        });      
 
     // 🔥 MÊS
     //fetchSeguro(API + "/mes?usuario=" + usuario)
@@ -529,7 +531,7 @@ th, td {
     function carregarTotal() {
     const usuario = getUsuario();
     if (!usuario) return;
-
+    
     fetchSeguro(API + "/despesas/total?usuario=" + usuario)
         .then(total => {
             const el = document.getElementById("total");
