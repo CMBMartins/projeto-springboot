@@ -307,18 +307,21 @@ th, td {
         
     // MÊS
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log("MES:", data);
-            document.getElementById("mes").innerText = data || 0;
-        });
+    .then(res => res.json())
+    .then(data => {
+        console.log("MES:", data);
+        const valor =
+            typeof data === "number" ? data :
+            data.mes || data.total || 0;
+        document.getElementById("mes").innerText = valor;
+    });        
+    
 
     // STATUS
     fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            console.log("STATUS:", data);
-
+            console.log("STATUS:", data);            
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
