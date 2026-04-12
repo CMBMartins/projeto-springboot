@@ -91,7 +91,7 @@ public class DespesaController {
 
         // TOTAL DE RENDAS
         @GetMapping("/renda-total")
-        public Double totalEntradas(@RequestParam String usuario) {
+        public Double totalEntradasTotal(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
                                 // return repository.findAll()
                                 .stream()
