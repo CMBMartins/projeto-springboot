@@ -281,11 +281,7 @@ th, td {
 
   <script>
 
-    const API = "https://projeto-springboot.onrender.com";
-
-    window.onload = function () {    
-    carregarDashboard();
-    }
+    const API = "https://projeto-springboot.onrender.com";    
 
     //DASHBOARD COMPLETO (usa endpoints específicos)
     function carregarDashboard() { 
@@ -334,9 +330,11 @@ th, td {
             console.log("SALDO:", data);
             //document.getElementById("saldo").innerText = data || 0;
         });
-        }     
+        }
 
-
+    window.onload = function () {    
+    carregarDashboard();
+    }
        //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
     return document.getElementById("usuariologado").value;
