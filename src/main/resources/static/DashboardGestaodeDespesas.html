@@ -667,10 +667,7 @@ th, td {
                     return response.json();
                 })
                 .then(data => {
-    if (!data || !data.usuario) {
-        alert("Login inválido");
-        return;
-    }
+   
     localStorage.setItem("usuario", data.usuario);
     document.getElementById("usuariologado").value = data.usuario;
                     
