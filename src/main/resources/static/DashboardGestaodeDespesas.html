@@ -303,7 +303,7 @@ th, td {
         .then(res => res.json())
         .then(data => {
             console.log("RENDA:", data);
-            document.getElementById("renda").innerText = data || 0;
+            //document.getElementById("renda").innerText = data || 0;
         });        
         
     // MÊS
@@ -312,9 +312,9 @@ th, td {
     .then(data => {
         console.log("MES:", data);
         const valor =
-            typeof data === "number" ? data :
-            data.mes || data.total || 0;
-        document.getElementById("mes").innerText = valor;
+        typeof data === "number" ? data :
+        data.mes || data.total || 0;
+        //document.getElementById("mes").innerText = valor;
     });        
     
 
@@ -332,7 +332,7 @@ th, td {
         .then(res => res.json())
         .then(data => {
             console.log("SALDO:", data);
-            document.getElementById("saldo").innerText = data || 0;
+            //document.getElementById("saldo").innerText = data || 0;
         });
         }     
 
