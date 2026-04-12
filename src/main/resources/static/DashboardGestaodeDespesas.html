@@ -284,7 +284,8 @@ th, td {
     const API = "https://projeto-springboot.onrender.com";
 
     window.onload = function () {    
-    carregarDashboard();   
+    carregarDashboard();
+    }
 
     //DASHBOARD COMPLETO (usa endpoints específicos)
     function carregarDashboard() {    
@@ -326,10 +327,15 @@ th, td {
         }   
     
 
-      //FUNÇÃO PARA CARREGAR UUSUARIO
-     function getUsuario() {
-    return localStorage.getItem("usuario");
-}  
+      //FUNÇÃO PARA CARREGAR USUARIO
+     //function getUsuario() {
+    //return localStorage.getItem("usuario");
+//}  
+
+       //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+    return document.getElementById("usuariologado").value;
+    }
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
@@ -679,9 +685,11 @@ th, td {
     carregarTotal();
     limparLogin();
      })
-    }
+            .catch(error => {
+                    alert("Usuário ou senha incorretos");
+                });
+      }
       
-
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
             localStorage.removeItem("usuariologado");
