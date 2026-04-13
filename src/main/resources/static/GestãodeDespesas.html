@@ -344,18 +344,21 @@
     const API = "https://projeto-springboot.onrender.com";
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    function carregarDashboard() {
+    console.log("Carregando dashboard...");
+    }
+
     function iniciarSistema() {
     console.log("Sistema iniciado");
     carregarDashboard();
-    listarTodos();
-    }
-        
-        window.onload = function () {
-        iniciarSistema();
     }
 
+    window.onload = function () {
+    iniciarSistema();
+    }
+
+        //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-
             const usuario = document.getElementById("usuariologado")?.value;
 
             // 🔥 BLOQUEIO TOTAL
