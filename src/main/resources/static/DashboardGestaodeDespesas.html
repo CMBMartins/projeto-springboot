@@ -698,6 +698,7 @@ th, td {
         function logout() {
             localStorage.removeItem("usuariologado");
             document.getElementById("usuariologado").value = "";
+            carregarDashboard();
         }
 
       //function logout() {
