@@ -343,6 +343,11 @@
 
         const API = "https://projeto-springboot.onrender.com";
 
+    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    window.onload = function () {
+    iniciarSistema();
+    }
+
         function getUsuario() {
 
             const usuario = document.getElementById("usuariologado")?.value;
@@ -653,7 +658,7 @@
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");                    
                     limparLogin();
-
+                    iniciarSistema();
                 })
 
 
@@ -668,13 +673,10 @@
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
-
             localStorage.removeItem("usuariologado");
-
             document.getElementById("usuariologado").value = "";
-
             alert("Logout realizado com sucesso!");
-
+            iniciarSistema();                     
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
