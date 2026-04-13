@@ -79,8 +79,8 @@ public class DespesaController {
         public List<Despesa> ultimas() {
                 return repository.findTop5ByOrderByDataDesc();
         }
+        
 
-@GetMapping("/total")
 @GetMapping("/total")
 public Double total(@RequestParam String usuario) {
 
@@ -175,9 +175,14 @@ public Double total(@RequestParam String usuario) {
     return repository.findByUsuario(usuario)
         .stream()
         .filter(d -> d.getData() != null)
-        .filter(d -> d.getValor() != null)
         .filter(d -> d.getData().getMonthValue() == hoje.getMonthValue())
-        .mapToDouble(Despesa::getValor)
+        
+        // 🔥 FILTRO NOVO (IMPORTANTE)
+        .filter(d -> d.getStatus() != null &&
+            (d.getStatus().equalsIgnoreCase("PAGA") ||
+             d.getStatus().equalsIgnoreCase("PENDENTE")))
+        
+        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
         .sum();
 }
         
