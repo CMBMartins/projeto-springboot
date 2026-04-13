@@ -33,7 +33,7 @@ public class DespesaController {
         public Despesa editar(@PathVariable Integer id, @RequestBody Despesa nova) {
 
                 Despesa existente = repository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
 
                 existente.setDescricao(nova.getDescricao());
                 existente.setCategoria(nova.getCategoria());
@@ -48,8 +48,7 @@ public class DespesaController {
         public List<Despesa> buscar(
         @RequestParam String usuario,
         @RequestParam String descricao) {
-                
-                return repository
+                 return repository
                 .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
         
@@ -81,12 +80,17 @@ public class DespesaController {
                 return repository.findTop5ByOrderByDataDesc();
         }
 
-    @GetMapping("/total")
-    public Double total(@RequestParam String usuario) {
+@GetMapping("/total")
+@GetMapping("/total")
+public Double total(@RequestParam String usuario) {
 
-    Double total = repository.somarTotal(usuario);
-
-    return total != null ? total : 0.0;
+    return repository.findByUsuario(usuario)
+        .stream()
+        .filter(d -> d.getStatus() != null &&
+            (d.getStatus().equalsIgnoreCase("PAGA") ||
+             d.getStatus().equalsIgnoreCase("PENDENTE")))
+        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+        .sum();
 }
 
     // 💰 RENDA TOTAL (CORRIGIDO)
