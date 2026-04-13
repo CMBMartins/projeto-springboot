@@ -283,6 +283,11 @@ th, td {
 
     const API = "https://projeto-springboot.onrender.com";
 
+    //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+    return document.getElementById("usuariologado").value;
+    }
+
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
     window.onload = function () {    
     //carregarDashboard();
@@ -364,12 +369,8 @@ Promise.all([
         });
 
 });
-}
-    
-       //FUNÇÃO PARA INICIAR USUARIO
-    function getUsuario() {
-    return document.getElementById("usuariologado").value;
-    }
+}   
+   
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
