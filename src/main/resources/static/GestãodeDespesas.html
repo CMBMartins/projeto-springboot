@@ -372,7 +372,16 @@
 
         const id = document.getElementById("id").value;         
 
-
+    function fetchSeguro(url) {
+    return fetch(url)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Erro na API");
+            }
+            return res.json();
+        });
+    }
+        
     // FUNÇÃO PARA LISTAR TODAS DESPESAS
     function listarTodos() {
     const usuario = getUsuario();
