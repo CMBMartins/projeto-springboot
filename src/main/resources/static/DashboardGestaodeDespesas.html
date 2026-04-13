@@ -303,14 +303,18 @@ th, td {
                 style: "currency",
                 currency: "BRL"
             });
-    }
+    }); // 🔥 CORREÇÃO AQUI
 
     // RENDA
     fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
             console.log("RENDA:", data);
-            document.getElementById("renda").innerText = data || 0;
+            document.getElementById("renda").innerText =
+                Number(data || 0).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
         });        
         
     // MÊS
@@ -318,10 +322,16 @@ th, td {
     .then(res => res.json())
     .then(data => {
         console.log("MES:", data);
+
         const valor =
-        typeof data === "number" ? data :
-        data.mes || data.total || 0;
-        document.getElementById("mes").innerText = valor;
+            typeof data === "number" ? data :
+            data.mes || data.total || 0;
+
+        document.getElementById("mes").innerText =
+            Number(valor || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
     });        
     
 
@@ -334,14 +344,18 @@ th, td {
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
 
-   // SALDO
+    // SALDO
     fetch(`${API}/despesas/saldo?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
             console.log("SALDO:", data);
-            document.getElementById("saldo").innerText = data || 0;
+            document.getElementById("saldo").innerText =
+                Number(data || 0).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
         });
-        }
+}
     
        //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
