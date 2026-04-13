@@ -359,49 +359,45 @@
         const id = document.getElementById("id").value;         
 
 
-        // FUNÇÃO PARA LISTAR TODAS DESPESAS
-        function listarTodos() {
-
+    // FUNÇÃO PARA LISTAR TODAS DESPESAS
+    function listarTodos() {
     const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    fetch(API + "/despesas?usuario=" + usuario) // 🔥 corrigido
-
-        .then(response => response.json())
-
+    if (!usuario) return;
+    fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
         .then(data => {
+            const tabela = document.getElementById("ultimasDespesas");
+            if (!tabela) return;
 
-            console.log("RETORNO:", data); // 👈 debug
+            if (!Array.isArray(data) || data.length === 0) {
+                tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
+                return;
+            }
+            let linhas = "";
 
-            const tabela = document.getElementById("tabelaDespesas");
-            tabela.innerHTML = "";
+            data.forEach(d => {
 
-            data.forEach(show => {
+                const valor = Number(d.valor) || 0;
 
-                tabela.innerHTML += `
+                linhas += `
                 <tr>
-                    <td>${show.id || ""}</td>
-                    <td>${show.data || ""}</td>
-                    <td>${show.descricao || ""}</td>
-                    <td>${show.categoria || ""}</td>
-                    <td>${show.tipo || ""}</td>
-                    <td>${show.valor || ""}</td>
-                    <td>${show.status || ""}</td>
+                <th>ID</th>                            
+                    <td>${d.data ?? ""}</td>
+                    <td>${d.descricao ?? ""}</td>
+                    <td>${d.categoria ?? ""}</td>
+                    <td>${d.tipo ?? ""}</td>
+                    <td>${formatar(valor)}</td>
+                    <td>${d.status ?? ""}</td>                    
                     <td>
-                        <button onclick="deletar(${show.id})">Excluir</button>
+                        <button onclick="deletar(${d.id})">Excluir</button>
                     </td>
-                </tr>
-                `;
+                </tr>`;
             });
 
-        })
+            tabela.innerHTML = linhas;
 
-        .catch(err => console.error("Erro ao listar:", err));
-}
+        })
+        .catch(error => console.error("Erro:", error));
+     }  
 
         // FUNÇÃO PARA SALVAR
         function salvar() {
