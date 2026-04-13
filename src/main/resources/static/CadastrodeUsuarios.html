@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuários</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: Arial;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 50px;
+        }
+
+        .perfil {
+            width: 320px;
+            border-radius: 50%;
+            margin-top: 10px;
+        }
+
+        .card-form {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+            max-width: 400px;
+
+            margin: auto;
+
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .botoes {
+
+            margin-top: 20px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+        }
+
+        .btn {
+
+            min-width: 10px;
+
+        }
+
+        .home {
+
+            margin-top: 20px;
+
+        }
+
+        /* TABELA */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="card-form">
+
+        <a href="PaginaPessoal.html" class="btn btn-default">
+            <span class="glyphicon glyphicon-home"></span> Página Principal
+        </a>
+
+        <h3><img src="Imagens/carlos1.gif" width="40">
+            Cadastro de Usuários</h3>
+
+        <div class="grid">
+
+            <input type="hidden" id="id">
+
+            <input type="text" id="usuario" placeholder="Usuario">
+
+            <input type="password" id="senha" placeholder="Senha">
+
+            <input type="text" id="perfil" placeholder="Perfil">
+
+        </div>
+
+        <div class="botoes">
+
+            <button class="btn btn-success" onclick="salvar()">
+                <i class="fa fa-save"></i> Salvar
+            </button>
+
+            <button class="btn btn-success" onclick="editar()">
+                <i class="fa fa-save"></i> Salvar
+            </button>
+
+            <button class="btn btn-secondary" onclick="limparCampos()">
+                <i class="fa fa-eraser"></i> Limpar
+            </button>
+
+            <button class="btn btn-primary" onclick="buscarUsuario()">
+                <i class="fa fa-search"></i> Buscar Usuario
+            </button>
+            
+        </div>
+
+        <div class="card">
+
+            <h2>Lista de Usuários</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Usuário</th>
+                        <th>Perfil</th>
+                        <th>Ação</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabelaUsuario">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <script>
+
+            const API = "https://projeto-springboot.onrender.com/usuario";
+            
+            //Função carregar
+            function carregar() {
+                //listarTodos();
+            }
+       
+    //Função para Salvar
+    function salvar() {
+
+    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+
+    const usuario = document.getElementById("usuario").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const perfil = document.getElementById("perfil").value.trim();
+
+    if (!usuario || !senha || !perfil) {
+        alert("⚠️ Preencha todos os campos!");
+        return;
+    }
+
+    fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, senha, perfil })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erro ao salvar");
+        return res.json();
+    })
+    .then(() => {
+        alert("Usuário salvo com sucesso!");
+        limparCampos();
+        listarTodos();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao salvar usuário!");
+    });
+}
+
+    //Função para Editar Usuário
+    function editar(id) {
+
+    if (!id) {
+        alert("ID inválido!");
+        return;
+    }
+
+    if (!confirm("Deseja atualizar este registro?")) return;
+
+    const dados = {
+        id,
+        usuario: document.getElementById("usuario").value,
+        senha: document.getElementById("senha").value,
+        perfil: document.getElementById("perfil").value
+    };
+
+    fetch(`${API}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erro ao atualizar");
+        return res.json();
+    })
+    .then(() => {
+        alert("Atualizado com sucesso!");
+        limparCampos();
+        listarTodos();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao atualizar!");
+    });
+}
+
+            //Função para Editar Usuário
+            function editar() {
+                if (confirm("Tem certeza que deseja editar esses dados?")) {
+                    const usuario = document.getElementById("usuario").value;
+                    if (!usuario) {
+                        alert("Selecione um registro para editar.");
+                        return;
+                    }
+                    const dados = {
+
+                        id: document.getElementById("id").value,
+                        usuario: document.getElementById("usuario").value,
+                        senha: document.getElementById("senha").value,
+                        perfil: document.getElementById("perfil").value,
+
+                    };
+
+                    if (confirm("Deseja realmente atualizar este registro?")) {
+                        fetch(api + "/" + id, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(dados)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Erro ao atualizar");
+                                }
+                                return response.json();
+                            })
+
+                            .then(() => {
+                                alert("Dados atualizados com sucesso!");
+                                limparCampos();
+                                listarTodos();
+                            })
+                            .catch(error => {
+                                console.error("Erro:", error);
+                                alert("Erro ao atualizar o registro.");
+
+                            });
+                    }
+                }
+            }
+
+
+    //Função para Deletar Usuário
+    function deletar(id) {
+
+    if (!id) {
+        alert("ID inválido!");
+        return;
+    }
+
+    if (!confirm("Deseja excluir?")) return;
+
+    fetch(`${API}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        alert("Excluído com sucesso!");
+        listarTodos();
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Erro ao excluir!");
+    });
+}
+    //Função para Limpar os campos
+   function limparCampos() {
+    document.getElementById("id").value = "";
+    document.getElementById("usuario").value = "";
+    document.getElementById("senha").value = "";
+    document.getElementById("perfil").value = "";
+
+}
+    //Função para pesquisar por Usuário
+    function buscarUsuario() {
+    const usuario = document.getElementById("usuario").value;
+    if (!usuario) {
+        alert("Informe o usuário!");
+        return;
+    }
+    fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))
+    .then(res => res.json())
+    .then(data => {
+        const tabela = document.getElementById("tabelaUsuario");
+        tabela.innerHTML = "";
+       if (!Array.isArray(data) || data.length === 0) {
+            tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
+            return;
+        }
+        data.forEach(show => {
+            tabela.innerHTML += `
+                <tr>
+                    <td>${show.id}</td>
+                    <td>${show.usuario}</td>
+                    <td>${show.perfil}</td>
+                    <td>
+                        <button onclick="editar(${show.id})">Editar</button>
+                        <button onclick="deletar(${show.id})">Excluir</button>
+                    </td>
+                </tr>
+                `;
+        });
+
+    })
+    .catch(() => alert("Erro ao buscar usuários"));
+}
+
+</script>
+
+</body>
+
+</html>
