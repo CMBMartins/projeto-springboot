@@ -344,8 +344,14 @@
     const API = "https://projeto-springboot.onrender.com";
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {
-    iniciarSistema();
+    function iniciarSistema() {
+    console.log("Sistema iniciado");
+    carregarDashboard();
+    listarTodos();
+    }
+        
+        window.onload = function () {
+        iniciarSistema();
     }
 
         function getUsuario() {
