@@ -341,7 +341,7 @@
 
     <script>        
 
-        const API = "https://projeto-springboot.onrender.com";
+    const API = "https://projeto-springboot.onrender.com";
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
     window.onload = function () {
@@ -368,25 +368,33 @@
     function listarTodos() {
     const usuario = getUsuario();
     if (!usuario) return;
-    fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
+
+    fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
         .then(data => {
+
             const tabela = document.getElementById("ultimasDespesas");
             if (!tabela) return;
 
             if (!Array.isArray(data) || data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
+                tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
                 return;
             }
+
             let linhas = "";
 
             data.forEach(d => {
 
                 const valor = Number(d.valor) || 0;
 
+                // 📅 FORMATAR DATA
+                const dataFormatada = d.data
+                    ? new Date(d.data).toLocaleDateString("pt-BR")
+                    : "";
+
                 linhas += `
                 <tr>
-                <th>ID</th>                            
-                    <td>${d.data ?? ""}</td>
+                    <td>${d.id ?? ""}</td>
+                    <td>${dataFormatada}</td>
                     <td>${d.descricao ?? ""}</td>
                     <td>${d.categoria ?? ""}</td>
                     <td>${d.tipo ?? ""}</td>
@@ -401,8 +409,15 @@
             tabela.innerHTML = linhas;
 
         })
-        .catch(error => console.error("Erro:", error));
-     }  
+        .catch(error => {
+            console.error("Erro ao listar despesas:", error);
+
+            const tabela = document.getElementById("ultimasDespesas");
+            if (tabela) {
+                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+            }
+        });
+}
 
         // FUNÇÃO PARA SALVAR
         function salvar() {
