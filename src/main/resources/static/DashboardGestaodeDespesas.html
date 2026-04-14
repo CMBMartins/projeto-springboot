@@ -732,7 +732,9 @@ Promise.all([
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
             localStorage.removeItem("usuariologado");
-            document.getElementById("usuariologado").value = "";
+            document.getElementById("usuariologado").value = data.usuario; 
+            alert("Logout realizado com sucesso!");
+            
             carregarDashboard();
             carregarGraficoCategoria();    
             carregarGraficoMensal();
@@ -743,7 +745,7 @@ Promise.all([
             limparLogin();
         }
 
-      //function logout() {
+          //function logout() {
           //localStorage.removeItem("usuario");
           //window.location.href = "login.html";
           //}
