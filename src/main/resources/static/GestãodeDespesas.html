@@ -494,8 +494,8 @@
 }
 
 
-    // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
-    function editar() {
+   // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
+   function editar() {
 
     const usuario = getUsuario();
 
@@ -518,12 +518,12 @@
         descricao: document.getElementById("descricao").value,
         categoria: document.getElementById("categoria").value,
         tipo: document.getElementById("tipo").value,
-        valor: Number(document.getElementById("valor").value),
+        valor: Number(document.getElementById("valor").value) || 0,
         status: document.getElementById("status").value,
         usuario: usuario
     };
 
-    fetch(API + "/" + id, {
+    fetch(`${API}/despesas/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -531,15 +531,22 @@
         body: JSON.stringify(dados)
     })
     .then(response => {
-        if (!response.ok) throw new Error("Erro ao editar");
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.error("Erro do backend:", text);
+                throw new Error("Erro ao editar");
+            });
+        }
+        return response.json();
     })
     .then(() => {
+        alert("✅ Editado com sucesso!");
         limparCampos();
         listarTodos();
     })
     .catch(err => {
         console.error(err);
-        alert("Erro ao editar!");
+        alert("❌ Erro ao editar!");
     });
 }
 
