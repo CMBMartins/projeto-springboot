@@ -347,18 +347,17 @@
     window.onload = function () {    
     }
 
-        //FUNÇÃO PARA INICIAR USUARIO
-        function getUsuario() {
-        const usuario = document.getElementById("usuariologado")?.value;
+    //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+    const usuario = localStorage.getItem("usuario");
 
-            // 🔥 BLOQUEIO TOTAL
-            if (!usuario) {
-                alert("⚠️ Faça login primeiro!");
-                throw new Error("Usuário não logado");
-            }
+    if (!usuario) {
+        alert("⚠️ Faça login primeiro!");
+        throw new Error("Usuário não logado");
+    }
 
-            return usuario;
-        }     
+    return usuario;
+    }
 
     //FUNÇÃO PARA FECH SEGURO
     function fetchSeguro(url) {
@@ -375,8 +374,14 @@
     // FUNÇÃO PARA LISTAR TODAS DESPESAS
    function listarTodos() {
 
-    const usuario = localStorage.getItem("usuario"); // ✅ CORRETO
-    if (!usuario) return;
+    let usuario;
+
+    try {
+        usuario = getUsuario();
+    } catch (e) {
+        console.warn("Usuário não logado");
+        return;
+    }
 
     fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
         .then(data => {
