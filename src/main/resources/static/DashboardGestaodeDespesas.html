@@ -734,6 +734,13 @@ Promise.all([
             localStorage.removeItem("usuariologado");
             document.getElementById("usuariologado").value = "";
             carregarDashboard();
+            carregarGraficoCategoria();    
+            carregarGraficoMensal();
+            gerarGraficoStatus();
+            carregarComparativoMensal();
+            carregarTotal();
+            listarTodos();                
+            limparLogin();
         }
 
       //function logout() {
