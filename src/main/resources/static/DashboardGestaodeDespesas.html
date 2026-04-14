@@ -297,7 +297,8 @@ th, td {
 
     //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
-    return localStorage.getItem("usuario");
+    //return localStorage.getItem("usuario");
+    return document.getElementById("usuario").value;
     }
     
     //DASHBOARD COMPLETO (usa endpoints específicos)
