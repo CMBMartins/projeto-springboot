@@ -342,21 +342,9 @@
     <script>        
 
     const API = "https://projeto-springboot.onrender.com";
-
-    //FUNÇÃO PARA CARREGAR O DASHBOARD
-    function carregarDashboard() {
-    console.log("Carregando dashboard...");
-    }
-
-    //FUNÇÃO PARA INICIAR O SISTEMA
-    function iniciarSistema() {
-    console.log("Sistema iniciado");
-    carregarDashboard();
-    }
-
+   
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {
-    iniciarSistema();
+    window.onload = function () {    
     }
 
         //FUNÇÃO PARA INICIAR USUARIO
@@ -370,10 +358,7 @@
             }
 
             return usuario;
-        }
-        
-
-    const id = document.getElementById("id").value;    
+        }     
 
     //FUNÇÃO PARA FECH SEGURO
     function fetchSeguro(url) {
