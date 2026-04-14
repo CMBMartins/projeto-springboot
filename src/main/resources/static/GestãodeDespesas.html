@@ -716,7 +716,8 @@
         function logout() {
             localStorage.setItem("usuario", data.usuario);
             document.getElementById("usuariologado").value = data.usuario;             
-            alert("Logout realizado com sucesso!");                               
+            alert("Logout realizado com sucesso!");
+            listarTodos();
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
