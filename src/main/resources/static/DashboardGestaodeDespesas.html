@@ -735,13 +735,21 @@ Promise.all([
                 });
       }
       
-        // FUNÇÃO EFETUAR O LOGOUT
-        function logout() {            
-            localStorage.setItem("usuario", data.usuario);
-            document.getElementById("usuariologado").value = data.usuario; 
-            alert("Logout realizado com sucesso!");
-            iniciarSistema();
-        }
+    // FUNÇÃO EFETUAR O LOGOUT        
+    function logout() {
+
+    // 🔥 Remove o usuário do sistema
+    localStorage.removeItem("usuario");
+
+    // 🔥 Limpa o campo na tela
+    const campo = document.getElementById("usuariologado");
+    if (campo) campo.value = "";
+
+    alert("Logout realizado com sucesso!");
+
+    // 🔥 Redirecionar (recomendado)
+    window.location.href = "login.html"; 
+}
 
           //function logout() {
           //localStorage.removeItem("usuario");
