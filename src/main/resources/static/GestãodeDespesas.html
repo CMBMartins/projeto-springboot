@@ -555,18 +555,19 @@
 
     if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-    fetch(`${API}/${id}`, {
+    fetch(`${API}/despesas/${id}`, {
         method: "DELETE"
     })
     .then(response => {
         if (!response.ok) throw new Error("Erro ao excluir");
     })
     .then(() => {
+        alert("✅ Registro excluído com sucesso!");
         listarTodos();
     })
     .catch(error => {
         console.error(error);
-        alert("Erro ao excluir o registro.");
+        alert("❌ Erro ao excluir o registro.");
     });
 }
 
