@@ -293,13 +293,13 @@ th, td {
         }
         return res.json();
           });
-        }
+        }    
 
     //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
-    return document.getElementById("usuario").value;
+    return localStorage.getItem("usuario");
     }
-
+    
     //DASHBOARD COMPLETO (usa endpoints específicos)
     function carregarDashboard() { 
     const usuario = localStorage.getItem("usuario"); 
