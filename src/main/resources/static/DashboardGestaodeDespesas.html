@@ -309,6 +309,11 @@ th, td {
     window.onload = function () {    
     //carregarDashboard();
     }
+        
+    function iniciarSistema() {
+    console.log("Sistema iniciado");
+    carregarDashboard();
+    }
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
@@ -730,20 +735,11 @@ Promise.all([
       }
       
         // FUNÇÃO EFETUAR O LOGOUT
-        function logout() {
-            
+        function logout() {            
             localStorage.setItem("usuario", data.usuario);
             document.getElementById("usuariologado").value = data.usuario; 
             alert("Logout realizado com sucesso!");
-            
-            carregarDashboard();
-            carregarGraficoCategoria();    
-            carregarGraficoMensal();
-            gerarGraficoStatus();
-            carregarComparativoMensal();
-            carregarTotal();
-            listarTodos();                
-            limparLogin();
+            iniciarSistema();
         }
 
           //function logout() {
