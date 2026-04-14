@@ -347,6 +347,11 @@
     window.onload = function () {    
     }
 
+    function iniciarSistema() {
+    console.log("Sistema iniciado");
+    listarTodos();
+    }
+
     //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
     const usuario = localStorage.getItem("usuario");
@@ -716,7 +721,8 @@
             localStorage.setItem("usuario", data.usuario);
             document.getElementById("usuariologado").value = data.usuario;             
             alert("Logout realizado com sucesso!");
-            listarTodos();
+            listarTodos();            
+            iniciarSistema();
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
