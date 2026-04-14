@@ -343,23 +343,25 @@
 
     const API = "https://projeto-springboot.onrender.com";
 
-    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    //FUNÇÃO PARA CARREGAR O DASHBOARD
     function carregarDashboard() {
     console.log("Carregando dashboard...");
     }
 
+    //FUNÇÃO PARA INICIAR O SISTEMA
     function iniciarSistema() {
     console.log("Sistema iniciado");
     carregarDashboard();
     }
 
+    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
     window.onload = function () {
     iniciarSistema();
     }
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-            const usuario = document.getElementById("usuariologado")?.value;
+        const usuario = document.getElementById("usuariologado")?.value;
 
             // 🔥 BLOQUEIO TOTAL
             if (!usuario) {
@@ -369,9 +371,11 @@
 
             return usuario;
         }
+        
 
-        const id = document.getElementById("id").value;         
+    const id = document.getElementById("id").value;    
 
+    //FUNÇÃO PARA FECH SEGURO
     function fetchSeguro(url) {
     return fetch(url)
         .then(res => {
@@ -381,10 +385,12 @@
             return res.json();
         });
     }
+
         
     // FUNÇÃO PARA LISTAR TODAS DESPESAS
-    function listarTodos() {
-    const usuario = getUsuario();
+   function listarTodos() {
+
+    const usuario = localStorage.getItem("usuario"); // ✅ CORRETO
     if (!usuario) return;
 
     fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
@@ -394,7 +400,7 @@
             if (!tabela) return;
 
             if (!Array.isArray(data) || data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
+                tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
                 return;
             }
 
@@ -404,7 +410,6 @@
 
                 const valor = Number(d.valor) || 0;
 
-                // 📅 FORMATAR DATA
                 const dataFormatada = d.data
                     ? new Date(d.data).toLocaleDateString("pt-BR")
                     : "";
@@ -432,15 +437,16 @@
 
             const tabela = document.getElementById("ultimasDespesas");
             if (tabela) {
-                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
             }
         });
 }
 
-        // FUNÇÃO PARA SALVAR
-        function salvar() {
+        
+    // FUNÇÃO PARA SALVAR
+    function salvar() {
 
-        const usuario = getUsuario();
+    const usuario = getUsuario();
 
     if (!usuario) {
         alert("⚠️ Faça Login!");
@@ -481,8 +487,8 @@
 }
 
 
-        // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
-        function editar() {
+    // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
+    function editar() {
 
     const usuario = getUsuario();
 
@@ -530,8 +536,8 @@
     });
 }
 
-        // FUNÇÃO PARA EXCLUIR
-        function deletar(id) {
+    // FUNÇÃO PARA EXCLUIR
+    function deletar(id) {
 
     const usuario = getUsuario();
 
@@ -562,8 +568,8 @@
     });
 }
 
-        // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
-        function buscarDespesa() {
+    // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
+    function buscarDespesa() {
 
     const usuario = getUsuario();
 
