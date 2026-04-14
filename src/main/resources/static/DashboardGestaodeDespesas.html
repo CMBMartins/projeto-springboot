@@ -309,11 +309,12 @@ th, td {
     window.onload = function () {    
     //carregarDashboard();
     }
-        
+  
     function iniciarSistema() {
     console.log("Sistema iniciado");
-    carregarDashboard();
-    }
+    listarTodos();
+    }        
+    
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
