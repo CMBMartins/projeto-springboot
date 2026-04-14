@@ -285,7 +285,7 @@ th, td {
 
     //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
-    return document.getElementById("usuariologado").value;
+    return document.getElementById("usuario").value;
     }
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
@@ -531,7 +531,9 @@ Promise.all([
 
     // FUNÇÃO DE CARD DO TOTAL GERAL DAS DESPESAS          
     function carregarTotal() {
+        
     const usuario = getUsuario();
+        
     if (!usuario) return;
     
     fetchSeguro(API + "/despesas/total?usuario=" + usuario)
@@ -561,6 +563,7 @@ Promise.all([
     function carregarComparativoMensal() {
 
     const usuario = getUsuario();
+        
     if (!usuario) return;
 
     fetchSeguro(API + "/despesas/comparativo-mensal?usuario=" + usuario)
@@ -602,6 +605,7 @@ Promise.all([
    function gerarGraficoStatus() {
 
     const usuario = getUsuario();
+       
     if (!usuario) return;
        
     fetchSeguro(API + "/despesas/status?usuario=" + usuario)
@@ -628,7 +632,9 @@ Promise.all([
 
    // 📋 FUNÇÃO LISTAR TODAS DESPESAS
    function listarTodos() {
+       
     const usuario = getUsuario();
+       
     if (!usuario) return;
     fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
         .then(data => {
@@ -666,6 +672,8 @@ Promise.all([
     
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
+            const usuario = getUsuario();
+            
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
 
