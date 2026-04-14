@@ -731,7 +731,8 @@ Promise.all([
       
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
-            localStorage.removeItem("usuariologado");
+            
+            localStorage.setItem("usuario", data.usuario);
             document.getElementById("usuariologado").value = data.usuario; 
             alert("Logout realizado com sucesso!");
             
