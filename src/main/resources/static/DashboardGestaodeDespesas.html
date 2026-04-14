@@ -350,7 +350,7 @@ th, td {
         });
 
         
-// SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
+// FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
 Promise.all([
     fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`).then(res => res.json()),
     fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`).then(res => res.json())
@@ -369,8 +369,7 @@ Promise.all([
         });
 
 });
-}   
-   
+}      
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
@@ -425,7 +424,8 @@ Promise.all([
 
         })
         .catch(err => console.error("Erro gráfico:", err));
-       }    
+       }
+      
 
     // FUNÇÃO PARA GERAR GRÁFICO DE DESPESAS MENSAIS
     function carregarGraficoMensal() {
@@ -672,7 +672,6 @@ Promise.all([
     
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
-            const usuario = getUsuario();
             
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
