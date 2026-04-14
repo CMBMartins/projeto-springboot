@@ -283,19 +283,31 @@ th, td {
 
     const API = "https://projeto-springboot.onrender.com";
 
+      // FUNÇÃO FETCH SEGURO
+      function fetchSeguro(url) {
+      return fetch(url).then(async res => {
+        if (!res.ok) {
+            const erro = await res.text();
+            console.error("Erro API:", erro);
+            throw new Error("Erro na API");
+        }
+        return res.json();
+          });
+        }
+
     //FUNÇÃO PARA INICIAR USUARIO
     function getUsuario() {
     return document.getElementById("usuario").value;
     }
 
+    //DASHBOARD COMPLETO (usa endpoints específicos)
+    function carregarDashboard() { 
+    const usuario = localStorage.getItem("usuario"); 
+
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
     window.onload = function () {    
     //carregarDashboard();
     }
-
-    //DASHBOARD COMPLETO (usa endpoints específicos)
-    function carregarDashboard() { 
-    const usuario = localStorage.getItem("usuario"); 
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
@@ -507,18 +519,7 @@ Promise.all([
         })
         .catch(err => console.error("Erro mensal:", err));
         }      
-
-      // FUNÇÃO FETCH SEGURO
-      function fetchSeguro(url) {
-      return fetch(url).then(async res => {
-        if (!res.ok) {
-            const erro = await res.text();
-            console.error("Erro API:", erro);
-            throw new Error("Erro na API");
-        }
-        return res.json();
-    });
-}
+      
 
       // 🔥 FUNÇÃO PARA FORMATAR OS VALORES
     function formatar(valor) {
