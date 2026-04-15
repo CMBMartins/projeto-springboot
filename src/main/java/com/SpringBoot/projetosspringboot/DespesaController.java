@@ -45,22 +45,20 @@ public class DespesaController {
         }
 
         @PutMapping("/status/{id}")
-        public Despesa editarStatus(@PathVariable Integer id, @RequestBody Despesa nova) {
-                
+        public Despesa editarStatus(@PathVariable Integer id) {
+
         Despesa existente = repository.findById(id)
         .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
-        existente.setStatus(nova.getStatus());
+
+    // 🔥 Alterna automaticamente
+        if ("PAGA".equalsIgnoreCase(existente.getStatus())) {
+        existente.setStatus("PENDENTE");
+        } else {
+        existente.setStatus("PAGA");
+       }
 
         return repository.save(existente);
-        }
-
-        @GetMapping("/buscar")
-        public List<Despesa> buscar(
-        @RequestParam String usuario,
-        @RequestParam String descricao) {
-                 return repository
-                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
-        }
+        }       
         
 
     // 💰 RENDA
