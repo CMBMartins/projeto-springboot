@@ -311,13 +311,19 @@ th, td {
     
     //DASHBOARD COMPLETO (usa endpoints específicos)
     function carregarDashboard() { 
+    console.log("Dashboard carregado");
+    listarTodos();
+    }
+      
+    //function carregarDashboard() { 
     const usuario = localStorage.getItem("usuario"); 
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {    
-    //carregarDashboard();
-    }
-  
+    window.onload = function () {
+    console.log("Sistema iniciado");
+    listarTodos();
+     }        
+    
     function iniciarSistema() {
     console.log("Sistema iniciado");
     listarTodos();
