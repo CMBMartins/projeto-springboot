@@ -157,6 +157,14 @@ th, td {
     .graficos {
         grid-template-columns: 1fr;
     }
+
+    .linha-paga {
+    background-color: #d4edda;
+}
+
+.linha-pendente {
+    background-color: #f8d7da;
+}
 }
 </style>
 
@@ -640,33 +648,72 @@ Promise.all([
 
    // 📋 FUNÇÃO LISTAR TODAS DESPESAS
    function listarTodos() {
-       
-    const usuario = getUsuario();
-       
-    if (!usuario) return;
-    fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
-        .then(data => {
-            const tabela = document.getElementById("ultimasDespesas");
-            if (!tabela) return;
 
-            if (!Array.isArray(data) || data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
+    const usuario = getUsuario();
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        alert("⚠️ Faça Login!");
+        return;
+    }
+
+    fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+        .then(data => {
+
+            const tabela = document.getElementById("tabelaDespesas");
+
+            if (!tabela) {
+                console.error("Tabela não encontrada!");
                 return;
             }
+
+            if (!Array.isArray(data)) {
+                console.error("Resposta inválida:", data);
+                tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                return;
+            }
+
+            if (data.length === 0) {
+                tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
+                return;
+            }
+
             let linhas = "";
 
-            data.forEach(d => {
+            // 🔥 AQUI entra a lógica nova
+            data.forEach(show => {
 
-                const valor = Number(d.valor) || 0;
+                const valor = Number(show.valor) || 0;
+
+                const dataFormatada = show.data
+                    ? new Date(show.data).toLocaleDateString("pt-BR")
+                    : "";
+
+                // 🎨 Classe da linha (cor)
+                const classeLinha = show.status === "PAGA"
+                    ? "linha-paga"
+                    : "linha-pendente";
+
+                // 🔘 Texto do botão
+                const textoBotao = show.status === "PAGA"
+                    ? "↩️ Reabrir"
+                    : "💰 Pagar";
 
                 linhas += `
-                <tr>
-                    <td>${d.data ?? ""}</td>
-                    <td>${d.descricao ?? ""}</td>
-                    <td>${formatar(valor)}</td>
-                    <td>${d.status ?? ""}</td>
+                <tr class="${classeLinha}">
+                    <td>${show.id ?? ""}</td>
+                    <td>${dataFormatada}</td>
+                    <td>${show.descricao ?? ""}</td>
+                    <td>${show.categoria ?? ""}</td>
+                    <td>${show.tipo ?? ""}</td>
+                    <td>${valor.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
+                    })}</td>
+                    <td>${show.status ?? ""}</td>
                     <td>
-                        <button onclick="deletar(${d.id})">Excluir</button>
+                        <button onclick="deletar(${show.id})">
+                            ${textoBotao}
+                        </button>
                     </td>
                 </tr>`;
             });
@@ -674,8 +721,15 @@ Promise.all([
             tabela.innerHTML = linhas;
 
         })
-        .catch(error => console.error("Erro:", error));
-     }  
+        .catch(err => {
+            console.error("Erro ao listar:", err);
+
+            const tabela = document.getElementById("tabelaDespesas");
+            if (tabela) {
+                tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+            }
+        });
+}
 
     
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
