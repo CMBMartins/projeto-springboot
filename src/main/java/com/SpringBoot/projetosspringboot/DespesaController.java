@@ -44,6 +44,16 @@ public class DespesaController {
                 return repository.save(existente);
         }
 
+        @PutMapping("/status/{id}")
+        public Despesa editarStatus(@PathVariable Integer id, @RequestBody Despesa nova) {
+                
+        Despesa existente = repository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
+        existente.setStatus(nova.getStatus());
+
+        return repository.save(existente);
+        }
+
         @GetMapping("/buscar")
         public List<Despesa> buscar(
         @RequestParam String usuario,
