@@ -393,28 +393,8 @@ window.onload = function () {
                     currency: "BRL"
                 });
         });
-}
-    
-        
-// FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
-Promise.all([
-    fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`).then(res => res.json()),
-    fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`).then(res => res.json())
-])
-.then(([renda, totalDespesas]) => {
+}      
 
-    console.log("RENDA:", renda);
-    console.log("DESPESAS:", totalDespesas);
-
-    const saldo = (renda || 0) - (totalDespesas || 0);
-
-    document.getElementById("saldo").innerText =
-        Number(saldo).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
-
-});     
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
