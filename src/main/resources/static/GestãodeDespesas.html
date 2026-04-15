@@ -553,21 +553,9 @@
     // FUNÇÃO PARA EDITAR STATUS
     function editarStatus(id) {
 
-    const usuario = getUsuario();
+    if (!confirm("Marcar como PAGA?")) return;
 
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    if (!id) {
-        alert("ID inválido!");
-        return;
-    }
-
-    if (!confirm("Marcar esta despesa como PAGA?")) return;
-
-        fetch(API + "/despesas/" + id, {    
+    fetch(API + "/despesas/status/" + id, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -576,18 +564,16 @@
             status: "PAGA"
         })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Erro ao atualizar status");
-        }
-        return response.json();
+    .then(res => {
+        if (!res.ok) throw new Error("Erro ao atualizar status");
+        return res.json();
     })
     .then(() => {
-        alert("✅ Status atualizado para PAGA!");
-        listar(); // atualiza a tabela
+        alert("✅ Status atualizado!");
+        listar();
     })
-    .catch(error => {
-        console.error(error);
+    .catch(err => {
+        console.error(err);
         alert("❌ Erro ao atualizar");
     });
 }
