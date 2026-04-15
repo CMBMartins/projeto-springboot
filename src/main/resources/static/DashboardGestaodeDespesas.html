@@ -313,12 +313,14 @@ function carregarDashboard() {
     console.log("Dashboard carregado");
     listarTodos();
 } 
+
+    
 // INICIAR PÁGINA
 window.onload = function () {
 
     console.log("Sistema iniciado");
-
-    const usuario = getUsuario();
+    const usuario = localStorage.getItem("usuario");
+    console.log("USUARIO LOGADO:", usuario); 
 
     if (!usuario) {
         console.warn("Usuário não encontrado!");
@@ -742,21 +744,24 @@ window.onload = function () {
                     }
                     return response.json();
                 })
-                .then(data => {    
+                .then(data => {
                     
-     localStorage.setItem("usuario", data.usuario);
-     document.getElementById("usuariologado").value = data.usuario;                    
-     alert("Login realizado com sucesso!");                    
-     //window.location.href = "DashboardGestaodeDespesas.html";
+    console.log("LOGIN RETORNO:", data);   
+    localStorage.setItem("usuario", data.usuario);
+    alert("Login realizado com sucesso!");
                     
-    carregarDashboard();
-    carregarGraficoCategoria();    
-    carregarGraficoMensal();
-    gerarGraficoStatus();
-    carregarComparativoMensal();
-    carregarTotal();
-    listarTodos();                
-    limparLogin();
+    window.location.href = "DashboardGestaodeDespesas.html";
+
+})            
+    
+    //carregarDashboard();
+    //carregarGraficoCategoria();    
+    //carregarGraficoMensal();
+    //gerarGraficoStatus();
+    //carregarComparativoMensal();
+    //carregarTotal();
+    //listarTodos();                
+    //limparLogin();
      })
             .catch(error => {
                     alert("Usuário ou senha incorretos");
