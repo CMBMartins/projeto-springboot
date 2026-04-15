@@ -431,7 +431,7 @@
                     })}</td>
                     <td>${show.status ?? ""}</td>
                     <td>
-                        <button onclick="editar(${show.id})">Editar Status</button>
+                        <button onclick="editarStatus(${show.id})">Editar Status</button>
                     </td>
                 </tr>`;
             });
@@ -550,8 +550,8 @@
     });
 }
 
-    // FUNÇÃO PARA EXCLUIR
-    function editar(id) {
+    // FUNÇÃO PARA EDITAR STATUS
+    function editarStatus(id) {
 
     const usuario = getUsuario();
 
