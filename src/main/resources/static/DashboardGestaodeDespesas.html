@@ -287,7 +287,7 @@ th, td {
 
 </div>   
 
-  <script>
+<script>
 
 const API = "https://projeto-springboot.onrender.com";
 
@@ -372,9 +372,7 @@ window.onload = function () {
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
-
-};
-      
+    
         
 // FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
 Promise.all([
@@ -778,11 +776,6 @@ Promise.all([
     // 🔥 Redirecionar (recomendado)
     window.location.href = "DashboardGestaodeDespesas.html";
 }
-
-          //function logout() {
-          //localStorage.removeItem("usuario");
-          //window.location.href = "login.html";
-          //}
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
         function limparLogin() {
