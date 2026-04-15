@@ -291,94 +291,98 @@ th, td {
 
     const API = "https://projeto-springboot.onrender.com";
 
-      // FUNÇÃO FETCH SEGURO
-      function fetchSeguro(url) {
-      return fetch(url).then(async res => {
+// FETCH SEGURO
+function fetchSeguro(url) {
+    return fetch(url).then(async res => {
         if (!res.ok) {
             const erro = await res.text();
             console.error("Erro API:", erro);
             throw new Error("Erro na API");
         }
         return res.json();
-          });
-        }
+    });
+}
 
-    //FUNÇÃO PARA INICIAR USUARIO
-    function getUsuario() {    
-    return document.getElementById("usuario").value;
-    }
-    
-    //DASHBOARD COMPLETO (usa endpoints específicos)
-    function carregarDashboard() { 
+// USUÁRIO (PEGAR DO LOCALSTORAGE NO DASHBOARD)
+function getUsuario() {
+    return localStorage.getItem("usuario");
+}
+
+// CARREGAR DASHBOARD
+function carregarDashboard() {
     console.log("Dashboard carregado");
     listarTodos();
+}
+
+// INICIAR PÁGINA
+window.onload = function () {
+
+    console.log("Sistema iniciado");
+
+    const usuario = getUsuario(); // 🔥 AGORA DEFINIDO
+
+    if (!usuario) {
+        console.warn("Usuário não encontrado!");
+        return;
     }
-      
-    
-    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {
-    console.log("Sistema iniciado");
+
     listarTodos();
-     }        
-    
-    function iniciarSistema() {
-    console.log("Sistema iniciado");
-    listarTodos();
-    }        
-    
 
     // TOTAL
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
-    .then(res => res.json())
-    .then(data => {
-        console.log("TOTAL:", data);
+        .then(res => res.json())
+        .then(data => {
+            console.log("TOTAL:", data);
 
-        document.getElementById("total").innerText =
-            Number(data || 0).toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-    });
+            document.getElementById("total").innerText =
+                Number(data || 0).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+        });
 
     // RENDA
     fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
             console.log("RENDA:", data);
+
             document.getElementById("renda").innerText =
                 Number(data || 0).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL"
                 });
-        });        
-        
+        });
+
     // MÊS
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
-    .then(res => res.json())
-    .then(data => {
-        console.log("MES:", data);
+        .then(res => res.json())
+        .then(data => {
+            console.log("MES:", data);
 
-        const valor =
-            typeof data === "number" ? data :
-            data.mes || data.total || 0;
+            const valor =
+                typeof data === "number" ? data :
+                data.mes || data.total || 0;
 
-        document.getElementById("mes").innerText =
-            Number(valor || 0).toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-    });        
-    
+            document.getElementById("mes").innerText =
+                Number(valor || 0).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+        });
 
     // STATUS
     fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            console.log("STATUS:", data);            
+            console.log("STATUS:", data);
+
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
 
+}; 
+      
         
 // FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
 Promise.all([
