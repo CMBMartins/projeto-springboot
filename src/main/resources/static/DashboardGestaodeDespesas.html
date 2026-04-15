@@ -316,9 +316,9 @@ function carregarDashboard() {
 
 // INICIAR PÁGINA
 window.onload = function () {
-
+    localStorage.removeItem("usuario");
     console.log("Sistema iniciado");
-
+   
     const usuario = getUsuario();
 
     if (!usuario) {
