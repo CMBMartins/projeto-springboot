@@ -157,14 +157,6 @@ th, td {
     .graficos {
         grid-template-columns: 1fr;
     }
-
-    .linha-paga {
-    background-color: #d4edda;
-}
-
-.linha-pendente {
-    background-color: #f8d7da;
-}
 }
 </style>
 
@@ -287,116 +279,116 @@ th, td {
 
 </div>   
 
-<script>
+  <script>
 
-const API = "https://projeto-springboot.onrender.com";
+    const API = "https://projeto-springboot.onrender.com";
 
-// FETCH SEGURO
-function fetchSeguro(url) {
-    return fetch(url).then(async res => {
+      // FUNÇÃO FETCH SEGURO
+      function fetchSeguro(url) {
+      return fetch(url).then(async res => {
         if (!res.ok) {
             const erro = await res.text();
             console.error("Erro API:", erro);
             throw new Error("Erro na API");
         }
         return res.json();
-    });
-}
+          });
+        }    
 
-// USUÁRIO
-function getUsuario() {
-    return localStorage.getItem("usuario");
-}
-
-// CARREGAR DASHBOARD
-function carregarDashboard() {
-    console.log("Dashboard carregado");
-    listarTodos();
-} 
-
-    
-// INICIAR PÁGINA
-window.onload = function () {
-
-    console.log("Sistema iniciado");
-    const usuario = localStorage.getItem("usuario");
-    console.log("USUARIO LOGADO:", usuario); 
-
-    if (!usuario) {
-        console.warn("Usuário não encontrado!");
-        return;
+    //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+    //return localStorage.getItem("usuario");
+    return document.getElementById("usuario").value;
     }
+    
+    //DASHBOARD COMPLETO (usa endpoints específicos)
+    function carregarDashboard() { 
+    const usuario = localStorage.getItem("usuario"); 
 
-    let renda = 0;
-    let totalDespesas = 0;
+    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    window.onload = function () {    
+    //carregarDashboard();
+    }
+  
+    function iniciarSistema() {
+    console.log("Sistema iniciado");
+    listarTodos();
+    }        
+    
 
-    // 💰 RENDA
-    const promessaRenda = fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
+    // TOTAL
+    fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
+    .then(res => res.json())
+    .then(data => {
+        console.log("TOTAL:", data);
+
+        document.getElementById("total").innerText =
+            Number(data || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+    });
+
+    // RENDA
+    fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            renda = Number(data || 0);
-
+            console.log("RENDA:", data);
             document.getElementById("renda").innerText =
-                renda.toLocaleString("pt-BR", {
+                Number(data || 0).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL"
                 });
-
-            return renda;
-        });
-
-    // 💸 TOTAL DESPESAS
-    const promessaTotal = fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`)
-        .then(res => res.json())
-        .then(data => {
-            totalDespesas = Number(data || 0);
-
-            document.getElementById("total").innerText =
-                totalDespesas.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                });
-
-            return totalDespesas;
-        });
-
-    // 📅 MÊS
+        });        
+        
+    // MÊS
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
-        .then(res => res.json())
-        .then(data => {
-            const valor =
-                typeof data === "number" ? data :
-                data.mes || data.total || 0;
+    .then(res => res.json())
+    .then(data => {
+        console.log("MES:", data);
 
-            document.getElementById("mes").innerText =
-                Number(valor || 0).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                });
-        });
+        const valor =
+            typeof data === "number" ? data :
+            data.mes || data.total || 0;
 
-    // ✅ STATUS
+        document.getElementById("mes").innerText =
+            Number(valor || 0).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            });
+    });        
+    
+
+    // STATUS
     fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
+            console.log("STATUS:", data);            
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
 
-    // 🔥 SALDO (usa os mesmos valores)
-    Promise.all([promessaRenda, promessaTotal])
-        .then(([renda, totalDespesas]) => {
+        
+// FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
+Promise.all([
+    fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`).then(res => res.json()),
+    fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`).then(res => res.json())
+])
+.then(([renda, totalDespesas]) => {
 
-            const saldo = renda - totalDespesas;
+    console.log("RENDA:", renda);
+    console.log("DESPESAS:", totalDespesas);
 
-            document.getElementById("saldo").innerText =
-                saldo.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                });
+    const saldo = (renda || 0) - (totalDespesas || 0);
+
+    document.getElementById("saldo").innerText =
+        Number(saldo).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
         });
-}      
 
+});
+}      
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
@@ -648,63 +640,42 @@ window.onload = function () {
 
    // 📋 FUNÇÃO LISTAR TODAS DESPESAS
    function listarTodos() {
-
+       
     const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+       
+    if (!usuario) return;
+    fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
         .then(data => {
+            const tabela = document.getElementById("ultimasDespesas");
+            if (!tabela) return;
 
-            const tabela = document.getElementById("ultimasDespesas"); // 🔥 corrigido
-
-            if (!tabela) {
-                console.error("Tabela não encontrada!");
+            if (!Array.isArray(data) || data.length === 0) {
+                tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
                 return;
             }
-
-            if (!Array.isArray(data)) {
-                tabela.innerHTML = "<tr><td colspan='4'>Erro ao carregar</td></tr>";
-                return;
-            }
-
-            if (data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='4'>Sem dados</td></tr>";
-                return;
-            }
-
             let linhas = "";
 
-            data.forEach(show => {
+            data.forEach(d => {
 
-                const valor = Number(show.valor) || 0;
-
-                const dataFormatada = show.data
-                    ? new Date(show.data).toLocaleDateString("pt-BR")
-                    : "";
+                const valor = Number(d.valor) || 0;
 
                 linhas += `
                 <tr>
-                    <td>${dataFormatada}</td>
-                    <td>${show.descricao ?? ""}</td>
-                    <td>${valor.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL"
-                    })}</td>
-                    <td>${show.status ?? ""}</td>
+                    <td>${d.data ?? ""}</td>
+                    <td>${d.descricao ?? ""}</td>
+                    <td>${formatar(valor)}</td>
+                    <td>${d.status ?? ""}</td>
+                    <td>
+                        <button onclick="deletar(${d.id})">Excluir</button>
+                    </td>
                 </tr>`;
             });
 
             tabela.innerHTML = linhas;
 
         })
-        .catch(err => {
-            console.error(err);
-        });
-     }
+        .catch(error => console.error("Erro:", error));
+     }  
 
     
       // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
@@ -744,24 +715,20 @@ window.onload = function () {
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then(data => {    
                     
-    console.log("LOGIN RETORNO:", data);   
-    localStorage.setItem("usuario", data.usuario);
-    alert("Login realizado com sucesso!");
+     localStorage.setItem("usuario", data.usuario);
+     document.getElementById("usuariologado").value = data.usuario;                    
+     alert("Login realizado com sucesso!");
                     
-    window.location.href = "DashboardGestaodeDespesas.html";
-
-})            
-    
-    //carregarDashboard();
-    //carregarGraficoCategoria();    
-    //carregarGraficoMensal();
-    //gerarGraficoStatus();
-    //carregarComparativoMensal();
-    //carregarTotal();
-    //listarTodos();                
-    //limparLogin();
+    carregarDashboard();
+    carregarGraficoCategoria();    
+    carregarGraficoMensal();
+    gerarGraficoStatus();
+    carregarComparativoMensal();
+    carregarTotal();
+    listarTodos();                
+    limparLogin();
      })
             .catch(error => {
                     alert("Usuário ou senha incorretos");
@@ -783,6 +750,11 @@ window.onload = function () {
     // 🔥 Redirecionar (recomendado)
     window.location.href = "DashboardGestaodeDespesas.html";
 }
+
+          //function logout() {
+          //localStorage.removeItem("usuario");
+          //window.location.href = "login.html";
+          //}
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
         function limparLogin() {
