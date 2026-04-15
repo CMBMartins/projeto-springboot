@@ -234,6 +234,14 @@
         background: #34495e;
         color: white;
     }
+
+    .linha-paga {
+    background-color: #d4edda; /* verde claro */
+    }
+
+    .linha-pendente {
+    background-color: #f8d7da; /* vermelho claro */
+    }
 </style>
 
 </head>
@@ -410,6 +418,7 @@
 
             let linhas = "";
 
+            // 🔥 AQUI entra a lógica nova
             data.forEach(show => {
 
                 const valor = Number(show.valor) || 0;
@@ -418,8 +427,18 @@
                     ? new Date(show.data).toLocaleDateString("pt-BR")
                     : "";
 
+                // 🎨 Classe da linha (cor)
+                const classeLinha = show.status === "PAGA"
+                    ? "linha-paga"
+                    : "linha-pendente";
+
+                // 🔘 Texto do botão
+                const textoBotao = show.status === "PAGA"
+                    ? "↩️ Reabrir"
+                    : "💰 Pagar";
+
                 linhas += `
-                <tr>
+                <tr class="${classeLinha}">
                     <td>${show.id ?? ""}</td>
                     <td>${dataFormatada}</td>
                     <td>${show.descricao ?? ""}</td>
@@ -431,7 +450,9 @@
                     })}</td>
                     <td>${show.status ?? ""}</td>
                     <td>
-                        <button onclick="editarStatus(${show.id})">Editar Status</button>
+                        <button onclick="editarStatus(${show.id})">
+                            ${textoBotao}
+                        </button>
                     </td>
                 </tr>`;
             });
