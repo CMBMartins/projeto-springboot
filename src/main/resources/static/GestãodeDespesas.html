@@ -553,23 +553,14 @@
     // FUNÇÃO PARA EDITAR STATUS
     function editarStatus(id) {
 
-    if (!confirm("Marcar como PAGA?")) return;
-
     fetch(API + "/despesas/status/" + id, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            status: "PAGA"
-        })
+        method: "PUT"
     })
     .then(res => {
         if (!res.ok) throw new Error("Erro ao atualizar status");
         return res.json();
     })
     .then(() => {
-        alert("✅ Status atualizado!");
         listar();
     })
     .catch(err => {
