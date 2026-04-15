@@ -567,7 +567,7 @@
 
     if (!confirm("Marcar esta despesa como PAGA?")) return;
 
-    fetch(API + "/" + id, {
+        fetch(API + "/despesas/" + id, {    
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
