@@ -551,7 +551,7 @@
 }
 
     // FUNÇÃO PARA EXCLUIR
-    function deletar(id) {
+    function editar(id) {
 
     const usuario = getUsuario();
 
@@ -565,21 +565,30 @@
         return;
     }
 
-    if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+    if (!confirm("Marcar esta despesa como PAGA?")) return;
 
-    fetch(`${API}/despesas/${id}`, {
-        method: "DELETE"
+    fetch(API + "/" + id, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            status: "PAGA"
+        })
     })
     .then(response => {
-        if (!response.ok) throw new Error("Erro ao excluir");
+        if (!response.ok) {
+            throw new Error("Erro ao atualizar status");
+        }
+        return response.json();
     })
     .then(() => {
-        alert("✅ Registro excluído com sucesso!");
-        listarTodos();
+        alert("✅ Status atualizado para PAGA!");
+        listar(); // atualiza a tabela
     })
     .catch(error => {
         console.error(error);
-        alert("❌ Erro ao excluir o registro.");
+        alert("❌ Erro ao atualizar");
     });
 }
 
