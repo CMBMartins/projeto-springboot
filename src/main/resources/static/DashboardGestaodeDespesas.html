@@ -289,7 +289,7 @@ th, td {
 
   <script>
 
-    const API = "https://projeto-springboot.onrender.com";
+const API = "https://projeto-springboot.onrender.com";
 
 // FETCH SEGURO
 function fetchSeguro(url) {
@@ -303,7 +303,7 @@ function fetchSeguro(url) {
     });
 }
 
-// USUÁRIO (PEGAR DO LOCALSTORAGE NO DASHBOARD)
+// USUÁRIO
 function getUsuario() {
     return localStorage.getItem("usuario");
 }
@@ -312,13 +312,14 @@ function getUsuario() {
 function carregarDashboard() {
     console.log("Dashboard carregado");
     listarTodos();
+} // 🔥 FALTAVA ESSA CHAVE
 
 // INICIAR PÁGINA
 window.onload = function () {
 
     console.log("Sistema iniciado");
 
-    const usuario = getUsuario(); // 🔥 AGORA DEFINIDO
+    const usuario = getUsuario();
 
     if (!usuario) {
         console.warn("Usuário não encontrado!");
@@ -331,8 +332,6 @@ window.onload = function () {
     fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
         .then(res => res.json())
         .then(data => {
-            console.log("TOTAL:", data);
-
             document.getElementById("total").innerText =
                 Number(data || 0).toLocaleString("pt-BR", {
                     style: "currency",
@@ -344,8 +343,6 @@ window.onload = function () {
     fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            console.log("RENDA:", data);
-
             document.getElementById("renda").innerText =
                 Number(data || 0).toLocaleString("pt-BR", {
                     style: "currency",
@@ -357,8 +354,6 @@ window.onload = function () {
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            console.log("MES:", data);
-
             const valor =
                 typeof data === "number" ? data :
                 data.mes || data.total || 0;
@@ -374,13 +369,11 @@ window.onload = function () {
     fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            console.log("STATUS:", data);
-
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
 
-}; 
+};
       
         
 // FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
