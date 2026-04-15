@@ -312,13 +312,12 @@ function getUsuario() {
 function carregarDashboard() {
     console.log("Dashboard carregado");
     listarTodos();
-} // 🔥 FALTAVA ESSA CHAVE
-
+} 
 // INICIAR PÁGINA
 window.onload = function () {
-    localStorage.removeItem("usuario");
+
     console.log("Sistema iniciado");
-   
+
     const usuario = getUsuario();
 
     if (!usuario) {
@@ -326,31 +325,40 @@ window.onload = function () {
         return;
     }
 
-    //listarTodos();
+    let renda = 0;
+    let totalDespesas = 0;
 
-    // TOTAL
-    fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
+    // 💰 RENDA
+    const promessaRenda = fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
-            document.getElementById("total").innerText =
-                Number(data || 0).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                });
-        });
+            renda = Number(data || 0);
 
-    // RENDA
-    fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
-        .then(res => res.json())
-        .then(data => {
             document.getElementById("renda").innerText =
-                Number(data || 0).toLocaleString("pt-BR", {
+                renda.toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL"
                 });
+
+            return renda;
         });
 
-    // MÊS
+    // 💸 TOTAL DESPESAS
+    const promessaTotal = fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`)
+        .then(res => res.json())
+        .then(data => {
+            totalDespesas = Number(data || 0);
+
+            document.getElementById("total").innerText =
+                totalDespesas.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+
+            return totalDespesas;
+        });
+
+    // 📅 MÊS
     fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
@@ -365,12 +373,26 @@ window.onload = function () {
                 });
         });
 
-    // STATUS
+    // ✅ STATUS
     fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById("pagas").innerText = data.PAGA || 0;
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
+        });
+
+    // 🔥 SALDO (usa os mesmos valores)
+    Promise.all([promessaRenda, promessaTotal])
+        .then(([renda, totalDespesas]) => {
+
+            const saldo = renda - totalDespesas;
+
+            document.getElementById("saldo").innerText =
+                saldo.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+
         });
     
         
