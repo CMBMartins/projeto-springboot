@@ -70,10 +70,8 @@
     /* GRID */
     .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        /* 2 colunas */
-        gap: 10px;
-        /* espaço entre campos */
+        grid-template-columns: 1fr 1fr;       
+        gap: 10px;       
     }
 
     .grid input {
@@ -82,22 +80,22 @@
     }
 
     /* INPUTS */
-    .grid input,
-    .login input {
+       .grid input,
+       .login input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
 
     /* BOTÕES */
-    .botoes {
+       .botoes {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin-top: 15px;
     }
 
-    .botoes button {
+       .botoes button {
         flex: 1;
         padding: 10px;
         border: none;
@@ -149,20 +147,19 @@
         border-radius: 5px;
     }
 
-    .campo-direita {
-        text-align: right;
-    }
+    
 
     #usuariologado {
-        padding: 6px 10px;
-        text-align: right;
+        padding: 6px 0px;
+        text-align: center;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
         background: #e6f2ff;
-        border: 2px solid #007bff;
-        border-radius: 6px;
+        border: 2px solid #007bff;        
+        border-radius: 6px;        
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        margin-right: 6px;
     }
 
     /* INPUTS */
@@ -253,10 +250,7 @@
         <div class="card">
 
             <!-- TOPO -->
-            <div class="topo">
-                <div class="usuario">
-                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
-                </div>
+            <div class="topo">                
 
                 <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
                     ⬅ Relatórios - Dashboard
@@ -265,6 +259,10 @@
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
                 </a>
+
+                <div class="usuario">
+                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
+                </div>
             </div>
 
             <!-- LOGO -->
