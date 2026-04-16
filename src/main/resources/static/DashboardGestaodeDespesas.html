@@ -130,6 +130,16 @@ body {
     font-size: 18px;
 }
 
+.positivo {
+    color: green;
+    font-weight: bold;
+}
+
+.negativo {
+    color: red;
+    font-weight: bold;
+}
+
 /* TABELA */
 .tabela {
     margin-top: 20px;
@@ -307,9 +317,9 @@ th, td {
 
     //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
     window.onload = function () {    
-    //carregarDashboard();
     }
   
+    //FUNÇÃO PARA INICIAR SISTEMA
     function iniciarSistema() {
     console.log("Sistema iniciado");
     listarTodos();
@@ -368,18 +378,20 @@ th, td {
             document.getElementById("pendentes").innerText = data.PENDENTE || 0;
         });
 
+    
         
-// FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
-Promise.all([
+    // FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
+    Promise.all([
     fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`).then(res => res.json()),
     fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`).then(res => res.json())
-])
-.then(([renda, totalDespesas]) => {
+    ])
+    .then(([renda, totalDespesas]) => {
 
     console.log("RENDA:", renda);
     console.log("DESPESAS:", totalDespesas);
 
     const saldo = (renda || 0) - (totalDespesas || 0);
+    const elemento = document.getElementById("saldo");
 
     document.getElementById("saldo").innerText =
         Number(saldo).toLocaleString("pt-BR", {
@@ -387,8 +399,17 @@ Promise.all([
             currency: "BRL"
         });
 
-});
-}      
+        // Remove classes antigas
+    elemento.classList.remove("positivo", "negativo");
+
+    // Aplica cor conforme valor
+    if (saldo < 0) {
+        elemento.classList.add("negativo");
+    } else {
+        elemento.classList.add("positivo");
+    }
+    });
+    }      
 
     //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
     function carregarGraficoCategoria() {
