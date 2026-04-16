@@ -87,7 +87,6 @@
         display: flex;
         flex-direction: column;
         align-items: left;
-        /* centraliza */
         gap: 8px;
         margin-top: 10px;
     }
@@ -100,7 +99,6 @@
         cursor: pointer;
         transition: 0.3s;
         width: 26%;
-        /* diminui o tamanho */
         padding: 8px;
         font-size: 13px;
     }
@@ -314,7 +312,9 @@
             <nav>
                 <a href="#">📊 Dashboard</a>
                 <a href="GestãodeDespesas.html">➕ Cadastro de Despesas</a>
-                <a href="#">📄 Relatórios</a>
+                <a href="#" onclick="gerarRelatorioPDF(); return false;" class="btn-nav">
+                    📄 Relatórios
+                </a>
             </nav>
         </aside>
 
@@ -424,9 +424,12 @@
 
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script>
 
         const API = "https://projeto-springboot.onrender.com";
+
 
         // FUNÇÃO FETCH SEGURO
         function fetchSeguro(url) {
@@ -925,6 +928,47 @@
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
             window.open("CadastrodeUsuarios.html", "_blank");
+        }
+
+
+        // FUNÇÃO PARA GERAR RELATÓRIO
+        function gerarRelatorioPDF() {
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Relatório de Despesas", 14, 20);
+
+            let y = 30;
+
+            const linhas = document.querySelectorAll("#ultimasDespesas tr");
+
+            linhas.forEach((linha, index) => {
+
+                const colunas = linha.querySelectorAll("td");
+
+                if (colunas.length > 0) {
+
+                    const data = colunas[0].innerText;
+                    const descricao = colunas[1].innerText;
+                    const valor = colunas[2].innerText;
+                    const status = colunas[3].innerText;
+
+                    doc.setFontSize(10);
+                    doc.text(`${data} | ${descricao} | ${valor} | ${status}`, 14, y);
+
+                    y += 8;
+
+                    // quebra de página
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                }
+            });
+
+            doc.save("relatorio_despesas.pdf");
         }
 
         //window.login = login;
