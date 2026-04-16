@@ -60,30 +60,84 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* LOGIN */
-    .login {
-        margin-top: 5px;
-        padding-top: 15px;
-        border-top: 1px solid #ddd;
+
+    /* Inputs */
+    .usuario {
+        margin-bottom: 12px;
     }
 
+    .usuario {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    /* Efeito ao clicar */
+    .usuario {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        outline: none;
+    }
+
+    /* Botões */
     .login-botoes {
-        margin-top: 0px;
         display: flex;
-        gap: 10px;
+        flex-direction: column;
+        align-items: left;
+        /* centraliza */
+        gap: 8px;
+        margin-top: 10px;
     }
 
-    .login button {
-        flex: 1;
-        padding: 8px;
+    .btn {
+        padding: 10px;
         border: none;
-        background: #4e73df;
-        color: white;
-        border-radius: 5px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        width: 26%;
+        /* diminui o tamanho */
+        padding: 8px;
+        font-size: 13px;
     }
+
+    /* Entrar */
+    .btn-login {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-login:hover {
+        background: #0056b3;
+    }
+
+    /* Sair */
+    .btn-logout {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-logout:hover {
+        background: #495057;
+    }
+
+    /* Cadastro */
+    .btn-cadastro {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-cadastro:hover {
+        background: #1e7e34;
+    }
+
 
     .btn-excluir {
-        background: #dc3545;
+        background: #6c757d;
         color: white;
         border: none;
         padding: 6px 12px;
@@ -269,17 +323,18 @@
 
             <!-- LOGO -->
             <div class="usuario">
-                <h3>Login
+                <h2>Login
                     <input type="text" id="usuario" placeholder="Usuario">
                     <input type="password" id="senha" placeholder="Senha">
-                </h3>
+                    <input type="text" id="usuariologado" placeholder="Usuario" readonly>
+                </h2>
 
                 <div class="login-botoes">
-                    <button onclick="fazerLogin()">Entrar</button>
-                    <button onclick="logout()">Sair</button>
-                    <button onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
+                    <button class="btn btn-login" onclick="fazerLogin()">Entrar</button>
+                    <button class="btn btn-logout" onclick="logout()">Sair</button>
+                    <button class="btn btn-cadastro" onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
                 </div>
-                <input type="text" id="usuariologado" placeholder="Usuario" readonly>
+
             </div>
 
             <div class="logo">
