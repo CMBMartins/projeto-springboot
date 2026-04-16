@@ -46,6 +46,23 @@
         background: #334155;
     }
 
+    #usuario, #senha {
+    width: 260px;
+    height: 6px;
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+    }
+
+    /* efeito ao clicar */
+    #usuario:focus, #senha:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.4);
+    }
+
     #usuariologado {
         text-align: right;
         float: right;
@@ -61,18 +78,19 @@
     }
 
 
-    /* Inputs */
     .usuario {
-        margin-bottom: 12px;
-    }
-
-    .usuario {
-        width: 100%;
-        padding: 10px;
+        width: 99%;
+        padding: 6px 10px;
+        text-align: left;
+        font-weight: bold;
+        font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 14px;                
+        border: 2px solid #007bff;
         transition: 0.3s;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+
     }
 
     /* Efeito ao clicar */
@@ -80,16 +98,8 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         outline: none;
-    }
-
-    /* Botões */
-    .login-botoes {
-        display: flex;
-        flex-direction: column;
-        align-items: left;
-        gap: 8px;
-        margin-top: 10px;
-    }
+    }   
+    
 
     .btn {
         padding: 10px;
@@ -98,7 +108,7 @@
         font-weight: bold;
         cursor: pointer;
         transition: 0.3s;
-        width: 26%;
+        width: 14%;
         padding: 8px;
         font-size: 13px;
     }
@@ -323,11 +333,11 @@
 
             <!-- LOGO -->
             <div class="usuario">
-                <h2>Login
+                <h1>Login
                     <input type="text" id="usuario" placeholder="Usuario">
                     <input type="password" id="senha" placeholder="Senha">
                     <input type="text" id="usuariologado" placeholder="Usuario" readonly>
-                </h2>
+                </h1>
 
                 <div class="login-botoes">
                     <button class="btn btn-login" onclick="fazerLogin()">Entrar</button>
