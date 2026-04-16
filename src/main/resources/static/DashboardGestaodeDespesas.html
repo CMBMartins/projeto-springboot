@@ -82,6 +82,22 @@
         border-radius: 5px;
     }
 
+    .btn-excluir {
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .btn-excluir:hover {
+        background: #b02a37;
+        transform: scale(1.05);
+    }
+
     /* CONTEÚDO */
     .conteudo {
         flex: 1;
@@ -149,6 +165,66 @@
     td {
         padding: 10px;
         border-bottom: 1px solid #334155;
+    }
+
+    /* Linhas alternadas (zebra) */
+    .linha-tabela:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .linha-tabela:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    /* Hover */
+    .linha-tabela:hover {
+        background-color: #e9ecef;
+        transition: 0.2s;
+    }
+
+    /* Valor */
+    .valor {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    /* Status */
+    .status-pago {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .status-pendente {
+        color: #ffc107;
+        font-weight: bold;
+    }
+
+    #ultimasDespesas {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+    }
+
+    #ultimasDespesas tr {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Linhas alternadas (efeito zebra) */
+    #ultimasDespesas tr:nth-child(even) {
+        background: #f7f9fc;
+    }
+
+    /* Hover bonito */
+    #ultimasDespesas tr:hover {
+        background: #eef3ff;
+    }
+
+    /* Células */
+    #ultimasDespesas td {
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+        /* 🔥 aqui resolve o problema */
     }
 
     /* RESPONSIVO */
@@ -646,10 +722,11 @@
         function listarTodos() {
 
             const usuario = getUsuario();
-
             if (!usuario) return;
+
             fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
                 .then(data => {
+
                     const tabela = document.getElementById("ultimasDespesas");
                     if (!tabela) return;
 
@@ -657,20 +734,28 @@
                         tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
                         return;
                     }
+
                     let linhas = "";
 
                     data.forEach(d => {
 
                         const valor = Number(d.valor) || 0;
 
+                        // Classe por status
+                        const statusClass =
+                            d.status === "PAGA" ? "status-pago" :
+                                d.status === "PENDENTE" ? "status-pendente" : "";
+
                         linhas += `
-                <tr>
+                <tr class="linha-tabela">
                     <td>${d.data ?? ""}</td>
                     <td>${d.descricao ?? ""}</td>
-                    <td>${formatar(valor)}</td>
-                    <td>${d.status ?? ""}</td>
+                    <td class="valor">${formatar(valor)}</td>
+                    <td class="${statusClass}">${d.status ?? ""}</td>
                     <td>
-                        <button onclick="deletar(${d.id})">Excluir</button>
+                        <button class="btn-excluir" onclick="deletar(${d.id})">
+                            🗑 Excluir
+                        </button>
                     </td>
                 </tr>`;
                     });
@@ -754,7 +839,7 @@
             // 🔥 Redirecionar (recomendado)
             window.location.href = "DashboardGestaodeDespesas.html";
         }
-      
+
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
         function limparLogin() {
