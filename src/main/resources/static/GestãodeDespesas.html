@@ -70,8 +70,10 @@
     /* GRID */
     .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;       
-        gap: 10px;       
+        grid-template-columns: 1fr 1fr;
+        /* 2 colunas */
+        gap: 10px;
+        /* espaço entre campos */
     }
 
     .grid input {
@@ -80,22 +82,22 @@
     }
 
     /* INPUTS */
-       .grid input,
-       .login input {
+    .grid input,
+    .login input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
 
     /* BOTÕES */
-       .botoes {
+    .botoes {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin-top: 15px;
     }
 
-       .botoes button {
+    .botoes button {
         flex: 1;
         padding: 10px;
         border: none;
@@ -147,19 +149,20 @@
         border-radius: 5px;
     }
 
-    
+    .campo-direita {
+        text-align: right;
+    }
 
     #usuariologado {
-        padding: 6px 0px;
-        text-align: center;
+        padding: 6px 10px;
+        text-align: right;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
         background: #e6f2ff;
-        border: 2px solid #007bff;        
-        border-radius: 6px;        
+        border: 2px solid #007bff;
+        border-radius: 6px;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        margin-right: 6px;
     }
 
     /* INPUTS */
@@ -233,11 +236,13 @@
     }
 
     .linha-paga {
-    background-color: #d4edda; /* verde claro */
+        background-color: #d4edda;
+        /* verde claro */
     }
 
     .linha-pendente {
-    background-color: #f8d7da; /* vermelho claro */
+        background-color: #f8d7da;
+        /* vermelho claro */
     }
 </style>
 
@@ -250,7 +255,10 @@
         <div class="card">
 
             <!-- TOPO -->
-            <div class="topo">                
+            <div class="topo">
+                <div class="usuario">
+                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
+                </div>
 
                 <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
                     ⬅ Relatórios - Dashboard
@@ -259,10 +267,6 @@
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
                 </a>
-
-                <div class="usuario">
-                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
-                </div>
             </div>
 
             <!-- LOGO -->
@@ -294,7 +298,7 @@
                 <button id="salvar" onclick="salvar()">Salvar</button>
                 <button id="editar" onclick="editar()">Atualizar</button>
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
-                <button id="buscarDespesa" onclick="buscarDespesa()">Pesquisar por Despesas</button>
+                <!--button id="buscarDespesa" onclick="buscarDespesa()">Pesquisar por Despesas</!--button-->
                 <button id="listarTodos" onclick="listarTodos()">Listar Despesas</button>
             </div>
 
@@ -306,7 +310,7 @@
                 <input type="text" id="usuario" placeholder="Usuário">
                 <input type="password" id="senha" placeholder="Senha">
 
-                <div class="login-botoes">                    
+                <div class="login-botoes">
                     <button onclick="login()">Entrar</button>
                     <button onclick="logout()">Sair</button>
                     <button onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
@@ -345,97 +349,97 @@
     </div>
 
 
-    <script>        
+    <script>
 
-    const API = "https://projeto-springboot.onrender.com";
-   
-    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-    window.onload = function () {    
-    }
+        const API = "https://projeto-springboot.onrender.com";
 
-    function iniciarSistema() {
-    console.log("Sistema iniciado");
-    listarTodos();
-    }
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+        }
 
-    //FUNÇÃO PARA INICIAR USUARIO
-    function getUsuario() {
-    const usuario = localStorage.getItem("usuario");
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+            listarTodos();
+        }
 
-    if (!usuario) {
-        alert("⚠️ Faça login primeiro!");
-        throw new Error("Usuário não logado");
-    }
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+            const usuario = localStorage.getItem("usuario");
 
-    return usuario;
-    }
-
-    //FUNÇÃO PARA FECH SEGURO
-    function fetchSeguro(url) {
-    return fetch(url)
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Erro na API");
+            if (!usuario) {
+                alert("⚠️ Faça login primeiro!");
+                throw new Error("Usuário não logado");
             }
-            return res.json();
-        });
-    }
 
-        
-    // FUNÇÃO PARA LISTAR TODAS DESPESAS
-    function listarTodos() {
+            return usuario;
+        }
 
-    const usuario = getUsuario();
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url) {
+            return fetch(url)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("Erro na API");
+                    }
+                    return res.json();
+                });
+        }
 
-    if (!usuario) {
-        console.warn("Usuário não definido!");
-        alert("⚠️ Faça Login!");
-        return;
-    }
 
-    fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
-        .then(data => {
+        // FUNÇÃO PARA LISTAR TODAS DESPESAS
+        function listarTodos() {
 
-            const tabela = document.getElementById("tabelaDespesas");
+            const usuario = getUsuario();
 
-            if (!tabela) {
-                console.error("Tabela não encontrada!");
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
                 return;
             }
 
-            if (!Array.isArray(data)) {
-                console.error("Resposta inválida:", data);
-                tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
-                return;
-            }
+            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
 
-            if (data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
-                return;
-            }
+                    const tabela = document.getElementById("tabelaDespesas");
 
-            let linhas = "";
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
 
-            // 🔥 AQUI entra a lógica nova
-            data.forEach(show => {
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                        return;
+                    }
 
-                const valor = Number(show.valor) || 0;
+                    if (data.length === 0) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
+                        return;
+                    }
 
-                const dataFormatada = show.data
-                    ? new Date(show.data).toLocaleDateString("pt-BR")
-                    : "";
+                    let linhas = "";
 
-                // 🎨 Classe da linha (cor)
-                const classeLinha = show.status === "PAGA"
-                    ? "linha-paga"
-                    : "linha-pendente";
+                    // 🔥 AQUI entra a lógica nova
+                    data.forEach(show => {
 
-                // 🔘 Texto do botão
-                const textoBotao = show.status === "PAGA"
-                    ? "↩️ Reabrir"
-                    : "💰 Pagar";
+                        const valor = Number(show.valor) || 0;
 
-                linhas += `
+                        const dataFormatada = show.data
+                            ? new Date(show.data).toLocaleDateString("pt-BR")
+                            : "";
+
+                        // 🎨 Classe da linha (cor)
+                        const classeLinha = show.status === "PAGA"
+                            ? "linha-paga"
+                            : "linha-pendente";
+
+                        // 🔘 Texto do botão
+                        const textoBotao = show.status === "PAGA"
+                            ? "↩️ Reabrir"
+                            : "💰 Pagar";
+
+                        linhas += `
                 <tr class="${classeLinha}">
                     <td>${show.id ?? ""}</td>
                     <td>${dataFormatada}</td>
@@ -443,9 +447,9 @@
                     <td>${show.categoria ?? ""}</td>
                     <td>${show.tipo ?? ""}</td>
                     <td>${valor.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL"
-                    })}</td>
+                            style: "currency",
+                            currency: "BRL"
+                        })}</td>
                     <td>${show.status ?? ""}</td>
                     <td>
                         <button onclick="editarStatus(${show.id})">
@@ -453,191 +457,191 @@
                         </button>
                     </td>
                 </tr>`;
-            });
+                    });
 
-            tabela.innerHTML = linhas;
+                    tabela.innerHTML = linhas;
 
-        })
-        .catch(err => {
-            console.error("Erro ao listar:", err);
+                })
+                .catch(err => {
+                    console.error("Erro ao listar:", err);
 
-            const tabela = document.getElementById("tabelaDespesas");
-            if (tabela) {
-                tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
-            }
-        });
-}
-        
-        
-    // FUNÇÃO PARA SALVAR
-    function salvar() {
-
-    const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
-
-    const dados = {
-        data: document.getElementById("data").value,
-        descricao: document.getElementById("descricao").value,
-        categoria: document.getElementById("categoria").value,
-        tipo: document.getElementById("tipo").value,
-        valor: Number(document.getElementById("valor").value),
-        status: document.getElementById("status").value,
-        usuario: usuario
-    };
-
-    fetch(API + "/despesas", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Erro ao salvar");
-        return response.json();
-    })
-    .then(() => {
-        limparCampos();
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Erro ao salvar!");
-    });
-}
-
-
-   // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
-   function editar() {
-
-    const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    if (!confirm("Tem certeza que deseja editar estes dados?")) return;
-
-    const id = document.getElementById("id").value;
-
-    if (!id) {
-        alert("Selecione um registro para editar!");
-        return;
-    }
-
-    const dados = {
-        data: document.getElementById("data").value,
-        descricao: document.getElementById("descricao").value,
-        categoria: document.getElementById("categoria").value,
-        tipo: document.getElementById("tipo").value,
-        valor: Number(document.getElementById("valor").value) || 0,
-        status: document.getElementById("status").value,
-        usuario: usuario
-    };
-
-    fetch(`${API}/despesas/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => {
-                console.error("Erro do backend:", text);
-                throw new Error("Erro ao editar");
-            });
+                    const tabela = document.getElementById("tabelaDespesas");
+                    if (tabela) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                    }
+                });
         }
-        return response.json();
-    })
-    .then(() => {
-        alert("✅ Editado com sucesso!");
-        limparCampos();
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("❌ Erro ao editar!");
-    });
-}
 
-    // FUNÇÃO PARA EDITAR STATUS
-    function editarStatus(id) {
 
-    fetch(API + "/despesas/status/" + id, {
-        method: "PUT"
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("Erro ao atualizar status");
-        return res.json();
-    })
-    .then(() => {
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("❌ Erro ao atualizar");
-    });
-}
+        // FUNÇÃO PARA SALVAR
+        function salvar() {
 
-    // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
-    function buscarDespesa() {
+            const usuario = getUsuario();
 
-    const usuario = getUsuario();
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-    const descricao = document.getElementById("descricao").value;
+            const dados = {
+                data: document.getElementById("data").value,
+                descricao: document.getElementById("descricao").value,
+                categoria: document.getElementById("categoria").value,
+                tipo: document.getElementById("tipo").value,
+                valor: Number(document.getElementById("valor").value),
+                status: document.getElementById("status").value,
+                usuario: usuario
+            };
 
-    if (!descricao) {
-        alert("⚠️ Informe o lançamento a ser consultado!");
-        return;
-    }
+            fetch(API + "/despesas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro ao salvar");
+                    return response.json();
+                })
+                .then(() => {
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Erro ao salvar!");
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
+        function editar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
+
+            const id = document.getElementById("id").value;
+
+            if (!id) {
+                alert("Selecione um registro para editar!");
+                return;
+            }
+
+            const dados = {
+                data: document.getElementById("data").value,
+                descricao: document.getElementById("descricao").value,
+                categoria: document.getElementById("categoria").value,
+                tipo: document.getElementById("tipo").value,
+                valor: Number(document.getElementById("valor").value) || 0,
+                status: document.getElementById("status").value,
+                usuario: usuario
+            };
+
+            fetch(`${API}/despesas/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error("Erro do backend:", text);
+                            throw new Error("Erro ao editar");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    alert("✅ Editado com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("❌ Erro ao editar!");
+                });
+        }
+
+        // FUNÇÃO PARA EDITAR STATUS
+        function editarStatus(id) {
+
+            fetch(API + "/despesas/status/" + id, {
+                method: "PUT"
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Erro ao atualizar status");
+                    return res.json();
+                })
+                .then(() => {
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("❌ Erro ao atualizar");
+                });
+        }
+
+        // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
+        function buscarDespesa() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const descricao = document.getElementById("descricao").value;
+
+            if (!descricao) {
+                alert("⚠️ Informe o lançamento a ser consultado!");
+                return;
+            }
             fetch(`${API}/despesas/buscar?usuario=${usuario}&descricao=${descricao}`)
-    
-        .then(response => response.json())
 
-        .then(data => {
+                .then(response => response.json())
 
-            console.log("Resultado busca:", data);
+                .then(data => {
 
-            const tabela = document.getElementById("tabelaDespesas");
+                    console.log("Resultado busca:", data);
 
-            if (!tabela) {
-                console.error("Tabela não encontrada!");
-                return;
-            }
+                    const tabela = document.getElementById("tabelaDespesas");
 
-            if (!Array.isArray(data)) {
-                console.error("Retorno inválido:", data);
-                return;
-            }
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
 
-            limparCampos();
-            tabela.innerHTML = "";
+                    if (!Array.isArray(data)) {
+                        console.error("Retorno inválido:", data);
+                        return;
+                    }
 
-            if (data.length === 0) {
-                tabela.innerHTML = `
+                    limparCampos();
+                    tabela.innerHTML = "";
+
+                    if (data.length === 0) {
+                        tabela.innerHTML = `
                 <tr>
                     <td colspan="8">Nenhum resultado encontrado</td>
                 </tr>`;
-                return;
-            }
+                        return;
+                    }
 
-            data.forEach(show => {
+                    data.forEach(show => {
 
-                tabela.innerHTML += `
+                        tabela.innerHTML += `
                 <tr>
                     <td>${show.id || ""}</td>
                     <td>${show.data || ""}</td>
@@ -653,15 +657,15 @@
                     </td>
                 </tr>
                 `;
-            });
+                    });
 
-        })
+                })
 
-        .catch(error => {
-            console.error("Erro na busca:", error);
-            alert("Erro ao buscar despesas!");
-        });
-}
+                .catch(error => {
+                    console.error("Erro na busca:", error);
+                    alert("Erro ao buscar despesas!");
+                });
+        }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
@@ -713,9 +717,9 @@
                 .then(data => {
 
                     localStorage.setItem("usuario", data.usuario);
-                    document.getElementById("usuariologado").value = data.usuario;                    
-                    alert("Login realizado com sucesso!");                                  
-                    limparLogin();                    
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    limparLogin();
                 })
 
 
@@ -726,14 +730,13 @@
                 });
 
         }
-        
+
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
             localStorage.setItem("usuario", data.usuario);
-            document.getElementById("usuariologado").value = data.usuario;             
+            document.getElementById("usuariologado").value = data.usuario;
             alert("Logout realizado com sucesso!");
-            listarTodos();            
             iniciarSistema();
         }
 
