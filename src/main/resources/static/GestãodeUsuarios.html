@@ -16,136 +16,235 @@
 
     <style>
         body {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #e6ecf0, #f8f9fa);
             font-family: Arial;
+        }
+
+        .card-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+            max-width: 420px;
+            margin: 50px auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
-        .logo {
+        .header img {
             width: 50px;
         }
 
-        .perfil {
-            width: 320px;
-            border-radius: 50%;
+        .header h3 {
             margin-top: 10px;
-        }
-
-        .card-form {
-
-            background: white;
-
-            padding: 30px;
-
-            border-radius: 10px;
-
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-
-            max-width: 400px;
-
-            margin: auto;
-
+            font-weight: bold;
+            color: #2c3e50;
         }
 
         .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .grid input {
+            height: 42px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .grid input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+            outline: none;
         }
 
         .botoes {
-
             margin-top: 20px;
-
             display: flex;
-
             flex-wrap: wrap;
-
             gap: 10px;
-
+            justify-content: center;
         }
 
-        .btn {
-
-            min-width: 10px;
-
+        .btn-custom {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.3s;
         }
 
-        .home {
+        .btn-salvar {
+            background: #28a745;
+            color: white;
+        }
 
+        .btn-salvar:hover {
+            background: #218838;
+        }
+
+        .btn-editar {
+            background: #ffc107;
+            color: black;
+        }
+
+        .btn-editar:hover {
+            background: #e0a800;
+        }
+
+        .btn-limpar {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-limpar:hover {
+            background: #5a6268;
+        }
+
+        .btn-buscar {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-buscar:hover {
+            background: #0056b3;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .btn-home:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
             margin-top: 20px;
-
         }
 
-        /* TABELA */
+        /* Título */
+        .card h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
 
+        /* Tabela */
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 14px;
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
+        /* Cabeçalho */
+        thead {
             background: #34495e;
             color: white;
         }
+
+        th {
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Linhas */
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Zebra (linhas alternadas) */
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        /* Hover (efeito ao passar o mouse) */
+        tbody tr:hover {
+            background: #e6f2ff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Botões dentro da tabela */
+        td button {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        /* Editar */
+        td button:first-child {
+            background: #ffc107;
+            color: black;
+        }
+
+        td button:first-child:hover {
+            background: #e0a800;
+        }
+
+        /* Excluir */
+        td button:last-child {
+            background: #dc3545;
+            color: white;
+        }
+
+        td button:last-child:hover {
+            background: #c82333;
+        }
     </style>
-
-</head>
-
-<body>
 
     <div class="card-form">
 
-        <a href="PaginaPessoal.html" class="btn btn-default">
-            <span class="glyphicon glyphicon-home"></span> Página Principal
+        <a href="PaginaPessoal.html" class="btn-home">
+            ← Página Principal
         </a>
 
-        <h3><img src="Imagens/carlos1.gif" width="40">
-            Cadastro e Administração de Usuários</h3>
+        <div class="header">
+            <h3><img src="Imagens/carlos1.gif">
+                Gestão de Usuários</h3>
+        </div>
 
         <div class="grid">
 
-            <input type="hidden" id="id">
+            <input type="text" id="id" placeholder="ID">
 
-            <input type="text" id="usuario" placeholder="Usuario">
+            <input type="text" id="usuario" placeholder="Usuário">
 
             <input type="password" id="senha" placeholder="Senha">
 
             <input type="text" id="perfil" placeholder="Perfil">
-
         </div>
 
         <div class="botoes">
+            <button class="btn-custom btn-salvar" onclick="salvar()">Salvar</button>
 
-            <button class="btn btn-success" onclick="salvar()">
-                <i class="fa fa-save"></i> Salvar
-            </button>
+            <button class="btn-custom btn-limpar" onclick="limparCampos()">Limpar</button>
 
-            <button class="btn btn-secondary" onclick="limparCampos()">
-                <i class="fa fa-eraser"></i> Limpar
-            </button>
-
-            <button class="btn btn-primary" onclick="buscarUsuario()">
-                <i class="fa fa-search"></i> Buscar Usuario
-            </button>
-
-            <button class="btn btn-info" onclick="listarTodos()">
-                <i class="fa fa-list"></i> Listar Usuarios
-            </button>
-
+            <button class="btn-custom btn-buscar" onclick="buscarUsuario()">Buscar Usuario</button>
         </div>
-
 
         <br>
 
@@ -180,24 +279,24 @@
 
             //const api = "http://localhost:8084/usuario";
             const API = "https://projeto-springboot.onrender.com/usuario";
-            
+
             //Função carregar
             function carregar() {
                 //listarTodos();
             }
 
-        //Função para Listar Toda a tabela
-        function listarTodos() {
-         fetch(API)
-        .then(response => response.json())
-        .then(data => {
+            //Função para Listar Toda a tabela
+            function listarTodos() {
+                fetch(API)
+                    .then(response => response.json())
+                    .then(data => {
 
-            const tabela = document.getElementById("tabelaUsuario");
-            tabela.innerHTML = "";
+                        const tabela = document.getElementById("tabelaUsuario");
+                        tabela.innerHTML = "";
 
-            data.forEach(show => {
+                        data.forEach(show => {
 
-                tabela.innerHTML += `
+                            tabela.innerHTML += `
                     <tr>
                         <td>${show.id}</td>
                         <td>${show.usuario}</td>
@@ -215,144 +314,146 @@
                         </td>
                     </tr>
                 `;
-            });
+                        });
 
-            // ✅ aqui sim está correto
-            limparCampos();
+                        // ✅ aqui sim está correto
+                        limparCampos();
 
-        })
-        .catch(error => {
-            console.error("Erro ao listar usuários:", error);
-            alert("Erro ao carregar usuários!");
-        });
-}
+                    })
+                    .catch(error => {
+                        console.error("Erro ao listar usuários:", error);
+                        alert("Erro ao carregar usuários!");
+                    });
+            }
 
-    //Função para Salvar
-    function salvar() {
+            //Função para Salvar
+            function salvar() {
 
-    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+                if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-    const usuario = document.getElementById("usuario").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-    const perfil = document.getElementById("perfil").value.trim();
+                const usuario = document.getElementById("usuario").value.trim();
+                const senha = document.getElementById("senha").value.trim();
+                const perfil = document.getElementById("perfil").value.trim();
 
-    if (!usuario || !senha || !perfil) {
-        alert("⚠️ Preencha todos os campos!");
-        return;
-    }
+                if (!usuario || !senha || !perfil) {
+                    alert("⚠️ Preencha todos os campos!");
+                    return;
+                }
 
-    fetch(API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usuario, senha, perfil })
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("Erro ao salvar");
-        return res.json();
-    })
-    .then(() => {
-        alert("Usuário salvo com sucesso!");
-        limparCampos();
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Erro ao salvar usuário!");
-    });
-}
+                fetch(API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usuario, senha, perfil })
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Erro ao salvar");
+                        return res.json();
+                    })
+                    .then(() => {
+                        alert("Usuário salvo com sucesso!");
+                        limparCampos();
+                        listarTodos();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Erro ao salvar usuário!");
+                    });
+            }
 
-    //Função para Editar Usuário
-    function editar(id) {
+            //Função para Editar Usuário
+            function editar(id) {
 
-    if (!id) {
-        alert("ID inválido!");
-        return;
-    }
+                if (!id) {
+                    alert("ID inválido!");
+                    return;
+                }
 
-    if (!confirm("Deseja atualizar este registro?")) return;
+                if (!confirm("Deseja atualizar este registro?")) return;
 
-    const dados = {
-        id,
-        usuario: document.getElementById("usuario").value,
-        senha: document.getElementById("senha").value,
-        perfil: document.getElementById("perfil").value
-    };
+                const dados = {
+                    id,
+                    usuario: document.getElementById("usuario").value,
+                    senha: document.getElementById("senha").value,
+                    perfil: document.getElementById("perfil").value
+                };
 
-    fetch(`${API}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("Erro ao atualizar");
-        return res.json();
-    })
-    .then(() => {
-        alert("Atualizado com sucesso!");
-        limparCampos();
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Erro ao atualizar!");
-    });
-}
-            
-    //Função para Deletar Usuário
-    function deletar(id) {
+                fetch(`${API}/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dados)
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Erro ao atualizar");
+                        return res.json();
+                    })
+                    .then(() => {
+                        alert("Atualizado com sucesso!");
+                        limparCampos();
+                        listarTodos();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Erro ao atualizar!");
+                    });
+            }
 
-    if (!id) {
-        alert("ID inválido!");
-        return;
-    }
+            //Função para Deletar Usuário
+            function deletar(id) {
 
-    if (!confirm("Deseja excluir?")) return;
+                if (!id) {
+                    alert("ID inválido!");
+                    return;
+                }
 
-    fetch(`${API}/${id}`, {
-        method: "DELETE"
-    })
-    .then(() => {
-        alert("Excluído com sucesso!");
-        listarTodos();
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Erro ao excluir!");
-    });
-}
-    //Função para Limpar os campos
-   function limparCampos() {
-    document.getElementById("id").value = "";
-    document.getElementById("usuario").value = "";
-    document.getElementById("senha").value = "";
-    document.getElementById("perfil").value = "";
+                if (!confirm("Deseja excluir?")) return;
 
-}
+                fetch(`${API}/${id}`, {
+                    method: "DELETE"
+                })
+                    .then(() => {
+                        alert("Excluído com sucesso!");
+                        listarTodos();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Erro ao excluir!");
+                    });
+            }
 
-    //Função para pesquisar por Usuário
-    function buscarUsuario() {
 
-    const usuario = document.getElementById("usuario").value;
+            //Função para Limpar os campos
+            function limparCampos() {
+                document.getElementById("id").value = "";
+                document.getElementById("usuario").value = "";
+                document.getElementById("senha").value = "";
+                document.getElementById("perfil").value = "";
 
-    if (!usuario) {
-        alert("Informe o usuário!");
-        return;
-    }
+            }
 
-    fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))
-    .then(res => res.json())
-    .then(data => {
+            //Função para pesquisar por Usuário
+            function buscarUsuario() {
 
-        const tabela = document.getElementById("tabelaUsuario");
-        tabela.innerHTML = "";
+                const usuario = document.getElementById("usuario").value;
 
-       if (!Array.isArray(data) || data.length === 0) {
-            tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
-            return;
-        }
+                if (!usuario) {
+                    alert("Informe o usuário!");
+                    return;
+                }
 
-        data.forEach(show => {
-            tabela.innerHTML += `
+                fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))
+                    .then(res => res.json())
+                    .then(data => {
+
+                        const tabela = document.getElementById("tabelaUsuario");
+                        tabela.innerHTML = "";
+
+                        if (!Array.isArray(data) || data.length === 0) {
+                            tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
+                            return;
+                        }
+
+                        data.forEach(show => {
+                            tabela.innerHTML += `
                 <tr>
                     <td>${show.id}</td>
                     <td>${show.usuario}</td>
@@ -363,14 +464,14 @@
                     </td>
                 </tr>
             `;
-        });
+                        });
 
-    })
-    .catch(() => alert("Erro ao buscar usuários"));
-}
+                    })
+                    .catch(() => alert("Erro ao buscar usuários"));
+            }
 
-</script>
+        </script>
 
-</body>
+        </body>
 
 </html>
