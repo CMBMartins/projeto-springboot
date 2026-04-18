@@ -366,14 +366,14 @@
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-            const usuario = localStorage.getItem("usuario");
+        const user = localStorage.getItem("usuario");
 
-            if (!usuario) {
-                alert("⚠️ Faça login primeiro!");
-                throw new Error("Usuário não logado");
-            }
+        if (!user || user === "undefined" || user === "null") {
 
-            return usuario;
+        return null;
+        }
+
+        return user;
         }
 
         //FUNÇÃO PARA FECH SEGURO
