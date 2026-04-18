@@ -64,10 +64,9 @@
     }
 
     #usuariologado {
-        text-align: right;
+        text-align: center;
         float: right;
-        padding: 6px 10px;
-        text-align: right;
+        padding: 6px 10px;        
         font-weight: bold;
         font-size: 14px;
         color: #003366;
@@ -937,12 +936,47 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
 
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();

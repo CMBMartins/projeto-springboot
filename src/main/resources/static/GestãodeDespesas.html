@@ -360,8 +360,7 @@
         }
 
         function iniciarSistema() {
-            console.log("Sistema iniciado");
-            listarTodos();
+            console.log("Sistema iniciado");            
         }
 
         //FUNÇÃO PARA INICIAR USUARIO
@@ -669,6 +668,7 @@
                 });
         }
 
+
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
 
@@ -740,6 +740,7 @@
             document.getElementById("usuariologado").value = data.usuario;
             alert("Logout realizado com sucesso!");
             iniciarSistema();
+            window.location.href = "GestãodeDespesas.html";
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
