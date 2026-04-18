@@ -241,6 +241,8 @@
         <div class="botoes">
             <button class="btn-custom btn-salvar" onclick="salvar()">Salvar</button>
 
+            <button class="btn-custom btn-editar" onclick="editar()">Editar</button>
+
             <button class="btn-custom btn-limpar" onclick="limparCampos()">Limpar</button>
 
             <button class="btn-custom btn-buscar" onclick="buscarUsuario()">Buscar Usuario</button>
@@ -363,61 +365,42 @@
             //Função para Editar Usuário
             function editar(id) {
 
-                if (!id) {
-                    alert("ID inválido!");
-                    return;
-                }
+           // se não veio parâmetro, pega do campo hidden
+           if (!id) {
+           id = document.getElementById("id").value;
+           }
 
-                if (!confirm("Deseja atualizar este registro?")) return;
+           if (!id) {
+           alert("ID inválido!");
+           return;
+           }
 
-                const dados = {
-                    id,
-                    usuario: document.getElementById("usuario").value,
-                    senha: document.getElementById("senha").value,
-                    perfil: document.getElementById("perfil").value
-                };
+           if (!confirm("Deseja atualizar este registro?")) return;
 
-                fetch(`${API}/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(dados)
+           const dados = {
+           id: id,
+           usuario: document.getElementById("usuario").value,
+           senha: document.getElementById("senha").value,
+           perfil: document.getElementById("perfil").value
+           };
+
+           fetch(API + "/" + id, {
+           method: "PUT",
+           headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+            })
+            .then(res => {
+            if (!res.ok) throw new Error("Erro ao atualizar");
+            return res.json();
+            })
+            .then(() => {
+                alert("Atualizado com sucesso!");
+                limparCampos();
+                listarTodos();
                 })
-                    .then(res => {
-                        if (!res.ok) throw new Error("Erro ao atualizar");
-                        return res.json();
-                    })
-                    .then(() => {
-                        alert("Atualizado com sucesso!");
-                        limparCampos();
-                        listarTodos();
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert("Erro ao atualizar!");
-                    });
-            }
-
-            //Função para Deletar Usuário
-            function deletar(id) {
-
-                if (!id) {
-                    alert("ID inválido!");
-                    return;
-                }
-
-                if (!confirm("Deseja excluir?")) return;
-
-                fetch(`${API}/${id}`, {
-                    method: "DELETE"
-                })
-                    .then(() => {
-                        alert("Excluído com sucesso!");
-                        listarTodos();
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert("Erro ao excluir!");
-                    });
+            .catch(() => alert("Erro ao atualizar"));
             }
 
 
