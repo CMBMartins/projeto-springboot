@@ -17,6 +17,7 @@ public class BancoShowFilmes {
     private String situaçao;
     private String tipo;
     private String genero;
+    private String usuario;
 
     // GETTERS E SETTERS
 
@@ -86,9 +87,9 @@ public class BancoShowFilmes {
 
     public String getUsuario() {
     return usuario;
-}
+        }
 
-public void setUsuario(String usuario) {
+    public void setUsuario(String usuario) {
     this.usuario = usuario;
-}
+    }
 }
