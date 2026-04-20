@@ -12,9 +12,9 @@ public class BancoShowFilmes {
 
     private String titulo;
     private String artista;
-    private String anodelançamento;
+    private String anodelancamento;
     private String datadacompra;
-    private String situaçao;
+    private String situacao;
     private String tipo;
     private String genero;
     private String usuario;
@@ -46,11 +46,11 @@ public class BancoShowFilmes {
     }
 
     public String getAnodelancamento() {
-        return anodelançamento;
+        return anodelancamento;
     }
 
-    public void setAnodelancamento(String anodelançamento) {
-        this.anodelançamento = anodelançamento;
+    public void setAnodelancamento(String anodelancamento) {
+        this.anodelancamento = anodelancamento;
     }
 
     public String getDatadacompra() {
