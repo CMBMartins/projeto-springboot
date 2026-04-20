@@ -62,11 +62,11 @@ public class BancoShowFilmes {
     }
 
     public String getSituacao() {
-        return situaçao;
+        return situacao;
     }
 
-    public void setSituacao(String situaçao) {
-        this.situaçao = situaçao;
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
 
     public String getTipo() {
