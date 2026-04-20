@@ -14,9 +14,10 @@
 </head>
 
 <style>
-    body {
-        background-color: #f6f6f6;
+    body {        
         font-family: Arial;
+        margin: 0;
+        background: #f2f2f2;        
     }
 
     /* BARRA SUPERIOR */
@@ -71,7 +72,6 @@
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    */
     /* INPUTS */
 
     input {
@@ -85,14 +85,17 @@
     .grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        gap: 10px;
     }
 
     /* BOTÕES */
 
     .botoes {
-        text-align: center;
-        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+        
     }
 
     /* padrão de botão */
@@ -116,10 +119,8 @@
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
-
         color: white;
-        background-color: #007bff;
-        /* azul padrão */
+        background-color: #007bff;        
     }
 
 
@@ -241,7 +242,7 @@
 
                 <input type="text" id="usuario" placeholder="usuario" style="width:33%;">
 
-                <input type="text" id="senha" placeholder="senha" style="width:33%;">
+                <input type="password" id="senha" placeholder="senha" style="width:33%;">
 
                 <button onclick="autenticar()">Entrar</button>
                 <button onclick="logout()">Sair</button>
@@ -284,81 +285,100 @@
 
     <script>
 
-        const id = document.getElementById("id").value;
+        //const id = document.getElementById("id").value;
 
-        const api = "http://localhost:8084/shows";
+        const API = "https://projeto-springboot.onrender.com";
 
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
+        }
 
-            if (localStorage.getItem("usuariologado")) {
-                liberarFuncoes();
+        function iniciarSistema() {
+            console.log("Sistema iniciado");            
+        }
 
-            } else {
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+        const user = localStorage.getItem("usuario");
 
-                bloquearFuncoes();
+        if (!user || user === "undefined" || user === "null") {
+
+        return null;
+        }
+
+        return user;
+        }
+
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url) {
+            return fetch(url)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("Erro na API");
+                    }
+                    return res.json();
+                });
+        }
+
+
+    // FUNÇÃO PARA LISTAR TODOS
+    function listarTodos() {
+
+    const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
             }
 
-        }
+            fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+            .then(data => {     
 
-        function liberarFuncoes() {
+            if (!response.ok) {
+                throw new Error("Erro ao buscar dados");
+            }
 
-            document.getElementById("salvar").disabled = false;
-            document.getElementById("editar").disabled = false;
-            document.getElementById("listarTodos").disabled = false;
+            return response.json();
+        })
 
-        }
+        .then(data => {
 
-        function bloquearFuncoes() {
+            const tabela = document.getElementById("tabelaShows");
 
-            document.getElementById("salvar").disabled = true;
-            document.getElementById("editar").disabled = true;
-            document.getElementById("listarTodos").disabled = true;
+            tabela.innerHTML = "";
 
-        }
+            data.forEach(show => {
 
+                tabela.innerHTML += `
+                <tr>
+                    <td>${show.id}</td>
+                    <td>${show.titulo}</td>
+                    <td>${show.artista}</td>
+                    <td>${show.datadacompra}</td>
+                    <td>${show.tipo}</td>
+                    <td>${show.genero}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                            onclick="deletar(${show.id})">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+                `;
+            });
 
-        function listarTodos() {
+        })
 
-            fetch(api)
-
-                .then(response => response.json())
-
-                .then(data => {
-
-                    const tabela = document.getElementById("tabelaShows");
-
-                    tabela.innerHTML = "";
-
-                    data.forEach(show => {
-
-                        tabela.innerHTML += `
-        <tr>
-        <td>${show.id}</td>
-        <td>${show.titulo}</td>
-        <td>${show.artista}</td>
-        <td>${show.datadacompra}</td>
-        <td>${show.tipo}</td>
-        <td>${show.genero}</td>
-
-        <td>
-        <button class="btn btn-danger btn-sm"
-        onclick="deletar(${show.id})">
-        Excluir
-        </button>
-        </td>
-
-        </tr>
-        `;
-
-                    });
-
-                });
-
+        .catch(error => {
+            console.error("Erro:", error);
+            alert("❌ Erro ao carregar dados");
+        });
         }
 
 
-        // FUNÇÃO PARA SALVAR
-        function salvar() {
+            // FUNÇÃO PARA SALVAR
+            function salvar() {
             if (confirm("Tem certeza que deseja salvar esses dados?")) {
 
                 const titulo = document.getElementById("titulo").value;
@@ -555,7 +575,7 @@
                 return;
             }
 
-            fetch("http://localhost:8084/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -583,10 +603,10 @@
                 .then(data => {
 
                     // Mostra o usuário no campo Default
-
+                    localStorage.setItem("usuario", data.usuario);                    
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
-                    liberarFuncoes();
+                    //liberarFuncoes();
                     limparLogin();
 
                 })
