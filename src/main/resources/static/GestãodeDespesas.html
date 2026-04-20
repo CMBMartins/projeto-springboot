@@ -357,7 +357,9 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        }
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("loggedIn");
+        };
 
         function iniciarSistema() {
             console.log("Sistema iniciado");            
@@ -669,8 +671,8 @@
         }
 
 
-        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-        function login() {
+            // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+            function login() {
 
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;

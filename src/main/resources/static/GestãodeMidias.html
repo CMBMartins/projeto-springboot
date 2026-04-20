@@ -291,7 +291,9 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        }
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("loggedIn");
+        };
 
         function iniciarSistema() {
             console.log("Sistema iniciado");            
@@ -299,6 +301,7 @@
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
+            
         const user = localStorage.getItem("usuario");
 
         if (!user || user === "undefined" || user === "null") {
@@ -321,7 +324,6 @@
         }
 
 
-    // FUNÇÃO PARA LISTAR TODOS
     function listarTodos() {
 
     const usuario = getUsuario();
@@ -332,25 +334,16 @@
                 return;
             }
 
-            fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
-            .then(data => {     
-
-            if (!response.ok) {
-                throw new Error("Erro ao buscar dados");
-            }
-
-            return response.json();
-        })
-
+     fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+        
         .then(data => {
+            console.log(data);       
 
-            const tabela = document.getElementById("tabelaShows");
+        const tabela = document.getElementById("tabelaShows");
+        tabela.innerHTML = "";
 
-            tabela.innerHTML = "";
-
-            data.forEach(show => {
-
-                tabela.innerHTML += `
+        data.forEach(show => {
+            tabela.innerHTML += `
                 <tr>
                     <td>${show.id}</td>
                     <td>${show.titulo}</td>
@@ -365,17 +358,14 @@
                         </button>
                     </td>
                 </tr>
-                `;
-            });
-
-        })
-
-        .catch(error => {
-            console.error("Erro:", error);
-            alert("❌ Erro ao carregar dados");
+            `;
         });
-        }
-
+    })
+    .catch(error => {
+        console.error("Erro:", error);
+        alert("❌ Erro ao carregar dados");
+    });
+    }
 
             // FUNÇÃO PARA SALVAR
             function salvar() {
