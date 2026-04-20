@@ -369,6 +369,15 @@
 
             // FUNÇÃO PARA SALVAR
             function salvar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
             if (confirm("Tem certeza que deseja salvar esses dados?")) {
 
                 const titulo = document.getElementById("titulo").value;
@@ -424,6 +433,14 @@
         // FUNÇÃO PARA EDITAR
         function editar() {
 
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
             if (confirm("Tem certeza que deseja editar estes dados?")) {
 
                 const id = document.getElementById("id").value;
@@ -467,6 +484,14 @@
 
         // FUNÇÃO PARA EXCLUIR
         function deletar(id) {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
             if (confirm("Tem certeza que deseja excluir este registro?")) {
 
