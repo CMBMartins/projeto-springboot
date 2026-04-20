@@ -1,13 +1,16 @@
-package com.SpringBoot.projetosspringboot;
+package com.bancoshows.bancoshowsfilmes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/shows")
 @CrossOrigin(origins = "*")
+
+
 public class ShowFilmeController {
 
     @Autowired
@@ -16,6 +19,11 @@ public class ShowFilmeController {
     @GetMapping
     public List<BancoShowFilmes> listar() {
         return repository.findAll();
+    }
+
+    @GetMapping("/usuario")
+    public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
+    return repository.findByUsuario(usuario);
     }
 
     // SALVAR
@@ -35,5 +43,4 @@ public class ShowFilmeController {
     public List<BancoShowFilmes> buscar(@RequestParam String artista) {
         return repository.findByArtistaContainingIgnoreCase(artista);
     }
-
 }
