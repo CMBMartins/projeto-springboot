@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ShowFilmeRepository extends JpaRepository<BancoShowFilmes, Long> {
     List<BancoShowFilmes> findByArtistaContainingIgnoreCase(String artista);
-    List<Despesa> findByUsuario(String usuario); 
+    List<BancoShowFilmes> findByUsuario(String usuario); 
 }
