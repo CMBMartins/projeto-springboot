@@ -83,4 +83,12 @@ public class BancoShowFilmes {
     public void setGenero(String genero) {
         this.genero = genero;
     }
+
+    public String getUsuario() {
+    return usuario;
+}
+
+public void setUsuario(String usuario) {
+    this.usuario = usuario;
+}
 }
