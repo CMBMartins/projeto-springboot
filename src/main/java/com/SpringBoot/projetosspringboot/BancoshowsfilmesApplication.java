@@ -1,4 +1,4 @@
-package com.SpringBoot.projetosspringboot;
+package com.bancoshows.bancoshowsfilmes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

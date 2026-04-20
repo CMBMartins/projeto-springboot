@@ -1,4 +1,4 @@
-package com.SpringBoot.projetosspringboot;
+package com.bancoshows.bancoshowsfilmes;
 
 import jakarta.persistence.*;
 
@@ -12,9 +12,9 @@ public class BancoShowFilmes {
 
     private String titulo;
     private String artista;
-    private String anodelancamento;
+    private String anodelançamento;
     private String datadacompra;
-    private String situacao;
+    private String situaçao;
     private String tipo;
     private String genero;
 
@@ -45,11 +45,11 @@ public class BancoShowFilmes {
     }
 
     public String getAnodelancamento() {
-        return anodelancamento;
+        return anodelançamento;
     }
 
-    public void setAnodelancamento(String anodelancamento) {
-        this.anodelancamento = anodelancamento;
+    public void setAnodelancamento(String anodelançamento) {
+        this.anodelançamento = anodelançamento;
     }
 
     public String getDatadacompra() {
@@ -61,11 +61,11 @@ public class BancoShowFilmes {
     }
 
     public String getSituacao() {
-        return situacao;
+        return situaçao;
     }
 
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
+    public void setSituacao(String situaçao) {
+        this.situaçao = situaçao;
     }
 
     public String getTipo() {
