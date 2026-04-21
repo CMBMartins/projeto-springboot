@@ -1,4 +1,4 @@
-package com.SpringBoot.projetosspringboot;
+package com.bancoshows.bancoshowsfilmes;
 
 import jakarta.persistence.*;
 
@@ -10,6 +10,7 @@ public class BancoShowFilmes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String codigo;
     private String titulo;
     private String artista;
     private String anodelancamento;
@@ -27,6 +28,14 @@ public class BancoShowFilmes {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+     public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getTitulo() {
@@ -84,12 +93,11 @@ public class BancoShowFilmes {
     public void setGenero(String genero) {
         this.genero = genero;
     }
-
     public String getUsuario() {
     return usuario;
-        }
+}
 
-    public void setUsuario(String usuario) {
+public void setUsuario(String usuario) {
     this.usuario = usuario;
-    }
+}
 }
