@@ -177,6 +177,15 @@
         background: #34495e;
         color: white;
     }
+
+    .linha-emprestado {
+    background-color: #ffe5e5;
+    }
+
+    .linha-arquivo {
+    background-color: #e5ffe5;
+    }
+
 </style>
 
 </head>
@@ -205,6 +214,8 @@
             <div class="grid">
 
                 <input type="text" id="id" placeholder="ID">
+
+                <input type="text" id="codigo" placeholder="Codigo">
 
                 <input type="text" id="titulo" placeholder="Título">
 
@@ -261,10 +272,10 @@
 
                     <tr>
 
-                        <th>ID</th>
+                        <th>Código</th>
                         <th>Título</th>
                         <th>Artista</th>
-                        <th>DataCompra</th>
+                        <th>Situação</th>
                         <th>Tipo</th>
                         <th>Gênero</th>
                         <th>Ação</th>
@@ -285,7 +296,6 @@
 
     <script>
 
-        //const id = document.getElementById("id").value;
 
         const API = "https://projeto-springboot.onrender.com";
 
@@ -324,46 +334,104 @@
         }
 
 
+    //FUNÇÃO PARA LISTAR TODAS AS MIDIAS
     function listarTodos() {
 
     const usuario = getUsuario();
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        alert("⚠️ Faça Login!");
+        return;
+    }
+
+    fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+        .then(data => {
+
+            const tabela = document.getElementById("tabelaShows");
+
+            if (!tabela) {
+                console.error("Tabela não encontrada!");
                 return;
             }
 
-     fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
-        
-        .then(data => {
-            console.log(data);       
+            if (!Array.isArray(data)) {
+                console.error("Resposta inválida:", data);
+                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                return;
+            }
 
-        const tabela = document.getElementById("tabelaShows");
-        tabela.innerHTML = "";
+            if (data.length === 0) {
+                tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
+                return;
+            }
 
-        data.forEach(show => {
-            tabela.innerHTML += `
-                <tr>
-                    <td>${show.id}</td>
-                    <td>${show.titulo}</td>
-                    <td>${show.artista}</td>
-                    <td>${show.datadacompra}</td>
-                    <td>${show.tipo}</td>
-                    <td>${show.genero}</td>
+            let linhas = "";
+
+            data.forEach(show => {
+
+                // 🎨 CLASSE DA LINHA (cor)
+                const classeLinha = show.situacao === "Emprestado"
+                    ? "linha-emprestado"
+                    : "linha-arquivo";
+
+                // 🔘 TEXTO DO BOTÃO
+                const textoBotao = show.situacao === "Emprestado"
+                    ? "↩️ Devolver"
+                    : "📤 Emprestar";
+
+                linhas += `
+                <tr class="${classeLinha}">
+                    <td>${show.codigo ?? ""}</td>
+                    <td>${show.titulo ?? ""}</td>
+                    <td>${show.artista ?? ""}</td>
+                    <td>${show.situacao ?? ""}</td>
+                    <td>${show.tipo ?? ""}</td>
+                    <td>${show.genero ?? ""}</td>
                     <td>
-                        <button class="btn btn-danger btn-sm"
-                            onclick="deletar(${show.id})">
-                            Excluir
+                        <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                            ${textoBotao}
                         </button>
                     </td>
-                </tr>
-            `;
+                </tr>`;
+            });
+
+            tabela.innerHTML = linhas;
+
+        })
+        .catch(err => {
+            console.error("Erro ao listar:", err);
+
+            const tabela = document.getElementById("tabelaShows");
+            if (tabela) {
+                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+            }
         });
+       }
+       
+
+       //FUNÇÃO PARA EDITAR SITUAÇÃO
+    function editarSituacao(id, situacaoAtual) {
+
+    const novaSituacao = situacaoAtual === "Emprestado"
+        ? "Em arquivo"
+        : "Emprestado";
+
+    fetch(`${API}/shows/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            situacao: novaSituacao
+        })
     })
-    .catch(error => {
-        console.error("Erro:", error);
-        alert("❌ Erro ao carregar dados");
+    .then(() => {
+        listarTodos(); // 🔄 recarrega tabela
+    })
+    .catch(err => {
+        console.error("Erro ao atualizar:", err);
+        alert("Erro ao atualizar situação");
     });
     }
 
@@ -380,6 +448,7 @@
 
             if (confirm("Tem certeza que deseja salvar esses dados?")) {
 
+                const codigo = document.getElementById("codigo").value;
                 const titulo = document.getElementById("titulo").value;
                 const artista = document.getElementById("artista").value;
                 const anodelancamento = document.getElementById("anodelançamento").value;
@@ -636,17 +705,13 @@
         }
 
 
-        // FUNÇÃO EFETUAR O LOGOUT
+       // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
-
-            localStorage.removeItem("usuariologado");
-
-            document.getElementById("usuariologado").value = "";
-
-            alert("Logout executado com sucesso!");
-
-            bloquearFuncoes();
-
+            localStorage.setItem("usuario", data.usuario);
+            document.getElementById("usuariologado").value = data.usuario;
+            alert("Logout realizado com sucesso!");
+            iniciarSistema();
+            window.location.href = "GestãodeDespesas.html";
         }
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
