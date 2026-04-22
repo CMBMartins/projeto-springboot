@@ -134,6 +134,11 @@
         color: white;
     }
 
+    #deletar {
+        background: #ae2b27;
+        color: white;
+    }
+
     #limparCampos {
         background: #f39c12;
         color: white;
@@ -237,6 +242,8 @@
                 <button id="salvar" onclick="salvar()">Salvar</button>
 
                 <button id="editar" onclick="editar()">Editar</button>
+
+                <button id="deletar" onclick="deletar()">Deletar</button>
 
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
 
@@ -447,58 +454,51 @@
                 return;
             }
 
-            if (confirm("Tem certeza que deseja salvar esses dados?")) {
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-                const codigo = document.getElementById("codigo").value;
-                const titulo = document.getElementById("titulo").value;
-                const artista = document.getElementById("artista").value;
-                const anodelancamento = document.getElementById("anodelançamento").value;
-                const datadacompra = document.getElementById("datadacompra").value;
-                const situacao = document.getElementById("situaçao").value;
-                const tipo = document.getElementById("tipo").value;
-                const genero = document.getElementById("genero").value;
+            const codigo = document.getElementById("codigo")?.value.trim();
+            const titulo = document.getElementById("titulo")?.value.trim();
+            const artista = document.getElementById("artista")?.value.trim();
+            const anodelancamento = document.getElementById("anodelancamento")?.value || null;
+            const datadacompra = document.getElementById("datadacompra")?.value || null;
+            const situacao = document.getElementById("situacao")?.value;
+            const tipo = document.getElementById("tipo")?.value;
+            const genero = document.getElementById("genero")?.value;
+            usuario: usuario
 
-                fetch(api, {
+            const dados = {
+                codigo,
+                titulo,
+                artista,
+                anodelancamento,
+                datadacompra,
+                situacao,
+                tipo,
+                genero,
+                usuario // 🔥 vem do localStorage
+            };
 
-                    method: "POST",
+            fetchSeguro(`${API}/shows`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(data => {
+                    console.log("Retorno:", data);
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        titulo,
-                        artista,
-                        anodelancamento,
-                        datadacompra,
-                        situacao,
-                        tipo,
-                        genero
-
-                    })
-
+                    alert("✅ Dados salvos com sucesso!");
+                    limparCampos();
+                    listarTodos();
                 })
-
-                    .then(response => response.json())
-
-                    .then(data => {
-
-                        limparCampos();
-
-                        carregar();
-
-                        alert("Dados salvo com sucesso!");
-
-                    });
-
-                if (!localStorage.getItem("usuariologado")) {
-                    alert("Faça login para executar essa ação!");
-                    return;
-                }
-
-            }
+                .catch(error => {
+                    console.error("Erro ao salvar:", error);
+                    alert("❌ Erro ao salvar dados");
+                });
         }
+
+
 
         // FUNÇÃO PARA EDITAR
         function editar() {
@@ -522,6 +522,7 @@
 
             const dados = {
 
+                codigo: document.getElementById("codigo").value.trim(),
                 titulo: document.getElementById("titulo").value.trim(),
                 artista: document.getElementById("artista").value.trim(),
                 anodelancamento: document.getElementById("anodelancamento").value || null,
@@ -575,22 +576,33 @@
                 return;
             }
 
-            if (confirm("Tem certeza que deseja excluir este registro?")) {
-
-                fetch(`${api}/${id}`, {
-                    method: "DELETE"
-                })
-                    .then(() => {
-                        alert("Registro excluído com sucesso!");
-                        listarTodos();
-                    })
-                    .catch(error => {
-                        console.error("Erro ao excluir:", error);
-                        alert("Erro ao excluir o registro.");
-                    });
-
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
             }
 
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/shows/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ao excluir: ${response.status}`);
+                    }
+
+                    return response.text(); // evita erro se vier vazio
+                })
+                .then(() => {
+                    alert("✅ Registro excluído com sucesso!");
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir:", error);
+                    alert("❌ Erro ao excluir o registro");
+                });
         }
 
 
@@ -748,6 +760,7 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
+            document.getElementById("codigo").value = "";
             document.getElementById("titulo").value = "";
             document.getElementById("artista").value = "";
             document.getElementById("anodelançamento").value = "";
@@ -755,7 +768,7 @@
             document.getElementById("situaçao").value = "";
             document.getElementById("tipo").value = "";
             document.getElementById("genero").value = "";
-            alert("Campos limpos sucesso!");
+            //alert("Campos limpos sucesso!");
 
         }
 
