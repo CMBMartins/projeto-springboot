@@ -5,16 +5,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/shows")
 @CrossOrigin(origins = "*")
-
 
 public class ShowFilmeController {
 
     @Autowired
     private ShowFilmeRepository repository;
+
+    @PutMapping("/{id}")
+    public BancoShowFilmes atualizar(@PathVariable Long id, @RequestBody BancoShowFilmes novo) {
+        BancoShowFilmes show = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ID não encontrado"));
+        show.setSituacao(novo.getSituacao());
+        return repository.save(show);
+    }
 
     @GetMapping
     public List<BancoShowFilmes> listar() {
@@ -23,7 +29,7 @@ public class ShowFilmeController {
 
     @GetMapping("/usuario")
     public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
-    return repository.findByUsuario(usuario);
+        return repository.findByUsuario(usuario);
     }
 
     // SALVAR
