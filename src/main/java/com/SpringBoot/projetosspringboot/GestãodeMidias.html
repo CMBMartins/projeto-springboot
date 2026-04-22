@@ -134,6 +134,11 @@
         color: white;
     }
 
+    #deletar {
+        background: #ae2b27;
+        color: white;
+    }
+
     #limparCampos {
         background: #f39c12;
         color: white;
@@ -238,6 +243,8 @@
 
                 <button id="editar" onclick="editar()">Editar</button>
 
+                <button id="deletar" onclick="deletar()">Deletar</button>
+
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
 
                 <button id="buscarArtista" onclick="buscarArtista()">Buscar Artista</button>
@@ -323,14 +330,8 @@
         }
 
         //FUNÇÃO PARA FECH SEGURO
-        function fetchSeguro(url) {
-            return fetch(url)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error("Erro na API");
-                    }
-                    return res.json();
-                });
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
         }
 
 
@@ -346,18 +347,23 @@
             }
 
             fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
-
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
@@ -370,18 +376,12 @@
 
                     data.forEach(show => {
 
-                        // 🎨 CLASSE DA LINHA (cor)
-                        const classeLinha = show.situacao === "Emprestado"
-                            ? "linha-emprestado"
-                            : "linha-arquivo";
-
-                        // 🔘 TEXTO DO BOTÃO
                         const textoBotao = show.situacao === "Emprestado"
-                            ? "↩️ Devolver"
-                            : "📤 Emprestar";
+                            ? "Devolver"
+                            : "Emprestar";
 
                         linhas += `
-                <tr class="${classeLinha}">
+                <tr>
                     <td>${show.id ?? ""}</td>
                     <td>${show.codigo ?? ""}</td>
                     <td>${show.titulo ?? ""}</td>
@@ -394,19 +394,16 @@
                             ${textoBotao}
                         </button>
                     </td>
-                </tr>`;
+                </tr>
+            `;
                     });
 
                     tabela.innerHTML = linhas;
-
                 })
-                .catch(err => {
-                    console.error("Erro ao listar:", err);
-
-                    const tabela = document.getElementById("tabelaShows");
-                    if (tabela) {
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
-                    }
+                .catch(error => {
+                    console.error("Erro ao listar:", error);
+                    document.getElementById("tabelaShows").innerHTML =
+                        "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
                 });
         }
 
@@ -418,7 +415,7 @@
                 ? "Em arquivo"
                 : "Emprestado";
 
-            fetch(`${API}/shows/${id}`, {
+            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -427,8 +424,14 @@
                     situacao: novaSituacao
                 })
             })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar");
+                    }
+                    return response.text();
+                })
                 .then(() => {
-                    listarTodos(); // 🔄 recarrega tabela
+                    listarTodos();
                 })
                 .catch(err => {
                     console.error("Erro ao atualizar:", err);
@@ -447,58 +450,60 @@
                 return;
             }
 
-            if (confirm("Tem certeza que deseja salvar esses dados?")) {
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-                const codigo = document.getElementById("codigo").value;
-                const titulo = document.getElementById("titulo").value;
-                const artista = document.getElementById("artista").value;
-                const anodelancamento = document.getElementById("anodelançamento").value;
-                const datadacompra = document.getElementById("datadacompra").value;
-                const situacao = document.getElementById("situaçao").value;
-                const tipo = document.getElementById("tipo").value;
-                const genero = document.getElementById("genero").value;
+            const codigo = document.getElementById("codigo")?.value.trim();
+            const titulo = document.getElementById("titulo")?.value.trim();
+            const artista = document.getElementById("artista")?.value.trim();
+            const anodelancamento = document.getElementById("anodelancamento")?.value || null;
+            const datadacompra = document.getElementById("datadacompra")?.value || null;
+            const situacao = document.getElementById("situacao")?.value;
+            const tipo = document.getElementById("tipo")?.value;
+            const genero = document.getElementById("genero")?.value;
+            usuario: usuario
 
-                fetch(api, {
+            const dados = {
+                codigo,
+                titulo,
+                artista,
+                anodelancamento,
+                datadacompra,
+                situacao,
+                tipo,
+                genero,
+                usuario // 🔥 vem do localStorage
+            };
 
-                    method: "POST",
+            fetchSeguro(`${API}/shows`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
 
-                    body: JSON.stringify({
-
-                        titulo,
-                        artista,
-                        anodelancamento,
-                        datadacompra,
-                        situacao,
-                        tipo,
-                        genero
-
-                    })
-
+                    return response.json(); // ✔️ aqui sim
                 })
+                .then(data => {
+                    console.log("Retorno correto:", data);
 
-                    .then(response => response.json())
-
-                    .then(data => {
-
-                        limparCampos();
-
-                        carregar();
-
-                        alert("Dados salvo com sucesso!");
-
-                    });
-
-                if (!localStorage.getItem("usuariologado")) {
-                    alert("Faça login para executar essa ação!");
-                    return;
-                }
-
-            }
+                    alert("✅ Dados salvos com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar:", error);
+                    alert("❌ Erro ao salvar dados");
+                });
         }
+
+
 
         // FUNÇÃO PARA EDITAR
         function editar() {
@@ -576,22 +581,33 @@
                 return;
             }
 
-            if (confirm("Tem certeza que deseja excluir este registro?")) {
-
-                fetch(`${api}/${id}`, {
-                    method: "DELETE"
-                })
-                    .then(() => {
-                        alert("Registro excluído com sucesso!");
-                        listarTodos();
-                    })
-                    .catch(error => {
-                        console.error("Erro ao excluir:", error);
-                        alert("Erro ao excluir o registro.");
-                    });
-
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
             }
 
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/shows/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ao excluir: ${response.status}`);
+                    }
+
+                    return response.text(); // evita erro se vier vazio
+                })
+                .then(() => {
+                    alert("✅ Registro excluído com sucesso!");
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir:", error);
+                    alert("❌ Erro ao excluir o registro");
+                });
         }
 
 
@@ -613,6 +629,16 @@
             }
 
             fetchSeguro(`${API}/shows/buscar?artista=${encodeURIComponent(artista)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSENCIAL
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
@@ -625,7 +651,7 @@
                     if (data.length === 0) {
                         tabela.innerHTML = `
                     <tr>
-                        <td colspan="7">Nenhum resultado encontrado</td>
+                        <td colspan="8">Nenhum resultado encontrado</td>
                     </tr>
                 `;
                         return;
@@ -635,9 +661,9 @@
 
                     data.forEach(show => {
 
-                        const dataFormatada = show.datadacompra
-                            ? new Date(show.datadacompra).toLocaleDateString("pt-BR")
-                            : "";
+                        const textoBotao = show.situacao === "Emprestado"
+                            ? "Devolver"
+                            : "Emprestar";
 
                         linhas += `
                     <tr>                        
@@ -649,9 +675,8 @@
                         <td>${show.tipo ?? ""}</td>
                         <td>${show.genero ?? ""}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm"
-                                onclick="deletar(${show.id})">
-                                Excluir
+                            <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                                ${textoBotao}
                             </button>
                         </td>
                     </tr>
@@ -665,10 +690,9 @@
                     console.error("Erro ao buscar artista:", error);
 
                     const tabela = document.getElementById("tabelaShows");
-                    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                 });
         }
-
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function autenticar() {
@@ -749,6 +773,7 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
+            document.getElementById("codigo").value = "";
             document.getElementById("titulo").value = "";
             document.getElementById("artista").value = "";
             document.getElementById("anodelançamento").value = "";
@@ -756,7 +781,7 @@
             document.getElementById("situaçao").value = "";
             document.getElementById("tipo").value = "";
             document.getElementById("genero").value = "";
-            alert("Campos limpos sucesso!");
+            //alert("Campos limpos sucesso!");
 
         }
 
