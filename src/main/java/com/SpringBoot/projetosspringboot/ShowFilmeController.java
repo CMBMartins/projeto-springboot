@@ -16,10 +16,20 @@ public class ShowFilmeController {
 
     @PutMapping("/{id}")
     public BancoShowFilmes atualizar(@PathVariable Long id, @RequestBody BancoShowFilmes novo) {
-        BancoShowFilmes show = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ID não encontrado"));
-        show.setSituacao(novo.getSituacao());
-        return repository.save(show);
+
+        BancoShowFilmes existente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
+
+        existente.setTitulo(novo.getTitulo());
+        existente.setArtista(novo.getArtista());
+        existente.setAnodelancamento(novo.getAnodelancamento());
+        existente.setDatadacompra(novo.getDatadacompra());
+        existente.setSituacao(novo.getSituacao());
+        existente.setTipo(novo.getTipo());
+        existente.setGenero(novo.getGenero());
+        existente.setUsuario(novo.getUsuario());
+
+        return repository.save(existente);
     }
 
     @GetMapping
