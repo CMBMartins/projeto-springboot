@@ -20,6 +20,7 @@ public class ShowFilmeController {
         BancoShowFilmes existente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
 
+        existente.setCodigo(novo.getCodigo());
         existente.setTitulo(novo.getTitulo());
         existente.setArtista(novo.getArtista());
         existente.setAnodelancamento(novo.getAnodelancamento());

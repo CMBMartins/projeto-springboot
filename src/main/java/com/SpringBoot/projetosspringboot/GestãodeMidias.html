@@ -271,6 +271,7 @@
 
                     <tr>
 
+                        <th>ID</th>
                         <th>Código</th>
                         <th>Título</th>
                         <th>Artista</th>
@@ -381,6 +382,7 @@
 
                         linhas += `
                 <tr class="${classeLinha}">
+                    <td>${show.id ?? ""}</td>
                     <td>${show.codigo ?? ""}</td>
                     <td>${show.titulo ?? ""}</td>
                     <td>${show.artista ?? ""}</td>
@@ -509,44 +511,57 @@
                 return;
             }
 
-            if (confirm("Tem certeza que deseja editar estes dados?")) {
+            const id = document.getElementById("id").value;
 
-                const id = document.getElementById("id").value;
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
 
-                const dados = {
+            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
 
-                    titulo: document.getElementById("titulo").value,
-                    artista: document.getElementById("artista").value,
-                    anodelancamento: document.getElementById("anodelancamento").value,
-                    datadacompra: document.getElementById("datadacompra").value,
-                    situacao: document.getElementById("situacao").value,
-                    tipo: document.getElementById("tipo").value,
-                    genero: document.getElementById("genero").value
+            const dados = {
 
-                };
+                codigo: document.getElementById("codigo").value.trim(),
+                titulo: document.getElementById("titulo").value.trim(),
+                artista: document.getElementById("artista").value.trim(),
+                anodelancamento: document.getElementById("anodelancamento").value || null,
+                datadacompra: document.getElementById("datadacompra").value || null,
+                situacao: document.getElementById("situacao").value,
+                tipo: document.getElementById("tipo").value,
+                genero: document.getElementById("genero").value,
+                usuario: usuario // 🔥 importante se sua tabela usa isso
+            };
 
-                fetch(api + "/" + id, {
+            fetchSeguro(`${API}/shows/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
 
-                    method: "PUT",
+                .then(response => {
+                    console.log("Status:", response.status);
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    if (!response.ok) {
+                        throw new Error(`Erro ao atualizar: ${response.status}`);
+                    }
 
-                    body: JSON.stringify(dados)
-
+                    return response.text(); // evita erro de JSON vazio
                 })
 
-                    .then(() => {
+                .then(() => {
+                    alert("✅ Dados atualizados com sucesso!");
 
-                        alert("Dados atualizados com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
 
-                        limparCampos();
-                        listarTodos();
-
-                    });
-
-            }
+                .catch(error => {
+                    console.error("Erro ao editar:", error);
+                    alert("❌ Erro ao atualizar dados");
+                });
         }
 
 
@@ -580,59 +595,78 @@
         }
 
 
-        // FUNÇÃO PARA CONSULTAR POR ARTISTA
+        // FUNÇÃO PARA BUSCAR ARTISTA
         function buscarArtista() {
 
-            const artista = document.getElementById("artista").value;
+            const usuario = getUsuario();
 
-            if (artista === "") {
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const artista = document.getElementById("artista").value.trim();
+
+            if (!artista) {
                 alert("⚠️ Informe o artista a ser consultado!");
                 return;
             }
 
-            fetch(`${api}/buscar?artista=${artista}`)
-
-                .then(response => response.json())
-
+            fetchSeguro(`${API}/shows/buscar?artista=${encodeURIComponent(artista)}`)
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
-                    tabela.innerHTML = "";
-
-                    if (data.length === 0) {
-
-                        tabela.innerHTML = `
-        <tr>
-        <td colspan="7">Nenhum resultado encontrado</td>
-        </tr>
-        `;
-
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao buscar dados</td></tr>";
                         return;
                     }
 
+                    if (data.length === 0) {
+                        tabela.innerHTML = `
+                    <tr>
+                        <td colspan="7">Nenhum resultado encontrado</td>
+                    </tr>
+                `;
+                        return;
+                    }
+
+                    let linhas = "";
+
                     data.forEach(show => {
 
-                        tabela.innerHTML += `
-        <tr>
-        <td>${show.id}</td>
-        <td>${show.titulo}</td>
-        <td>${show.artista}</td>
-        <td>${show.datadacompra}</td>
-        <td>${show.tipo}</td>
-        <td>${show.genero}</td>
+                        const dataFormatada = show.datadacompra
+                            ? new Date(show.datadacompra).toLocaleDateString("pt-BR")
+                            : "";
 
-        <td>
-        <button class="btn btn-danger btn-sm"
-        onclick="deletar(${show.id})">
-        Excluir
-        </button>
-        </td>
-        </tr>
-        `;
+                        linhas += `
+                    <tr>                        
+                        <td>${show.id ?? ""}</td>
+                        <td>${show.codigo ?? ""}</td>
+                        <td>${show.titulo ?? ""}</td>
+                        <td>${show.artista ?? ""}</td>
+                        <td>${show.situacao ?? ""}</td>
+                        <td>${show.tipo ?? ""}</td>
+                        <td>${show.genero ?? ""}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm"
+                                onclick="deletar(${show.id})">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     });
-                });
 
+                    tabela.innerHTML = linhas;
+
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar artista:", error);
+
+                    const tabela = document.getElementById("tabelaShows");
+                    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                });
         }
 
 
