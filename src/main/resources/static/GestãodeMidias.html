@@ -14,10 +14,10 @@
 </head>
 
 <style>
-    body {        
+    body {
         font-family: Arial;
         margin: 0;
-        background: #f2f2f2;        
+        background: #f2f2f2;
     }
 
     /* BARRA SUPERIOR */
@@ -95,7 +95,7 @@
         flex-wrap: wrap;
         gap: 10px;
         margin-top: 20px;
-        
+
     }
 
     /* padrão de botão */
@@ -120,7 +120,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
         color: white;
-        background-color: #007bff;        
+        background-color: #007bff;
     }
 
 
@@ -179,13 +179,12 @@
     }
 
     .linha-emprestado {
-    background-color: #ffe5e5;
+        background-color: #ffe5e5;
     }
 
     .linha-arquivo {
-    background-color: #e5ffe5;
+        background-color: #e5ffe5;
     }
-
 </style>
 
 </head>
@@ -301,25 +300,25 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("loggedIn");
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
         };
 
         function iniciarSistema() {
-            console.log("Sistema iniciado");            
+            console.log("Sistema iniciado");
         }
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-            
-        const user = localStorage.getItem("usuario");
 
-        if (!user || user === "undefined" || user === "null") {
+            const user = localStorage.getItem("usuario");
 
-        return null;
-        }
+            if (!user || user === "undefined" || user === "null") {
 
-        return user;
+                return null;
+            }
+
+            return user;
         }
 
         //FUNÇÃO PARA FECH SEGURO
@@ -334,53 +333,53 @@
         }
 
 
-    //FUNÇÃO PARA LISTAR TODAS AS MIDIAS
-    function listarTodos() {
+        //FUNÇÃO PARA LISTAR TODAS AS MIDIAS
+        function listarTodos() {
 
-    const usuario = getUsuario();
+            const usuario = getUsuario();
 
-    if (!usuario) {
-        console.warn("Usuário não definido!");
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
-        .then(data => {
-
-            const tabela = document.getElementById("tabelaShows");
-
-            if (!tabela) {
-                console.error("Tabela não encontrada!");
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
                 return;
             }
 
-            if (!Array.isArray(data)) {
-                console.error("Resposta inválida:", data);
-                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
-                return;
-            }
+            fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
 
-            if (data.length === 0) {
-                tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
-                return;
-            }
+                    const tabela = document.getElementById("tabelaShows");
 
-            let linhas = "";
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
 
-            data.forEach(show => {
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                        return;
+                    }
 
-                // 🎨 CLASSE DA LINHA (cor)
-                const classeLinha = show.situacao === "Emprestado"
-                    ? "linha-emprestado"
-                    : "linha-arquivo";
+                    if (data.length === 0) {
+                        tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
+                        return;
+                    }
 
-                // 🔘 TEXTO DO BOTÃO
-                const textoBotao = show.situacao === "Emprestado"
-                    ? "↩️ Devolver"
-                    : "📤 Emprestar";
+                    let linhas = "";
 
-                linhas += `
+                    data.forEach(show => {
+
+                        // 🎨 CLASSE DA LINHA (cor)
+                        const classeLinha = show.situacao === "Emprestado"
+                            ? "linha-emprestado"
+                            : "linha-arquivo";
+
+                        // 🔘 TEXTO DO BOTÃO
+                        const textoBotao = show.situacao === "Emprestado"
+                            ? "↩️ Devolver"
+                            : "📤 Emprestar";
+
+                        linhas += `
                 <tr class="${classeLinha}">
                     <td>${show.codigo ?? ""}</td>
                     <td>${show.titulo ?? ""}</td>
@@ -394,49 +393,49 @@
                         </button>
                     </td>
                 </tr>`;
-            });
+                    });
 
-            tabela.innerHTML = linhas;
+                    tabela.innerHTML = linhas;
 
-        })
-        .catch(err => {
-            console.error("Erro ao listar:", err);
+                })
+                .catch(err => {
+                    console.error("Erro ao listar:", err);
 
-            const tabela = document.getElementById("tabelaShows");
-            if (tabela) {
-                tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
-            }
-        });
-       }
-       
+                    const tabela = document.getElementById("tabelaShows");
+                    if (tabela) {
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                    }
+                });
+        }
 
-       //FUNÇÃO PARA EDITAR SITUAÇÃO
-    function editarSituacao(id, situacaoAtual) {
 
-    const novaSituacao = situacaoAtual === "Emprestado"
-        ? "Em arquivo"
-        : "Emprestado";
+        //FUNÇÃO PARA EDITAR SITUAÇÃO
+        function editarSituacao(id, situacaoAtual) {
 
-    fetch(`${API}/shows/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            situacao: novaSituacao
-        })
-    })
-    .then(() => {
-        listarTodos(); // 🔄 recarrega tabela
-    })
-    .catch(err => {
-        console.error("Erro ao atualizar:", err);
-        alert("Erro ao atualizar situação");
-    });
-    }
+            const novaSituacao = situacaoAtual === "Emprestado"
+                ? "Em arquivo"
+                : "Emprestado";
 
-            // FUNÇÃO PARA SALVAR
-            function salvar() {
+            fetch(`${API}/shows/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    situacao: novaSituacao
+                })
+            })
+                .then(() => {
+                    listarTodos(); // 🔄 recarrega tabela
+                })
+                .catch(err => {
+                    console.error("Erro ao atualizar:", err);
+                    alert("Erro ao atualizar situação");
+                });
+        }
+
+        // FUNÇÃO PARA SALVAR
+        function salvar() {
 
             const usuario = getUsuario();
 
@@ -581,59 +580,77 @@
         }
 
 
-        // FUNÇÃO PARA CONSULTAR POR ARTISTA
+        // FUNÇÃO PARA BUSCAR ARTISTA
         function buscarArtista() {
 
-            const artista = document.getElementById("artista").value;
+            const usuario = getUsuario();
 
-            if (artista === "") {
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const artista = document.getElementById("artista").value.trim();
+
+            if (!artista) {
                 alert("⚠️ Informe o artista a ser consultado!");
                 return;
             }
 
-            fetch(`${api}/buscar?artista=${artista}`)
-
-                .then(response => response.json())
-
+            fetchSeguro(`${API}/shows/buscar?artista=${encodeURIComponent(artista)}`)
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
-                    tabela.innerHTML = "";
-
-                    if (data.length === 0) {
-
-                        tabela.innerHTML = `
-        <tr>
-        <td colspan="7">Nenhum resultado encontrado</td>
-        </tr>
-        `;
-
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao buscar dados</td></tr>";
                         return;
                     }
 
+                    if (data.length === 0) {
+                        tabela.innerHTML = `
+                    <tr>
+                        <td colspan="7">Nenhum resultado encontrado</td>
+                    </tr>
+                `;
+                        return;
+                    }
+
+                    let linhas = "";
+
                     data.forEach(show => {
 
-                        tabela.innerHTML += `
-        <tr>
-        <td>${show.id}</td>
-        <td>${show.titulo}</td>
-        <td>${show.artista}</td>
-        <td>${show.datadacompra}</td>
-        <td>${show.tipo}</td>
-        <td>${show.genero}</td>
+                        const dataFormatada = show.datadacompra
+                            ? new Date(show.datadacompra).toLocaleDateString("pt-BR")
+                            : "";
 
-        <td>
-        <button class="btn btn-danger btn-sm"
-        onclick="deletar(${show.id})">
-        Excluir
-        </button>
-        </td>
-        </tr>
-        `;
+                        linhas += `
+                    <tr>
+                        <td>${show.id ?? ""}</td>
+                        <td>${show.titulo ?? ""}</td>
+                        <td>${show.artista ?? ""}</td>
+                        <td>${dataFormatada}</td>
+                        <td>${show.tipo ?? ""}</td>
+                        <td>${show.genero ?? ""}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm"
+                                onclick="deletar(${show.id})">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     });
-                });
 
+                    tabela.innerHTML = linhas;
+
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar artista:", error);
+
+                    const tabela = document.getElementById("tabelaShows");
+                    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                });
         }
 
 
@@ -687,7 +704,7 @@
                 .then(data => {
 
                     // Mostra o usuário no campo Default
-                    localStorage.setItem("usuario", data.usuario);                    
+                    localStorage.setItem("usuario", data.usuario);
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
                     //liberarFuncoes();
@@ -705,7 +722,7 @@
         }
 
 
-       // FUNÇÃO EFETUAR O LOGOUT
+        // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
             localStorage.setItem("usuario", data.usuario);
             document.getElementById("usuariologado").value = data.usuario;
