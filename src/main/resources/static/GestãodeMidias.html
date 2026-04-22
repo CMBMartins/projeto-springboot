@@ -330,14 +330,8 @@
         }
 
         //FUNÇÃO PARA FECH SEGURO
-        function fetchSeguro(url) {
-            return fetch(url)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error("Erro na API");
-                    }
-                    return res.json();
-                });
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
         }
 
 
@@ -353,18 +347,23 @@
             }
 
             fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
-
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
@@ -377,18 +376,12 @@
 
                     data.forEach(show => {
 
-                        // 🎨 CLASSE DA LINHA (cor)
-                        const classeLinha = show.situacao === "Emprestado"
-                            ? "linha-emprestado"
-                            : "linha-arquivo";
-
-                        // 🔘 TEXTO DO BOTÃO
                         const textoBotao = show.situacao === "Emprestado"
-                            ? "↩️ Devolver"
-                            : "📤 Emprestar";
+                            ? "Devolver"
+                            : "Emprestar";
 
                         linhas += `
-                <tr class="${classeLinha}">
+                <tr>
                     <td>${show.id ?? ""}</td>
                     <td>${show.codigo ?? ""}</td>
                     <td>${show.titulo ?? ""}</td>
@@ -401,19 +394,16 @@
                             ${textoBotao}
                         </button>
                     </td>
-                </tr>`;
+                </tr>
+            `;
                     });
 
                     tabela.innerHTML = linhas;
-
                 })
-                .catch(err => {
-                    console.error("Erro ao listar:", err);
-
-                    const tabela = document.getElementById("tabelaShows");
-                    if (tabela) {
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
-                    }
+                .catch(error => {
+                    console.error("Erro ao listar:", error);
+                    document.getElementById("tabelaShows").innerHTML =
+                        "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
                 });
         }
 
@@ -425,7 +415,7 @@
                 ? "Em arquivo"
                 : "Emprestado";
 
-            fetch(`${API}/shows/${id}`, {
+            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -434,8 +424,14 @@
                     situacao: novaSituacao
                 })
             })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar");
+                    }
+                    return response.text();
+                })
                 .then(() => {
-                    listarTodos(); // 🔄 recarrega tabela
+                    listarTodos();
                 })
                 .catch(err => {
                     console.error("Erro ao atualizar:", err);
@@ -485,8 +481,17 @@
                 },
                 body: JSON.stringify(dados)
             })
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // ✔️ aqui sim
+                })
                 .then(data => {
-                    console.log("Retorno:", data);
+                    console.log("Retorno correto:", data);
 
                     alert("✅ Dados salvos com sucesso!");
                     limparCampos();
@@ -624,6 +629,16 @@
             }
 
             fetchSeguro(`${API}/shows/buscar?artista=${encodeURIComponent(artista)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSENCIAL
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
@@ -636,7 +651,7 @@
                     if (data.length === 0) {
                         tabela.innerHTML = `
                     <tr>
-                        <td colspan="7">Nenhum resultado encontrado</td>
+                        <td colspan="8">Nenhum resultado encontrado</td>
                     </tr>
                 `;
                         return;
@@ -646,9 +661,9 @@
 
                     data.forEach(show => {
 
-                        const dataFormatada = show.datadacompra
-                            ? new Date(show.datadacompra).toLocaleDateString("pt-BR")
-                            : "";
+                        const textoBotao = show.situacao === "Emprestado"
+                            ? "Devolver"
+                            : "Emprestar";
 
                         linhas += `
                     <tr>                        
@@ -660,9 +675,8 @@
                         <td>${show.tipo ?? ""}</td>
                         <td>${show.genero ?? ""}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm"
-                                onclick="deletar(${show.id})">
-                                Excluir
+                            <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                                ${textoBotao}
                             </button>
                         </td>
                     </tr>
@@ -676,10 +690,9 @@
                     console.error("Erro ao buscar artista:", error);
 
                     const tabela = document.getElementById("tabelaShows");
-                    tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                 });
         }
-
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function autenticar() {
