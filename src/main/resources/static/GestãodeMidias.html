@@ -243,17 +243,12 @@
 
             <div class="botoes">
 
-                <button id="salvar" onclick="salvar()">Salvar</button>
-
-                <button id="editar" onclick="editar()">Editar</button>
-
-                <button id="deletar" onclick="deletar()">Deletar</button>
-
-                <button id="limparCampos" onclick="limparCampos()">Limpar</button>
-
-                <button id="buscarArtista" onclick="buscarArtista()">BuscarArtista</button>
-
-                <button id="listarTodos" onclick="listarTodos()">Listar Midias</button>
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
+                <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="deletar" onclick="deletar()">🗑️Deletar</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
+                <button id="buscarArtista" onclick="buscarArtista()">🔍BusArtista</button>
+                <button id="listarTodos" onclick="listarTodos()">📋ListMidias</button>
 
             </div>
 
@@ -261,12 +256,12 @@
 
                 <h2>Realizar Login</h2>
 
-                <input type="text" id="usuario" placeholder="usuario" style="width:33%;">
+                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
 
-                <input type="password" id="senha" placeholder="senha" style="width:33%;">
+                <input type="password" id="senha" placeholder="Senha" style="width:33%;">
 
-                <button onclick="autenticar()">Entrar</button>
-                <button onclick="logout()">Sair</button>
+                <button onclick="autenticar()">🚪➡️Entrar</button>
+                <button onclick="logout()">🚪⬅️Sair</button>
 
             </div>
 
@@ -774,7 +769,7 @@
             document.getElementById("usuariologado").value = data.usuario;
             alert("Logout realizado com sucesso!");
             iniciarSistema();
-            window.location.href = "GestãodeDespesas.html";
+            window.location.href = "GestãodeMidias.html";
         }
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
@@ -797,6 +792,8 @@
             document.getElementById("senha").value = "";
 
         }
+
+        //window.login = login;
 
     </script>
 
