@@ -100,6 +100,8 @@
 
     /* padrão de botão */
     .botoes button {
+        width: 130px;
+        height: 40px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -112,6 +114,8 @@
 
     /* padrão de botão */
     .login button {
+        width: 130px;
+        height: 40px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -247,7 +251,7 @@
 
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
 
-                <button id="buscarArtista" onclick="buscarArtista()">Buscar Artista</button>
+                <button id="buscarArtista" onclick="buscarArtista()">BuscarArtista</button>
 
                 <button id="listarTodos" onclick="listarTodos()">Listar Midias</button>
 
@@ -648,16 +652,8 @@
                     const tabela = document.getElementById("tabelaShows");
 
                     if (!Array.isArray(data)) {
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao buscar dados</td></tr>";
-                        return;
-                    }
-
-                    if (data.length === 0) {
-                        tabela.innerHTML = `
-                    <tr>
-                        <td colspan="8">Nenhum resultado encontrado</td>
-                    </tr>
-                `;
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
@@ -665,6 +661,12 @@
 
                     data.forEach(show => {
 
+                        // 🎨 Classe da linha
+                        const classeLinha = show.situacao === "Emprestado"
+                            ? "linha-emprestado"
+                            : "linha-emarquivo";
+
+                        // 🔘 Texto do botão
                         const textoBotao = show.situacao === "Emprestado"
                             ? "Devolver"
                             : "Emprestar";
