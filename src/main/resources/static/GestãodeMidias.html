@@ -765,10 +765,9 @@
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
-            localStorage.setItem("usuario", data.usuario);
-            document.getElementById("usuariologado").value = data.usuario;
-            alert("Logout realizado com sucesso!");
-            iniciarSistema();
+            localStorage.removeItem("usuariologado");
+            alert("🚪 Logout realizado com sucesso!");
+
             window.location.href = "GestãodeMidias.html";
         }
 
