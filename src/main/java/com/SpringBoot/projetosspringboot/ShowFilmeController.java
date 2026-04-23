@@ -2,6 +2,7 @@ package com.SpringBoot.projetosspringboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 import java.util.List;
 
@@ -13,6 +14,23 @@ public class ShowFilmeController {
 
     @Autowired
     private ShowFilmeRepository repository;
+
+    @PutMapping("/{id}/situacao")
+    public BancoShowFilmes atualizarSituacao(@PathVariable Long id, @RequestBody Map<String, String> dados) {
+
+        BancoShowFilmes show = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
+
+        String novaSituacao = dados.get("situacao");
+
+        if (novaSituacao == null || novaSituacao.isEmpty()) {
+            throw new RuntimeException("Situação inválida");
+        }
+
+        show.setSituacao(novaSituacao);
+
+        return repository.save(show);
+    }
 
     @PutMapping("/{id}")
     public BancoShowFilmes atualizar(@PathVariable Long id, @RequestBody BancoShowFilmes novo) {
