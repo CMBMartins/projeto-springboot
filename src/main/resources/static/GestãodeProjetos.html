@@ -98,6 +98,8 @@
 
     /* padrão de botão */
     .botoes button {
+        width: 158px;
+        height: 45px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -110,6 +112,8 @@
 
     /* padrão de botão */
     .login button {
+        width: 134px;
+        height: 40px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -226,7 +230,7 @@
 
                 <button id="salvar" onclick="salvar()">Salvar</button>
 
-                <button id="editar" onclick="editar()">Atualizar os Dados</button>
+                <button id="editar" onclick="editar()">Atualizar Dados</button>
 
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
 
@@ -285,77 +289,144 @@
 
     <script>
 
-        const id = document.getElementById("id").value;
+        const API = "https://projeto-springboot.onrender.com";
 
-        const api = "http://localhost:8084/projetos";
-
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
+        };
 
-            if (localStorage.getItem("usuariologado")) {
-                liberarFuncoes();
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+        }
 
-            } else {
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
 
-                bloquearFuncoes();
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
             }
 
+            return user;
         }
 
-        function liberarFuncoes() {
-
-            document.getElementById("salvar").disabled = false;
-            document.getElementById("editar").disabled = false;
-            document.getElementById("listarTodos").disabled = false;
-
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
         }
 
-        function bloquearFuncoes() {
 
-            document.getElementById("salvar").disabled = true;
-            document.getElementById("editar").disabled = true;
-
-            document.getElementById("listarTodos").disabled = true;
-
-        }
-
-        // FUNÇÃO PARA LISTAR TODOS PROJETOS
         function listarTodos() {
 
-            fetch(api)
-                .then(response => response.json())
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            fetchSeguro(`${API}/projetos/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaProjetos");
 
-                    tabela.innerHTML = "";
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
 
                     data.forEach(show => {
 
-                        tabela.innerHTML += `
-<tr>
-<td>${show.id}</td>
-<td>${show.titulo}</td>
-<td>${show.cliente}</td>
-<td>${show.tamanhodoimovel}</td>
-<td>${show.valordoprojeto}</td>
-<td>${show.datadaentrega}</td>
-<td>${show.tipo}</td>
+                        // 🎨 Classe da linha
+                        const classeLinha = show.tipo === "DWG"
+                            ? "linha-DWG"
+                            : "linha-outro";
 
-<td>
+                        // 🔘 Texto do botão
+                        const textoBotao = show.tipo === "DWG"
+                            ? "MudarArquivo"
+                            : "outro";
 
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-
-</tr>
-`;
-
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${show.id ?? ""}</td>
+                    <td>${show.titulo ?? ""}</td>
+                    <td>${show.cliente ?? ""}</td>
+                    <td>${show.tamanhodoimovel ?? ""}</td>
+                    <td>${show.valordoprojeto ?? ""}</td>
+                    <td>${show.tipo ?? ""}</td>
+                    <td>${show.genero ?? ""}</td>
+                    <td>
+                        <button onclick="editarSituacao(${show.id}, '${show.tipo}')">
+                            ${textoBotao}
+                        </button>
+                    </td>
+                </tr>`;
                     });
 
+                    tabela.innerHTML = linhas;
+
+                })
+                .catch(err => {
+                    console.error("Erro ao listar:", err);
+
+                    const tabela = document.getElementById("tabelaProjetos");
+                    if (tabela) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                    }
                 });
         }
+
+
+        //FUNÇÃO PARA EDITAR SITUAÇÃO
+        function editarSituacao(id, situacaoAtual) {
+
+            const novaSituacao = situacaoAtual === "Outro"
+                ? "DWG"
+                : "Outro";
+
+            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    situacao: novaSituacao
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error("Erro ao atualizar:", err);
+                    alert("Erro ao atualizar situação");
+                });
+        }
+
 
         // FUNÇÃO PARA SALVAR
         function salvar() {
@@ -555,7 +626,7 @@ Excluir
                 return;
             }
 
-            fetch("http://localhost:8084/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -583,10 +654,9 @@ Excluir
                 .then(data => {
 
                     // Mostra o usuário no campo Default
-
+                    localStorage.setItem("usuario", data.usuario);
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
-                    liberarFuncoes();
                     limparLogin();
 
                 })
