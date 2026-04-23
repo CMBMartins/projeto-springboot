@@ -38,6 +38,11 @@ public class ProjetoController {
         return repository.findByClienteContainingIgnoreCase(cliente);
     }
 
+    @GetMapping("/usuario")
+    public List<Projeto> listarPorUsuario(@RequestParam String usuario) {
+        return repository.findByUsuario(usuario);
+    }
+
     @PutMapping("/{id}")
     public Projeto atualizar(@PathVariable Integer id, @RequestBody Projeto projeto) {
         projeto.setId(id);
