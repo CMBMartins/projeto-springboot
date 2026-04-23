@@ -277,8 +277,8 @@
                         <th>Cliente</th>
                         <th>T.doImovel</th>
                         <th>Valor</th>
-                        <th>DataEntrega</th>
                         <th>Tipo</th>
+                        <th>Gênero</th>
                         <th>Ação</th>
 
                     </tr>
@@ -381,8 +381,8 @@
 
                         // 🔘 Texto do botão
                         const textoBotao = projeto.genero === "DWG"
-                            ? "📄 Converter"
-                            : "📐 Alterar";
+                            ? "📄 Converter Outro"
+                            : "📐 Converter DWG";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -415,12 +415,12 @@
         }
 
 
-        //FUNÇÃO PARA EDITAR SITUAÇÃO
-        function editarGenero(id, situacaoAtual) {
+        //FUNÇÃO PARA EDITAR GENERO
+        function editarGenero(id, generoAtual) {
 
-            const novaSituacao = situacaoAtual === "Outro"
-                ? "DWG"
-                : "Outro";
+            const novoGenero = generoAtual === "DWG"
+                ? "Outro"
+                : "DWG";
 
             fetch(`${API}/projetos/${id}/genero`, {
                 method: "PUT",
@@ -428,12 +428,12 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    situacao: novaSituacao
+                    genero: novoGenero // ✅ CORRETO
                 })
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Erro ao atualizar");
+                        throw new Error(`Erro: ${response.status}`);
                     }
                     return response.text();
                 })
@@ -442,7 +442,7 @@
                 })
                 .catch(err => {
                     console.error("Erro ao atualizar:", err);
-                    alert("Erro ao atualizar situação");
+                    alert("❌ Erro ao atualizar gênero");
                 });
         }
 
