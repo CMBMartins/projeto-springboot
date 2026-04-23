@@ -138,7 +138,6 @@
         background: #ae2b27;
         color: white;
     }
-    
 
     #limparCampos {
         background: #f39c12;
@@ -218,7 +217,7 @@
 
             <div class="grid">
 
-                <input type="text" id="id" placeholder="Digite o ID">
+                <input type="text" id="id" placeholder="ID">
 
                 <input type="text" id="codigo" placeholder="Codigo">
 
@@ -230,7 +229,7 @@
 
                 <input type="text" id="datadacompra" placeholder="Data da Compra">
 
-                <input type="text" id="situacao" placeholder="Situação">
+                <input type="text" id="situaçao" placeholder="Situação">
 
                 <input type="text" id="tipo" placeholder="Tipo">
 
@@ -242,9 +241,9 @@
 
                 <button id="salvar" onclick="salvar()">Salvar</button>
 
-                <button id="editar" onclick="editar()">Editar</button>                
-                
-                <button id="deletar" onclick="deletar()">Excluir</button>               
+                <button id="editar" onclick="editar()">Editar</button>
+
+                <button id="deletar" onclick="deletar()">Deletar</button>
 
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
 
@@ -348,41 +347,49 @@
             }
 
             fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
-                .then(response => {
-
-                    console.log("Status:", response.status);
-
-                    if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
-                    }
-
-                    return response.json();
-                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
+
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                         return;
                     }
 
                     if (data.length === 0) {
-                        tabela.innerHTML = "<tr><td colspan='7'>Sem dados</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
                         return;
                     }
 
                     let linhas = "";
 
+                    // 🔥 AQUI entra a lógica nova
                     data.forEach(show => {
-                       
-                        const textoBotao = show.situacao === "Emprestado"
-                            ? "Devolver"
-                            : "Emprestar";
+
+                        const valor = Number(show.valor) || 0;
+
+                        const dataFormatada = show.data
+                            ? new Date(show.data).toLocaleDateString("pt-BR")
+                            : "";
+
+                        // 🎨 Classe da linha (cor)
+                        const classeLinha = show.status === "EmArquivo"
+                            ? "linha-emarquivo"
+                            : "linha-emprestado";
+
+                        // 🔘 Texto do botão
+                        const textoBotao = show.status === "EmArquivo"
+                            ? "↩️ Reabrir"
+                            : "💰 emprestar";
 
                         linhas += `
-                <tr>
+                <tr class="${classeLinha}">
                     <td>${show.id ?? ""}</td>
                     <td>${show.codigo ?? ""}</td>
                     <td>${show.titulo ?? ""}</td>
@@ -391,242 +398,233 @@
                     <td>${show.tipo ?? ""}</td>
                     <td>${show.genero ?? ""}</td>
                     <td>
-                        <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                            style: "currency",
+                            currency: "BRL"
+                        })}</td>
+                    <td>${show.status ?? ""}</td>
+                    <td>
+                        <button onclick="editarStatus(${show.id})">
                             ${textoBotao}
                         </button>
                     </td>
-                </tr>
-            `;
+                </tr>`;
                     });
 
                     tabela.innerHTML = linhas;
+
                 })
-                .catch(error => {
-                    console.error("Erro ao listar:", error);
-                    document.getElementById("tabelaShows").innerHTML =
-                        "<tr><td colspan='7'>Erro ao carregar dados</td></tr>";
+                .catch(err => {
+                    console.error("Erro ao listar:", err);
+
+                    const tabela = document.getElementById("tabelaDespesas");
+                    if (tabela) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                    }
                 });
         }
 
 
         //FUNÇÃO PARA EDITAR SITUAÇÃO
-    function editarSituacao(id, situacaoAtual) {
+        function editarSituacao(id, situacaoAtual) {
 
-    const novaSituacao = situacaoAtual === "Emprestado"
-        ? "Em arquivo"
-        : "Emprestado";
+            const novaSituacao = situacaoAtual === "Emprestado"
+                ? "Em arquivo"
+                : "Emprestado";
 
-    fetchSeguro(`${API}/shows/${id}/situacao`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-        id: id,
-        situacao: novaSituacao
-        })
-    })
-    .then(response => {
-        console.log("Status update:", response.status);
-
-        if (!response.ok) {
-            throw new Error("Erro ao atualizar");
+            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    situacao: novaSituacao
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error("Erro ao atualizar:", err);
+                    alert("Erro ao atualizar situação");
+                });
         }
 
-        return response.text();
-    })
-    .then(() => {
-        listarTodos();
-    })
-    .catch(err => {
-        console.error("Erro ao atualizar:", err);
-        alert("Erro ao atualizar situação");
-    });
-}
-        
+        // FUNÇÃO PARA SALVAR
+        function salvar() {
 
-    // FUNÇÃO PARA SALVAR
-    function salvar() {
+            const usuario = getUsuario();
 
-    const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
-
-    if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
-
-    const codigo = document.getElementById("codigo")?.value.trim();
-    const titulo = document.getElementById("titulo")?.value.trim();
-    const artista = document.getElementById("artista")?.value.trim();
-    const anodelancamento = document.getElementById("anodelancamento")?.value || null;
-    const datadacompra = document.getElementById("datadacompra")?.value || null;
-    const situacao = document.getElementById("situacao")?.value;
-    const tipo = document.getElementById("tipo")?.value;
-    const genero = document.getElementById("genero")?.value;
-
-    // 🔒 Validação básica
-    if (!codigo || !titulo || !artista) {
-        alert("⚠️ Preencha os campos obrigatórios!");
-        return;
-    }
-
-    const dados = {
-        codigo,
-        titulo,
-        artista,
-        anodelancamento,
-        datadacompra,
-        situacao,
-        tipo,
-        genero,
-        usuario
-    };
-
-    fetchSeguro(`${API}/shows`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
-        .then(response => {
-            console.log("STATUS REAL:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`Erro: ${response.status}`);
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
             }
 
-            return response.json();
-        })
-        .then(data => {
-            console.log("Retorno correto:", data);
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-            alert("✅ Dados salvos com sucesso!");
-            limparCampos();
-            listarTodos();
-        })
-        .catch(error => {
-            console.error("Erro ao salvar:", error);
-            alert("❌ Erro ao salvar dados");
-        });
+            const codigo = document.getElementById("codigo")?.value.trim();
+            const titulo = document.getElementById("titulo")?.value.trim();
+            const artista = document.getElementById("artista")?.value.trim();
+            const anodelancamento = document.getElementById("anodelancamento")?.value || null;
+            const datadacompra = document.getElementById("datadacompra")?.value || null;
+            const situacao = document.getElementById("situacao")?.value;
+            const tipo = document.getElementById("tipo")?.value;
+            const genero = document.getElementById("genero")?.value;
+            usuario: usuario
+
+            const dados = {
+                codigo,
+                titulo,
+                artista,
+                anodelancamento,
+                datadacompra,
+                situacao,
+                tipo,
+                genero,
+                usuario // 🔥 vem do localStorage
+            };
+
+            fetchSeguro(`${API}/shows`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // ✔️ aqui sim
+                })
+                .then(data => {
+                    console.log("Retorno correto:", data);
+
+                    alert("✅ Dados salvos com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar:", error);
+                    alert("❌ Erro ao salvar dados");
+                });
         }
 
 
-    // FUNÇÃO PARA EDITAR
-    function editar() {
 
-    const usuario = getUsuario();
+        // FUNÇÃO PARA EDITAR
+        function editar() {
 
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
+            const usuario = getUsuario();
 
-    const id = document.getElementById("id")?.value;
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-    if (!id) {
-        alert("⚠️ ID inválido!");
-        return;
-    }
+            const id = document.getElementById("id").value;
 
-    if (!confirm("Tem certeza que deseja editar estes dados?")) return;
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
 
-    // 🔒 Captura segura dos campos
-    const codigo = document.getElementById("codigo")?.value.trim();
-    const titulo = document.getElementById("titulo")?.value.trim();
-    const artista = document.getElementById("artista")?.value.trim();
-    const anodelancamento = document.getElementById("anodelancamento")?.value || null;
-    const datadacompra = document.getElementById("datadacompra")?.value || null;
-    const situacao = document.getElementById("situacao")?.value;
-    const tipo = document.getElementById("tipo")?.value;
-    const genero = document.getElementById("genero")?.value;
+            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
 
-    // 🔒 Validação básica
-    if (!codigo || !titulo || !artista) {
-        alert("⚠️ Preencha os campos obrigatórios!");
-        return;
-    }
+            const dados = {
 
-    const dados = {
-        codigo,
-        titulo,
-        artista,
-        anodelancamento,
-        datadacompra,
-        situacao,
-        tipo,
-        genero,
-        usuario
-    };
+                codigo: document.getElementById("codigo").value.trim(),
+                titulo: document.getElementById("titulo").value.trim(),
+                artista: document.getElementById("artista").value.trim(),
+                anodelancamento: document.getElementById("anodelancamento").value || null,
+                datadacompra: document.getElementById("datadacompra").value || null,
+                situacao: document.getElementById("situacao").value,
+                tipo: document.getElementById("tipo").value,
+                genero: document.getElementById("genero").value,
+                usuario: usuario // 🔥 importante se sua tabela usa isso
+            };
 
-    fetchSeguro(`${API}/shows/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    })
-    .then(response => {
-        console.log("Status:", response.status);
+            fetchSeguro(`${API}/shows/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
 
-        if (!response.ok) {
-            throw new Error(`Erro ao atualizar: ${response.status}`);
+                .then(response => {
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ao atualizar: ${response.status}`);
+                    }
+
+                    return response.text(); // evita erro de JSON vazio
+                })
+
+                .then(() => {
+                    alert("✅ Dados atualizados com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+                })
+
+                .catch(error => {
+                    console.error("Erro ao editar:", error);
+                    alert("❌ Erro ao atualizar dados");
+                });
         }
 
-        return response.json().catch(() => null); // evita erro se não vier JSON
-    })
-    .then(() => {
-        alert("✅ Dados atualizados com sucesso!");
-        limparCampos();
-        listarTodos();
-    })
-    .catch(error => {
-        console.error("Erro ao editar:", error);
-        alert("❌ Erro ao atualizar dados");
-    });
-    }
 
+        // FUNÇÃO PARA EXCLUIR
+        function deletar(id) {
 
-    // FUNÇÃO PARA EXCLUIR
-    function deletar() {
+            const usuario = getUsuario();
 
-    const usuario = getUsuario();
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
 
-    const id = document.getElementById("id").value;
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-    if (!id) {
-        alert("⚠️ ID inválido!");
-        return;
-    }
+            fetchSeguro(`${API}/shows/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    console.log("Status:", response.status);
 
-    if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+                    if (!response.ok) {
+                        throw new Error(`Erro ao excluir: ${response.status}`);
+                    }
 
-    fetchSeguro(`${API}/shows/${id}`, {
-        method: "DELETE"
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Erro ao excluir: ${response.status}`);
+                    return response.text(); // evita erro se vier vazio
+                })
+                .then(() => {
+                    alert("✅ Registro excluído com sucesso!");
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir:", error);
+                    alert("❌ Erro ao excluir o registro");
+                });
         }
-        return response.text();
-    })
-    .then(() => {
-        alert("✅ Registro excluído com sucesso!");
-        listarTodos();
-        limparCampos();
-    })
-    .catch(error => {
-        console.error("Erro ao excluir:", error);
-        alert("❌ Erro ao excluir o registro");
-    });
-    }
 
 
         // FUNÇÃO PARA BUSCAR ARTISTA
