@@ -7,4 +7,8 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Integer> {
 
     List<Projeto> findByClienteContainingIgnoreCase(String cliente);
 
+    List<Projeto> findByUsuario(String usuario);
+
+    List<Projeto> findByUsuarioAndGeneroContainingIgnoreCase(String usuario, String genero);
+
 }

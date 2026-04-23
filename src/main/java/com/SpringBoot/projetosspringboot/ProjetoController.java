@@ -23,7 +23,6 @@ public class ProjetoController {
         return repository.save(projeto);
     }
 
-    // Excluir POR Id
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Integer id) {
         repository.deleteById(id);
@@ -34,16 +33,26 @@ public class ProjetoController {
         return repository.findById(id).orElse(null);
     }
 
-    // BUSCAR POR Cliente
     @GetMapping("/buscar")
     public List<Projeto> buscarPorCliente(@RequestParam String cliente) {
         return repository.findByClienteContainingIgnoreCase(cliente);
     }
 
-    // Editar POR Id
     @PutMapping("/{id}")
     public Projeto atualizar(@PathVariable Integer id, @RequestBody Projeto projeto) {
         projeto.setId(id);
+        return repository.save(projeto);
+    }
+
+    // ✅ CORRETO
+    @PutMapping("/{id}/genero")
+    public Projeto atualizarGenero(@PathVariable Integer id, @RequestBody Projeto dados) {
+
+        Projeto projeto = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Projeto não encontrado"));
+
+        projeto.setGenero(dados.getGenero());
+
         return repository.save(projeto);
     }
 }
