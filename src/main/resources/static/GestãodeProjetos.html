@@ -181,6 +181,14 @@
         background: #34495e;
         color: white;
     }
+
+    .linha-dwg {
+        background-color: #ffe5e5;
+    }
+
+    .linha-outro {
+        background-color: #e5ffe5;
+    }
 </style>
 
 </head>
@@ -320,6 +328,7 @@
         }
 
 
+        //FUNÇÃO PARA LISTAR TODOS
         function listarTodos() {
 
             const usuario = getUsuario();
@@ -339,43 +348,53 @@
                         throw new Error(`Erro: ${response.status}`);
                     }
 
-                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                    return response.json();
                 })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaProjetos");
 
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
+
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Nenhum projeto encontrado</td></tr>";
                         return;
                     }
 
                     let linhas = "";
 
-                    data.forEach(show => {
+                    data.forEach(projeto => {
 
                         // 🎨 Classe da linha
-                        const classeLinha = show.tipo === "DWG"
-                            ? "linha-DWG"
+                        const classeLinha = projeto.genero === "DWG"
+                            ? "linha-dwg"
                             : "linha-outro";
 
                         // 🔘 Texto do botão
-                        const textoBotao = show.tipo === "DWG"
-                            ? "MudarArquivo"
-                            : "outro";
+                        const textoBotao = projeto.genero === "DWG"
+                            ? "📄 Converter"
+                            : "📐 Alterar";
 
                         linhas += `
                 <tr class="${classeLinha}">
-                    <td>${show.id ?? ""}</td>
-                    <td>${show.titulo ?? ""}</td>
-                    <td>${show.cliente ?? ""}</td>
-                    <td>${show.tamanhodoimovel ?? ""}</td>
-                    <td>${show.valordoprojeto ?? ""}</td>
-                    <td>${show.tipo ?? ""}</td>
-                    <td>${show.genero ?? ""}</td>
+                    <td>${projeto.id ?? ""}</td>
+                    <td>${projeto.titulo ?? ""}</td>
+                    <td>${projeto.cliente ?? ""}</td>
+                    <td>${projeto.tamanhodoimovel ?? ""}</td>
+                    <td>${projeto.valordoprojeto ?? ""}</td>
+                    <td>${projeto.tipo ?? ""}</td>
+                    <td>${projeto.genero ?? ""}</td>
                     <td>
-                        <button onclick="editarSituacao(${show.id}, '${show.tipo}')">
+                        <button onclick="editarGenero(${projeto.id}, '${projeto.genero}')">
                             ${textoBotao}
                         </button>
                     </td>
@@ -397,13 +416,13 @@
 
 
         //FUNÇÃO PARA EDITAR SITUAÇÃO
-        function editarSituacao(id, situacaoAtual) {
+        function editarGenero(id, situacaoAtual) {
 
             const novaSituacao = situacaoAtual === "Outro"
                 ? "DWG"
                 : "Outro";
 
-            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
+            fetch(`${API}/projetos/${id}/genero`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
