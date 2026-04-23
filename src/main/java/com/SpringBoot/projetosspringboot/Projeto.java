@@ -18,6 +18,7 @@ public class Projeto {
     private String datadaentrega;
     private String tipo;
     private String genero;
+    private String usuario;
 
     public Integer getId() {
         return id;
@@ -89,5 +90,13 @@ public class Projeto {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 }
