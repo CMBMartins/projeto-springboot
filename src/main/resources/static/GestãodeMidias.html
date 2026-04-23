@@ -187,7 +187,7 @@
         background-color: #ffe5e5;
     }
 
-    .linha-arquivo {
+    .linha-emarquivo {
         background-color: #e5ffe5;
     }
 </style>
@@ -347,23 +347,23 @@
             }
 
             fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaShows");
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
-
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
-                        return;
-                    }
-
-                    if (data.length === 0) {
-                        tabela.innerHTML = "<tr><td colspan='8'>Sem dados</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
