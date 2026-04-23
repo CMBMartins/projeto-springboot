@@ -369,24 +369,17 @@
 
                     let linhas = "";
 
-                    // 🔥 AQUI entra a lógica nova
                     data.forEach(show => {
 
-                        const valor = Number(show.valor) || 0;
-
-                        const dataFormatada = show.data
-                            ? new Date(show.data).toLocaleDateString("pt-BR")
-                            : "";
-
-                        // 🎨 Classe da linha (cor)
-                        const classeLinha = show.status === "EmArquivo"
-                            ? "linha-emarquivo"
-                            : "linha-emprestado";
+                        // 🎨 Classe da linha
+                        const classeLinha = show.situacao === "Emprestado"
+                            ? "linha-emprestado"
+                            : "linha-emarquivo";
 
                         // 🔘 Texto do botão
-                        const textoBotao = show.status === "EmArquivo"
-                            ? "↩️ Reabrir"
-                            : "💰 emprestar";
+                        const textoBotao = show.situacao === "Emprestado"
+                            ? "Devolver"
+                            : "Emprestar";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -398,12 +391,7 @@
                     <td>${show.tipo ?? ""}</td>
                     <td>${show.genero ?? ""}</td>
                     <td>
-                            style: "currency",
-                            currency: "BRL"
-                        })}</td>
-                    <td>${show.status ?? ""}</td>
-                    <td>
-                        <button onclick="editarStatus(${show.id})">
+                        <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
                             ${textoBotao}
                         </button>
                     </td>
@@ -416,7 +404,7 @@
                 .catch(err => {
                     console.error("Erro ao listar:", err);
 
-                    const tabela = document.getElementById("tabelaDespesas");
+                    const tabela = document.getElementById("tabelaShows");
                     if (tabela) {
                         tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                     }
@@ -428,7 +416,7 @@
         function editarSituacao(id, situacaoAtual) {
 
             const novaSituacao = situacaoAtual === "Emprestado"
-                ? "Em arquivo"
+                ? "EmArquivo"
                 : "Emprestado";
 
             fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
