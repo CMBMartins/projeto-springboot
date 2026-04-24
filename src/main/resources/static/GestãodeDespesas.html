@@ -70,8 +70,10 @@
     /* GRID */
     .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;        
-        gap: 10px;        
+        grid-template-columns: 1fr 1fr;
+        /* 2 colunas */
+        gap: 10px;
+        /* espaço entre campos */
     }
 
     .grid input {
@@ -148,21 +150,19 @@
     }
 
     .campo-direita {
-        text-align: center;
+        text-align: right;
     }
 
-        
     #usuariologado {
-        padding: 8px 10px;
-        text-align: center;
-        float: right;
+        padding: 6px 10px;
+        text-align: right;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
         background: #e6f2ff;
         border: 2px solid #007bff;
         border-radius: 6px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);        
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     /* INPUTS */
@@ -256,7 +256,10 @@
 
             <!-- TOPO -->
             <div class="topo">
-                
+                <div class="usuario">
+                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
+                </div>
+
                 <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
                     ⬅ Relatórios - Dashboard
                 </a>
@@ -264,11 +267,6 @@
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
                 </a>
-
-                <div class="usuario">
-                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
-                </div>
-
             </div>
 
             <!-- LOGO -->
@@ -300,7 +298,7 @@
                 <button id="salvar" onclick="salvar()">Salvar</button>
                 <button id="editar" onclick="editar()">Atualizar</button>
                 <button id="limparCampos" onclick="limparCampos()">Limpar</button>
-                <!--button id="buscarDespesa" onclick="buscarDespesa()">Pesquisar por Despesas</!--button-->
+                <button id="buscarDespesa" onclick="buscarDespesa()">Pesquisar por Despesas</button>
                 <button id="listarTodos" onclick="listarTodos()">Listar Despesas</button>
             </div>
 
@@ -357,24 +355,23 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("loggedIn");
-        };
+        }
 
         function iniciarSistema() {
-            console.log("Sistema iniciado");            
+            console.log("Sistema iniciado");
+            listarTodos();
         }
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-        const user = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-        if (!user || user === "undefined" || user === "null") {
+            if (!usuario) {
+                alert("⚠️ Faça login primeiro!");
+                throw new Error("Usuário não logado");
+            }
 
-        return null;
-        }
-
-        return user;
+            return usuario;
         }
 
         //FUNÇÃO PARA FECH SEGURO
@@ -432,15 +429,43 @@
                             ? new Date(show.data).toLocaleDateString("pt-BR")
                             : "";
 
-                        // 🎨 Classe da linha (cor)
-                        const classeLinha = show.status === "PAGA"
-                            ? "linha-paga"
-                            : "linha-pendente";
+                        // 🔥 LIMPEZA TOTAL DO STATUS
+                        const statusLimpo = (show.status || "")
+                            .toString()
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                            .replace(/\s+/g, " ")
+                            .trim()
+                            .toUpperCase();
 
-                        // 🔘 Texto do botão
-                        const textoBotao = show.status === "PAGA"
-                            ? "↩️ Reabrir"
-                            : "💰 Pagar";
+                        console.log("STATUS LIMPO:", `[${statusLimpo}]`);
+
+                        // 🔄 REGRA CORRIGIDA
+                        let statusNormalizado;
+
+                        if (statusLimpo === "PENDENTE") {
+                            statusNormalizado = "PAGA";
+                        } else if (statusLimpo.includes("PROVIS")) {
+                            statusNormalizado = "RECEBIDO";
+                        } else {
+                            statusNormalizado = statusLimpo; // mantém PAGA, RECEBIDO, etc
+                        }
+
+                        // 🎨 Classe
+                        const classeLinha =
+                            statusNormalizado === "PAGA"
+                                ? "linha-paga"
+                                : statusNormalizado === "RECEBIDO"
+                                    ? "linha-recebido"
+                                    : "linha-pendente";
+
+                        // 🔘 Botão
+                        const textoBotao =
+                            statusNormalizado === "PAGA"
+                                ? "↩️ Reabrir"
+                                : statusNormalizado === "RECEBIDO"
+                                    ? "📦 Confirmar"
+                                    : "💰 Pagar";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -479,7 +504,7 @@
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-            const usuario = getUsuario();                       
+            const usuario = getUsuario();
 
             if (!usuario) {
                 alert("⚠️ Faça Login!");
@@ -535,7 +560,7 @@
             const id = document.getElementById("id").value;
 
             if (!id) {
-                alert("Coloque o Id do registro a ser para editado!");
+                alert("Selecione um registro para editar!");
                 return;
             }
 
@@ -670,9 +695,8 @@
                 });
         }
 
-
-            // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-            function login() {
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function login() {
 
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
@@ -742,7 +766,6 @@
             document.getElementById("usuariologado").value = data.usuario;
             alert("Logout realizado com sucesso!");
             iniciarSistema();
-            window.location.href = "GestãodeDespesas.html";
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
