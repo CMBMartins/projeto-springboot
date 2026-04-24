@@ -46,27 +46,30 @@
         background: #334155;
     }
 
-    #usuario, #senha {
-    width: 260px;
-    height: 6px;
-    padding: 10px 14px;
-    font-size: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    outline: none;
-    transition: 0.3s;
+    #usuario,
+    #senha {
+        width: 260px;
+        height: 6px;
+        padding: 10px 14px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.3s;
     }
 
     /* efeito ao clicar */
-    #usuario:focus, #senha:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0,123,255,0.4);
+    #usuario:focus,
+    #senha:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
     }
 
     #usuariologado {
-        text-align: center;
+        text-align: right;
         float: right;
-        padding: 6px 10px;        
+        padding: 6px 10px;
+        text-align: right;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
@@ -85,7 +88,7 @@
         font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        font-size: 14px;                
+        font-size: 14px;
         border: 2px solid #007bff;
         transition: 0.3s;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -97,8 +100,8 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         outline: none;
-    }   
-    
+    }
+
 
     .btn {
         padding: 10px;
@@ -911,6 +914,31 @@
                 });
         }
 
+        // FUNÇÃO EFETUAR DELETAR    
+        window.deletar = function (id) {
+            if (!confirm("Deseja excluir este registro?")) return;
+
+            fetch(`http://localhost:8084/despesas/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao excluir");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    alert("Excluído com sucesso!");
+
+                    // 🔄 Atualiza a tabela
+                    carregarDados();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Erro ao excluir");
+                });
+        };
+
         // FUNÇÃO EFETUAR O LOGOUT        
         function logout() {
 
@@ -936,47 +964,12 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
-
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
-                alert("⚠️ Faça Login!");
-                return;
-            }
-
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
-                return;
-            }
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
 
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
-
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
-
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
-                alert("⚠️ Faça Login!");
-                return;
-            }
-
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
-                return;
-            }
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
