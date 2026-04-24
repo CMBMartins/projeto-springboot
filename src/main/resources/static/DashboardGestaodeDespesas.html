@@ -914,30 +914,27 @@
                 });
         }
 
-        // FUNÇÃO EFETUAR DELETAR    
-        window.deletar = function (id) {
-            if (!confirm("Deseja excluir este registro?")) return;
+        // FUNÇÃO EFETUAR DELETAR
+        function deletar(id) {
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-            fetch(`http://localhost:8084/despesas/${id}`, {
+            fetch(`${API}/despesas/${id}`, {
                 method: "DELETE"
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Erro ao excluir");
                     }
-                    return response.text();
-                })
-                .then(() => {
-                    alert("Excluído com sucesso!");
 
-                    // 🔄 Atualiza a tabela
-                    carregarDados();
+                    alert("Registro excluído com sucesso!");
+                    listarTodos();
                 })
                 .catch(error => {
-                    console.error(error);
-                    alert("Erro ao excluir");
+                    console.error("Erro ao excluir:", error);
+                    alert("Erro ao excluir o registro.");
                 });
-        };
+        }
+
 
         // FUNÇÃO EFETUAR O LOGOUT        
         function logout() {
