@@ -429,43 +429,45 @@
                             ? new Date(show.data).toLocaleDateString("pt-BR")
                             : "";
 
-                        // 🔥 LIMPEZA TOTAL DO STATUS
+                        // 🔥 STATUS LIMPO (estado atual)
                         const statusLimpo = (show.status || "")
                             .toString()
                             .normalize("NFD")
                             .replace(/[\u0300-\u036f]/g, "")
-                            .replace(/\s+/g, " ")
                             .trim()
                             .toUpperCase();
 
                         console.log("STATUS LIMPO:", `[${statusLimpo}]`);
 
-                        // 🔄 REGRA CORRIGIDA
-                        let statusNormalizado;
+                        // 🔄 PRÓXIMO STATUS (somente regras específicas)
+                        let proximoStatus = statusLimpo;
 
                         if (statusLimpo === "PENDENTE") {
-                            statusNormalizado = "PAGA";
-                        } else if (statusLimpo.includes("PROVIS")) {
-                            statusNormalizado = "RECEBIDO";
-                        } else {
-                            statusNormalizado = statusLimpo; // mantém PAGA, RECEBIDO, etc
+                            proximoStatus = "PAGA";
+                        } else if (
+                            statusLimpo.includes("PROVIS") ||
+                            statusLimpo.includes("RECEB")
+                        ) {
+                            proximoStatus = "RECEBIDO";
                         }
 
-                        // 🎨 Classe
+                        // 🎨 CLASSE (usa estado atual)
                         const classeLinha =
-                            statusNormalizado === "PAGA"
+                            statusLimpo === "PAGA"
                                 ? "linha-paga"
-                                : statusNormalizado === "RECEBIDO"
-                                    ? "linha-recebido"
-                                    : "linha-pendente";
+                                : statusLimpo.includes("PROVIS")
+                                    ? "linha-provisao"
+                                    : statusLimpo === "RECEBIDO"
+                                        ? "linha-recebido"
+                                        : "linha-pendente";
 
-                        // 🔘 Botão
+                        // 🔘 BOTÃO (baseado no próximo status)
                         const textoBotao =
-                            statusNormalizado === "PAGA"
-                                ? "↩️ Reabrir"
-                                : statusNormalizado === "RECEBIDO"
+                            proximoStatus === "PAGA"
+                                ? "💰 Pagar"
+                                : proximoStatus === "RECEBIDO"
                                     ? "📦 Confirmar"
-                                    : "💰 Pagar";
+                                    : "—";
 
                         linhas += `
                 <tr class="${classeLinha}">
