@@ -444,11 +444,8 @@
 
                         if (statusLimpo === "PENDENTE") {
                             proximoStatus = "PAGA";
-                        } else if (
-                            statusLimpo.includes("PROVIS") ||
-                            statusLimpo.includes("RECEB")
-                        ) {
-                            proximoStatus = "RECEBIDO";
+                        } else if (statusLimpo.includes("PROVIS")) {
+                            proximoStatus = "RECEBIDO"; // ✔ agora pega EM PROVISÃO
                         }
 
                         // 🎨 CLASSE (usa estado atual)
@@ -457,7 +454,7 @@
                                 ? "linha-paga"
                                 : statusLimpo.includes("PROVIS")
                                     ? "linha-provisao"
-                                    : statusLimpo === "RECEBIDO"
+                                    : statusLimpo.includes("RECEB")
                                         ? "linha-recebido"
                                         : "linha-pendente";
 
