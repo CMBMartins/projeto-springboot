@@ -70,10 +70,8 @@
     /* GRID */
     .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        /* 2 colunas */
-        gap: 10px;
-        /* espaço entre campos */
+        grid-template-columns: 1fr 1fr;        
+        gap: 10px;        
     }
 
     .grid input {
@@ -150,19 +148,21 @@
     }
 
     .campo-direita {
-        text-align: right;
+        text-align: center;
     }
 
+        
     #usuariologado {
-        padding: 6px 10px;
-        text-align: right;
+        padding: 8px 10px;
+        text-align: center;
+        float: right;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
         background: #e6f2ff;
         border: 2px solid #007bff;
         border-radius: 6px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);        
     }
 
     /* INPUTS */
@@ -256,10 +256,7 @@
 
             <!-- TOPO -->
             <div class="topo">
-                <div class="usuario">
-                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
-                </div>
-
+                
                 <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
                     ⬅ Relatórios - Dashboard
                 </a>
@@ -267,6 +264,11 @@
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
                 </a>
+
+                <div class="usuario">
+                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
+                </div>
+
             </div>
 
             <!-- LOGO -->
@@ -295,11 +297,11 @@
 
             <!-- BOTÕES -->
             <div class="botoes">
-                <button id="salvar" onclick="salvar()">Salvar</button>
-                <button id="editar" onclick="editar()">Atualizar</button>
-                <button id="limparCampos" onclick="limparCampos()">Limpar</button>
-                <button id="buscarDespesa" onclick="buscarDespesa()">Pesquisar por Despesas</button>
-                <button id="listarTodos" onclick="listarTodos()">Listar Despesas</button>
+
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
+                <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>                
+                <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
             </div>
 
             <!-- LOGIN -->
@@ -311,9 +313,9 @@
                 <input type="password" id="senha" placeholder="Senha">
 
                 <div class="login-botoes">
-                    <button onclick="login()">Entrar</button>
-                    <button onclick="logout()">Sair</button>
-                    <button onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
+                    <button onclick="login()">🚪➡️Entrar</button>
+                    <button onclick="logout()">🚪⬅️Sair</button>
+                    <button onclick="cadastrarUsuarios()">💾Cadastrar Usuarios</button>
                 </div>
 
             </div>
@@ -355,23 +357,24 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        }
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("loggedIn");
+        };
 
         function iniciarSistema() {
-            console.log("Sistema iniciado");
-            listarTodos();
+            console.log("Sistema iniciado");            
         }
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-            const usuario = localStorage.getItem("usuario");
+        const user = localStorage.getItem("usuario");
 
-            if (!usuario) {
-                alert("⚠️ Faça login primeiro!");
-                throw new Error("Usuário não logado");
-            }
+        if (!user || user === "undefined" || user === "null") {
 
-            return usuario;
+        return null;
+        }
+
+        return user;
         }
 
         //FUNÇÃO PARA FECH SEGURO
@@ -429,42 +432,15 @@
                             ? new Date(show.data).toLocaleDateString("pt-BR")
                             : "";
 
-                        // 🔥 STATUS LIMPO (estado atual)
-                        const statusLimpo = (show.status || "")
-                            .toString()
-                            .normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")
-                            .trim()
-                            .toUpperCase();
+                        // 🎨 Classe da linha (cor)
+                        const classeLinha = show.status === "PAGA"
+                            ? "linha-paga"
+                            : "linha-pendente";
 
-                        console.log("STATUS LIMPO:", `[${statusLimpo}]`);
-
-                        // 🔄 PRÓXIMO STATUS (somente regras específicas)
-                        let proximoStatus = statusLimpo;
-
-                        if (statusLimpo === "PENDENTE") {
-                            proximoStatus = "PAGA";
-                        } else if (statusLimpo.includes("PROVIS")) {
-                            proximoStatus = "RECEBIDO"; // ✔ agora pega EM PROVISÃO
-                        }
-
-                        // 🎨 CLASSE (usa estado atual)
-                        const classeLinha =
-                            statusLimpo === "PAGA"
-                                ? "linha-paga"
-                                : statusLimpo.includes("PROVIS")
-                                    ? "linha-provisao"
-                                    : statusLimpo.includes("RECEB")
-                                        ? "linha-recebido"
-                                        : "linha-pendente";
-
-                        // 🔘 BOTÃO (baseado no próximo status)
-                        const textoBotao =
-                            proximoStatus === "PAGA"
-                                ? "💰 Pagar"
-                                : proximoStatus === "RECEBIDO"
-                                    ? "📦 Confirmar"
-                                    : "";
+                        // 🔘 Texto do botão
+                        const textoBotao = show.status === "PAGA"
+                            ? "↩️ Reabrir"
+                            : "💰 Pagar";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -503,7 +479,7 @@
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-            const usuario = getUsuario();
+            const usuario = getUsuario();                       
 
             if (!usuario) {
                 alert("⚠️ Faça Login!");
@@ -559,7 +535,7 @@
             const id = document.getElementById("id").value;
 
             if (!id) {
-                alert("Selecione um registro para editar!");
+                alert("Coloque o Id do registro a ser para editado!");
                 return;
             }
 
@@ -694,8 +670,9 @@
                 });
         }
 
-        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-        function login() {
+
+            // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+            function login() {
 
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;
@@ -765,6 +742,7 @@
             document.getElementById("usuariologado").value = data.usuario;
             alert("Logout realizado com sucesso!");
             iniciarSistema();
+            window.location.href = "GestãodeDespesas.html";
         }
 
         // FUNÇÃO CADASTRAR USUÁRIOS
