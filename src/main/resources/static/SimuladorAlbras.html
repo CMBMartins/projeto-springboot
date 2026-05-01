@@ -1032,7 +1032,7 @@
 
     <script>
 
-        const api = "http://localhost:8084/simulador";
+        const API = "https://projeto-springboot.onrender.com";
 
         // FUNÇÃO DE INICIALIZAÇÃO DAS FUNÇÕES        
         localStorage.removeItem("usuariologado");
@@ -1118,7 +1118,7 @@
             // Se passou na validação
             //alert("✅ Dados preenchidos! Validando login...");
 
-            fetch("http://localhost:8084/usuario", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -1148,8 +1148,7 @@
                     // Mostra o usuário no campo Default
 
                     document.getElementById("usuariologado").value = data.usuario;
-                    alert("Login realizado com sucesso!");
-                    liberarFuncoes();
+                    alert("Login realizado com sucesso!");                    
                     limparLogin();
 
                 })
