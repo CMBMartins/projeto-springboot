@@ -15,6 +15,7 @@ public class Contato {
     private String nome;
     private String telefone;
     private String endereço;
+    private String usuario;
 
     public Integer getId() {
         return id;
@@ -54,6 +55,14 @@ public class Contato {
 
     public void setEndereço(String endereço) {
         this.endereço = endereço;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
 }
