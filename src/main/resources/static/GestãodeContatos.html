@@ -84,12 +84,16 @@
     /* BOTÕES */
 
     .botoes {
-        text-align: center;
-        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
     }
 
     /* padrão de botão */
     .botoes button {
+        width: 158px;
+        height: 46px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -168,6 +172,14 @@
         background: #34495e;
         color: white;
     }
+
+    .linha-celular {
+        background-color: #ffe5e5;
+    }
+
+    .linha-whatsapp {
+        background-color: #e5ffe5;
+    }
 </style>
 
 </head>
@@ -209,15 +221,15 @@
 
             <div class="botoes">
 
-                <button id="salvar" onclick="salvar()">Salvar</button>
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
 
-                <button id="editar" onclick="editar()">Atualizar os Dados</button>
+                <button id="editar" onclick="editar()">✏️Editar Dados</button>
 
-                <button id="limparCampos" onclick="limparCampos()">Limpar</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
 
-                <button id="buscarContato" onclick="buscarContato()">Buscar Contato</button>
+                <button id="buscarContato" onclick="buscarContato()">🔍Buscar Contato</button>
 
-                <button id="listarTodos" onclick="listarTodos()">Listar Contatos</button>
+                <button id="listarTodos" onclick="listarTodos()">📋Listar Contatos</button>
 
             </div>
 
@@ -229,8 +241,8 @@
 
                 <input type="text" id="senha" placeholder="senha" style="width:33%;">
 
-                <button onclick="autenticar()">Entrar</button>
-                <button onclick="logout()">Sair</button>
+                <button onclick="autenticar()">🚪➡️Entrar</button>
+                <button onclick="logout()">🚪⬅️Sair</button>
 
             </div>
 
@@ -270,78 +282,125 @@
 
         const id = document.getElementById("id").value;
 
-        const api = "http://localhost:8084/contato";
+        const API = "https://projeto-springboot.onrender.com";
+
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
+        };
+
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+        }
+
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
+            }
+
+            return user;
+        }
+
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
+        }
 
         function carregar() {
             //listarTodos();
         }
 
-        window.onload = function () {
-
-            if (localStorage.getItem("usuariologado")) {
-                liberarFuncoes();
-
-            } else {
-
-                bloquearFuncoes();
-            }
-
-        }
-
-        function liberarFuncoes() {
-
-            document.getElementById("salvar").disabled = false;
-            document.getElementById("editar").disabled = false;
-            document.getElementById("listarTodos").disabled = false;
-
-        }
-
-        function bloquearFuncoes() {
-
-            document.getElementById("salvar").disabled = true;
-            document.getElementById("editar").disabled = true;
-            document.getElementById("listarTodos").disabled = true;
-
-        }
         // FUNÇÃO PARA LISTAR TODOS CONTATOS
         function listarTodos() {
 
-            fetch(api)
-                .then(response => response.json())
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const tabela = document.getElementById("tabelaContato");
+
+            if (!tabela) {
+                console.error("Elemento tabelaContato não encontrado!");
+                return;
+            }
+
+            // Mensagem inicial
+            tabela.innerHTML = "<tr><td colspan='5'>Carregando contatos...</td></tr>";
+
+            fetchSeguro(`${API}/contato/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaContato");
-                    tabela.innerHTML = "";
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML =
+                            "<tr><td colspan='5'>Erro ao carregar contatos</td></tr>";
+                        return;
+                    }
 
-                    data.forEach(show => {
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='5'>Nenhum contato encontrado</td></tr>";
+                        return;
+                    }
 
-                        tabela.innerHTML += `
-<tr>
+                    let linhas = "";
 
-<td>${show.cpf}</td>
-<td>${show.nome}</td>
-<td>${show.telefone}</td>
-<td>${show.endereço}</td>
+                    data.forEach(contato => {
 
-<td>
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
+                        // Classe visual da linha
+                        const classeLinha = contato.telefone === "Celular"
+                            ? "linha-celular"
+                            : "linha-whatsapp";
 
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
+                        // Texto do botão
+                        const textoBotao = contato.telefone === "Celular"
+                            ? "Manter"
+                            : "Mudar Telefone";
 
-</tr>
-`;
-
+                        linhas += `
+                    <tr class="${classeLinha}">
+                        <td>${contato.cpf ?? ""}</td>
+                        <td>${contato.nome ?? ""}</td>
+                        <td>${contato.telefone ?? ""}</td>
+                        <td>${contato.endereco ?? ""}</td>
+                        <td>
+                            <button onclick="editarTelefone(${contato.id}, '${contato.telefone ?? ""}')">
+                                ${textoBotao}
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     });
 
-                });
+                    tabela.innerHTML = linhas;
+                })
+                .catch(err => {
 
+                    console.error("Erro ao listar contatos:", err);
+
+                    tabela.innerHTML =
+                        "<tr><td colspan='5'>Erro ao carregar dados</td></tr>";
+                });
         }
 
         // FUNÇÃO PARA SALVAR CONTATOS
@@ -455,65 +514,83 @@ Excluir
 
         }
 
-        // FUNÇÃO PARA CONSULTAR POR NOME
+        //FUNÇÃO PARA CONSULTAR POR NOME
         function buscarContato() {
-            const nome = document.getElementById("nome").value;
 
-            if (nome === "") {
-                alert("⚠️ Informe o nome a ser consultado!");
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
                 return;
             }
 
-            fetch("http://localhost:8084/contato/buscar?nome=" + encodeURIComponent(nome))
+            const contato = document.getElementById("contato").value.trim();
 
-                .then(response => response.json())
+            if (!contato) {
+                alert("⚠️ Informe o contato a ser consultado!");
+                return;
+            }
 
+            fetchSeguro(`${API}/contatos/buscar?contato=${encodeURIComponent(contato)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSENCIAL
+                })
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaContato");
+                    const tabela = document.getElementById("tabelaContatos");
 
-                    tabela.innerHTML = "";
-
-                    if (data.length === 0) {
-
-                        tabela.innerHTML = `
-<tr>
-<td colspan="7">Nenhum resultado encontrado</td>
-</tr>
-`;
-
+                    if (!Array.isArray(data)) {
+                        console.error("Contato não encontrado:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
+                    let linhas = "";
+
                     data.forEach(show => {
 
-                        tabela.innerHTML += `
-<tr>
-<td>${show.cpf}</td>
-<td>${show.nome}</td>
-<td>${show.telefone}</td>
-<td>${show.endereço}</td>
+                        // 🎨 Classe da linha
+                        const classeLinha = show.telefone === "Celular"
+                            ? "linha-celular"
+                            : "linha-whatsapp";
 
-<td>
+                        // 🔘 Texto do botão
+                        const textoBotao = show.telefone === "Celular"
+                            ? "Mudar"
+                            : "ManterTelefone";
 
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
-
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-
-</tr>
-`;
-
+                        linhas += `
+                    <tr>                        
+                        <td>${show.id ?? ""}</td>
+                        <td>${show.cpf ?? ""}</td>
+                        <td>${show.nome ?? ""}</td>
+                        <td>${show.telefone ?? ""}</td>                        
+                        <td>${show.endereço ?? ""}</td>
+                        <td>
+                            <button onclick="editarTelefone(${show.id}, '${show.telefone}')">
+                                ${textoBotao}
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     });
 
-                });
+                    tabela.innerHTML = linhas;
 
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar contato:", error);
+
+                    const tabela = document.getElementById("tabelaContatos");
+                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                });
         }
 
 
@@ -539,7 +616,7 @@ Excluir
                 return;
             }
 
-            fetch("http://localhost:8084/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
 
@@ -567,10 +644,9 @@ Excluir
                 .then(data => {
 
                     // Mostra o usuário no campo Default
-
+                    localStorage.setItem("usuario", data.usuario);
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
-                    liberarFuncoes();
                     limparLogin();
 
                 })
@@ -589,10 +665,9 @@ Excluir
         function logout() {
 
             localStorage.removeItem("usuariologado");
+            alert("🚪 Logout realizado com sucesso!");
 
-            document.getElementById("usuariologado").value = "";
-
-            bloquearFuncoes();
+            window.location.href = "GestãodeContatos.html";
 
         }
 
