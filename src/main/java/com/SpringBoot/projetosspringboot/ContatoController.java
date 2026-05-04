@@ -23,22 +23,11 @@ public class ContatoController {
         return repository.save(contato);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Integer id) {
-        repository.deleteById(id);
-    }
-
-    @GetMapping("/{id}")
-    public Contato buscarPorId(@PathVariable Integer id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @GetMapping("/contato/usuario")
+    @GetMapping("/usuario")
     public List<Contato> listarPorUsuario(@RequestParam String usuario) {
         return repository.findByUsuario(usuario);
     }
 
-    // BUSCAR POR Nome
     @GetMapping("/buscar")
     public List<Contato> buscarPorNome(@RequestParam String nome) {
         return repository.findByNomeContainingIgnoreCase(nome);
@@ -48,5 +37,10 @@ public class ContatoController {
     public Contato editar(@PathVariable Integer id, @RequestBody Contato contato) {
         contato.setId(id);
         return repository.save(contato);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Integer id) {
+        repository.deleteById(id);
     }
 }
