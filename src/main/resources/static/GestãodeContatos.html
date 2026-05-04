@@ -312,9 +312,6 @@
             return fetch(url, options); // ✔️ NÃO converte nada
         }
 
-        function carregar() {
-            //listarTodos();
-        }
 
         // FUNÇÃO PARA LISTAR TODOS CONTATOS
         function listarTodos() {
@@ -382,7 +379,7 @@
                         <td>${contato.cpf ?? ""}</td>
                         <td>${contato.nome ?? ""}</td>
                         <td>${contato.telefone ?? ""}</td>
-                        <td>${contato.endereco ?? ""}</td>
+                        <td>${contato.endereço ?? ""}</td>
                         <td>
                             <button onclick="editarTelefone(${contato.id}, '${contato.telefone ?? ""}')">
                                 ${textoBotao}
@@ -406,37 +403,56 @@
         // FUNÇÃO PARA SALVAR CONTATOS
         function salvar() {
 
-            const cpf = document.getElementById("cpf").value;
-            const nome = document.getElementById("nome").value;
-            const telefone = document.getElementById("telefone").value;
-            const endereço = document.getElementById("endereço").value;
+            const usuario = getUsuario();
 
-            fetch(api, {
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+
+            const cpf = document.getElementById("cpf")?.value.trim();
+            const nome = document.getElementById("nome")?.value.trim();
+            const telefone = document.getElementById("telefone")?.value.trim();
+            const endereço = document.getElementById("endereço")?.value;
+            usuario: usuario
+
+            const dados = {
+                cpf,
+                nome,
+                telefone,
+                endereço,
+                usuario // 🔥 vem do localStorage
+            };
+
+            fetchSeguro(`${API}/contato`, {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
-                body: JSON.stringify({
-
-                    cpf,
-                    nome,
-                    telefone,
-                    endereço,
-
-                })
-
+                body: JSON.stringify(dados)
             })
-                .then(response => response.json())
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // ✔️ aqui sim
+                })
                 .then(data => {
+                    console.log("Retorno correto:", data);
 
-                    alert("Projeto salvo com sucesso!");
-
+                    alert("✅ Dados salvos com sucesso!");
                     limparCampos();
                     listarTodos();
-
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar:", error);
+                    alert("❌ Erro ao salvar dados");
                 });
 
         }
