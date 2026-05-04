@@ -33,6 +33,11 @@ public class ContatoController {
         return repository.findById(id).orElse(null);
     }
 
+    @GetMapping("/contato/usuario")
+    public List<Contato> listarPorUsuario(@RequestParam String usuario) {
+        return repository.findByUsuario(usuario);
+    }
+
     // BUSCAR POR Nome
     @GetMapping("/buscar")
     public List<Contato> buscarPorNome(@RequestParam String nome) {

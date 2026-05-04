@@ -7,4 +7,6 @@ public interface ContatoRepository extends JpaRepository<Contato, Integer> {
 
     List<Contato> findByNomeContainingIgnoreCase(String nome);
 
+    List<Contato> findByUsuario(String usuario);
+
 }
