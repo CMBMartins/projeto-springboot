@@ -647,11 +647,11 @@
                             : "Mudar Telefone";
 
                         linhas += `
-                    <tr>                        
+                    <tr class="${classeLinha}">
                         <td>${contato.id ?? ""}</td>
                         <td>${contato.cpf ?? ""}</td>
                         <td>${contato.nome ?? ""}</td>
-                        <td>${contato.telefone ?? ""}</td>                        
+                        <td>${contato.telefone ?? ""}</td>
                         <td>${contato.endereço ?? ""}</td>
                         <td>
                             <button onclick="editarTelefone(${contato.id}, '${contato.telefone}')">

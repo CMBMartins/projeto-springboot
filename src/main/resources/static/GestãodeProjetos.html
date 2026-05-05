@@ -717,10 +717,9 @@
         function logout() {
 
             localStorage.removeItem("usuariologado");
+            alert("🚪 Logout realizado com sucesso!");
 
-            document.getElementById("usuariologado").value = "";
-
-            bloquearFuncoes();
+            window.location.href = "GestãodeProjetos.html";
 
         }
 
