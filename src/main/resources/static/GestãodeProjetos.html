@@ -567,59 +567,82 @@
         // FUNÇÃO PARA CONSULTAR POR CLIENTE
         function buscarCliente() {
 
-            const cliente = document.getElementById("cliente").value;
+            const usuario = getUsuario();
 
-            if (cliente === "") {
-                alert("⚠️ Informe o cliente a ser consultado!");
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
                 return;
             }
 
-            fetch("http://localhost:8084/projetos/buscar?cliente=" + encodeURIComponent(cliente))
+            const cliente = document.getElementById("cliente").value.trim();
 
-                .then(response => response.json())
+            if (!cliente) {
+                alert("⚠️ Informe o Cliente a ser consultado!");
+                return;
+            }
 
+            fetchSeguro(`${API}/projetos/buscar?cliente=${encodeURIComponent(cliente)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSENCIAL
+                })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaProjetos");
 
-                    tabela.innerHTML = "";
-
-                    if (data.length === 0) {
-
-                        tabela.innerHTML = `
-<tr>
-<td colspan="7">Nenhum resultado encontrado</td>
-</tr>
-`;
-
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
                         return;
                     }
 
-                    data.forEach(show => {
+                    let linhas = "";
 
-                        tabela.innerHTML += `
-<tr>
-<td>${show.id}</td>
-<td>${show.titulo}</td>
-<td>${show.cliente}</td>
-<td>${show.tamanhodoimovel}</td>
-<td>${show.valordoprojeto}</td>
-<td>${show.datadaentrega}</td>
-<td>${show.tipo}</td>
+                    data.forEach(projeto => {
 
-<td>
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
+                        // 🎨 Classe da linha
+                        const classeLinha = projeto.genero === "DWG"
+                            ? "linha-dwg"
+                            : "linha-outro";
 
-</tr>
-`;
+                        // 🔘 Texto do botão
+                        const textoBotao = projeto.genero === "DWG"
+                            ? "📄 Converter Outro"
+                            : "📐 Converter DWG";
+
+                        linhas += `
+                    <tr class="${classeLinha}">
+                    <td>${projeto.id ?? ""}</td>
+                    <td>${projeto.titulo ?? ""}</td>
+                    <td>${projeto.cliente ?? ""}</td>
+                    <td>${projeto.tamanhodoimovel ?? ""}</td>
+                    <td>${projeto.valordoprojeto ?? ""}</td>
+                    <td>${projeto.tipo ?? ""}</td>
+                    <td>${projeto.genero ?? ""}</td>
+                    <td>
+                            <button onclick="editarSituacao(${projeto.id}, '${projeto.situacao}')">
+                                ${textoBotao}
+                            </button>
+                        </td>
+                    </tr>
+                `;
                     });
 
-                });
+                    tabela.innerHTML = linhas;
 
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar artista:", error);
+
+                    const tabela = document.getElementById("tabelaProjetos");
+                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                });
         }
 
 
