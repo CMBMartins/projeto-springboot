@@ -135,7 +135,7 @@
         color: white;
     }
 
-    #buscarContato {
+    #buscarNome {
         background: #f37712;
         color: white;
     }
@@ -227,7 +227,7 @@
 
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
 
-                <button id="buscarContato" onclick="buscarContato()">🔍Buscar Contato</button>
+                <button id="buscarNome" onclick="buscarNome()">🔍Buscar Nome</button>
 
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Contatos</button>
 
@@ -237,9 +237,9 @@
 
                 <h2>Realizar Login</h2>
 
-                <input type="text" id="usuario" placeholder="usuario" style="width:33%;">
+                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
 
-                <input type="text" id="senha" placeholder="senha" style="width:33%;">
+                <input type="text" id="senha" placeholder="Senha" style="width:33%;">
 
                 <button onclick="autenticar()">🚪➡️Entrar</button>
                 <button onclick="logout()">🚪⬅️Sair</button>
@@ -258,6 +258,7 @@
 
                     <tr>
 
+                        <th>ID</th>
                         <th>CPF</th>
                         <th>Nome</th>
                         <th>Telefone</th>
@@ -280,7 +281,7 @@
 
     <script>
 
-        const id = document.getElementById("id").value;
+        //const id = document.getElementById("id").value;
 
         const API = "https://projeto-springboot.onrender.com";
 
@@ -332,7 +333,7 @@
             }
 
             // Mensagem inicial
-            tabela.innerHTML = "<tr><td colspan='5'>Carregando contatos...</td></tr>";
+            tabela.innerHTML = "<tr><td colspan='5'>Carregando contato...</td></tr>";
 
             fetchSeguro(`${API}/contato/usuario?usuario=${encodeURIComponent(usuario)}`)
                 .then(response => {
@@ -350,7 +351,7 @@
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
                         tabela.innerHTML =
-                            "<tr><td colspan='5'>Erro ao carregar contatos</td></tr>";
+                            "<tr><td colspan='5'>Erro ao carregar contato</td></tr>";
                         return;
                     }
 
@@ -376,6 +377,7 @@
 
                         linhas += `
                     <tr class="${classeLinha}">
+                        <td>${contato.id ?? ""}</td>
                         <td>${contato.cpf ?? ""}</td>
                         <td>${contato.nome ?? ""}</td>
                         <td>${contato.telefone ?? ""}</td>
@@ -397,6 +399,37 @@
 
                     tabela.innerHTML =
                         "<tr><td colspan='5'>Erro ao carregar dados</td></tr>";
+                });
+        }
+
+        //FUNÇÃO PARA EDITAR TELEFONE
+        function editarTelefone(id, telefoneAtual) {
+
+            const novoTelefone = telefoneAtual === "Mudar Telefone"
+                ? "Celular"
+                : "Whatsapp";
+
+            fetch(`${API}/contato/${id}/telefone`, { // 🔥 mudou aqui
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    telefone: novoTelefone
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error("Erro ao atualizar:", err);
+                    alert("Erro ao atualizar Telefone");
                 });
         }
 
@@ -461,77 +494,108 @@
         // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
         function editar() {
 
-            if (confirm("Tem certeza que deseja editar estes dados?")) {
+            const usuario = getUsuario();
 
-                const id = document.getElementById("id").value;
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-                const dados = {
+            const id = document.getElementById("id").value;
 
-                    cpf: document.getElementById("cpf").value,
-                    integrante: document.getElementById("integrante").value,
-                    telefone: document.getElementById("telefone").value,
-                    bemcadastrado: document.getElementById("bemcadastrado").value,
-                    documento: document.getElementById("documento").value
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
 
-                };
+            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
 
-                fetch(api + "/" + id, {
+            const dados = {
 
-                    method: "PUT",
+                cpf: document.getElementById("cpf").value.trim(),
+                nome: document.getElementById("nome").value.trim(),
+                telefone: document.getElementById("telefone").value.trim(),
+                endereço: document.getElementById("endereço").value.trim(),
+                usuario: usuario // 🔥 importante se sua tabela usa isso
+            };
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            fetchSeguro(`${API}/contato/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
 
-                    body: JSON.stringify(dados)
+                .then(response => {
+                    console.log("Status:", response.status);
 
+                    if (!response.ok) {
+                        throw new Error(`Erro ao atualizar: ${response.status}`);
+                    }
+
+                    return response.text(); // evita erro de JSON vazio
                 })
 
-                    .then(() => {
+                .then(() => {
+                    alert("✅ Dados atualizados com sucesso!");
 
-                        alert("Dados atualizados com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
 
-                        limparCampos();
-
-                        listarTodos();
-
-                    });
-            }
+                .catch(error => {
+                    console.error("Erro ao editar:", error);
+                    alert("❌ Erro ao atualizar dados");
+                });
 
         }
 
         // FUNÇÃO PARA EXCLUIR
         function deletar(id) {
 
-            if (confirm("Tem certeza que deseja excluir este registro?")) {
+            const usuario = getUsuario();
 
-                fetch(`${api}/${id}`, {
-                    method: "DELETE"
-                })
-                    .then(() => {
-                        alert("Registro excluído com sucesso!");
-                        listarTodos();
-                    })
-                    .catch(error => {
-                        console.error("Erro ao excluir:", error);
-                        alert("Erro ao excluir o registro.");
-                    });
-
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
             }
 
+            if (!id) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/contato/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ao excluir: ${response.status}`);
+                    }
+
+                    return response.text(); // evita erro se vier vazio
+                })
+                .then(() => {
+                    alert("✅ Registro excluído com sucesso!");
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error("Erro ao excluir:", error);
+                    alert("❌ Erro ao excluir o registro");
+                });
+
         }
 
-        function limparCampos() {
-
-            document.getElementById("cpf").value = "";
-            document.getElementById("nome").value = "";
-            document.getElementById("telefone").value = "";
-            document.getElementById("endereço").value = "";
-
-        }
 
         //FUNÇÃO PARA CONSULTAR POR NOME
-        function buscarContato() {
+        function buscarNome() {
 
             const usuario = getUsuario();
 
@@ -540,14 +604,14 @@
                 return;
             }
 
-            const contato = document.getElementById("contato").value.trim();
+            const nome = document.getElementById("nome").value.trim();
 
-            if (!contato) {
-                alert("⚠️ Informe o contato a ser consultado!");
+            if (!nome) {
+                alert("⚠️ Informe o Nome a ser consultado!");
                 return;
             }
 
-            fetchSeguro(`${API}/contatos/buscar?contato=${encodeURIComponent(contato)}`)
+            fetchSeguro(`${API}/contato/buscar?nome=${encodeURIComponent(nome)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
@@ -560,37 +624,37 @@
                 })
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaContatos");
+                    const tabela = document.getElementById("tabelaContato");
 
                     if (!Array.isArray(data)) {
                         console.error("Contato não encontrado:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        tabela.innerHTML = "<tr><td colspan='5'>Erro ao carregar</td></tr>";
                         return;
                     }
 
                     let linhas = "";
 
-                    data.forEach(show => {
+                    data.forEach(contato => {
 
                         // 🎨 Classe da linha
-                        const classeLinha = show.telefone === "Celular"
+                        const classeLinha = contato.telefone === "Celular"
                             ? "linha-celular"
                             : "linha-whatsapp";
 
                         // 🔘 Texto do botão
-                        const textoBotao = show.telefone === "Celular"
-                            ? "Mudar"
-                            : "ManterTelefone";
+                        const textoBotao = contato.telefone === "Celular"
+                            ? "Manter"
+                            : "Mudar Telefone";
 
                         linhas += `
                     <tr>                        
-                        <td>${show.id ?? ""}</td>
-                        <td>${show.cpf ?? ""}</td>
-                        <td>${show.nome ?? ""}</td>
-                        <td>${show.telefone ?? ""}</td>                        
-                        <td>${show.endereço ?? ""}</td>
+                        <td>${contato.id ?? ""}</td>
+                        <td>${contato.cpf ?? ""}</td>
+                        <td>${contato.nome ?? ""}</td>
+                        <td>${contato.telefone ?? ""}</td>                        
+                        <td>${contato.endereço ?? ""}</td>
                         <td>
-                            <button onclick="editarTelefone(${show.id}, '${show.telefone}')">
+                            <button onclick="editarTelefone(${contato.id}, '${contato.telefone}')">
                                 ${textoBotao}
                             </button>
                         </td>
@@ -604,8 +668,8 @@
                 .catch(error => {
                     console.error("Erro ao buscar contato:", error);
 
-                    const tabela = document.getElementById("tabelaContatos");
-                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                    const tabela = document.getElementById("tabelaContato");
+                    tabela.innerHTML = "<tr><td colspan='5'>Erro ao carregar dados</td></tr>";
                 });
         }
 
@@ -674,6 +738,15 @@
 
                 });
 
+        }
+
+        function limparCampos() {
+
+            document.getElementById("id").value = "";
+            document.getElementById("cpf").value = "";
+            document.getElementById("nome").value = "";
+            document.getElementById("telefone").value = "";
+            document.getElementById("endereço").value = "";
         }
 
 
