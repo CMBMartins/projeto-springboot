@@ -10,6 +10,7 @@ public class PlanilhaEletrica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String projeto;
     private String circuito;
     private String descricao;
     private String potenciatotal;
@@ -29,6 +30,14 @@ public class PlanilhaEletrica {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getProjeto() {
+        return projeto;
+    }
+
+    public void setProjeto(String projeto) {
+        this.projeto = projeto;
     }
 
     public String getCircuito() {
