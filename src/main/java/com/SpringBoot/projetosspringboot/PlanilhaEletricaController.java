@@ -38,6 +38,7 @@ public class PlanilhaEletricaController {
         PlanilhaEletrica existente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
 
+        existente.setProjeto(novo.getProjeto());
         existente.setCircuito(novo.getCircuito());
         existente.setDescricao(novo.getDescricao());
         existente.setPotenciatotal(novo.getPotenciatotal());
