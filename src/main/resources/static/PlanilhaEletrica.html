@@ -233,9 +233,9 @@
 
                 <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
 
-                <input type="text" id="correnteIC" placeholder="CorrenteIC(A)">
+                <input type="text" id="correnteic" placeholder="CorrenteIC(A)">
 
-                <input type="text" id="correnteIB" placeholder="CorrenteIB(A)">
+                <input type="text" id="correnteib" placeholder="CorrenteIB(A)">
 
                 <input type="text" id="disjuntor" placeholder="Disjuntor(A)">
 
@@ -280,6 +280,7 @@
                     <tr>
 
                         <th>ID</th>
+                        <th>Projeto</th>
                         <th>Circuito</th>
                         <th>Descrição</th>
                         <th>PotTotal</th>
@@ -289,7 +290,7 @@
                         <th>CorrenteIB</th>
                         <th>Disjuntor</th>
                         <th>Condutor</th>
-                        <!--<th>Ação</th>-->
+                        <th>Ação</th>
 
                     </tr>
 
@@ -350,7 +351,7 @@
                 return;
             }
 
-            fetchSeguro(`${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`)
+            fetchSeguro(`${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
@@ -363,7 +364,7 @@
                 })
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaShows");
+                    const tabela = document.getElementById("tabelaPlanilha");
 
                     if (!Array.isArray(data)) {
                         console.error("Resposta inválida:", data);
@@ -373,29 +374,33 @@
 
                     let linhas = "";
 
-                    data.forEach(show => {
+                    data.forEach(planilha => {
 
                         // 🎨 Classe da linha
-                        const classeLinha = show.situacao === "Emprestado"
+                        const classeLinha = planilha.circuito === "Monofasico"
                             ? "linha-emprestado"
                             : "linha-emarquivo";
 
                         // 🔘 Texto do botão
-                        const textoBotao = show.situacao === "Emprestado"
-                            ? "Devolver"
-                            : "Emprestar";
+                        const textoBotao = planilha.circuito === "Monofasico"
+                            ? "Manter"
+                            : "Trocar";
 
                         linhas += `
                 <tr class="${classeLinha}">
-                    <td>${show.id ?? ""}</td>
-                    <td>${show.codigo ?? ""}</td>
-                    <td>${show.titulo ?? ""}</td>
-                    <td>${show.artista ?? ""}</td>
-                    <td>${show.situacao ?? ""}</td>
-                    <td>${show.tipo ?? ""}</td>
-                    <td>${show.genero ?? ""}</td>
+                    <td>${planilha.id ?? ""}</td>
+                    <td>${planilha.projeto ?? ""}</td>
+                    <td>${planilha.circuito ?? ""}</td>
+                    <td>${planilha.descricao ?? ""}</td>
+                    <td>${Number(planilha.potenciatotal || 0).toFixed(2)}</td>
+                    <td>${Number(planilha.potenciacorrigida || 0).toFixed(2)}</td>
+                    <td>${planilha.tipocircuito ?? ""}</td>
+                    <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
+                    <td>${Number(planilha.correnteib || 0).toFixed(2)}</td>
+                    <td>${planilha.disjuntor ?? ""}</td>
+                    <td>${planilha.condutor ?? ""}</td>
                     <td>
-                        <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                        <button onclick="editarCircuito(${planilha.id}, '${planilha.circuito}')">
                             ${textoBotao}
                         </button>
                     </td>
@@ -408,7 +413,7 @@
                 .catch(err => {
                     console.error("Erro ao listar:", err);
 
-                    const tabela = document.getElementById("tabelaShows");
+                    const tabela = document.getElementById("tabelaPlanilha");
                     if (tabela) {
                         tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                     }
@@ -417,7 +422,7 @@
 
 
         //FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
-        function editarSituacao(id, situacaoAtual) {
+        function editarCircuito(id, situacaoAtual) {
 
             const novaSituacao = situacaoAtual === "Emprestado"
                 ? "EmArquivo"
@@ -454,35 +459,19 @@
             const usuario = getUsuario();
 
             if (!usuario) {
-                console.warn("Usuário não definido!");
                 alert("⚠️ Faça Login!");
                 return;
             }
 
             if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-            const circuito = document.getElementById("circuito")?.value.trim();
-            const descricao = document.getElementById("descricao")?.value.trim();
-            const potenciatotal = document.getElementById("potenciatotal")?.value.trim();
-            const potenciacorrigida = document.getElementById("potenciacorrigida")?.value || null;
-            const tipocircuito = document.getElementById("tipocircuito")?.value || null;
-            const correnteic = document.getElementById("correnteic")?.value;
-            const correnteib = document.getElementById("correnteib")?.value;
-            const disjuntor = document.getElementById("disjuntor")?.value;
-            const condutor = document.getElementById("condutor")?.value;
-            usuario: usuario
-
             const dados = {
-                circuito,
-                descricao,
-                potenciatotal,
-                potenciacorrigida,
-                tipocircuito,
-                correnteic,
-                correnteib,
-                disjuntor,
-                condutor,
-                usuario // 🔥 vem do localStorage
+                projeto: document.getElementById("projeto")?.value.trim(),
+                circuito: document.getElementById("circuito")?.value.trim(),
+                descricao: document.getElementById("descricao")?.value.trim(),
+                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+                tipocircuito: document.getElementById("tipocircuito")?.value || "",
+                usuario: usuario
             };
 
             fetchSeguro(`${API}/planilha`, {
@@ -496,21 +485,20 @@
                     console.log("STATUS REAL:", response.status);
 
                     if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
+                        throw new Error(`Erro ${response.status}`);
                     }
 
-                    return response.json(); // ✔️ aqui sim
+                    return response.json();
                 })
                 .then(data => {
-                    console.log("Retorno correto:", data);
+                    console.log("Salvo:", data);
 
                     alert("✅ Dados salvos com sucesso!");
                     limparCampos();
-                    listarTodos();
                 })
                 .catch(error => {
-                    console.error("Erro ao salvar:", error);
-                    alert("❌ Erro ao salvar dados");
+                    console.error(error);
+                    alert("❌ Erro ao salvar");
                 });
         }
 
@@ -781,6 +769,7 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
+            document.getElementById("projeto").value = "";
             document.getElementById("circuito").value = "";
             document.getElementById("descricao").value = "";
             document.getElementById("potenciatotal").value = "";
@@ -791,7 +780,6 @@
             document.getElementById("disjuntor").value = "";
             document.getElementById("condutor").value = "";
             //alert("Campos limpos sucesso!");
-
         }
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
