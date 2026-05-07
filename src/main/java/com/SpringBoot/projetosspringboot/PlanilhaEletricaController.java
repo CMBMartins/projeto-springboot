@@ -1,6 +1,7 @@
 package com.SpringBoot.projetosspringboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -49,6 +50,27 @@ public class PlanilhaEletricaController {
         }
 
         return repository.save(novo);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable Long id,
+            @RequestBody PlanilhaEletrica dados) {
+
+        return repository.findById(id)
+                .map(registro -> {
+
+                    registro.setProjeto(dados.getProjeto());
+                    registro.setCircuito(dados.getCircuito());
+                    registro.setDescricao(dados.getDescricao());
+                    registro.setPotenciatotal(dados.getPotenciatotal());
+                    registro.setTipocircuito(dados.getTipocircuito());
+                    registro.setUsuario(dados.getUsuario());
+
+                    repository.save(registro);
+
+                    return ResponseEntity.ok("Atualizado com sucesso");
+
+                }).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
