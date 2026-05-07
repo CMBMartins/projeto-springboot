@@ -62,6 +62,16 @@ public class PlanilhaEletricaController {
         return repository.findAll();
     }
 
+    @GetMapping("/buscar")
+    public List<PlanilhaEletrica> buscarPorCliente(@RequestParam String circuito) {
+        return repository.findByCircuitoContainingIgnoreCase(circuito);
+    }
+
+    @GetMapping("/usuario")
+    public List<PlanilhaEletrica> listarPorUsuario(@RequestParam String usuario) {
+        return repository.findByUsuario(usuario);
+    }
+
     private double arred(double valor) {
         return Math.round(valor * 100.0) / 100.0;
     }
