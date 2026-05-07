@@ -29,9 +29,9 @@ public class PlanilhaEletricaController {
             fator = 1.30;
         }
 
-        double corrigida = pt * fator;
-        double ic = corrigida / 220.0;
-        double ib = ic * 1.25;
+        double corrigida = pt * 0.66;
+        double ic = corrigida / 120.0;
+        double ib = ic * 1.428;
 
         novo.setPotenciacorrigida(arred(corrigida));
         novo.setCorrenteic(arred(ic));
