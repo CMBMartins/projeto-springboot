@@ -9,48 +9,52 @@ import java.util.List;
 @RestController
 @RequestMapping("/planilha")
 @CrossOrigin(origins = "*")
-
 public class PlanilhaEletricaController {
 
     @Autowired
     private PlanilhaEletricaRepository repository;
 
-    @PutMapping("/{id}/tipocircuito")
-    public PlanilhaEletrica atualizarTipocircuito(@PathVariable Long id, @RequestBody Map<String, String> dados) {
+    @PostMapping
+    public PlanilhaEletrica salvar(@RequestBody PlanilhaEletrica novo) {
 
-        PlanilhaEletrica planilha = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
+        double pt = novo.getPotenciatotal();
 
-        String novoCircuito = dados.get("tipocircuito");
+        double fator = 1.00;
 
-        if (novoCircuito == null || novoCircuito.isEmpty()) {
-            throw new RuntimeException("Circuito inválida");
+        if ("Iluminacao".equalsIgnoreCase(novo.getTipocircuito())) {
+            fator = 1.00;
+        } else if ("Tomada".equalsIgnoreCase(novo.getTipocircuito())) {
+            fator = 1.20;
+        } else if ("Motor".equalsIgnoreCase(novo.getTipocircuito())) {
+            fator = 1.30;
         }
 
-        planilha.setTipocircuito(novoCircuito);
+        double corrigida = pt * fator;
+        double ic = corrigida / 220.0;
+        double ib = ic * 1.25;
 
-        return repository.save(planilha);
-    }
+        novo.setPotenciacorrigida(arred(corrigida));
+        novo.setCorrenteic(arred(ic));
+        novo.setCorrenteib(arred(ib));
 
-    @PutMapping("/{id}")
-    public PlanilhaEletrica atualizar(@PathVariable Long id, @RequestBody PlanilhaEletrica novo) {
+        if (ib <= 10) {
+            novo.setDisjuntor("10A");
+            novo.setCondutor("1,5 mm²");
+        } else if (ib <= 16) {
+            novo.setDisjuntor("16A");
+            novo.setCondutor("2,5 mm²");
+        } else if (ib <= 20) {
+            novo.setDisjuntor("20A");
+            novo.setCondutor("4 mm²");
+        } else if (ib <= 32) {
+            novo.setDisjuntor("32A");
+            novo.setCondutor("6 mm²");
+        } else {
+            novo.setDisjuntor("50A");
+            novo.setCondutor("10 mm²");
+        }
 
-        PlanilhaEletrica existente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
-
-        existente.setProjeto(novo.getProjeto());
-        existente.setCircuito(novo.getCircuito());
-        existente.setDescricao(novo.getDescricao());
-        existente.setPotenciatotal(novo.getPotenciatotal());
-        existente.setPotenciacorrigida(novo.getPotenciacorrigida());
-        existente.setTipocircuito(novo.getTipocircuito());
-        existente.setCorrenteic(novo.getCorrenteic());
-        existente.setCorrenteib(novo.getCorrenteib());
-        existente.setDisjuntor(novo.getDisjuntor());
-        existente.setCondutor(novo.getCondutor());
-        existente.setUsuario(novo.getUsuario());
-
-        return repository.save(existente);
+        return repository.save(novo);
     }
 
     @GetMapping
@@ -58,26 +62,7 @@ public class PlanilhaEletricaController {
         return repository.findAll();
     }
 
-    @GetMapping("/usuario")
-    public List<PlanilhaEletrica> buscarPorUsuario(@RequestParam String usuario) {
-        return repository.findByUsuario(usuario);
-    }
-
-    // SALVAR
-    @PostMapping
-    public PlanilhaEletrica salvar(@RequestBody PlanilhaEletrica planilha) {
-        return repository.save(planilha);
-    }
-
-    // DELETAR
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        repository.deleteById(id);
-    }
-
-    // BUSCAR POR CIRCUITO
-    @GetMapping("/buscar")
-    public List<PlanilhaEletrica> buscar(@RequestParam String circuito) {
-        return repository.findByCircuitoContainingIgnoreCase(circuito);
+    private double arred(double valor) {
+        return Math.round(valor * 100.0) / 100.0;
     }
 }
