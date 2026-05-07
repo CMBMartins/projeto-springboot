@@ -290,7 +290,6 @@
                         <th>CorrenteIB</th>
                         <th>Disjuntor</th>
                         <th>Condutor</th>
-                        <th>Ação</th>
 
                     </tr>
 
@@ -526,18 +525,15 @@
 
             const dados = {
 
-                codigo: document.getElementById("codigo").value.trim(),
-                titulo: document.getElementById("titulo").value.trim(),
-                artista: document.getElementById("artista").value.trim(),
-                anodelancamento: document.getElementById("anodelancamento").value || null,
-                datadacompra: document.getElementById("datadacompra").value || null,
-                situacao: document.getElementById("situacao").value,
-                tipo: document.getElementById("tipo").value,
-                genero: document.getElementById("genero").value,
-                usuario: usuario // 🔥 importante se sua tabela usa isso
+                projeto: document.getElementById("projeto")?.value.trim(),
+                circuito: document.getElementById("circuito")?.value.trim(),
+                descricao: document.getElementById("descricao")?.value.trim(),
+                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+                tipocircuito: document.getElementById("tipocircuito")?.value || "",
+                usuario: usuario
             };
 
-            fetchSeguro(`${API}/shows/${id}`, {
+            fetchSeguro(`${API}/planilha/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
