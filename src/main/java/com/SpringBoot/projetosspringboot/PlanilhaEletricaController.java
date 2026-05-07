@@ -21,10 +21,11 @@ public class PlanilhaEletricaController {
         double pt = novo.getPotenciatotal();
         double tensao = 127;
 
+        double pc = pt * 0.66;
         double ic = pt / tensao;
         double ib = ic * 1.42;
 
-        novo.setPotenciacorrigida(arred(pt));
+        novo.setPotenciacorrigida(arred(pc));
         novo.setCorrenteic(arred(ic));
         novo.setCorrenteib(arred(ib));
 
