@@ -33,7 +33,7 @@
     /* CONTAINER */
 
     .container {
-        width: 900px;
+        width: 1000px;
         margin: auto;
         margin-top: 20px;
     }
@@ -46,6 +46,10 @@
         border-radius: 10px;
         box-shadow: 0px 0px 8px gray;
         margin-bottom: 20px;
+    }
+
+    .card1 {
+        background: #f2f2f2;
     }
 
     /* LOGO */
@@ -187,11 +191,11 @@
         color: white;
     }
 
-    .linha-emprestado {
+    .linha-iluminacao {
         background-color: #ffe5e5;
     }
 
-    .linha-emarquivo {
+    .linha-tomada {
         background-color: #e5ffe5;
     }
 </style>
@@ -269,9 +273,9 @@
 
         </div>
 
-        <div class="card">
+        <div class="card1">
 
-            <h2>Planilha de Projeto Eletrico</h2>
+            <h2>Quadro de Cargas</h2>
 
             <table>
 
@@ -290,6 +294,7 @@
                         <th>CorrenteIB</th>
                         <th>Disjuntor</th>
                         <th>Condutor</th>
+                        <th>Ação</th>
 
                     </tr>
 
@@ -376,14 +381,14 @@
                     data.forEach(planilha => {
 
                         // 🎨 Classe da linha
-                        const classeLinha = planilha.circuito === "Monofasico"
-                            ? "linha-emprestado"
-                            : "linha-emarquivo";
+                        const classeLinha = planilha.circuito === "Iluminação"
+                            ? "linha-iluminacao"
+                            : "linha-tomada";
 
                         // 🔘 Texto do botão
-                        const textoBotao = planilha.circuito === "Monofasico"
-                            ? "Manter"
-                            : "Trocar";
+                        const textoBotao = planilha.circuito === "Iluminação"
+                            ? "Tomadas"
+                            : "TrocarTipo";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -423,11 +428,11 @@
         //FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
         function editarCircuito(id, situacaoAtual) {
 
-            const novaSituacao = situacaoAtual === "Emprestado"
-                ? "EmArquivo"
-                : "Emprestado";
+            const novaSituacao = situacaoAtual === "Tomadas"
+                ? "Iluminação"
+                : "Tomada";
 
-            fetch(`${API}/shows/${id}/situacao`, { // 🔥 mudou aqui
+            fetch(`${API}/planilha/${id}/tipocircuito`, { // 🔥 mudou aqui
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -447,7 +452,7 @@
                 })
                 .catch(err => {
                     console.error("Erro ao atualizar:", err);
-                    alert("Erro ao atualizar situação");
+                    alert("Erro ao atualizar Tipo do circuito");
                 });
         }
 
@@ -502,66 +507,73 @@
         }
 
 
-
         // FUNÇÃO PARA EDITAR
-        function editar() {
+        async function editar() {
+            try {
+                const usuario = getUsuario();
 
-            const usuario = getUsuario();
+                // Valida login
+                if (!usuario) {
+                    alert("⚠️ Faça Login!");
+                    return;
+                }
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
-                return;
-            }
+                // Valida ID
+                const id = document.getElementById("id")?.value.trim();
 
-            const id = document.getElementById("id").value;
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
 
-            if (!id) {
-                alert("⚠️ ID inválido!");
-                return;
-            }
+                // Confirma
+                if (!confirm("Tem certeza que deseja editar estes dados?")) {
+                    return;
+                }
 
-            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
+                // Captura TODOS os campos
+                const dados = {
+                    projeto: document.getElementById("projeto")?.value.trim() || "",
+                    circuito: document.getElementById("circuito")?.value.trim() || "",
+                    descricao: document.getElementById("descricao")?.value.trim() || "",
+                    potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+                    potenciacorrigida: parseFloat(document.getElementById("potenciacorrigida")?.value) || 0,
+                    tipocircuito: document.getElementById("tipocircuito")?.value || "",
+                    correnteic: parseFloat(document.getElementById("correnteic")?.value) || 0,
+                    correnteib: parseFloat(document.getElementById("correnteib")?.value) || 0,
 
-            const dados = {
+                    disjuntor: String(document.getElementById("disjuntor")?.value || "").trim(),
+                    condutor: String(document.getElementById("condutor")?.value || "").trim(),
 
-                projeto: document.getElementById("projeto")?.value.trim(),
-                circuito: document.getElementById("circuito")?.value.trim(),
-                descricao: document.getElementById("descricao")?.value.trim(),
-                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
-                tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                usuario: usuario
-            };
+                    usuario: usuario
+                };
 
-            fetchSeguro(`${API}/planilha/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
-            })
+                console.log("Enviando:", dados);
 
-                .then(response => {
-                    console.log("Status:", response.status);
-
-                    if (!response.ok) {
-                        throw new Error(`Erro ao atualizar: ${response.status}`);
-                    }
-
-                    return response.text(); // evita erro de JSON vazio
-                })
-
-                .then(() => {
-                    alert("✅ Dados atualizados com sucesso!");
-
-                    limparCampos();
-                    listarTodos();
-                })
-
-                .catch(error => {
-                    console.error("Erro ao editar:", error);
-                    alert("❌ Erro ao atualizar dados");
+                const response = await fetchSeguro(`${API}/planilha/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
                 });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Dados atualizados com sucesso!");
+
+                limparCampos();
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao editar:", error);
+                alert("❌ Erro ao atualizar dados");
+            }
         }
 
 
@@ -765,6 +777,7 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
+            document.getElementById("id").value = "";
             document.getElementById("projeto").value = "";
             document.getElementById("circuito").value = "";
             document.getElementById("descricao").value = "";
