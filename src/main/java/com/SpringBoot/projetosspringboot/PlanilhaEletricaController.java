@@ -122,8 +122,8 @@ public class PlanilhaEletricaController {
     }
 
     @GetMapping("/buscar")
-    public List<PlanilhaEletrica> buscarPorCliente(@RequestParam String circuito) {
-        return repository.findByCircuitoContainingIgnoreCase(circuito);
+    public List<PlanilhaEletrica> buscarPorProjeto(@RequestParam String circuito) {
+        return repository.findByProjetoContainingIgnoreCase(circuito);
     }
 
     @GetMapping("/usuario")
