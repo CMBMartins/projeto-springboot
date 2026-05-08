@@ -15,13 +15,22 @@ public class PlanilhaEletricaController {
     @Autowired
     private PlanilhaEletricaRepository repository;
 
-    // Método Salvar
+    // Método para Salvar
     @PostMapping
     public PlanilhaEletrica salvar(@RequestBody PlanilhaEletrica novo) {
 
         double pt = novo.getPotenciatotal();
-        double tensao = 127;
+        String tipo = novo.getTipocircuito();
 
+        // Tensão padrão
+        double tensao = 127.0;
+
+        // Se for MOTOR usa 220V
+        if ("Motor".equalsIgnoreCase(tipo)) {
+            tensao = 220.0;
+        }
+
+        // Cálculos
         double pc = pt * 0.66;
         double ic = pt / tensao;
         double ib = ic * 1.42;
@@ -30,25 +39,51 @@ public class PlanilhaEletricaController {
         novo.setCorrenteic(arred(ic));
         novo.setCorrenteib(arred(ib));
 
-        String tipo = novo.getTipocircuito();
-
+        // TOMADA
         if ("Tomada".equalsIgnoreCase(tipo)) {
 
-            if (ic <= 20) {
+            if (ib <= 20) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("20A");
-            } else if (ic <= 28) {
+
+            } else if (ib <= 28) {
                 novo.setCondutor("4 mm²");
                 novo.setDisjuntor("25A");
+
             } else {
                 novo.setCondutor("6 mm²");
                 novo.setDisjuntor("32A");
             }
+        }
 
-        } else if ("Iluminacao".equalsIgnoreCase(tipo)) {
+        // MOTOR
+        else if ("Motor".equalsIgnoreCase(tipo)) {
+
+            if (ib <= 10) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("10A");
+
+            } else if (ib <= 20) {
+                novo.setCondutor("4 mm²");
+                novo.setDisjuntor("20A");
+
+            } else {
+                novo.setCondutor("6 mm²");
+                novo.setDisjuntor("32A");
+            }
+        }
+
+        // ILUMINAÇÃO
+        else if ("Iluminacao".equalsIgnoreCase(tipo)
+                || "Iluminação".equalsIgnoreCase(tipo)) {
 
             novo.setCondutor("1,5 mm²");
             novo.setDisjuntor("10A");
+        }
+
+        else {
+            novo.setCondutor("");
+            novo.setDisjuntor("");
         }
 
         return repository.save(novo);
