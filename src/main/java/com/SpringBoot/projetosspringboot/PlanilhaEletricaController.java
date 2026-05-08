@@ -116,14 +116,16 @@ public class PlanilhaEletricaController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Método Listar Todos
     @GetMapping
     public List<PlanilhaEletrica> listar() {
         return repository.findAll();
     }
 
+    // Método Buscar por Projeto
     @GetMapping("/buscar")
-    public List<PlanilhaEletrica> buscarPorProjeto(@RequestParam String circuito) {
-        return repository.findByProjetoContainingIgnoreCase(circuito);
+    public List<PlanilhaEletrica> buscarPorProjeto(@RequestParam String projeto) {
+        return repository.findByProjetoContainingIgnoreCase(projeto);
     }
 
     @GetMapping("/usuario")
