@@ -425,35 +425,51 @@
         }
 
 
-        //FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
-        function editarCircuito(id, situacaoAtual) {
+        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
+        async function editarCircuito(id, tipoAtual) {
+            try {
 
-            const novaSituacao = situacaoAtual === "Tomadas"
-                ? "Iluminação"
-                : "Tomada";
+                // valida ID
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
 
-            fetch(`${API}/planilha/${id}/tipocircuito`, { // 🔥 mudou aqui
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    situacao: novaSituacao
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erro ao atualizar");
-                    }
-                    return response.text();
-                })
-                .then(() => {
-                    listarTodos();
-                })
-                .catch(err => {
-                    console.error("Erro ao atualizar:", err);
-                    alert("Erro ao atualizar Tipo do circuito");
+                // define novo tipo
+                const novoTipo =
+                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
+                        ? "Iluminação"
+                        : "Tomada";
+
+                // confirmação
+                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
+                    return;
+                }
+
+                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        tipocircuito: novoTipo
+                    })
                 });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Tipo de circuito atualizado!");
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao atualizar tipo:", error);
+                alert("❌ Erro ao atualizar Tipo do circuito");
+            }
         }
 
 
