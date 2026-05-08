@@ -78,7 +78,7 @@ public class PlanilhaEletricaController {
                 || "Iluminação".equalsIgnoreCase(tipo)) {
 
             novo.setCondutor("1,5 mm²");
-            novo.setDisjuntor("10A");
+            novo.setDisjuntor("16A");
         }
 
         else {
