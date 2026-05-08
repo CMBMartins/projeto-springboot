@@ -116,6 +116,26 @@ public class PlanilhaEletricaController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    // ALTERAR TIPO DE CIRCUITO
+    @PutMapping("/{id}/tipocircuito")
+    public ResponseEntity<?> editarTipoCircuito(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> dados) {
+
+        return repository.findById(id)
+                .map(registro -> {
+
+                    String novoTipo = dados.get("tipocircuito");
+
+                    registro.setTipocircuito(novoTipo);
+
+                    repository.save(registro);
+
+                    return ResponseEntity.ok("Tipo atualizado com sucesso");
+
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
     // Método Listar Todos
     @GetMapping
     public List<PlanilhaEletrica> listar() {
