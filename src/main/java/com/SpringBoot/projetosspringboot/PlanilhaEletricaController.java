@@ -15,6 +15,7 @@ public class PlanilhaEletricaController {
     @Autowired
     private PlanilhaEletricaRepository repository;
 
+    // Método Salvar
     @PostMapping
     public PlanilhaEletrica salvar(@RequestBody PlanilhaEletrica novo) {
 
@@ -53,6 +54,7 @@ public class PlanilhaEletricaController {
         return repository.save(novo);
     }
 
+    // Método Editar
     @PutMapping("/{id}")
     public ResponseEntity<?> editar(@PathVariable Long id,
             @RequestBody PlanilhaEletrica dados) {
@@ -64,7 +66,12 @@ public class PlanilhaEletricaController {
                     registro.setCircuito(dados.getCircuito());
                     registro.setDescricao(dados.getDescricao());
                     registro.setPotenciatotal(dados.getPotenciatotal());
+                    registro.setPotenciacorrigida(dados.getPotenciacorrigida());
                     registro.setTipocircuito(dados.getTipocircuito());
+                    registro.setCorrenteic(dados.getCorrenteic());
+                    registro.setCorrenteib(dados.getCorrenteib());
+                    registro.setDisjuntor(dados.getDisjuntor());
+                    registro.setCondutor(dados.getCondutor());
                     registro.setUsuario(dados.getUsuario());
 
                     repository.save(registro);
