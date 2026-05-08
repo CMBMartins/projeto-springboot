@@ -152,7 +152,7 @@
         color: white;
     }
 
-    #buscarArtista {
+    #buscarProjeto {
         background: #f37712;
         color: white;
     }
@@ -253,7 +253,7 @@
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="deletar()">🗑️Deletar</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
-                <button id="buscarArtista" onclick="buscarProjeto()">🔍BusProjeto</button>
+                <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
                 <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
 
             </div>
@@ -595,7 +595,7 @@
 
             if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-            fetchSeguro(`${API}/shows/${id}`, {
+            fetchSeguro(`${API}/planilha/${id}`, {
                 method: "DELETE"
             })
                 .then(response => {
@@ -618,8 +618,8 @@
         }
 
 
-        // FUNÇÃO PARA BUSCAR CIRCUITO
-        function buscarArtista() {
+        // FUNÇÃO PARA BUSCAR PROJETO
+        function buscarProjeto() {
 
             const usuario = getUsuario();
 
@@ -628,14 +628,14 @@
                 return;
             }
 
-            const artista = document.getElementById("artista").value.trim();
+            const projeto = document.getElementById("projeto")?.value.trim();
 
-            if (!artista) {
-                alert("⚠️ Informe o artista a ser consultado!");
+            if (!projeto) {
+                alert("⚠️ Informe o Projeto a ser consultado!");
                 return;
             }
 
-            fetchSeguro(`${API}/shows/buscar?artista=${encodeURIComponent(artista)}`)
+            fetchSeguro(`${API}/planilha/buscar?projeto=${encodeURIComponent(projeto)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
@@ -644,43 +644,54 @@
                         throw new Error(`Erro: ${response.status}`);
                     }
 
-                    return response.json(); // 🔥 ESSENCIAL
+                    return response.json();
                 })
+
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaShows");
+                    const tabela = document.getElementById("tabelaPlanilha");
 
                     if (!Array.isArray(data)) {
-                        console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
                         return;
                     }
 
                     let linhas = "";
 
-                    data.forEach(show => {
+                    data.forEach(planilha => {
 
-                        // 🎨 Classe da linha
-                        const classeLinha = show.situacao === "Emprestado"
-                            ? "linha-emprestado"
-                            : "linha-emarquivo";
+                        const classeLinha =
+                            planilha.circuito === "Iluminação"
+                                ? "linha-iluminacao"
+                                : "linha-tomada";
 
-                        // 🔘 Texto do botão
-                        const textoBotao = show.situacao === "Emprestado"
-                            ? "Devolver"
-                            : "Emprestar";
+                        const textoBotao =
+                            planilha.circuito === "Iluminação"
+                                ? "Tomadas"
+                                : "TrocarTipo";
 
                         linhas += `
-                    <tr>                        
-                        <td>${show.id ?? ""}</td>
-                        <td>${show.codigo ?? ""}</td>
-                        <td>${show.titulo ?? ""}</td>
-                        <td>${show.artista ?? ""}</td>
-                        <td>${show.situacao ?? ""}</td>
-                        <td>${show.tipo ?? ""}</td>
-                        <td>${show.genero ?? ""}</td>
+                    <tr class="${classeLinha}">
+                        <td>${planilha.id ?? ""}</td>
+                        <td>${planilha.projeto ?? ""}</td>
+                        <td>${planilha.circuito ?? ""}</td>
+                        <td>${planilha.descricao ?? ""}</td>
+                        <td>${Number(planilha.potenciatotal || 0).toFixed(2)}</td>
+                        <td>${Number(planilha.potenciacorrigida || 0).toFixed(2)}</td>
+                        <td>${planilha.tipocircuito ?? ""}</td>
+                        <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
+                        <td>${Number(planilha.correnteib || 0).toFixed(2)}</td>
+                        <td>${planilha.disjuntor ?? ""}</td>
+                        <td>${planilha.condutor ?? ""}</td>
                         <td>
-                            <button onclick="editarSituacao(${show.id}, '${show.situacao}')">
+                            <button onclick="editarCircuito(${planilha.id}, '${planilha.circuito}')">
                                 ${textoBotao}
                             </button>
                         </td>
@@ -689,15 +700,17 @@
                     });
 
                     tabela.innerHTML = linhas;
-
                 })
-                .catch(error => {
-                    console.error("Erro ao buscar artista:", error);
 
-                    const tabela = document.getElementById("tabelaShows");
-                    tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                .catch(error => {
+
+                    console.error("Erro ao buscar Projeto:", error);
+
+                    document.getElementById("tabelaPlanilha").innerHTML =
+                        "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
                 });
         }
+
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function autenticar() {
@@ -771,7 +784,7 @@
             localStorage.removeItem("usuariologado");
             alert("🚪 Logout realizado com sucesso!");
 
-            window.location.href = "GestãodeMidias.html";
+            window.location.href = "PlanilhaEletrica.html";
         }
 
 
