@@ -46,30 +46,27 @@
         background: #334155;
     }
 
-    #usuario,
-    #senha {
-        width: 260px;
-        height: 6px;
-        padding: 10px 14px;
-        font-size: 15px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        outline: none;
-        transition: 0.3s;
+    #usuario, #senha {
+    width: 260px;
+    height: 6px;
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
     }
 
     /* efeito ao clicar */
-    #usuario:focus,
-    #senha:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+    #usuario:focus, #senha:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.4);
     }
 
     #usuariologado {
-        text-align: right;
+        text-align: center;
         float: right;
-        padding: 6px 10px;
-        text-align: right;
+        padding: 6px 10px;        
         font-weight: bold;
         font-size: 14px;
         color: #003366;
@@ -88,7 +85,7 @@
         font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        font-size: 14px;
+        font-size: 14px;                
         border: 2px solid #007bff;
         transition: 0.3s;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -100,8 +97,8 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         outline: none;
-    }
-
+    }   
+    
 
     .btn {
         padding: 10px;
@@ -808,52 +805,118 @@
         }
 
 
-        // 📋 FUNÇÃO LISTAR TODAS DESPESAS
-        function listarTodos() {
+        // 📋 FUNÇÃO LISTAR TODAS DESPESAS (DASHBOARD)
+    function listarTodos() {
 
-            const usuario = getUsuario();
-            if (!usuario) return;
+    const usuario = getUsuario();
 
-            fetchSeguro(API + "/despesas/usuario?usuario=" + usuario)
-                .then(data => {
+    if (!usuario) {
+        console.warn("Usuário não definido!");
+        return;
+    }
 
-                    const tabela = document.getElementById("ultimasDespesas");
-                    if (!tabela) return;
+    fetchSeguro(API + "/despesas/usuario?usuario=" + encodeURIComponent(usuario))
+        .then(data => {
 
-                    if (!Array.isArray(data) || data.length === 0) {
-                        tabela.innerHTML = "<tr><td colspan='5'>Sem dados</td></tr>";
-                        return;
-                    }
+            const tabela = document.getElementById("ultimasDespesas");
 
-                    let linhas = "";
+            if (!tabela) return;
 
-                    data.forEach(d => {
+            if (!Array.isArray(data) || data.length === 0) {
+                tabela.innerHTML =
+                    "<tr><td colspan='5'>Sem dados</td></tr>";
+                return;
+            }
 
-                        const valor = Number(d.valor) || 0;
+            let linhas = "";
 
-                        // Classe por status
-                        const statusClass =
-                            d.status === "PAGA" ? "status-pago" :
-                                d.status === "PENDENTE" ? "status-pendente" : "";
+            data.forEach(d => {
 
-                        linhas += `
+                const valor = Number(d.valor) || 0;
+
+                const status = (d.status || "")
+                    .toUpperCase()
+                    .trim();
+
+                let statusClass = "";
+                let acao = "";
+
+                // 🔥 PENDENTE → PAGA
+                if (status === "PENDENTE") {
+
+                    statusClass = "status-pendente";
+
+                    acao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${d.id}, 'PAGA')">
+                            💰 Pagar
+                        </button>
+                    `;
+                }
+
+                // 🔥 PROVISÃO → RECEBIDO
+                else if (
+                    status === "PROVISÃO" ||
+                    status === "PROVISAO" ||
+                    status === "EM PROVISÃO" ||
+                    status === "EM PROVISAO"
+                ) {
+
+                    statusClass = "status-provisao";
+
+                    acao = `
+                        <button class="btn-receber"
+                            onclick="editarStatus(${d.id}, 'RECEBIDO')">
+                            💵 Receber
+                        </button>
+                    `;
+                }
+
+                // 🔥 PAGA
+                else if (status === "PAGA") {
+
+                    statusClass = "status-pago";
+
+                    acao = `
+                        <span style="color:green;font-weight:bold;">
+                            ✔ Pago
+                        </span>
+                    `;
+                }
+
+                // 🔥 RECEBIDO
+                else if (status === "RECEBIDO") {
+
+                    statusClass = "status-recebido";
+
+                    acao = `
+                        <span style="color:blue;font-weight:bold;">
+                            ✔ Recebido
+                        </span>
+                    `;
+                }
+
+                else {
+                    acao = "-";
+                }
+
+                linhas += `
                 <tr class="linha-tabela">
                     <td>${d.data ?? ""}</td>
                     <td>${d.descricao ?? ""}</td>
                     <td class="valor">${formatar(valor)}</td>
-                    <td class="${statusClass}">${d.status ?? ""}</td>
-                    <td>
-                        <button class="btn-excluir" onclick="deletar(${d.id})">
-                            🗑 Excluir
-                        </button>
+                    <td class="${statusClass}">
+                        ${d.status ?? ""}
                     </td>
-                </tr>`;
-                    });
+                    <td>${acao}</td>
+                </tr>
+                `;
+            });
 
-                    tabela.innerHTML = linhas;
+            tabela.innerHTML = linhas;
 
-                })
-                .catch(error => console.error("Erro:", error));
+        })
+        .catch(error => console.error("Erro:", error));
         }
 
 
@@ -914,28 +977,6 @@
                 });
         }
 
-        // FUNÇÃO EFETUAR DELETAR
-        function deletar(id) {
-            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
-
-            fetch(`${API}/despesas/${id}`, {
-                method: "DELETE"
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erro ao excluir");
-                    }
-
-                    alert("Registro excluído com sucesso!");
-                    listarTodos();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir:", error);
-                    alert("Erro ao excluir o registro.");
-                });
-        }
-
-
         // FUNÇÃO EFETUAR O LOGOUT        
         function logout() {
 
@@ -961,12 +1002,47 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
 
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
