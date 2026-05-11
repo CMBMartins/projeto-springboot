@@ -70,8 +70,8 @@
     /* GRID */
     .grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;        
-        gap: 10px;        
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
     }
 
     .grid input {
@@ -151,7 +151,7 @@
         text-align: center;
     }
 
-        
+
     #usuariologado {
         padding: 8px 10px;
         text-align: center;
@@ -162,7 +162,7 @@
         background: #e6f2ff;
         border: 2px solid #007bff;
         border-radius: 6px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);        
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     /* INPUTS */
@@ -256,7 +256,7 @@
 
             <!-- TOPO -->
             <div class="topo">
-                
+
                 <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
                     ⬅ Relatórios - Dashboard
                 </a>
@@ -300,7 +300,7 @@
 
                 <button id="salvar" onclick="salvar()">💾Salvar</button>
                 <button id="editar" onclick="editar()">✏️Editar</button>
-                <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>                
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
             </div>
 
@@ -357,24 +357,24 @@
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("loggedIn");
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
         };
 
         function iniciarSistema() {
-            console.log("Sistema iniciado");            
+            console.log("Sistema iniciado");
         }
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-        const user = localStorage.getItem("usuario");
+            const user = localStorage.getItem("usuario");
 
-        if (!user || user === "undefined" || user === "null") {
+            if (!user || user === "undefined" || user === "null") {
 
-        return null;
-        }
+                return null;
+            }
 
-        return user;
+            return user;
         }
 
         //FUNÇÃO PARA FECH SEGURO
@@ -392,98 +392,113 @@
         // 🔥 FUNÇÃO PARA LISTAR TODAS DESPESAS
         function listarTodos() {
 
-        const usuario = getUsuario();
-        
-        if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-        }
+            const usuario = getUsuario();
 
-        fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
-        .then(data => {
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-            const tabela = document.getElementById("tabelaDespesas");
+            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
 
-            if (!tabela) return;
+                    const tabela = document.getElementById("tabelaDespesas");
 
-            let linhas = "";
+                    if (!tabela) return;
 
-            data.forEach(despesas => {
+                    let linhas = "";
 
-                const valor = Number(despesas.valor) || 0;
+                    data.forEach(despesas => {
 
-                const dataFormatada = despesas.data
-                    ? new Date(despesas.data).toLocaleDateString("pt-BR")
-                    : "";
+                        const valor = Number(despesas.valor) || 0;
 
-                const status = (despesas.status || "")
-                    .toUpperCase()
-                    .trim();
+                        const dataFormatada = despesas.data
+                            ? new Date(despesas.data).toLocaleDateString("pt-BR")
+                            : "";
 
-                let classeLinha = "";
-                let botao = "";
+                        const status = (despesas.status || "")
+                            .toUpperCase()
+                            .trim();
 
-                // 🔥 PENDENTE → PAGA
-                if (status === "PENDENTE") {
+                        let classeLinha = "";
+                        let botao = "";
 
-                    classeLinha = "linha-pendente";
+                        // 🔥 PENDENTE → PAGA
+                        if (status === "PENDENTE") {
 
-                    botao = `
+                            classeLinha = "linha-pendente";
+
+                            botao = `
                         <button class="btn-pagar"
                             onclick="editarStatus(${despesas.id}, 'PAGA')">
                             💰 Pagar
                         </button>
                     `;
 
-                }
+                        }
 
-                // 🔥 PROVISÃO → RECEBIDO
-                else if (
-                    status === "PROVISÃO" ||
-                    status === "PROVISAO" ||
-                    status === "EM PROVISÃO" ||
-                    status === "EM PROVISAO"
-                ) {
+                        // 🔥 PROVISÃO → RECEBIDO
+                        else if (
+                            status === "PROVISÃO" ||
+                            status === "PROVISAO" ||
+                            status === "EM PROVISÃO" ||
+                            status === "EM PROVISAO"
+                        ) {
 
-                    classeLinha = "linha-provisao";
+                            classeLinha = "linha-provisao";
 
-                    botao = `
+                            botao = `
                         <button class="btn-receber"
                             onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
                             💵 Receber
                         </button>
                     `;
-                }
+                        }
 
-                // 🔥 PAGA (sem botão)
-                else if (status === "PAGA") {
+                        // 🔥 AGENDADO → PAGA
+                        else if (
+                            status === "AGENDADO"
+                        ) {
 
-                    classeLinha = "linha-paga";
+                            classeLinha = "linha-agendado";
 
-                    botao = `
+                            botao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${despesas.id}, 'PAGA')">
+                            💵 Pagar
+                        </button>
+                    `;
+                        }
+
+                        // 🔥 PAGA (sem botão)
+                        else if (status === "PAGA") {
+
+                            classeLinha = "linha-paga";
+
+                            botao = `
                         <span style="color:green;font-weight:bold;">
                             ✔ Pago
                         </span>
                     `;
-                }
+                        }
 
-                // 🔥 RECEBIDO (sem botão)
-                else if (status === "RECEBIDO") {
+                        // 🔥 RECEBIDO (sem botão)
+                        else if (status === "RECEBIDO") {
 
-                    classeLinha = "linha-recebido";
+                            classeLinha = "linha-recebido";
 
-                    botao = `
+                            botao = `
                         <span style="color:blue;font-weight:bold;">
                             ✔ Recebido
                         </span>
                     `;
-                }
+                        }
 
-                else {
-                    botao = "-";
-                }
+                        else {
+                            botao = "-";
+                        }
 
-                linhas += `
+                        linhas += `
                     <tr class="${classeLinha}">
                         <td>${despesas.id}</td>
                         <td>${dataFormatada}</td>
@@ -492,25 +507,25 @@
                         <td>${despesas.tipo ?? ""}</td>
                         <td>
                             ${valor.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL"
-                            })}
+                            style: "currency",
+                            currency: "BRL"
+                        })}
                         </td>
                         <td>${despesas.status ?? ""}</td>
                         <td>${botao}</td>
                     </tr>
                 `;
-            });
+                    });
 
-            tabela.innerHTML = linhas;
-        });
+                    tabela.innerHTML = linhas;
+                });
         }
 
 
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-            const usuario = getUsuario();                       
+            const usuario = getUsuario();
 
             if (!usuario) {
                 alert("⚠️ Faça Login!");
@@ -632,97 +647,97 @@
         function buscarDespesa() {
 
             const usuario = getUsuario();
-        
-        if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-        }
 
-        fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
-        .then(data => {
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
-            const tabela = document.getElementById("tabelaDespesas");
+            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
 
-            if (!tabela) return;
+                    const tabela = document.getElementById("tabelaDespesas");
 
-            let linhas = "";
+                    if (!tabela) return;
 
-            data.forEach(despesas => {
+                    let linhas = "";
 
-                const valor = Number(despesas.valor) || 0;
+                    data.forEach(despesas => {
 
-                const dataFormatada = despesas.data
-                    ? new Date(despesas.data).toLocaleDateString("pt-BR")
-                    : "";
+                        const valor = Number(despesas.valor) || 0;
 
-                const status = (despesas.status || "")
-                    .toUpperCase()
-                    .trim();
+                        const dataFormatada = despesas.data
+                            ? new Date(despesas.data).toLocaleDateString("pt-BR")
+                            : "";
 
-                let classeLinha = "";
-                let botao = "";
+                        const status = (despesas.status || "")
+                            .toUpperCase()
+                            .trim();
 
-                // 🔥 PENDENTE → PAGA
-                if (status === "PENDENTE") {
+                        let classeLinha = "";
+                        let botao = "";
 
-                    classeLinha = "linha-pendente";
+                        // 🔥 PENDENTE → PAGA
+                        if (status === "PENDENTE") {
 
-                    botao = `
+                            classeLinha = "linha-pendente";
+
+                            botao = `
                         <button class="btn-pagar"
                             onclick="editarStatus(${despesas.id}, 'PAGA')">
                             💰 Pagar
                         </button>
                     `;
 
-                }
+                        }
 
-                // 🔥 PROVISÃO → RECEBIDO
-                else if (
-                    status === "PROVISÃO" ||
-                    status === "PROVISAO" ||
-                    status === "EM PROVISÃO" ||
-                    status === "EM PROVISAO"
-                ) {
+                        // 🔥 PROVISÃO → RECEBIDO
+                        else if (
+                            status === "PROVISÃO" ||
+                            status === "PROVISAO" ||
+                            status === "EM PROVISÃO" ||
+                            status === "EM PROVISAO"
+                        ) {
 
-                    classeLinha = "linha-provisao";
+                            classeLinha = "linha-provisao";
 
-                    botao = `
+                            botao = `
                         <button class="btn-receber"
                             onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
                             💵 Receber
                         </button>
                     `;
-                }
+                        }
 
-                // 🔥 PAGA (sem botão)
-                else if (status === "PAGA") {
+                        // 🔥 PAGA (sem botão)
+                        else if (status === "PAGA") {
 
-                    classeLinha = "linha-paga";
+                            classeLinha = "linha-paga";
 
-                    botao = `
+                            botao = `
                         <span style="color:green;font-weight:bold;">
                             ✔ Pago
                         </span>
                     `;
-                }
+                        }
 
-                // 🔥 RECEBIDO (sem botão)
-                else if (status === "RECEBIDO") {
+                        // 🔥 RECEBIDO (sem botão)
+                        else if (status === "RECEBIDO") {
 
-                    classeLinha = "linha-recebido";
+                            classeLinha = "linha-recebido";
 
-                    botao = `
+                            botao = `
                         <span style="color:blue;font-weight:bold;">
                             ✔ Recebido
                         </span>
                     `;
-                }
+                        }
 
-                else {
-                    botao = "-";
-                }
+                        else {
+                            botao = "-";
+                        }
 
-                linhas += `
+                        linhas += `
                     <tr class="${classeLinha}">
                         <td>${despesas.id}</td>
                         <td>${dataFormatada}</td>
@@ -731,23 +746,23 @@
                         <td>${despesas.tipo ?? ""}</td>
                         <td>
                             ${valor.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL"
-                            })}
+                            style: "currency",
+                            currency: "BRL"
+                        })}
                         </td>
                         <td>${despesas.status ?? ""}</td>
                         <td>${botao}</td>
                     </tr>
                 `;
-            });
+                    });
 
-            tabela.innerHTML = linhas;
-        });
+                    tabela.innerHTML = linhas;
+                });
         }
 
 
-            // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-            function login() {
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function login() {
 
             const usuario = document.getElementById("usuario").value;
             const senha = document.getElementById("senha").value;

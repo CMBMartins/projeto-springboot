@@ -46,27 +46,29 @@
         background: #334155;
     }
 
-    #usuario, #senha {
-    width: 260px;
-    height: 6px;
-    padding: 10px 14px;
-    font-size: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    outline: none;
-    transition: 0.3s;
+    #usuario,
+    #senha {
+        width: 260px;
+        height: 6px;
+        padding: 10px 14px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.3s;
     }
 
     /* efeito ao clicar */
-    #usuario:focus, #senha:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0,123,255,0.4);
+    #usuario:focus,
+    #senha:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
     }
 
     #usuariologado {
         text-align: center;
         float: right;
-        padding: 6px 10px;        
+        padding: 6px 10px;
         font-weight: bold;
         font-size: 14px;
         color: #003366;
@@ -85,7 +87,7 @@
         font-size: 14px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        font-size: 14px;                
+        font-size: 14px;
         border: 2px solid #007bff;
         transition: 0.3s;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -97,8 +99,8 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         outline: none;
-    }   
-    
+    }
+
 
     .btn {
         padding: 10px;
@@ -244,7 +246,7 @@
     }
 
     .positivo {
-        color: #28a745;
+        color: #90a728;
         font-weight: bold;
     }
 
@@ -806,101 +808,113 @@
 
 
         // 📋 FUNÇÃO LISTAR TODAS DESPESAS (DASHBOARD)
-    function listarTodos() {
+        function listarTodos() {
 
-    const usuario = getUsuario();
+            const usuario = getUsuario();
 
-    if (!usuario) {
-        console.warn("Usuário não definido!");
-        return;
-    }
-
-    fetchSeguro(API + "/despesas/usuario?usuario=" + encodeURIComponent(usuario))
-        .then(data => {
-
-            const tabela = document.getElementById("ultimasDespesas");
-
-            if (!tabela) return;
-
-            if (!Array.isArray(data) || data.length === 0) {
-                tabela.innerHTML =
-                    "<tr><td colspan='5'>Sem dados</td></tr>";
+            if (!usuario) {
+                console.warn("Usuário não definido!");
                 return;
             }
 
-            let linhas = "";
+            fetchSeguro(API + "/despesas/usuario?usuario=" + encodeURIComponent(usuario))
+                .then(data => {
 
-            data.forEach(d => {
+                    const tabela = document.getElementById("ultimasDespesas");
 
-                const valor = Number(d.valor) || 0;
+                    if (!tabela) return;
 
-                const status = (d.status || "")
-                    .toUpperCase()
-                    .trim();
+                    if (!Array.isArray(data) || data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='5'>Sem dados</td></tr>";
+                        return;
+                    }
 
-                let statusClass = "";
-                let acao = "";
+                    let linhas = "";
 
-                // 🔥 PENDENTE → PAGA
-                if (status === "PENDENTE") {
+                    data.forEach(d => {
 
-                    statusClass = "status-pendente";
+                        const valor = Number(d.valor) || 0;
 
-                    acao = `
+                        const status = (d.status || "")
+                            .toUpperCase()
+                            .trim();
+
+                        let statusClass = "";
+                        let acao = "";
+
+                        // 🔥 PENDENTE → PAGA
+                        if (status === "PENDENTE") {
+
+                            statusClass = "status-pendente";
+
+                            acao = `
                         <button class="btn-pagar"
                             onclick="editarStatus(${d.id}, 'PAGA')">
                             💰 Pagar
                         </button>
                     `;
-                }
+                        }
 
-                // 🔥 PROVISÃO → RECEBIDO
-                else if (
-                    status === "PROVISÃO" ||
-                    status === "PROVISAO" ||
-                    status === "EM PROVISÃO" ||
-                    status === "EM PROVISAO"
-                ) {
+                        // 🔥 PROVISÃO → RECEBIDO
+                        else if (
+                            status === "PROVISÃO" ||
+                            status === "PROVISAO" ||
+                            status === "EM PROVISÃO" ||
+                            status === "EM PROVISAO"
+                        ) {
 
-                    statusClass = "status-provisao";
+                            statusClass = "status-provisao";
 
-                    acao = `
+                            acao = `
                         <button class="btn-receber"
                             onclick="editarStatus(${d.id}, 'RECEBIDO')">
                             💵 Receber
                         </button>
                     `;
-                }
+                        }
 
-                // 🔥 PAGA
-                else if (status === "PAGA") {
+                        // 🔥 PAGA
+                        else if (status === "PAGA") {
 
-                    statusClass = "status-pago";
+                            statusClass = "status-pago";
 
-                    acao = `
+                            acao = `
                         <span style="color:green;font-weight:bold;">
                             ✔ Pago
                         </span>
                     `;
-                }
+                        }
 
-                // 🔥 RECEBIDO
-                else if (status === "RECEBIDO") {
+                        // 🔥 RECEBIDO
+                        else if (status === "RECEBIDO") {
 
-                    statusClass = "status-recebido";
+                            statusClass = "status-recebido";
 
-                    acao = `
+                            acao = `
                         <span style="color:blue;font-weight:bold;">
                             ✔ Recebido
                         </span>
                     `;
-                }
+                        }
 
-                else {
-                    acao = "-";
-                }
+                        // 🔥 AGENDADO
+                        else if (status === "AGENDADO") {
 
-                linhas += `
+                            statusClass = "status-agendado";
+
+                            acao = `
+                        <span style="color:red;font-weight:bold;">
+                            ✔ Agendado
+                        </span>
+                    `;
+                        }
+
+                        else {
+                            acao = "-";
+                        }
+
+                        linhas += `
                 <tr class="linha-tabela">
                     <td>${d.data ?? ""}</td>
                     <td>${d.descricao ?? ""}</td>
@@ -911,12 +925,12 @@
                     <td>${acao}</td>
                 </tr>
                 `;
-            });
+                    });
 
-            tabela.innerHTML = linhas;
+                    tabela.innerHTML = linhas;
 
-        })
-        .catch(error => console.error("Erro:", error));
+                })
+                .catch(error => console.error("Erro:", error));
         }
 
 
