@@ -82,8 +82,8 @@ public class PlanilhaEletricaController {
         }
 
         else {
-            novo.setCondutor("");
-            novo.setDisjuntor("");
+            novo.setCondutor("4 mm2");
+            novo.setDisjuntor("20A");
         }
 
         return repository.save(novo);
@@ -112,6 +112,19 @@ public class PlanilhaEletricaController {
                     repository.save(registro);
 
                     return ResponseEntity.ok("Atualizado com sucesso");
+
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+
+        return repository.findById(id)
+                .map(registro -> {
+
+                    repository.delete(registro);
+
+                    return ResponseEntity.ok("Registro excluído com sucesso");
 
                 }).orElse(ResponseEntity.notFound().build());
     }
