@@ -73,6 +73,40 @@ public class PlanilhaEletricaController {
             }
         }
 
+        // CIRCUITOS BIFASICOS
+        else if ("Bifasico".equalsIgnoreCase(tipo)) {
+
+            if (ib <= 60) {
+                novo.setCondutor("16 mm²");
+                novo.setDisjuntor("65A");
+
+            } else if (ib <= 70) {
+                novo.setCondutor("25 mm²");
+                novo.setDisjuntor("70A");
+
+            } else {
+                novo.setCondutor("35 mm²");
+                novo.setDisjuntor("90A");
+            }
+        }
+
+        // CIRCUITOS TRIFASICOS
+        else if ("Trifasico".equalsIgnoreCase(tipo)) {
+
+            if (ib <= 60) {
+                novo.setCondutor("16 mm²");
+                novo.setDisjuntor("65A");
+
+            } else if (ib <= 70) {
+                novo.setCondutor("25 mm²");
+                novo.setDisjuntor("70A");
+
+            } else {
+                novo.setCondutor("35 mm²");
+                novo.setDisjuntor("90A");
+            }
+        }
+
         // ILUMINAÇÃO
         else if ("Iluminacao".equalsIgnoreCase(tipo)
                 || "Iluminação".equalsIgnoreCase(tipo)) {
@@ -116,6 +150,7 @@ public class PlanilhaEletricaController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Método Excluir
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
 
@@ -129,7 +164,7 @@ public class PlanilhaEletricaController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-    // ALTERAR TIPO DE CIRCUITO
+    // METODO ALTERAR TIPO DE CIRCUITO
     @PutMapping("/{id}/tipocircuito")
     public ResponseEntity<?> editarTipoCircuito(
             @PathVariable Long id,
