@@ -599,13 +599,13 @@
             const usuario = getUsuario();
 
             if (!usuario) {
-                console.warn("Usuário não definido!");
                 alert("⚠️ Faça Login!");
                 return;
             }
 
-            if (!id) {
+            if (id == null || id === "" || isNaN(id)) {
                 alert("⚠️ ID inválido!");
+                console.log("ID recebido:", id);
                 return;
             }
 
@@ -615,21 +615,18 @@
                 method: "DELETE"
             })
                 .then(response => {
-                    console.log("Status:", response.status);
-
                     if (!response.ok) {
-                        throw new Error(`Erro ao excluir: ${response.status}`);
+                        throw new Error("Erro ao excluir");
                     }
-
-                    return response.text(); // evita erro se vier vazio
+                    return response.text();
                 })
                 .then(() => {
-                    alert("✅ Registro excluído com sucesso!");
+                    alert("✅ Excluído com sucesso!");
                     listarTodos();
                 })
                 .catch(error => {
-                    console.error("Erro ao excluir:", error);
-                    alert("❌ Erro ao excluir o registro");
+                    console.error(error);
+                    alert("❌ Erro ao excluir");
                 });
         }
 
@@ -725,6 +722,47 @@
                     document.getElementById("tabelaPlanilha").innerHTML =
                         "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
                 });
+        }
+
+        // FUNÇÃO PARA CALCULAR O ALIMENTADOR TOTAL
+        function calcularAlimentador(pt) {
+
+            const fp = 0.95;
+            const tensao = 380;
+            const raiz3 = 1.732;
+
+            const pCalculada = pt / fp;
+            const ic = pCalculada / (raiz3 * tensao);
+
+            let cabo = "";
+            let disjuntor = "";
+
+            if (ic <= 21) {
+                cabo = "2,5 mm²";
+                disjuntor = "20A";
+            } else if (ic <= 28) {
+                cabo = "4 mm²";
+                disjuntor = "25A";
+            } else if (ic <= 36) {
+                cabo = "6 mm²";
+                disjuntor = "32A";
+            } else if (ic <= 50) {
+                cabo = "10 mm²";
+                disjuntor = "50A";
+            } else if (ic <= 68) {
+                cabo = "16 mm²";
+                disjuntor = "63A";
+            } else {
+                cabo = "25 mm²";
+                disjuntor = "80A";
+            }
+
+            return {
+                potenciaCalculada: pCalculada.toFixed(2),
+                corrente: ic.toFixed(2),
+                cabo,
+                disjuntor
+            };
         }
 
 
