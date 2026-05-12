@@ -27,7 +27,16 @@ public class PlanilhaEletricaController {
 
         // Se for MOTOR usa 220V
         if ("Motor".equalsIgnoreCase(tipo)) {
-            tensao = 220.0;
+
+            if ("Bifasico".equalsIgnoreCase(tipo)) {
+                tensao = 220.0;
+
+            } else if ("Trifasico".equalsIgnoreCase(tipo)) {
+                tensao = 380.0;
+
+            } else {
+                tensao = 220.0; // padrão motor
+            }
         }
 
         // Cálculos
