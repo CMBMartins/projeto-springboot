@@ -561,6 +561,8 @@
         // FUNÇÃO PARA MOSTRAR OS RESULTADOS
         function mostrarResultado(r) {
 
+            if (!r) return;
+
             const card = document.getElementById("resultadoCard");
 
             card.innerHTML = `
@@ -569,28 +571,33 @@
         <div class="card-grid">
 
             <div class="item-card">
+                Potência Total<br>
+                ${r.potenciatotal || "0.00"} W
+            </div>
+
+            <div class="item-card">
                 Potência Corrigida<br>
-                ${r.potenciacorrigida} W
+                ${r.potenciacorrigida || "0.00"} W
             </div>
 
             <div class="item-card">
                 Corrente Ic<br>
-                ${r.correnteic} A
+                ${r.correnteic || "0.00"} A
             </div>
 
             <div class="item-card">
                 Corrente Ib<br>
-                ${r.correnteib} A
+                ${r.correnteib || "0.00"} A
             </div>
 
             <div class="item-card">
-                Cabo<br>
-                ${r.cabo}
+                Cabo Alimentador<br>
+                ${r.cabo || "-"}
             </div>
 
             <div class="item-card">
                 Disjuntor<br>
-                ${r.disjuntor}
+                ${r.disjuntor || "-"}
             </div>
 
         </div>
@@ -812,21 +819,29 @@
         }
 
         // FUNÇÃO PARA CALCULAR O ALIMENTADOR TOTAL
-        function calcularAlimentador(pt) {
+        function calcularAlimentador() {
+
+            // pega valor digitado no formulário
+            const pt = parseFloat(document.getElementById("potenciatotal")?.value) || 0;
+
+            if (pt <= 0) {
+                alert("⚠️ Informe a Potência Total!");
+                return null;
+            }
 
             const fp = 0.95;
             const tensao = 380;
             const raiz3 = 1.732;
 
+            // cálculos
             const pCalculada = pt / fp;
-
             const ic = pCalculada / (raiz3 * tensao);
-
-            const ib = ic * 1.25; // 🔥 acrescentei fator de projeto
+            const ib = ic * 1.25;
 
             let cabo = "";
             let disjuntor = "";
 
+            // dimensionamento
             if (ib <= 21) {
                 cabo = "2,5 mm²";
                 disjuntor = "20A";
@@ -847,15 +862,32 @@
                 cabo = "16 mm²";
                 disjuntor = "63A";
 
-            } else {
+            } else if (ib <= 89) {
                 cabo = "25 mm²";
                 disjuntor = "80A";
+
+            } else if (ib <= 110) {
+                cabo = "35 mm²";
+                disjuntor = "100A";
+
+            } else {
+                cabo = "50 mm²";
+                disjuntor = "125A";
             }
 
+            // joga valores no formulário
+            document.getElementById("potenciacorrigida").value = pCalculada.toFixed(2);
+            document.getElementById("correnteic").value = ic.toFixed(2);
+            document.getElementById("correnteib").value = ib.toFixed(2);
+            document.getElementById("condutor").value = cabo;
+            document.getElementById("disjuntor").value = disjuntor;
+
+            // retorno opcional
             return {
-                potenciaCalculada: pCalculada.toFixed(2),
-                correnteIC: ic.toFixed(2),
-                correnteIb: ib.toFixed(2),
+                potenciatotal: pt.toFixed(2),
+                potenciacorrigida: pCalculada.toFixed(2),
+                correnteic: ic.toFixed(2),
+                correnteib: ib.toFixed(2),
                 cabo,
                 disjuntor
             };
