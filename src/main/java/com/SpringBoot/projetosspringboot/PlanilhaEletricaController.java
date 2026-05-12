@@ -41,7 +41,7 @@ public class PlanilhaEletricaController {
 
         // Cálculos
         double pc = pt * 0.66;
-        double ic = pt / tensao;
+        double ic = pc / tensao;
         double ib = ic * 1.42;
 
         novo.setPotenciacorrigida(arred(pc));
