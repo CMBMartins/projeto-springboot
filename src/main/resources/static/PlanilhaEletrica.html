@@ -198,6 +198,32 @@
     .linha-tomada {
         background-color: #e5ffe5;
     }
+
+    .card-resultado {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        background: #0d6efd;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        font-family: Arial;
+
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .item-card {
+        background: white;
+        color: #333;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
 </style>
 
 </head>
@@ -272,6 +298,8 @@
             </div>
 
         </div>
+
+        <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
 
         <div class="card1">
 
@@ -494,6 +522,12 @@
                 usuario: usuario
             };
 
+            const pc = parseFloat(document.getElementById("potenciatotal").value) || 0;
+
+            const resultado = calcularAlimentador();
+
+            mostrarResultado(resultado);
+
             fetchSeguro(`${API}/planilha`, {
                 method: "POST",
                 headers: {
@@ -515,11 +549,54 @@
 
                     alert("✅ Dados salvos com sucesso!");
                     limparCampos();
+                    //calcularAlimentador();
                 })
                 .catch(error => {
                     console.error(error);
                     alert("❌ Erro ao salvar");
                 });
+        }
+
+
+        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
+        function mostrarResultado(r) {
+
+            const card = document.getElementById("resultadoCard");
+
+            card.innerHTML = `
+        <h3>⚡ Resultado do Cálculo</h3>
+
+        <div class="card-grid">
+
+            <div class="item-card">
+                Potência Corrigida<br>
+                ${r.potenciacorrigida} W
+            </div>
+
+            <div class="item-card">
+                Corrente Ic<br>
+                ${r.correnteic} A
+            </div>
+
+            <div class="item-card">
+                Corrente Ib<br>
+                ${r.correnteib} A
+            </div>
+
+            <div class="item-card">
+                Cabo<br>
+                ${r.cabo}
+            </div>
+
+            <div class="item-card">
+                Disjuntor<br>
+                ${r.disjuntor}
+            </div>
+
+        </div>
+    `;
+
+            card.style.display = "block";
         }
 
 
@@ -594,7 +671,7 @@
 
 
         // FUNÇÃO PARA EXCLUIR
-        function deletar(id) {
+        function deletar() {
 
             const usuario = getUsuario();
 
@@ -603,9 +680,12 @@
                 return;
             }
 
-            if (id == null || id === "" || isNaN(id)) {
+            const id = document.getElementById("id").value.trim();
+
+            console.log("ID recebido:", id);
+
+            if (!id || isNaN(id)) {
                 alert("⚠️ ID inválido!");
-                console.log("ID recebido:", id);
                 return;
             }
 
@@ -615,13 +695,20 @@
                 method: "DELETE"
             })
                 .then(response => {
+
+                    console.log("Status:", response.status);
+
                     if (!response.ok) {
                         throw new Error("Erro ao excluir");
                     }
+
                     return response.text();
                 })
                 .then(() => {
-                    alert("✅ Excluído com sucesso!");
+
+                    alert("✅ Registro excluído com sucesso!");
+
+                    limparCampos();
                     listarTodos();
                 })
                 .catch(error => {
@@ -732,26 +819,34 @@
             const raiz3 = 1.732;
 
             const pCalculada = pt / fp;
+
             const ic = pCalculada / (raiz3 * tensao);
+
+            const ib = ic * 1.25; // 🔥 acrescentei fator de projeto
 
             let cabo = "";
             let disjuntor = "";
 
-            if (ic <= 21) {
+            if (ib <= 21) {
                 cabo = "2,5 mm²";
                 disjuntor = "20A";
-            } else if (ic <= 28) {
+
+            } else if (ib <= 28) {
                 cabo = "4 mm²";
                 disjuntor = "25A";
-            } else if (ic <= 36) {
+
+            } else if (ib <= 36) {
                 cabo = "6 mm²";
                 disjuntor = "32A";
-            } else if (ic <= 50) {
+
+            } else if (ib <= 50) {
                 cabo = "10 mm²";
                 disjuntor = "50A";
-            } else if (ic <= 68) {
+
+            } else if (ib <= 68) {
                 cabo = "16 mm²";
                 disjuntor = "63A";
+
             } else {
                 cabo = "25 mm²";
                 disjuntor = "80A";
@@ -759,7 +854,8 @@
 
             return {
                 potenciaCalculada: pCalculada.toFixed(2),
-                corrente: ic.toFixed(2),
+                correnteIC: ic.toFixed(2),
+                correnteIb: ib.toFixed(2),
                 cabo,
                 disjuntor
             };
