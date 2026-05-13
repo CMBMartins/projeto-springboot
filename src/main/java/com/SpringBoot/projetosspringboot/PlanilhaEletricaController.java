@@ -22,21 +22,23 @@ public class PlanilhaEletricaController {
         double pt = novo.getPotenciatotal();
         String tipo = novo.getTipocircuito();
 
-        // Tensão padrão
-        double tensao = 127.0;
+        // Define tensão conforme tipo do circuito
+        double tensao = 127.0; // padrão iluminação / tomada
 
-        // Se for MOTOR usa 220V
         if ("Motor".equalsIgnoreCase(tipo)) {
+            tensao = 220.0;
 
-            if ("Bifasico".equalsIgnoreCase(tipo)) {
-                tensao = 220.0;
+        } else if ("Bifasico".equalsIgnoreCase(tipo)) {
+            tensao = 220.0;
 
-            } else if ("Trifasico".equalsIgnoreCase(tipo)) {
-                tensao = 380.0;
+        } else if ("Trifasico".equalsIgnoreCase(tipo)) {
+            tensao = 380.0;
 
-            } else {
-                tensao = 220.0; // padrão motor
-            }
+        } else if ("Tomada".equalsIgnoreCase(tipo)) {
+            tensao = 127.0;
+
+        } else if ("Iluminacao".equalsIgnoreCase(tipo)) {
+            tensao = 127.0;
         }
 
         // Cálculos
