@@ -428,7 +428,7 @@
         }
 
 
-        //FUNÇÃO PARA LISTAR TODAS OS CIRCUITOS
+        // FUNÇÃO PARA LISTAR TODOS
         function listarTodos() {
 
             const usuario = getUsuario();
@@ -442,21 +442,32 @@
             fetchSeguro(`${API}/calculoseletrico/usuario?usuario=${encodeURIComponent(usuario)}`)
                 .then(response => {
 
-                    console.log("Status:", response.status);
+                    console.log("STATUS:", response.status);
 
                     if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
+                        throw new Error(`Erro ${response.status}`);
                     }
 
-                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                    return response.json();
                 })
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaCalculosEletrico");
 
+                    if (!tabela) {
+                        console.error("Tabela não encontrada.");
+                        return;
+                    }
+
                     if (!Array.isArray(data)) {
-                        console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Resposta inválida do servidor</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Nenhum registro encontrado</td></tr>";
                         return;
                     }
 
@@ -464,15 +475,22 @@
 
                     data.forEach(calculoseletrico => {
 
-                        // 🎨 Classe da linha
-                        const classeLinha = calculoseletrico.circuito === "Iluminação"
-                            ? "linha-iluminacao"
-                            : "linha-tomada";
+                        // CAMPO CORRETO = tipodocircuito
+                        const tipo = calculoseletrico.tipodocircuito || "";
 
-                        // 🔘 Texto do botão
-                        const textoBotao = calculoseletrico.circuito === "Iluminação"
-                            ? "Tomadas"
-                            : "TrocarTipo";
+                        // COR DA LINHA
+                        const classeLinha =
+                            tipo.toLowerCase() === "iluminação" ||
+                                tipo.toLowerCase() === "iluminacao"
+                                ? "linha-iluminacao"
+                                : "linha-tomada";
+
+                        // TEXTO BOTÃO
+                        const textoBotao =
+                            tipo.toLowerCase() === "iluminação" ||
+                                tipo.toLowerCase() === "iluminacao"
+                                ? "Tomadas"
+                                : "Iluminação";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -480,12 +498,12 @@
                     <td>${calculoseletrico.projeto ?? ""}</td>
                     <td>${calculoseletrico.ambiente ?? ""}</td>
                     <td>${calculoseletrico.descricao ?? ""}</td>
-                    <td>${Number(calculoseletrico.potencialuz || 0).toFixed(2)}</td>
-                    <td>${Number(calculoseletrico.tomadasusogeral || 0).toFixed(2)}</td>
-                    <td>${calculoseletrico.tomadasusoespecifico ?? ""}</td>
-                    <td>${Number(calculoseletrico.tipocircuito || 0).toFixed(2)}</td>                    
+                    <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${tipo}</td>
                     <td>
-                        <button onclick="editarCircuito(${calculoseletrico.id}, '${calculoseletrico.circuito}')">
+                        <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
                             ${textoBotao}
                         </button>
                     </td>
@@ -493,18 +511,21 @@
                     });
 
                     tabela.innerHTML = linhas;
-
                 })
-                .catch(err => {
-                    console.error("Erro ao listar:", err);
+                .catch(error => {
+
+                    console.error("Erro ao listar:", error);
 
                     const tabela = document.getElementById("tabelaCalculosEletrico");
+
                     if (tabela) {
-                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Erro ao carregar dados</td></tr>";
                     }
+
+                    alert("❌ Erro ao carregar registros.");
                 });
         }
-
 
         // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
         async function editarCircuito(id, tipoAtual) {
