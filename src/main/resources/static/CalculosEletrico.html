@@ -175,11 +175,11 @@
             color: white;
         }
 
-        .linha-iluminacao {
+        .linha-monofasico {
             background-color: #ffe5e5;
         }
 
-        .linha-tomada {
+        .linha-bifasico {
             background-color: #e5ffe5;
         }
 
@@ -320,7 +320,7 @@
 
                 <input type="text" id="ambiente" placeholder="Ambiente">
 
-                <input type="text" id="descricao" placeholder="Descrição">
+                <input type="text" id="descricao" placeholder="Tamanho do Ambiente">
 
                 <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA)">
 
@@ -373,7 +373,7 @@
                         <th>ID</th>
                         <th>Projeto</th>
                         <th>Ambiente</th>
-                        <th>Descrição</th>
+                        <th>Tamanho do Ambiente</th>
                         <th>PotLuz</th>
                         <th>TomadasUsoGeral</th>
                         <th>TomadasUsoEspecifico</th>
@@ -480,17 +480,18 @@
 
                         // COR DA LINHA
                         const classeLinha =
-                            tipo.toLowerCase() === "iluminação" ||
-                                tipo.toLowerCase() === "iluminacao"
-                                ? "linha-iluminacao"
-                                : "linha-tomada";
+                            tipo.toLowerCase() === "monofasico" ||
+                                tipo.toLowerCase() === "monofasico"
+                                ? "linha-monofasico"
+                                : "linha-bifasico";
 
                         // TEXTO BOTÃO
                         const textoBotao =
-                            tipo.toLowerCase() === "iluminação" ||
-                                tipo.toLowerCase() === "iluminacao"
-                                ? "Tomadas"
-                                : "Iluminação";
+                        tipo.toLowerCase() === "monofasico"
+                        ? "Bifasico"
+                        : tipo.toLowerCase() === "bifasico"
+                        ? "Trifasico"
+                        : "Monofasico";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -527,6 +528,7 @@
                 });
         }
 
+
         // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
         async function editarCircuito(id, tipoAtual) {
             try {
@@ -539,16 +541,18 @@
 
                 // define novo tipo
                 const novoTipo =
-                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
-                        ? "Iluminação"
-                        : "Tomada";
+                tipoAtual === "Monofasico"
+                ? "Bifasico"
+                : tipoAtual === "Bifasico"
+                ? "Trifasico"
+                : "Monofasico";
 
                 // confirmação
                 if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
                     return;
                 }
 
-                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
+                const response = await fetchSeguro(`${API}/calculoseletrico/${id}/tipodocircuito`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
@@ -685,7 +689,7 @@
                 .then(data => {
                     console.log("Salvo:", data);
                     alert("✅ Dados salvos com sucesso!");
-                    mostrarResultado();
+                    mostrarResultado(resultado);
                     limparCampos();
                 })
                 .catch(error => {
@@ -737,37 +741,37 @@
             const card = document.getElementById("resultadoCard");
 
             card.innerHTML = `
-        <h3>⚡ Memória de Cálculo</h3>
+        <h3>⚡ Quadro de Potencia de Luz e Quantidade de Tomadas</h3>
 
         <div class="card-grid">
 
             <div class="item-card">
-                Potência Total<br>
+                Projeto:<br>
                 ${r.potenciatotal || "0.00"} W
             </div>
 
             <div class="item-card">
-                Potência Corrigida<br>
+                Ambiente<br>
                 ${r.potenciacorrigida || "0.00"} W
             </div>
 
             <div class="item-card">
-                Corrente Ic<br>
+                Tamanho do Ambiente<br>
                 ${r.correnteic || "0.00"} A
             </div>
 
             <div class="item-card">
-                Corrente Ib<br>
+                Potência de Luz<br>
                 ${r.correnteib || "0.00"} A
             </div>
 
             <div class="item-card">
-                Cabo Alimentador<br>
+                Tomadas de Uso Geral<br>
                 ${r.cabo || "-"}
             </div>
 
             <div class="item-card">
-                Disjuntor<br>
+                Tomadas de Uso Especifico<br>
                 ${r.disjuntor || "-"}
             </div>
 
