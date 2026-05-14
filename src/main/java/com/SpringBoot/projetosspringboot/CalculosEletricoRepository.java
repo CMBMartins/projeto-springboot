@@ -6,5 +6,5 @@ import java.util.List;
 public interface CalculosEletricoRepository extends JpaRepository<CalculosEletrico, Long> {
     List<CalculosEletrico> findByProjetoContainingIgnoreCase(String projeto);
 
-    List<PlanilhaEletrica> findByUsuario(String usuario);
+    List<CalculosEletrico> findByUsuario(String usuario);
 }

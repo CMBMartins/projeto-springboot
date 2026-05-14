@@ -134,11 +134,7 @@ public class CalculosEletricoController {
     }
 
     @GetMapping("/usuario")
-    public List<PlanilhaEletrica> listarPorUsuario(@RequestParam String usuario) {
+    public List<CalculosEletrico> listarPorUsuario(@RequestParam String usuario) {
         return repository.findByUsuario(usuario);
-    }
-
-    private double arred(double valor) {
-        return Math.round(valor * 100.0) / 100.0;
     }
 }
