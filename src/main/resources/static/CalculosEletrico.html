@@ -71,25 +71,37 @@
         /* GRID FORM */
 
         .grid {
-            display: grid;
+            display: grid;            
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
+        .grid input,
+        .grid select,
+        .grid textarea {
+
+         height: 34px;      /* altura do campo */
+         padding: 4px 8px;  /* espaço interno */
+         font-size: 14px;   /* tamanho da fonte */
+         }
+
+         .login input{
+         height: 34px;} 
+         
+
         /* BOTÕES */
 
-        .botoes {
+        .botoes {            
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 20px;
-
         }
-
+        
         /* padrão de botão */
         .botoes button {
             width: 186px;
-            height: 40px;
+            height: 36px;
             padding: 10px 18px;
             border: none;
             border-radius: 6px;
@@ -103,7 +115,7 @@
         /* padrão de botão */
         .login button {
             width: 148px;
-            height: 40px;
+            height: 36px;
             padding: 10px 18px;
             border: none;
             border-radius: 6px;
@@ -114,7 +126,6 @@
             color: white;
             background-color: #007bff;
         }
-
 
         #salvar {
             background: #27ae60;
