@@ -3,204 +3,812 @@
 
 <head>
 
-<meta charset="UTF-8">
-<title>Sistema de Cálculos Elétricos</title>
+    <meta charset="UTF-8">
+    <title>Sistema de Cálculos Elétricos</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
-<style>
+    <style>
+        body {
+            background: #f4f6f9;
+        }
 
-body{
-background:#f4f6f9;
-}
+        header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-header{
-background:#1f2d3d;
-color:white;
-padding:20px;
-text-align:center;
-margin-bottom:30px;
-}
+        .card {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
 
-.card{
-box-shadow:0px 4px 10px rgba(0,0,0,0.15);
-}
+        .resultado {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-top: 15px;
+        }
 
-.resultado{
-font-size:22px;
-font-weight:bold;
-color:#0d6efd;
-margin-top:15px;
-}
+        .card1 {
+            background: #f2f2f2;
+        }
 
-</style>
+        /* LOGO */
+
+        .logo {
+            text-align: center;
+        }
+
+        .campo-direita {
+            text-align: right;
+        }
+
+        #usuariologado {
+            text-align: right;
+            float: right;
+            padding: 6px 10px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 14px;
+            color: #003366;
+            background: #e6f2ff;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* INPUTS */
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+        }
+
+        /* GRID FORM */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        /* BOTÕES */
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+
+        }
+
+        /* padrão de botão */
+        .botoes button {
+            width: 186px;
+            height: 40px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        /* padrão de botão */
+        .login button {
+            width: 148px;
+            height: 40px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            background-color: #007bff;
+        }
+
+
+        #salvar {
+            background: #27ae60;
+            color: white;
+        }
+
+        #editar {
+            background: #6fae27;
+            color: white;
+        }
+
+        #deletar {
+            background: #ae2b27;
+            color: white;
+        }
+
+        #limparCampos {
+            background: #f39c12;
+            color: white;
+        }
+
+        #buscarProjeto {
+            background: #f37712;
+            color: white;
+        }
+
+        #listarTodos {
+            background: #2980b9;
+            color: white;
+        }
+
+        .autenticar {
+            background: #7827ae;
+            color: white;
+        }
+
+        .logout {
+            background: #ae2b27;
+            color: white;
+        }
+
+        /* TABELA */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        .linha-iluminacao {
+            background-color: #ffe5e5;
+        }
+
+        .linha-tomada {
+            background-color: #e5ffe5;
+        }
+
+        .card-resultado {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0d6efd;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-family: Arial;
+
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .item-card {
+            background: white;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<header>
+    <header>
 
-<h2><img src="Imagens/carlos1.gif" width="40">
-            Sistema de Cálculos de Projetos Elétricos</h2>
-<p>NBR 5410 - Dimensionamentos básicos</p>
+        <h2><img src="Imagens/carlos1.gif" width="40">
+            Cálculos de Potências de Luz e Quant. de Tomadas</h2>
+        <p>NBR 5410 - Dimensionamentos básicos</p>
 
-</header>
+    </header>
 
 
-<div class="container">
+    <div class="container">
 
-<div class="row g-4">
+        <div class="row g-4">
 
-    <div class="home text-start">
-    <a href="PaginaPessoal.html" class="btn btn-secondary">
-    <i class="fa fa-home"></i> Página Principal
-    </a>
-</div>
+            <div class="campo-direita">
+                <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+            </div>
 
+            <div class="home text-start">
+                <a href="PaginaPessoal.html" class="btn btn-secondary">
+                    <i class="fa fa-home"></i> Página Principal
+                </a>
+            </div>
 
-<!-- CALCULO DE ILUMINAÇÃO -->
 
-<div class="col-md-4">
+            <!-- CALCULO DE ILUMINAÇÃO -->
 
-<div class="card p-4">
+            <div class="col-md-4">
 
-<h4>Potência de Iluminação</h4>
+                <div class="card p-4">
 
-<label>Área do ambiente (m²)</label>
+                    <h4>Potência de Iluminação</h4>
 
-<input type="number" id="area" class="form-control">
+                    <label>Área do ambiente (m²)</label>
 
-<br>
+                    <input type="number" id="area" class="form-control">
 
-<button onclick="calcularLuz()" class="btn btn-primary w-100">
-Calcular
-</button>
+                    <br>
 
-<div id="resultadoLuz" class="resultado"></div>
+                    <button onclick="calcularLuz()" class="btn btn-primary w-100">
+                        Calcular
+                    </button>
 
-</div>
+                    <div id="resultadoLuz" class="resultado"></div>
 
-</div>
+                </div>
 
+            </div>
 
 
-<!-- TOMADAS COMUNS -->
+            <!-- TOMADAS COMUNS -->
 
-<div class="col-md-4">
+            <div class="col-md-4">
 
-<div class="card p-4">
+                <div class="card p-4">
 
-<h4>Tomadas de Uso Comum</h4>
+                    <h4>Tomadas de Uso Comum</h4>
 
-<label>Perímetro do ambiente (m)</label>
+                    <label>Perímetro do ambiente (m)</label>
 
-<input type="number" id="perimetro" class="form-control">
+                    <input type="number" id="perimetro" class="form-control">
 
-<br>
+                    <br>
 
-<button onclick="calcularTUG()" class="btn btn-success w-100">
-Calcular
-</button>
+                    <button onclick="calcularTUG()" class="btn btn-success w-100">
+                        Calcular
+                    </button>
 
-<div id="resultadoTUG" class="resultado"></div>
+                    <div id="resultadoTUG" class="resultado"></div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
 
+            <!-- TOMADAS ESPECIAIS -->
 
-<!-- TOMADAS ESPECIAIS -->
+            <div class="col-md-4">
 
-<div class="col-md-4">
+                <div class="card p-4">
 
-<div class="card p-4">
+                    <h4>Tomadas de Uso Específico</h4>
 
-<h4>Tomadas de Uso Especial</h4>
+                    <label>Perímetro do ambiente (m)</label>
 
-<label>Perímetro do ambiente (m)</label>
+                    <input type="number" id="especial" class="form-control">
 
-<input type="number" id="especial" class="form-control">
+                    <br>
 
-<br>
+                    <button onclick="calcularTUE()" class="btn btn-warning w-100">
+                        Calcular
+                    </button>
 
-<button onclick="calcularTUE()" class="btn btn-warning w-100">
-Calcular
-</button>
+                    <div id="resultadoTUE" class="resultado"></div>
 
-<div id="resultadoTUE" class="resultado"></div>
+                </div>
 
-</div>
+            </div>
 
-</div>
+            <div class="grid">
 
+                <input type="text" id="id" placeholder="ID">
 
-</div>
+                <input type="text" id="projeto" placeholder="Projeto">
 
-</div>
+                <input type="text" id="ambiente" placeholder="Ambiente">
 
+                <input type="text" id="descricao" placeholder="Descrição">
 
-<script>
+                <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA)">
 
+                <input type="text" id="tomadasdeusogeral" placeholder="Tomadas de Uso Geral(Quant.)">
 
-function calcularLuz(){
+                <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico(Quant.)">
 
-let area = parseFloat(document.getElementById("area").value);
+                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito">
 
-let resultado;
+            </div>
 
-if(area <= 6){
+            <div class="botoes">
 
-resultado = 100;
+                <button id="salvar" onclick="calcularLuz()">💾Salvar</button>
+                <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="deletar" onclick="deletar()">🗑️Deletar</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
+                <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
+                <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
 
-}
-else{
+            </div>
 
-resultado = 100 + Math.ceil((area - 6) / 4) * 60;
+            <div class="login">
 
-}
+                <h2>Realizar Login</h2>
 
-document.getElementById("resultadoLuz").innerHTML =
-"Potência necessária: " + resultado + " VA";
+                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
 
-}
+                <input type="password" id="senha" placeholder="Senha" style="width:33%;">
 
+                <button onclick="autenticar()">🚪➡️Entrar</button>
+                <button onclick="logout()">🚪⬅️Sair</button>
 
+            </div>
 
-function calcularTUG(){
+        </div>
 
-let perimetro = parseFloat(document.getElementById("perimetro").value);
+        <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
 
-let resultado = Math.ceil(perimetro / 5);
+        <div class="card1"><br>
 
-if(resultado < 1){
-resultado = 1;
-}
+            <h2>Quadro de Calculos de Potência de Luz e Quant. de TUG e TUE</h2>
 
-document.getElementById("resultadoTUG").innerHTML =
-"Quantidade: " + resultado + " tomadas";
+            <table>
 
-}
+                <thead>
 
+                    <tr>
 
+                        <th>ID</th>
+                        <th>Projeto</th>
+                        <th>Ambiente</th>
+                        <th>Descrição</th>
+                        <th>PotLuz</th>
+                        <th>TomadasUsoGeral</th>
+                        <th>TomadasUsoEspecifico</th>
+                        <th>TipoCircuito</th>
+                        <th>Ação</th>
 
-function calcularTUE(){
+                    </tr>
 
-let perimetro = parseFloat(document.getElementById("especial").value);
+                </thead>
 
-let resultado = Math.ceil(perimetro / 3.5);
+                <tbody id="tabelaCalculosEletrico">
 
-if(resultado < 1){
-resultado = 1;
-}
+                </tbody>
 
-document.getElementById("resultadoTUE").innerHTML =
-"Quantidade: " + resultado + " tomadas";
+            </table>
 
-}
+        </div>
 
-</script>
+    </div>
+
+
+    <script>
+
+        const API = "https://projeto-springboot.onrender.com";
+
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
+        };
+
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+        }
+
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
+            }
+
+            return user;
+        }
+
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
+        }
+
+
+        //FUNÇÃO PARA LISTAR TODAS OS CIRCUITOS
+        function listarTodos() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            fetchSeguro(`${API}/calculoseletrico/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                })
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+
+                    if (!Array.isArray(data)) {
+                        console.error("Resposta inválida:", data);
+                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    data.forEach(calculoseletrico => {
+
+                        // 🎨 Classe da linha
+                        const classeLinha = calculoseletrico.circuito === "Iluminação"
+                            ? "linha-iluminacao"
+                            : "linha-tomada";
+
+                        // 🔘 Texto do botão
+                        const textoBotao = calculoseletrico.circuito === "Iluminação"
+                            ? "Tomadas"
+                            : "TrocarTipo";
+
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${calculoseletrico.id ?? ""}</td>
+                    <td>${calculoseletrico.projeto ?? ""}</td>
+                    <td>${calculoseletrico.ambiente ?? ""}</td>
+                    <td>${calculoseletrico.descricao ?? ""}</td>
+                    <td>${Number(calculoseletrico.potencialuz || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasusogeral || 0).toFixed(2)}</td>
+                    <td>${calculoseletrico.tomadasusoespecifico ?? ""}</td>
+                    <td>${Number(calculoseletrico.tipocircuito || 0).toFixed(2)}</td>                    
+                    <td>
+                        <button onclick="editarCircuito(${calculoseletrico.id}, '${calculoseletrico.circuito}')">
+                            ${textoBotao}
+                        </button>
+                    </td>
+                </tr>`;
+                    });
+
+                    tabela.innerHTML = linhas;
+
+                })
+                .catch(err => {
+                    console.error("Erro ao listar:", err);
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+                    if (tabela) {
+                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                    }
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
+        async function editarCircuito(id, tipoAtual) {
+            try {
+
+                // valida ID
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
+
+                // define novo tipo
+                const novoTipo =
+                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
+                        ? "Iluminação"
+                        : "Tomada";
+
+                // confirmação
+                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
+                    return;
+                }
+
+                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        tipocircuito: novoTipo
+                    })
+                });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Tipo de circuito atualizado!");
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao atualizar tipo:", error);
+                alert("❌ Erro ao atualizar Tipo do circuito");
+            }
+        }
+
+
+        function calcularLuz() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            let area = parseFloat(document.getElementById("area").value);
+
+            let resultado;
+
+            if (area <= 6) {
+
+                resultado = 100;
+
+            }
+            else {
+
+                resultado = 100 + Math.ceil((area - 6) / 4) * 60;
+
+            }
+
+            document.getElementById("resultadoLuz").innerHTML =
+                "Potência necessária: " + resultado + " VA";
+
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+
+            const dados = {
+                projeto: document.getElementById("projeto")?.value.trim(),
+                ambiente: document.getElementById("ambiente")?.value.trim(),
+                descricao: document.getElementById("descricao")?.value.trim(),
+                potenciadeluz: parseFloat(document.getElementById("potenciadeluz")?.value) || 0,
+                tomadasdeusogeral: document.getElementById("tomadasdeusogeral")?.value || "",
+                tomadasdeusoespecifico: document.getElementById("tomadasdeusoespecifico")?.value || "",
+                tipodocircuito: document.getElementById("tipodocircuito")?.value || "",
+                usuario: usuario
+            };
+
+            //const pc = parseFloat(document.getElementById("potenciatotal").value) || 0;
+
+            //const resultado1 = calcularAlimentador();
+
+            mostrarResultado(resultado);
+
+            fetchSeguro(`${API}/calculoseletrico`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Salvo:", data);
+
+                    alert("✅ Dados salvos com sucesso!");
+                    limparCampos();
+                    //calcularAlimentador();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao salvar");
+                });
+
+        }
+
+
+        function calcularTUG() {
+
+            let perimetro = parseFloat(document.getElementById("perimetro").value);
+
+            let resultado = Math.ceil(perimetro / 5);
+
+            if (resultado < 1) {
+                resultado = 1;
+            }
+
+            document.getElementById("resultadoTUG").innerHTML =
+                "Quantidade: " + resultado + " tomadas";
+
+        }
+
+
+
+        function calcularTUE() {
+
+            let perimetro = parseFloat(document.getElementById("especial").value);
+
+            let resultado = Math.ceil(perimetro / 3.5);
+
+            if (resultado < 1) {
+                resultado = 1;
+            }
+
+            document.getElementById("resultadoTUE").innerHTML =
+                "Quantidade: " + resultado + " tomadas";
+
+        }
+
+        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
+        function mostrarResultado(r) {
+
+            if (!r) return;
+
+            const card = document.getElementById("resultadoCard");
+
+            card.innerHTML = `
+        <h3>⚡ Memória de Cálculo</h3>
+
+        <div class="card-grid">
+
+            <div class="item-card">
+                Potência Total<br>
+                ${r.potenciatotal || "0.00"} W
+            </div>
+
+            <div class="item-card">
+                Potência Corrigida<br>
+                ${r.potenciacorrigida || "0.00"} W
+            </div>
+
+            <div class="item-card">
+                Corrente Ic<br>
+                ${r.correnteic || "0.00"} A
+            </div>
+
+            <div class="item-card">
+                Corrente Ib<br>
+                ${r.correnteib || "0.00"} A
+            </div>
+
+            <div class="item-card">
+                Cabo Alimentador<br>
+                ${r.cabo || "-"}
+            </div>
+
+            <div class="item-card">
+                Disjuntor<br>
+                ${r.disjuntor || "-"}
+            </div>
+
+        </div>
+        `;
+
+            card.style.display = "block";
+        }
+
+
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function autenticar() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Informe usuario e senha para realizar Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    usuario,
+                    senha
+                })
+
+            })
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Login inválido");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    // Mostra o usuário no campo Default
+                    localStorage.setItem("usuario", data.usuario);
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    limparLogin();
+
+                })
+
+
+                .catch(error => {
+
+                    alert("Usuário ou senha incorretos");
+
+                });
+
+        }
+
+
+        // FUNÇÃO EFETUAR O LOGOUT
+        function logout() {
+            localStorage.removeItem("usuariologado");
+            alert("🚪 Logout realizado com sucesso!");
+
+            window.location.href = "PlanilhaEletrica.html";
+        }
+
+        // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
+        function limparCampos() {
+            document.getElementById("id").value = "";
+            document.getElementById("projeto").value = "";
+            document.getElementById("ambiente").value = "";
+            document.getElementById("descricao").value = "";
+            document.getElementById("potencialuz").value = "";
+            document.getElementById("tomadasusogeral").value = "";
+            document.getElementById("tomadasusoespecifico").value = "";
+            document.getElementById("tipocircuito").value = "";
+
+            //alert("Campos limpos sucesso!");
+        }
+
+        // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
+        function limparLogin() {
+            document.getElementById("usuario").value = "";
+            document.getElementById("senha").value = "";
+
+        }
+
+    </script>
 
 </body>
 
