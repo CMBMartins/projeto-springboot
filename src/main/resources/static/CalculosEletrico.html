@@ -554,6 +554,7 @@
         }
 
 
+        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
         function calcularLuz() {
 
             const usuario = getUsuario();
@@ -563,42 +564,84 @@
                 return;
             }
 
-            let area = parseFloat(document.getElementById("area").value);
+            // AREA
+            const area = parseFloat(document.getElementById("area")?.value) || 0;
 
+            if (area <= 0) {
+                alert("⚠️ Informe a área corretamente.");
+                return;
+            }
+
+            // CÁLCULO POTÊNCIA DE LUZ
             let resultado;
 
             if (area <= 6) {
-
                 resultado = 100;
-
-            }
-            else {
-
+            } else {
                 resultado = 100 + Math.ceil((area - 6) / 4) * 60;
-
             }
 
+            // MOSTRA RESULTADO NA TELA
             document.getElementById("resultadoLuz").innerHTML =
                 "Potência necessária: " + resultado + " VA";
 
-            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+            // CAMPOS DO FORMULÁRIO
+            const projeto = document.getElementById("projeto")?.value.trim() || "";
+            const ambiente = document.getElementById("ambiente")?.value.trim() || "";
+            const descricao = document.getElementById("descricao")?.value.trim() || "";
 
+            const tomadasdeusogeral =
+                parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
+
+            const tomadasdeusoespecifico =
+                parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
+
+            const tipodocircuito =
+                document.getElementById("tipodocircuito")?.value.trim() || "";
+
+            // VALIDAÇÕES
+            if (!projeto) {
+                alert("⚠️ Informe o Projeto.");
+                return;
+            }
+
+            if (!ambiente) {
+                alert("⚠️ Informe o Ambiente.");
+                return;
+            }
+
+            if (!descricao) {
+                alert("⚠️ Informe a Descrição.");
+                return;
+            }
+
+            if (!tipodocircuito) {
+                alert("⚠️ Informe o Tipo do Circuito.");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) {
+                return;
+            }
+
+            // OBJETO PARA SALVAR
             const dados = {
-                projeto: document.getElementById("projeto")?.value.trim(),
-                ambiente: document.getElementById("ambiente")?.value.trim(),
-                descricao: document.getElementById("descricao")?.value.trim(),
-                potenciadeluz: parseFloat(document.getElementById("potenciadeluz")?.value) || 0,
-                tomadasdeusogeral: document.getElementById("tomadasdeusogeral")?.value || "",
-                tomadasdeusoespecifico: document.getElementById("tomadasdeusoespecifico")?.value || "",
-                tipodocircuito: document.getElementById("tipodocircuito")?.value || "",
+                projeto: projeto,
+                ambiente: ambiente,
+                descricao: descricao,
+
+                // VALOR CALCULADO
+                potenciadeluz: resultado,
+
+                // DIGITADOS NO FORMULÁRIO
+                tomadasdeusogeral: tomadasdeusogeral,
+                tomadasdeusoespecifico: tomadasdeusoespecifico,
+                tipodocircuito: tipodocircuito,
+
                 usuario: usuario
             };
 
-            //const pc = parseFloat(document.getElementById("potenciatotal").value) || 0;
-
-            //const resultado1 = calcularAlimentador();
-
-            mostrarResultado(resultado);
+            console.log("JSON enviado:", dados);
 
             fetchSeguro(`${API}/calculoseletrico`, {
                 method: "POST",
@@ -607,30 +650,31 @@
                 },
                 body: JSON.stringify(dados)
             })
-                .then(response => {
+                .then(async response => {
+
                     console.log("STATUS REAL:", response.status);
 
                     if (!response.ok) {
-                        throw new Error(`Erro ${response.status}`);
+                        const msg = await response.text();
+                        throw new Error(msg);
                     }
 
                     return response.json();
                 })
                 .then(data => {
                     console.log("Salvo:", data);
-
                     alert("✅ Dados salvos com sucesso!");
+                    mostrarResultado();
                     limparCampos();
-                    //calcularAlimentador();
                 })
                 .catch(error => {
                     console.error(error);
-                    alert("❌ Erro ao salvar");
+                    alert("❌ " + error.message);
                 });
-
         }
 
 
+        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
         function calcularTUG() {
 
             let perimetro = parseFloat(document.getElementById("perimetro").value);
@@ -647,7 +691,7 @@
         }
 
 
-
+        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
         function calcularTUE() {
 
             let perimetro = parseFloat(document.getElementById("especial").value);
@@ -662,6 +706,7 @@
                 "Quantidade: " + resultado + " tomadas";
 
         }
+
 
         // FUNÇÃO PARA MOSTRAR OS RESULTADOS
         function mostrarResultado(r) {
@@ -793,10 +838,10 @@
             document.getElementById("projeto").value = "";
             document.getElementById("ambiente").value = "";
             document.getElementById("descricao").value = "";
-            document.getElementById("potencialuz").value = "";
-            document.getElementById("tomadasusogeral").value = "";
-            document.getElementById("tomadasusoespecifico").value = "";
-            document.getElementById("tipocircuito").value = "";
+            document.getElementById("potenciadeluz").value = "";
+            document.getElementById("tomadasdeusogeral").value = "";
+            document.getElementById("tomadasdeusoespecifico").value = "";
+            document.getElementById("tipodocircuito").value = "";
 
             //alert("Campos limpos sucesso!");
         }
