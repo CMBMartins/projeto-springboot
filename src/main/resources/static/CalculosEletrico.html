@@ -345,7 +345,7 @@
 
             <div class="botoes">
 
-                <button id="salvar" onclick="calcularLuz()">💾Salvar</button>
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="deletar()">🗑️Deletar</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
@@ -439,7 +439,7 @@
         }
 
 
-        // FUNÇÃO PARA LISTAR TODOS
+        // FUNÇÃO PARA LISTAR TODOS NA TABELA QUADRO DE POTENCIAS DE LUZ E TOMADAS  
         function listarTodos() {
 
             const usuario = getUsuario();
@@ -590,8 +590,8 @@
         }
 
 
-        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
-        function calcularLuz() {
+        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICOS
+        function salvar() {
 
             const usuario = getUsuario();
 
@@ -710,7 +710,29 @@
         }
 
 
-        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
+        // FUNÇÃO PARA CALCULAR POTÊNCIA DE LUZ
+        function calcularLuz(){
+
+        let area = parseFloat(document.getElementById("area").value);
+
+        let resultado;
+
+        if(area <= 6){
+
+        resultado = 100;
+        }
+        else{
+            
+            resultado = 100 + Math.ceil((area - 6) / 4) * 60;
+            }
+
+            document.getElementById("resultadoLuz").innerHTML =
+            "Potência necessária: " + resultado + " VA";
+            mostrarResultado(resultado);
+            }
+
+
+        // FUNÇÃO PARA CALCULAR TOMADAS TUG
         function calcularTUG() {
 
             let perimetro = parseFloat(document.getElementById("perimetro").value);
@@ -727,7 +749,7 @@
         }
 
 
-        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICO
+        // FUNÇÃO PARA CALCULAR TOMADAS TUE
         function calcularTUE() {
 
             let perimetro = parseFloat(document.getElementById("especial").value);
