@@ -219,6 +219,20 @@
             text-align: center;
             font-weight: bold;
         }
+
+        .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+        }
+
+        .item-card {
+        background: #f4f4f4;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
     </style>
 
 </head>
@@ -331,7 +345,9 @@
 
                 <input type="text" id="ambiente" placeholder="Ambiente">
 
-                <input type="text" id="descricao" placeholder="Tamanho do Ambiente">
+                <input type="text" id="tamanhodoambiente" placeholder="Tamanho do Ambiente(mts²)">
+
+                <input type="text" id="perimetrodoambiente" placeholder="Perimetro do Ambiente(mts)">
 
                 <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA)">
 
@@ -509,7 +525,7 @@
                     <td>${calculoseletrico.id ?? ""}</td>
                     <td>${calculoseletrico.projeto ?? ""}</td>
                     <td>${calculoseletrico.ambiente ?? ""}</td>
-                    <td>${calculoseletrico.descricao ?? ""}</td>
+                    <td>${calculoseletrico.tamanhodoambiente ?? ""}</td>
                     <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
@@ -624,7 +640,8 @@
             // CAMPOS DO FORMULÁRIO
             const projeto = document.getElementById("projeto")?.value.trim() || "";
             const ambiente = document.getElementById("ambiente")?.value.trim() || "";
-            const descricao = document.getElementById("descricao")?.value.trim() || "";
+            const tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
+            const perimetrodoambiente = document.getElementById("perimetrodoambiente")?.value.trim() || "";
 
             const tomadasdeusogeral =
                 parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
@@ -646,8 +663,8 @@
                 return;
             }
 
-            if (!descricao) {
-                alert("⚠️ Informe a Descrição.");
+            if (!tamanhodoambiente) {
+                alert("⚠️ Informe o tamanho do Ambiente.");
                 return;
             }
 
@@ -664,7 +681,8 @@
             const dados = {
                 projeto: projeto,
                 ambiente: ambiente,
-                descricao: descricao,
+                tamanhodoambiente: tamanhodoambiente,
+                perimetrodoambiente: perimetrodoambiente,
 
                 // VALOR CALCULADO
                 potenciadeluz: resultado,
@@ -728,7 +746,15 @@
 
             document.getElementById("resultadoLuz").innerHTML =
             "Potência necessária: " + resultado + " VA";
-            mostrarResultado(resultado);
+            
+            mostrarResultado({
+            projeto: projeto,
+            ambiente: ambiente,
+            tamanhodoambiente: area,
+            resultado: resultado,
+            tomadasdeusogeral: tomadasdeusogeral,
+            tomadasdeusoespecifico: tomadasdeusoespecifico
+            });
             }
 
 
@@ -767,52 +793,53 @@
 
 
         // FUNÇÃO PARA MOSTRAR OS RESULTADOS
-        function mostrarResultado(r) {
+       function mostrarResultado(r) {
 
-            if (!r) return;
+       if (!r) return;
 
-            const card = document.getElementById("resultadoCard");
+       const card = document.getElementById("resultadoCard");
 
-            card.innerHTML = `
-        <h3>⚡ Quadro de Potencia de Luz e Quantidade de Tomadas</h3>
+       card.innerHTML = `
+    
+       <h3>⚡ Quadro de Potência de Luz e Quantidade de Tomadas</h3>
 
-        <div class="card-grid">
+       <div class="card-grid">
 
-            <div class="item-card">
-                Projeto:<br>
-                ${r.potenciatotal || "0.00"} W
-            </div>
-
-            <div class="item-card">
-                Ambiente<br>
-                ${r.potenciacorrigida || "0.00"} W
-            </div>
-
-            <div class="item-card">
-                Tamanho do Ambiente<br>
-                ${r.correnteic || "0.00"} A
-            </div>
-
-            <div class="item-card">
-                Potência de Luz<br>
-                ${r.correnteib || "0.00"} A
-            </div>
-
-            <div class="item-card">
-                Tomadas de Uso Geral<br>
-                ${r.cabo || "-"}
-            </div>
-
-            <div class="item-card">
-                Tomadas de Uso Especifico<br>
-                ${r.disjuntor || "-"}
-            </div>
-
+        <div class="item-card">
+            <strong>Projeto</strong><br>
+            ${r.projeto || ""}
         </div>
-        `;
 
-            card.style.display = "block";
-        }
+        <div class="item-card">
+            <strong>Ambiente</strong><br>
+            ${r.ambiente || ""}
+        </div>
+
+        <div class="item-card">
+            <strong>Tamanho do Ambiente</strong><br>
+            ${r.tamanhodoambiente || ""} m²
+        </div>
+
+        <div class="item-card">
+            <strong>Potência de Luz</strong><br>
+            ${Number(r.resultado || 0).toFixed(2)} VA
+        </div>
+
+        <div class="item-card">
+            <strong>Tomadas de Uso Geral</strong><br>
+            ${r.tomadasdeusogeral || 0}
+        </div>
+
+        <div class="item-card">
+            <strong>Tomadas de Uso Específico</strong><br>
+            ${r.tomadasdeusoespecifico || 0}
+        </div>
+
+    </div>
+    `;
+
+    card.style.display = "block";
+    }
 
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
@@ -895,7 +922,8 @@
             document.getElementById("id").value = "";
             document.getElementById("projeto").value = "";
             document.getElementById("ambiente").value = "";
-            document.getElementById("descricao").value = "";
+            document.getElementById("tamanhodoambiente").value = "";
+            document.getElementById("perimetrodoambiente").value = "";
             document.getElementById("potenciadeluz").value = "";
             document.getElementById("tomadasdeusogeral").value = "";
             document.getElementById("tomadasdeusoespecifico").value = "";
