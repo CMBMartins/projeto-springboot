@@ -1,5 +1,4 @@
-package com.SpringBoot.projetosspringboot;
-
+package com.bancoshows.bancoshowsfilmes;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +11,8 @@ public class CalculosEletrico {
 
     private String projeto;
     private String ambiente;
-    private String descricao;
+    private Double tamanhodoambiente;
+    private Double perimetrodoambiente;
     private Double potenciadeluz;
     private Double tomadasdeusogeral;
     private String tomadasdeusoespecifico;
@@ -45,12 +45,20 @@ public class CalculosEletrico {
         this.ambiente = ambiente;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Double getTamanhodoambiente() {
+        return tamanhodoambiente;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setTamanhodoambiente(Double tamanhodoambiente) {
+        this.tamanhodoambiente = tamanhodoambiente;
+    }
+
+    public Double getPerimetrodoambiente() {
+        return perimetrodoambiente;
+    }
+
+    public void setPerimetrodoambiente(Double perimetrodoambiente) {
+        this.perimetrodoambiente = perimetrodoambiente;
     }
 
     public Double getPotenciadeluz() {

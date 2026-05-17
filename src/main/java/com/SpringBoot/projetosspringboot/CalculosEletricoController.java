@@ -1,4 +1,4 @@
-package com.SpringBoot.projetosspringboot;
+package com.bancoshows.bancoshowsfilmes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,30 +17,52 @@ public class CalculosEletricoController {
 
     // Método para salvar na tabela calculoseletrico
     @PostMapping
-    public CalculosEletrico salvar(@RequestBody CalculosEletrico novo) {
+    public ResponseEntity<?> salvar(@RequestBody CalculosEletrico novo) {
 
-        // Validações básicas
+    try {
+
+        // VALIDAÇÕES TEXTO
+
         if (novo.getProjeto() == null || novo.getProjeto().trim().isEmpty()) {
-            throw new RuntimeException("O campo projeto é obrigatório.");
+            return ResponseEntity.badRequest()
+                    .body("O campo projeto é obrigatório.");
         }
 
         if (novo.getAmbiente() == null || novo.getAmbiente().trim().isEmpty()) {
-            throw new RuntimeException("O campo ambiente é obrigatório.");
-        }
-
-        if (novo.getDescricao() == null || novo.getDescricao().trim().isEmpty()) {
-            throw new RuntimeException("O campo descrição é obrigatório.");
+            return ResponseEntity.badRequest()
+                    .body("O campo ambiente é obrigatório.");
         }
 
         if (novo.getUsuario() == null || novo.getUsuario().trim().isEmpty()) {
-            throw new RuntimeException("O campo usuário é obrigatório.");
+            return ResponseEntity.badRequest()
+                    .body("O campo usuário é obrigatório.");
         }
 
-        // Se ID vier preenchido, zera para garantir INSERT
+        // VALIDAÇÕES NUMÉRICAS
+
+        if (novo.getTamanhodoambiente() == null) {
+            return ResponseEntity.badRequest()
+                    .body("O campo tamanho do ambiente é obrigatório.");
+        }
+
+        if (novo.getPerimetrodoambiente() == null) {
+            return ResponseEntity.badRequest()
+                    .body("O campo perímetro do ambiente é obrigatório.");
+        }
+
+        // GARANTE INSERT
         novo.setId(null);
 
-        // Salva no banco
-        return repository.save(novo);
+        // SALVA
+        CalculosEletrico salvo = repository.save(novo);
+
+        return ResponseEntity.ok(salvo);
+
+    } catch (Exception e) {
+
+        return ResponseEntity.status(500)
+                .body("Erro ao salvar: " + e.getMessage());
+    }
     }
 
     // Método Editar
@@ -53,7 +75,7 @@ public class CalculosEletricoController {
 
                     registro.setProjeto(dados.getProjeto());
                     registro.setAmbiente(dados.getAmbiente());
-                    registro.setDescricao(dados.getDescricao());
+                    registro.setTamanhodoambiente(dados.getTamanhodoambiente());
                     registro.setPotenciadeluz(dados.getPotenciadeluz());
                     registro.setTomadasdeusogeral(dados.getTomadasdeusogeral());
                     registro.setTomadasdeusoespecifico(dados.getTomadasdeusoespecifico());
