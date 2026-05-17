@@ -1,4 +1,5 @@
-package com.bancoshows.bancoshowsfilmes;
+package com.SpringBoot.projetosspringboot;
+
 import jakarta.persistence.*;
 
 @Entity
