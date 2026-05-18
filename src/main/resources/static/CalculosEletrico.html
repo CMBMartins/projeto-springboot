@@ -71,7 +71,7 @@
         /* GRID FORM */
 
         .grid {
-            display: grid;            
+            display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
@@ -80,24 +80,28 @@
         .grid select,
         .grid textarea {
 
-         height: 34px;      /* altura do campo */
-         padding: 4px 8px;  /* espaço interno */
-         font-size: 14px;   /* tamanho da fonte */
-         }
+            height: 34px;
+            /* altura do campo */
+            padding: 4px 8px;
+            /* espaço interno */
+            font-size: 14px;
+            /* tamanho da fonte */
+        }
 
-         .login input{
-         height: 34px;} 
-         
+        .login input {
+            height: 34px;
+        }
+
 
         /* BOTÕES */
 
-        .botoes {            
+        .botoes {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 20px;
         }
-        
+
         /* padrão de botão */
         .botoes button {
             width: 186px;
@@ -147,7 +151,7 @@
             color: white;
         }
 
-        #buscarProjeto {
+        #buscarAmbiente {
             background: #f37712;
             color: white;
         }
@@ -221,18 +225,17 @@
         }
 
         .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
         }
 
         .item-card {
-        background: #f4f4f4;
-        padding: 12px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #f4f4f4;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
     </style>
 
 </head>
@@ -365,7 +368,7 @@
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="deletar()">🗑️Deletar</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
-                <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
+                <button id="buscarAmbiente" onclick="buscarAmbiente()">🔍BusAmbiente</button>
                 <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
 
             </div>
@@ -514,11 +517,11 @@
 
                         // TEXTO BOTÃO
                         const textoBotao =
-                        tipo.toLowerCase() === "monofasico"
-                        ? "Bifasico"
-                        : tipo.toLowerCase() === "bifasico"
-                        ? "Trifasico"
-                        : "Monofasico";
+                            tipo.toLowerCase() === "monofasico"
+                                ? "Bifasico"
+                                : tipo.toLowerCase() === "bifasico"
+                                    ? "Trifasico"
+                                    : "Monofasico";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -568,11 +571,11 @@
 
                 // define novo tipo
                 const novoTipo =
-                tipoAtual === "Monofasico"
-                ? "Bifasico"
-                : tipoAtual === "Bifasico"
-                ? "Trifasico"
-                : "Monofasico";
+                    tipoAtual === "Monofasico"
+                        ? "Bifasico"
+                        : tipoAtual === "Bifasico"
+                            ? "Trifasico"
+                            : "Monofasico";
 
                 // confirmação
                 if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
@@ -630,7 +633,7 @@
             if (area <= 6) {
                 resultado = 100;
             } else {
-                resultado = 100 + Math.ceil((area - 6) / 4) * 60;
+                resultado = 100 + ((area - 6) / 4) * 60;
             }
 
             // MOSTRA RESULTADO NA TELA
@@ -728,34 +731,248 @@
         }
 
 
-        // FUNÇÃO PARA CALCULAR POTÊNCIA DE LUZ
-        function calcularLuz(){
+        // FUNÇÃO PARA EDITAR
+        async function editar() {
+            try {
+                const usuario = getUsuario();
 
-        let area = parseFloat(document.getElementById("area").value);
+                // Valida login
+                if (!usuario) {
+                    alert("⚠️ Faça Login!");
+                    return;
+                }
 
-        let resultado;
+                // Valida ID
+                const id = document.getElementById("id")?.value.trim();
 
-        if(area <= 6){
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
 
-        resultado = 100;
+                // Confirma
+                if (!confirm("Tem certeza que deseja editar estes dados?")) {
+                    return;
+                }
+
+                // Captura TODOS os campos
+                const dados = {
+
+                    projeto: document.getElementById("projeto")?.value.trim() || "",
+                    ambiente: document.getElementById("ambiente")?.value.trim() || "",
+                    tamanhodoambiente: parseFloat(document.getElementById("tamanhodoambiente")?.value) || 0,
+                    perimetrodoambiente: parseFloat(document.getElementById("perimetrodoambiente")?.value) || 0,
+                    potenciadeluz: parseFloat(document.getElementById("potenciadeluz")?.value) || 0,
+                    tomadasdeusogeral: parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0,
+                    tomadasdeusoespecifico: parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0,
+                    tipodocircuito: document.getElementById("tipodocircuito")?.value.trim() || "",
+                    usuario: usuario
+                };
+
+                console.log("Enviando:", dados);
+
+                const response = await fetchSeguro(`${API}/planilha/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Dados atualizados com sucesso!");
+
+                limparCampos();
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao editar:", error);
+                alert("❌ Erro ao atualizar dados");
+            }
         }
-        else{
-            
-            resultado = 100 + Math.ceil((area - 6) / 4) * 60;
+
+
+        // FUNÇÃO PARA EXCLUIR
+        function deletar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const id = document.getElementById("id").value.trim();
+
+            console.log("ID recebido:", id);
+
+            if (!id || isNaN(id)) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/calculoseletrico/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Erro ao excluir");
+                    }
+
+                    return response.text();
+                })
+                .then(() => {
+
+                    alert("✅ Registro excluído com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao excluir");
+                });
+        }
+
+
+        // FUNÇÃO PARA BUSCAR PROJETO
+        function buscarAmbinte() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const ambiente = document.getElementById("ambiente")?.value.trim();
+
+            if (!projeto) {
+                alert("⚠️ Informe o Ambiente a ser consultado!");
+                return;
+            }
+
+            fetchSeguro(`${API}/calculoseletrico/buscar?ambiente=${encodeURIComponent(ambiente)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    data.forEach(calculoseletrico => {
+
+                        // CAMPO CORRETO = tipodocircuito
+                        const tipo = calculoseletrico.tipodocircuito || "";
+
+                        // COR DA LINHA
+                        const classeLinha =
+                            tipo.toLowerCase() === "monofasico" ||
+                                tipo.toLowerCase() === "monofasico"
+                                ? "linha-monofasico"
+                                : "linha-bifasico";
+
+                        // TEXTO BOTÃO
+                        const textoBotao =
+                            tipo.toLowerCase() === "monofasico"
+                                ? "Bifasico"
+                                : tipo.toLowerCase() === "bifasico"
+                                    ? "Trifasico"
+                                    : "Monofasico";
+
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${calculoseletrico.id ?? ""}</td>
+                    <td>${calculoseletrico.projeto ?? ""}</td>
+                    <td>${calculoseletrico.ambiente ?? ""}</td>
+                    <td>${calculoseletrico.tamanhodoambiente ?? ""}</td>
+                    <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${tipo}</td>
+                    <td>
+                        <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
+                            ${textoBotao}
+                        </button>
+                    </td>
+                </tr>`;
+                    });
+
+                    tabela.innerHTML = linhas;
+                })
+
+                .catch(error => {
+
+                    console.error("Erro ao buscar Projeto:", error);
+
+                    document.getElementById("tabelaCalculosEletrico").innerHTML =
+                        "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
+                });
+        }
+
+
+        // FUNÇÃO PARA CALCULAR POTÊNCIA DE LUZ
+        function calcularLuz() {
+
+            let area = parseFloat(document.getElementById("area").value) || 0;
+
+            let resultado;
+
+            if (area <= 6) {
+
+                resultado = 100;
+
+            } else {
+
+                // cálculo exato sem arredondar
+                resultado = 100 + ((area - 6) / 4) * 60;
             }
 
             document.getElementById("resultadoLuz").innerHTML =
-            "Potência necessária: " + resultado + " VA";
-            
+                "Potência necessária: " + resultado.toFixed(2) + " VA";
+
             mostrarResultado({
-            projeto: projeto,
-            ambiente: ambiente,
-            tamanhodoambiente: area,
-            resultado: resultado,
-            tomadasdeusogeral: tomadasdeusogeral,
-            tomadasdeusoespecifico: tomadasdeusoespecifico
+                projeto: projeto,
+                ambiente: ambiente,
+                tamanhodoambiente: area,
+                resultado: resultado,
+                tomadasdeusogeral: tomadasdeusogeral,
+                tomadasdeusoespecifico: tomadasdeusoespecifico
             });
-            }
+        }
 
 
         // FUNÇÃO PARA CALCULAR TOMADAS TUG
@@ -793,13 +1010,13 @@
 
 
         // FUNÇÃO PARA MOSTRAR OS RESULTADOS
-       function mostrarResultado(r) {
+        function mostrarResultado(r) {
 
-       if (!r) return;
+            if (!r) return;
 
-       const card = document.getElementById("resultadoCard");
+            const card = document.getElementById("resultadoCard");
 
-       card.innerHTML = `
+            card.innerHTML = `
     
        <h3>⚡ Quadro de Potência de Luz e Quantidade de Tomadas</h3>
 
@@ -838,8 +1055,8 @@
     </div>
     `;
 
-    card.style.display = "block";
-    }
+            card.style.display = "block";
+        }
 
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
