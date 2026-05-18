@@ -19,50 +19,50 @@ public class CalculosEletricoController {
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody CalculosEletrico novo) {
 
-    try {
+        try {
 
-        // VALIDAÇÕES TEXTO
+            // VALIDAÇÕES TEXTO
 
-        if (novo.getProjeto() == null || novo.getProjeto().trim().isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body("O campo projeto é obrigatório.");
+            if (novo.getProjeto() == null || novo.getProjeto().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body("O campo projeto é obrigatório.");
+            }
+
+            if (novo.getAmbiente() == null || novo.getAmbiente().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body("O campo ambiente é obrigatório.");
+            }
+
+            if (novo.getUsuario() == null || novo.getUsuario().trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body("O campo usuário é obrigatório.");
+            }
+
+            // VALIDAÇÕES NUMÉRICAS
+
+            if (novo.getTamanhodoambiente() == null) {
+                return ResponseEntity.badRequest()
+                        .body("O campo tamanho do ambiente é obrigatório.");
+            }
+
+            if (novo.getPerimetrodoambiente() == null) {
+                return ResponseEntity.badRequest()
+                        .body("O campo perímetro do ambiente é obrigatório.");
+            }
+
+            // GARANTE INSERT
+            novo.setId(null);
+
+            // SALVA
+            CalculosEletrico salvo = repository.save(novo);
+
+            return ResponseEntity.ok(salvo);
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(500)
+                    .body("Erro ao salvar: " + e.getMessage());
         }
-
-        if (novo.getAmbiente() == null || novo.getAmbiente().trim().isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body("O campo ambiente é obrigatório.");
-        }
-
-        if (novo.getUsuario() == null || novo.getUsuario().trim().isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body("O campo usuário é obrigatório.");
-        }
-
-        // VALIDAÇÕES NUMÉRICAS
-
-        if (novo.getTamanhodoambiente() == null) {
-            return ResponseEntity.badRequest()
-                    .body("O campo tamanho do ambiente é obrigatório.");
-        }
-
-        if (novo.getPerimetrodoambiente() == null) {
-            return ResponseEntity.badRequest()
-                    .body("O campo perímetro do ambiente é obrigatório.");
-        }
-
-        // GARANTE INSERT
-        novo.setId(null);
-
-        // SALVA
-        CalculosEletrico salvo = repository.save(novo);
-
-        return ResponseEntity.ok(salvo);
-
-    } catch (Exception e) {
-
-        return ResponseEntity.status(500)
-                .body("Erro ao salvar: " + e.getMessage());
-    }
     }
 
     // Método Editar
@@ -151,8 +151,8 @@ public class CalculosEletricoController {
 
     // Método Buscar por Projeto
     @GetMapping("/buscar")
-    public List<CalculosEletrico> buscarPorProjeto(@RequestParam String projeto) {
-        return repository.findByProjetoContainingIgnoreCase(projeto);
+    public List<CalculosEletrico> buscarPorAmbiente(@RequestParam String ambiente) {
+        return repository.findByAmbienteContainingIgnoreCase(ambiente);
     }
 
     @GetMapping("/usuario")
