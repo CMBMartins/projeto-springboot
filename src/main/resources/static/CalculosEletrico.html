@@ -771,7 +771,7 @@
 
                 console.log("Enviando:", dados);
 
-                const response = await fetchSeguro(`${API}/planilha/${id}`, {
+                const response = await fetchSeguro(`${API}/calculoseletrico/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
@@ -878,6 +878,7 @@
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaCalculosEletrico");
+                    limparCampos();
 
                     if (!Array.isArray(data)) {
                         tabela.innerHTML =
@@ -965,12 +966,12 @@
                 "Potência necessária: " + resultado.toFixed(2) + " VA";
 
             mostrarResultado({
-                projeto: projeto,
-                ambiente: ambiente,
+                //projeto: projeto,
+                //ambiente: ambiente,
                 tamanhodoambiente: area,
                 resultado: resultado,
-                tomadasdeusogeral: tomadasdeusogeral,
-                tomadasdeusoespecifico: tomadasdeusoespecifico
+                //tomadasdeusogeral: tomadasdeusogeral,
+                //tomadasdeusoespecifico: tomadasdeusoespecifico
             });
         }
 
@@ -980,14 +981,23 @@
 
             let perimetro = parseFloat(document.getElementById("perimetro").value);
 
-            let resultado = Math.ceil(perimetro / 5);
+            let resultado1 = Math.ceil(perimetro / 5);
 
-            if (resultado < 1) {
-                resultado = 1;
+            if (resultado1 < 1) {
+                resultado1 = 1;
             }
 
             document.getElementById("resultadoTUG").innerHTML =
-                "Quantidade: " + resultado + " tomadas";
+                "Quantidade: " + resultado1 + " tomadas";
+
+            mostrarResultado({
+                //projeto: projeto,
+                //ambiente: ambiente,
+                //tamanhodoambiente: area,
+                //resultado1: resultado1,
+                tomadasdeusogeral: resultado1,
+                //tomadasdeusoespecifico: tomadasdeusoespecifico
+            });
 
         }
 
@@ -997,14 +1007,23 @@
 
             let perimetro = parseFloat(document.getElementById("especial").value);
 
-            let resultado = Math.ceil(perimetro / 3.5);
+            let resultado2 = Math.ceil(perimetro / 3.5);
 
-            if (resultado < 1) {
-                resultado = 1;
+            if (resultado2 < 1) {
+                resultado2 = 1;
             }
 
             document.getElementById("resultadoTUE").innerHTML =
-                "Quantidade: " + resultado + " tomadas";
+                "Quantidade: " + resultado2 + " tomadas";
+
+            mostrarResultado({
+                //projeto: projeto,
+                //ambiente: ambiente,
+                //tamanhodoambiente: perimetro,
+                //resultado: resultado,
+                //tomadasdeusogeral: resultado,
+                tomadasdeusoespecifico: resultado2
+            });
 
         }
 
