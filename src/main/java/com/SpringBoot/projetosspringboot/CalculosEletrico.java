@@ -16,7 +16,7 @@ public class CalculosEletrico {
     private Double perimetrodoambiente;
     private Double potenciadeluz;
     private Double tomadasdeusogeral;
-    private String tomadasdeusoespecifico;
+    private Double tomadasdeusoespecifico;
     private String tipodocircuito;
     private String usuario;
 
@@ -78,11 +78,11 @@ public class CalculosEletrico {
         this.tomadasdeusogeral = tomadasdeusogeral;
     }
 
-    public String getTomadasdeusoespecifico() {
+    public double getTomadasdeusoespecifico() {
         return tomadasdeusoespecifico;
     }
 
-    public void setTomadasdeusoespecifico(String tomadasdeusoespecifico) {
+    public void setTomadasdeusoespecifico(double tomadasdeusoespecifico) {
         this.tomadasdeusoespecifico = tomadasdeusoespecifico;
     }
 
