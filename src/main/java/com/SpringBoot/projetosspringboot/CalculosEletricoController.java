@@ -15,7 +15,7 @@ public class CalculosEletricoController {
     @Autowired
     private CalculosEletricoRepository repository;
 
-    // Método para salvar na tabela calculoseletrico
+    // Método para Salvar na tabela calculoseletrico
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody CalculosEletrico novo) {
 
@@ -36,6 +36,15 @@ public class CalculosEletricoController {
             if (novo.getUsuario() == null || novo.getUsuario().trim().isEmpty()) {
                 return ResponseEntity.badRequest()
                         .body("O campo usuário é obrigatório.");
+            }
+
+            // NOVA VALIDAÇÃO TUE
+
+            if (novo.getTipodetomadastue() == null ||
+                    novo.getTipodetomadastue().trim().isEmpty()) {
+
+                return ResponseEntity.badRequest()
+                        .body("O campo tipo de tomadas TUE é obrigatório.");
             }
 
             // VALIDAÇÕES NUMÉRICAS
@@ -149,7 +158,7 @@ public class CalculosEletricoController {
         return repository.findAll();
     }
 
-    // Método Buscar por Projeto
+    // Método Buscar por Ambiente
     @GetMapping("/buscar")
     public List<CalculosEletrico> buscarPorAmbiente(@RequestParam String ambiente) {
         return repository.findByAmbienteContainingIgnoreCase(ambiente);
