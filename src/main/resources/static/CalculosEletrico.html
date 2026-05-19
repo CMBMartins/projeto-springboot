@@ -621,14 +621,6 @@
                 return;
             }
 
-            // AREA
-            const area = parseFloat(document.getElementById("area")?.value) || 0;
-
-            if (area <= 0) {
-                alert("⚠️ Informe a área corretamente.");
-                return;
-            }
-
             // CÁLCULO POTÊNCIA DE LUZ
             let resultado;
 
@@ -647,16 +639,14 @@
             const ambiente = document.getElementById("ambiente")?.value.trim() || "";
             const tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
             const perimetrodoambiente = document.getElementById("perimetrodoambiente")?.value.trim() || "";
-
+            const potenciadeluz =
+                parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
             const tomadasdeusogeral =
                 parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
-
             const tomadasdeusoespecifico =
                 parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
-
             const tipodetomadastue =
                 document.getElementById("tipodetomadastue")?.value.trim() || "";
-
             const tipodocircuito =
                 document.getElementById("tipodocircuito")?.value.trim() || "";
 
