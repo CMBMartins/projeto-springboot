@@ -409,6 +409,7 @@
                         <th>PotLuz</th>
                         <th>TomadasUsoGeral</th>
                         <th>TomadasUsoEspecifico</th>
+                        <th>TipodeTomadasTUE</th>
                         <th>TipoCircuito</th>
                         <th>Ação</th>
 
@@ -534,6 +535,7 @@
                     <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${calculoseletrico.tiposdetomadastue ?? ""}</td>
                     <td>${tipo}</td>
                     <td>
                         <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
