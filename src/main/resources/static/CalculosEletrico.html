@@ -358,6 +358,8 @@
 
                 <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico(Quant.)">
 
+                <input type="text" id="tiposdetomadastue" placeholder="Tipo de Tomadas TUE (Watts)">
+
                 <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito">
 
             </div>
@@ -652,6 +654,9 @@
             const tomadasdeusoespecifico =
                 parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
 
+            const tipodetomadastue =
+                document.getElementById("tipodetomadastue")?.value.trim() || "";
+
             const tipodocircuito =
                 document.getElementById("tipodocircuito")?.value.trim() || "";
 
@@ -686,15 +691,11 @@
                 ambiente: ambiente,
                 tamanhodoambiente: tamanhodoambiente,
                 perimetrodoambiente: perimetrodoambiente,
-
-                // VALOR CALCULADO
                 potenciadeluz: resultado,
-
-                // DIGITADOS NO FORMULÁRIO
                 tomadasdeusogeral: tomadasdeusogeral,
                 tomadasdeusoespecifico: tomadasdeusoespecifico,
+                tipodetomadastue: tipodetomadastue,
                 tipodocircuito: tipodocircuito,
-
                 usuario: usuario
             };
 
