@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Sistema de Cálculos Elétricos</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        header {
+            background: #1f2d3d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .resultado {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-top: 15px;
+        }
+
+        .card1 {
+            background: #f2f2f2;
+        }
+
+        /* LOGO */
+
+        .logo {
+            text-align: center;
+        }
+
+        .campo-direita {
+            text-align: right;
+        }
+
+        #usuariologado {
+            text-align: right;
+            float: right;
+            padding: 6px 10px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 14px;
+            color: #003366;
+            background: #e6f2ff;
+            border: 2px solid #007bff;
+            border-radius: 6px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* INPUTS */
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 8px;
+        }
+
+        /* GRID FORM */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .grid input,
+        .grid select,
+        .grid textarea {
+
+            height: 34px;
+            /* altura do campo */
+            padding: 4px 8px;
+            /* espaço interno */
+            font-size: 14px;
+            /* tamanho da fonte */
+        }
+
+        .login input {
+            height: 34px;
+        }
+
+
+        /* BOTÕES */
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* padrão de botão */
+        .botoes button {
+            width: 186px;
+            height: 36px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        /* padrão de botão */
+        .login button {
+            width: 148px;
+            height: 36px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            background-color: #007bff;
+        }
+
+        #salvar {
+            background: #27ae60;
+            color: white;
+        }
+
+        #editar {
+            background: #6fae27;
+            color: white;
+        }
+
+        #deletar {
+            background: #ae2b27;
+            color: white;
+        }
+
+        #limparCampos {
+            background: #f39c12;
+            color: white;
+        }
+
+        #buscarAmbiente {
+            background: #f37712;
+            color: white;
+        }
+
+        #listarTodos {
+            background: #2980b9;
+            color: white;
+        }
+
+        .autenticar {
+            background: #7827ae;
+            color: white;
+        }
+
+        .logout {
+            background: #ae2b27;
+            color: white;
+        }
+
+        /* TABELA */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        .linha-monofasico {
+            background-color: #ffe5e5;
+        }
+
+        .linha-bifasico {
+            background-color: #e5ffe5;
+        }
+
+        .card-resultado {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0d6efd;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-family: Arial;
+
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .item-card {
+            background: white;
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .item-card {
+            background: #f4f4f4;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h2><img src="Imagens/carlos1.gif" width="40">
+            Cálculos de Potências de Luz e Quant. de Tomadas</h2>
+        <p>NBR 5410 - Dimensionamentos básicos</p>
+
+    </header>
+
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="campo-direita">
+                <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+            </div>
+
+            <div class="home text-start">
+                <a href="PaginaPessoal.html" class="btn btn-secondary">
+                    <i class="fa fa-home"></i> Página Principal
+                </a>
+            </div>
+
+
+            <!-- CALCULO DE ILUMINAÇÃO -->
+
+            <div class="col-md-4">
+
+                <div class="card p-4">
+
+                    <h4>Potência de Iluminação</h4>
+
+                    <label>Área do ambiente (m²)</label>
+
+                    <input type="number" id="area" class="form-control">
+
+                    <br>
+
+                    <button onclick="calcularLuz()" class="btn btn-primary w-100">
+                        Calcular
+                    </button>
+
+                    <div id="resultadoLuz" class="resultado"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOMADAS COMUNS -->
+
+            <div class="col-md-4">
+
+                <div class="card p-4">
+
+                    <h4>Tomadas de Uso Comum</h4>
+
+                    <label>Perímetro do ambiente (m)</label>
+
+                    <input type="number" id="perimetro" class="form-control">
+
+                    <br>
+
+                    <button onclick="calcularTUG()" class="btn btn-success w-100">
+                        Calcular
+                    </button>
+
+                    <div id="resultadoTUG" class="resultado"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOMADAS ESPECIAIS -->
+
+            <div class="col-md-4">
+
+                <div class="card p-4">
+
+                    <h4>Tomadas de Uso Específico</h4>
+
+                    <label>Perímetro do ambiente (m)</label>
+
+                    <input type="number" id="especial" class="form-control">
+
+                    <br>
+
+                    <button onclick="calcularTUE()" class="btn btn-warning w-100">
+                        Calcular
+                    </button>
+
+                    <div id="resultadoTUE" class="resultado"></div>
+
+                </div>
+
+            </div>
+
+            <div class="grid">
+
+                <input type="text" id="id" placeholder="ID">
+
+                <input type="text" id="projeto" placeholder="Projeto">
+
+                <input type="text" id="ambiente" placeholder="Ambiente">
+
+                <input type="text" id="tamanhodoambiente" placeholder="Tamanho do Ambiente(mts²)">
+
+                <input type="text" id="perimetrodoambiente" placeholder="Perimetro do Ambiente(mts)">
+
+                <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA)">
+
+                <input type="text" id="tomadasdeusogeral" placeholder="Tomadas de Uso Geral(Quant.)">
+
+                <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico(Quant.)">
+
+                <input type="text" id="tiposdetomadastue" placeholder="Tipo de Tomadas TUE (Watts)">
+
+                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito">
+
+            </div>
+
+            <div class="botoes">
+
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
+                <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="deletar" onclick="deletar()">🗑️Deletar</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
+                <button id="buscarAmbiente" onclick="buscarAmbiente()">🔍BusAmbiente</button>
+                <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
+
+            </div>
+
+            <div class="login">
+
+                <h2>Realizar Login</h2>
+
+                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
+
+                <input type="password" id="senha" placeholder="Senha" style="width:33%;">
+
+                <button onclick="autenticar()">🚪➡️Entrar</button>
+                <button onclick="logout()">🚪⬅️Sair</button>
+
+            </div>
+
+        </div>
+
+        <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
+
+        <div class="card1"><br>
+
+            <h2>Quadro de Calculos de Potência de Luz e Quant. de TUG e TUE</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Projeto</th>
+                        <th>Ambiente</th>
+                        <th>Tamanho do Ambiente</th>
+                        <th>PotLuz</th>
+                        <th>TomadasUsoGeral</th>
+                        <th>TomadasUsoEspecifico</th>
+                        <th>TipoCircuito</th>
+                        <th>Ação</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabelaCalculosEletrico">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API = "https://projeto-springboot.onrender.com";
+
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
+        };
+
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+        }
+
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
+            }
+
+            return user;
+        }
+
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url, options = {}) {
+            return fetch(url, options); // ✔️ NÃO converte nada
+        }
+
+
+        // FUNÇÃO PARA LISTAR TODOS NA TABELA QUADRO DE POTENCIAS DE LUZ E TOMADAS  
+        function listarTodos() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            fetchSeguro(`${API}/calculoseletrico/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(response => {
+
+                    console.log("STATUS:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+
+                    if (!tabela) {
+                        console.error("Tabela não encontrada.");
+                        return;
+                    }
+
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Resposta inválida do servidor</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Nenhum registro encontrado</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    data.forEach(calculoseletrico => {
+
+                        // CAMPO CORRETO = tipodocircuito
+                        const tipo = calculoseletrico.tipodocircuito || "";
+
+                        // COR DA LINHA
+                        const classeLinha =
+                            tipo.toLowerCase() === "monofasico" ||
+                                tipo.toLowerCase() === "monofasico"
+                                ? "linha-monofasico"
+                                : "linha-bifasico";
+
+                        // TEXTO BOTÃO
+                        const textoBotao =
+                            tipo.toLowerCase() === "monofasico"
+                                ? "Bifasico"
+                                : tipo.toLowerCase() === "bifasico"
+                                    ? "Trifasico"
+                                    : "Monofasico";
+
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${calculoseletrico.id ?? ""}</td>
+                    <td>${calculoseletrico.projeto ?? ""}</td>
+                    <td>${calculoseletrico.ambiente ?? ""}</td>
+                    <td>${calculoseletrico.tamanhodoambiente ?? ""}</td>
+                    <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${tipo}</td>
+                    <td>
+                        <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
+                            ${textoBotao}
+                        </button>
+                    </td>
+                </tr>`;
+                    });
+
+                    tabela.innerHTML = linhas;
+                })
+                .catch(error => {
+
+                    console.error("Erro ao listar:", error);
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+
+                    if (tabela) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='9'>Erro ao carregar dados</td></tr>";
+                    }
+
+                    alert("❌ Erro ao carregar registros.");
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
+        async function editarCircuito(id, tipoAtual) {
+            try {
+
+                // valida ID
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
+
+                // define novo tipo
+                const novoTipo =
+                    tipoAtual === "Monofasico"
+                        ? "Bifasico"
+                        : tipoAtual === "Bifasico"
+                            ? "Trifasico"
+                            : "Monofasico";
+
+                // confirmação
+                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
+                    return;
+                }
+
+                const response = await fetchSeguro(`${API}/calculoseletrico/${id}/tipodocircuito`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        tipocircuito: novoTipo
+                    })
+                });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Tipo de circuito atualizado!");
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao atualizar tipo:", error);
+                alert("❌ Erro ao atualizar Tipo do circuito");
+            }
+        }
+
+
+        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICOS
+        function salvar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            // AREA
+            const area = parseFloat(document.getElementById("area")?.value) || 0;
+
+            if (area <= 0) {
+                alert("⚠️ Informe a área corretamente.");
+                return;
+            }
+
+            // CÁLCULO POTÊNCIA DE LUZ
+            let resultado;
+
+            if (area <= 6) {
+                resultado = 100;
+            } else {
+                resultado = 100 + ((area - 6) / 4) * 60;
+            }
+
+            // MOSTRA RESULTADO NA TELA
+            document.getElementById("resultadoLuz").innerHTML =
+                "Potência necessária: " + resultado + " VA";
+
+            // CAMPOS DO FORMULÁRIO
+            const projeto = document.getElementById("projeto")?.value.trim() || "";
+            const ambiente = document.getElementById("ambiente")?.value.trim() || "";
+            const tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
+            const perimetrodoambiente = document.getElementById("perimetrodoambiente")?.value.trim() || "";
+
+            const tomadasdeusogeral =
+                parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
+
+            const tomadasdeusoespecifico =
+                parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
+
+            const tipodetomadastue =
+                document.getElementById("tipodetomadastue")?.value.trim() || "";
+
+            const tipodocircuito =
+                document.getElementById("tipodocircuito")?.value.trim() || "";
+
+            // VALIDAÇÕES
+            if (!projeto) {
+                alert("⚠️ Informe o Projeto.");
+                return;
+            }
+
+            if (!ambiente) {
+                alert("⚠️ Informe o Ambiente.");
+                return;
+            }
+
+            if (!tamanhodoambiente) {
+                alert("⚠️ Informe o tamanho do Ambiente.");
+                return;
+            }
+
+            if (!tipodocircuito) {
+                alert("⚠️ Informe o Tipo do Circuito.");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) {
+                return;
+            }
+
+            // OBJETO PARA SALVAR
+            const dados = {
+                projeto: projeto,
+                ambiente: ambiente,
+                tamanhodoambiente: tamanhodoambiente,
+                perimetrodoambiente: perimetrodoambiente,
+                potenciadeluz: resultado,
+                tomadasdeusogeral: tomadasdeusogeral,
+                tomadasdeusoespecifico: tomadasdeusoespecifico,
+                tipodetomadastue: tipodetomadastue,
+                tipodocircuito: tipodocircuito,
+                usuario: usuario
+            };
+
+            console.log("JSON enviado:", dados);
+
+            fetchSeguro(`${API}/calculoseletrico`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(async response => {
+
+                    console.log("STATUS REAL:", response.status);
+
+                    if (!response.ok) {
+                        const msg = await response.text();
+                        throw new Error(msg);
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Salvo:", data);
+                    alert("✅ Dados salvos com sucesso!");
+                    mostrarResultado(resultado);
+                    limparCampos();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ " + error.message);
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR
+        async function editar() {
+            try {
+                const usuario = getUsuario();
+
+                // Valida login
+                if (!usuario) {
+                    alert("⚠️ Faça Login!");
+                    return;
+                }
+
+                // Valida ID
+                const id = document.getElementById("id")?.value.trim();
+
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
+
+                // Confirma
+                if (!confirm("Tem certeza que deseja editar estes dados?")) {
+                    return;
+                }
+
+                // Captura TODOS os campos
+                const dados = {
+
+                    projeto: document.getElementById("projeto")?.value.trim() || "",
+                    ambiente: document.getElementById("ambiente")?.value.trim() || "",
+                    tamanhodoambiente: parseFloat(document.getElementById("tamanhodoambiente")?.value) || 0,
+                    perimetrodoambiente: parseFloat(document.getElementById("perimetrodoambiente")?.value) || 0,
+                    potenciadeluz: parseFloat(document.getElementById("potenciadeluz")?.value) || 0,
+                    tomadasdeusogeral: parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0,
+                    tomadasdeusoespecifico: parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0,
+                    tipodocircuito: document.getElementById("tipodocircuito")?.value.trim() || "",
+                    usuario: usuario
+                };
+
+                console.log("Enviando:", dados);
+
+                const response = await fetchSeguro(`${API}/calculoseletrico/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Dados atualizados com sucesso!");
+
+                limparCampos();
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao editar:", error);
+                alert("❌ Erro ao atualizar dados");
+            }
+        }
+
+
+        // FUNÇÃO PARA EXCLUIR
+        function deletar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const id = document.getElementById("id").value.trim();
+
+            console.log("ID recebido:", id);
+
+            if (!id || isNaN(id)) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/calculoseletrico/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Erro ao excluir");
+                    }
+
+                    return response.text();
+                })
+                .then(() => {
+
+                    alert("✅ Registro excluído com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao excluir");
+                });
+        }
+
+
+        // FUNÇÃO PARA BUSCAR PROJETO
+        function buscarAmbiente() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const ambiente = document.getElementById("ambiente")?.value.trim();
+
+            if (!projeto) {
+                alert("⚠️ Informe o Ambiente a ser consultado!");
+                return;
+            }
+
+            fetchSeguro(`${API}/calculoseletrico/buscar?ambiente=${encodeURIComponent(ambiente)}`)
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error(`Erro: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaCalculosEletrico");
+                    limparCampos();
+
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Erro ao carregar</td></tr>";
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    data.forEach(calculoseletrico => {
+
+                        // CAMPO CORRETO = tipodocircuito
+                        const tipo = calculoseletrico.tipodocircuito || "";
+
+                        // COR DA LINHA
+                        const classeLinha =
+                            tipo.toLowerCase() === "monofasico" ||
+                                tipo.toLowerCase() === "monofasico"
+                                ? "linha-monofasico"
+                                : "linha-bifasico";
+
+                        // TEXTO BOTÃO
+                        const textoBotao =
+                            tipo.toLowerCase() === "monofasico"
+                                ? "Bifasico"
+                                : tipo.toLowerCase() === "bifasico"
+                                    ? "Trifasico"
+                                    : "Monofasico";
+
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${calculoseletrico.id ?? ""}</td>
+                    <td>${calculoseletrico.projeto ?? ""}</td>
+                    <td>${calculoseletrico.ambiente ?? ""}</td>
+                    <td>${calculoseletrico.tamanhodoambiente ?? ""}</td>
+                    <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
+                    <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${tipo}</td>
+                    <td>
+                        <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
+                            ${textoBotao}
+                        </button>
+                    </td>
+                </tr>`;
+                    });
+
+                    tabela.innerHTML = linhas;
+                })
+
+                .catch(error => {
+
+                    console.error("Erro ao buscar Projeto:", error);
+
+                    document.getElementById("tabelaCalculosEletrico").innerHTML =
+                        "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
+                });
+        }
+
+
+        // FUNÇÃO PARA CALCULAR POTÊNCIA DE LUZ
+        function calcularLuz() {
+
+            let area = parseFloat(document.getElementById("area").value) || 0;
+
+            let resultado;
+
+            if (area <= 6) {
+
+                resultado = 100;
+
+            } else {
+
+                // cálculo exato sem arredondar
+                resultado = 100 + ((area - 6) / 4) * 60;
+            }
+
+            document.getElementById("resultadoLuz").innerHTML =
+                "Potência necessária: " + resultado.toFixed(2) + " VA";
+
+            mostrarResultado({
+                //projeto: projeto,
+                //ambiente: ambiente,
+                tamanhodoambiente: area,
+                resultado: resultado,
+                //tomadasdeusogeral: tomadasdeusogeral,
+                //tomadasdeusoespecifico: tomadasdeusoespecifico
+            });
+        }
+
+
+        // FUNÇÃO PARA CALCULAR TOMADAS TUG
+        function calcularTUG() {
+
+            let perimetro = parseFloat(document.getElementById("perimetro").value);
+
+            let resultado1 = Math.ceil(perimetro / 5);
+
+            if (resultado1 < 1) {
+                resultado1 = 1;
+            }
+
+            document.getElementById("resultadoTUG").innerHTML =
+                "Quantidade: " + resultado1 + " tomadas";
+
+            mostrarResultado({
+                //projeto: projeto,
+                //ambiente: ambiente,
+                tamanhodoambiente: perimetro,
+                //resultado1: resultado1,
+                tomadasdeusogeral: resultado1,
+                //tomadasdeusoespecifico: tomadasdeusoespecifico
+            });
+
+        }
+
+
+        // FUNÇÃO PARA CALCULAR TOMADAS TUE
+        function calcularTUE() {
+
+            let perimetro = parseFloat(document.getElementById("especial").value);
+
+            let resultado2 = Math.ceil(perimetro / 3.5);
+
+            if (resultado2 < 1) {
+                resultado2 = 1;
+            }
+
+            document.getElementById("resultadoTUE").innerHTML =
+                "Quantidade: " + resultado2 + " tomadas";
+
+            mostrarResultado({
+                //projeto: projeto,
+                //ambiente: ambiente,
+                tamanhodoambiente: perimetro,
+                //resultado: resultado,
+                //tomadasdeusogeral: resultado,
+                tomadasdeusoespecifico: resultado2
+            });
+
+        }
+
+
+        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
+        function mostrarResultado(r) {
+
+            if (!r) return;
+
+            const card = document.getElementById("resultadoCard");
+
+            card.innerHTML = `
+    
+       <h3>⚡ Quadro de Potência de Luz e Quantidade de Tomadas</h3>
+
+       <div class="card-grid">
+
+        <div class="item-card">
+            <strong>Projeto</strong><br>
+            ${r.projeto || ""}
+        </div>
+
+        <div class="item-card">
+            <strong>Ambiente</strong><br>
+            ${r.ambiente || ""}
+        </div>
+
+        <div class="item-card">
+            <strong>Tamanho do Ambiente</strong><br>
+            ${r.tamanhodoambiente || ""} m²
+        </div>
+
+        <div class="item-card">
+            <strong>Potência de Luz</strong><br>
+            ${Number(r.resultado || 0).toFixed(2)} VA
+        </div>
+
+        <div class="item-card">
+            <strong>Tomadas de Uso Geral</strong><br>
+            ${r.tomadasdeusogeral || 0}
+        </div>
+
+        <div class="item-card">
+            <strong>Tomadas de Uso Específico</strong><br>
+            ${r.tomadasdeusoespecifico || 0}
+        </div>
+
+    </div>
+    `;
+
+            card.style.display = "block";
+        }
+
+
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function autenticar() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Informe usuario e senha para realizar Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    usuario,
+                    senha
+                })
+
+            })
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Login inválido");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    // Mostra o usuário no campo Default
+                    localStorage.setItem("usuario", data.usuario);
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    limparLogin();
+
+                })
+
+
+                .catch(error => {
+
+                    alert("Usuário ou senha incorretos");
+
+                });
+
+        }
+
+
+        // FUNÇÃO EFETUAR O LOGOUT
+        function logout() {
+            localStorage.removeItem("usuariologado");
+            alert("🚪 Logout realizado com sucesso!");
+
+            window.location.href = "PlanilhaEletrica.html";
+        }
+
+        // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
+        function limparCampos() {
+            document.getElementById("id").value = "";
+            document.getElementById("projeto").value = "";
+            document.getElementById("ambiente").value = "";
+            document.getElementById("tamanhodoambiente").value = "";
+            document.getElementById("perimetrodoambiente").value = "";
+            document.getElementById("potenciadeluz").value = "";
+            document.getElementById("tomadasdeusogeral").value = "";
+            document.getElementById("tomadasdeusoespecifico").value = "";
+            document.getElementById("tipodocircuito").value = "";
+
+            //alert("Campos limpos sucesso!");
+        }
+
+        // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
+        function limparLogin() {
+            document.getElementById("usuario").value = "";
+            document.getElementById("senha").value = "";
+
+        }
+
+    </script>
+
+</body>
+
+</html>
