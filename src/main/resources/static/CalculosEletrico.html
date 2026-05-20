@@ -592,7 +592,7 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        tipocircuito: novoTipo
+                        tipodocircuito: novoTipo
                     })
                 });
 
@@ -640,6 +640,39 @@
                 resultado = 100 + ((area - 6) / 4) * 60;
             }
 
+            // CÁLCULO DE QUANTIDADES DE TOMADAS TUG           
+            let perimetro = parseFloat(document.getElementById("perimetro").value);
+
+            let resultado1 = (perimetro / 5);
+
+            if (resultado1 < 1) {
+                resultado1 = 1;
+            }
+            document.getElementById("resultadoTUG").innerHTML =
+                "Quantidade: " + resultado1 + " tomadas";
+
+            mostrarResultado({
+                tamanhodoambiente: perimetro,
+                tomadasdeusogeral: resultado1,
+            });
+
+            // CÁLCULO DE QUANTIDADES DE TOMADAS TUE
+            let perimetro1 = parseFloat(document.getElementById("especial").value);
+
+            let resultado2 = (perimetro1 / 3.5);
+
+            if (resultado2 < 1) {
+                resultado2 = 1;
+            }
+
+            document.getElementById("resultadoTUE").innerHTML =
+                "Quantidade: " + resultado2 + " tomadas";
+
+            mostrarResultado({
+                tamanhodoambiente: perimetro1,
+                tomadasdeusoespecifico: resultado2
+            });
+
             // MOSTRA RESULTADO NA TELA
             document.getElementById("resultadoLuz").innerHTML =
                 "Potência necessária: " + resultado + " VA";
@@ -650,11 +683,11 @@
             const tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
             const perimetrodoambiente = document.getElementById("perimetrodoambiente")?.value.trim() || "";
 
-            const tomadasdeusogeral =
-                parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
+            //const tomadasdeusogeral =
+            //parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
 
-            const tomadasdeusoespecifico =
-                parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
+            //const tomadasdeusoespecifico =
+            //parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
 
             const tipodetomadastue =
                 document.getElementById("tipodetomadastue")?.value.trim() || "";
@@ -694,8 +727,8 @@
                 tamanhodoambiente: tamanhodoambiente,
                 perimetrodoambiente: perimetrodoambiente,
                 potenciadeluz: resultado,
-                tomadasdeusogeral: tomadasdeusogeral,
-                tomadasdeusoespecifico: tomadasdeusoespecifico,
+                tomadasdeusogeral: resultado1,
+                tomadasdeusoespecifico: resultado2,
                 tipodetomadastue: tipodetomadastue,
                 tipodocircuito: tipodocircuito,
                 usuario: usuario
@@ -768,6 +801,7 @@
                     potenciadeluz: parseFloat(document.getElementById("potenciadeluz")?.value) || 0,
                     tomadasdeusogeral: parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0,
                     tomadasdeusoespecifico: parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0,
+                    tipodetomadastue: document.getElementById("tipodetomadastue")?.value.trim() || "",
                     tipodocircuito: document.getElementById("tipodocircuito")?.value.trim() || "",
                     usuario: usuario
                 };
@@ -926,6 +960,7 @@
                     <td>${Number(calculoseletrico.potenciadeluz || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusogeral || 0).toFixed(2)}</td>
                     <td>${Number(calculoseletrico.tomadasdeusoespecifico || 0).toFixed(2)}</td>
+                    <td>${calculoseletrico.tipodetomadastue ?? ""}</td>
                     <td>${tipo}</td>
                     <td>
                         <button onclick="editarCircuito(${calculoseletrico.id}, '${tipo}')">
@@ -969,12 +1004,8 @@
                 "Potência necessária: " + resultado.toFixed(2) + " VA";
 
             mostrarResultado({
-                //projeto: projeto,
-                //ambiente: ambiente,
                 tamanhodoambiente: area,
                 resultado: resultado,
-                //tomadasdeusogeral: tomadasdeusogeral,
-                //tomadasdeusoespecifico: tomadasdeusoespecifico
             });
         }
 
@@ -984,7 +1015,7 @@
 
             let perimetro = parseFloat(document.getElementById("perimetro").value);
 
-            let resultado1 = Math.ceil(perimetro / 5);
+            let resultado1 = (perimetro / 5);
 
             if (resultado1 < 1) {
                 resultado1 = 1;
@@ -994,12 +1025,8 @@
                 "Quantidade: " + resultado1 + " tomadas";
 
             mostrarResultado({
-                //projeto: projeto,
-                //ambiente: ambiente,
                 tamanhodoambiente: perimetro,
-                //resultado1: resultado1,
                 tomadasdeusogeral: resultado1,
-                //tomadasdeusoespecifico: tomadasdeusoespecifico
             });
 
         }
@@ -1010,7 +1037,7 @@
 
             let perimetro = parseFloat(document.getElementById("especial").value);
 
-            let resultado2 = Math.ceil(perimetro / 3.5);
+            let resultado2 = (perimetro / 3.5);
 
             if (resultado2 < 1) {
                 resultado2 = 1;
@@ -1020,11 +1047,7 @@
                 "Quantidade: " + resultado2 + " tomadas";
 
             mostrarResultado({
-                //projeto: projeto,
-                //ambiente: ambiente,
                 tamanhodoambiente: perimetro,
-                //resultado: resultado,
-                //tomadasdeusogeral: resultado,
                 tomadasdeusoespecifico: resultado2
             });
 
