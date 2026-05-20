@@ -648,8 +648,8 @@
             if (resultado1 < 1) {
                 resultado1 = 1;
             }
-            document.getElementById("resultadoTUG").innerHTML =
-                "Quantidade: " + resultado1 + " tomadas";
+
+            document.getElementById("resultadoTUG").innerHTML = "Quantidade: " + resultado1 + " tomadas";
 
             mostrarResultado({
                 tamanhodoambiente: perimetro,
@@ -665,8 +665,7 @@
                 resultado2 = 1;
             }
 
-            document.getElementById("resultadoTUE").innerHTML =
-                "Quantidade: " + resultado2 + " tomadas";
+            document.getElementById("resultadoTUE").innerHTML = "Quantidade: " + resultado2 + " tomadas";
 
             mostrarResultado({
                 tamanhodoambiente: perimetro1,
@@ -674,8 +673,12 @@
             });
 
             // MOSTRA RESULTADO NA TELA
-            document.getElementById("resultadoLuz").innerHTML =
-                "Potência necessária: " + resultado + " VA";
+
+            projeto = document.getElementById("projeto")?.value.trim() || "";
+
+            ambiente = document.getElementById("ambiente")?.value.trim() || "";
+
+            document.getElementById("resultadoLuz").innerHTML = "Potência necessária: " + resultado + " VA";
 
             // CAMPOS DO FORMULÁRIO
             const projeto = document.getElementById("projeto")?.value.trim() || "";
@@ -689,11 +692,9 @@
             //const tomadasdeusoespecifico =
             //parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
 
-            const tipodetomadastue =
-                document.getElementById("tipodetomadastue")?.value.trim() || "";
+            const tipodetomadastue = document.getElementById("tipodetomadastue")?.value.trim() || "";
 
-            const tipodocircuito =
-                document.getElementById("tipodocircuito")?.value.trim() || "";
+            const tipodocircuito = document.getElementById("tipodocircuito")?.value.trim() || "";
 
             // VALIDAÇÕES
             if (!projeto) {
@@ -1000,10 +1001,16 @@
                 resultado = 100 + ((area - 6) / 4) * 60;
             }
 
+            let projeto = document.getElementById("projeto")?.value.trim() || "";
+
+            let ambiente = document.getElementById("ambiente")?.value.trim() || "";
+
             document.getElementById("resultadoLuz").innerHTML =
                 "Potência necessária: " + resultado.toFixed(2) + " VA";
 
             mostrarResultado({
+                projeto: projeto,
+                ambiente: ambiente,
                 tamanhodoambiente: area,
                 resultado: resultado,
             });
@@ -1021,10 +1028,16 @@
                 resultado1 = 1;
             }
 
+            let projeto = document.getElementById("projeto")?.value.trim() || "";
+
+            let ambiente = document.getElementById("ambiente")?.value.trim() || "";
+
             document.getElementById("resultadoTUG").innerHTML =
                 "Quantidade: " + resultado1 + " tomadas";
 
             mostrarResultado({
+                projeto: projeto,
+                ambiente: ambiente,
                 tamanhodoambiente: perimetro,
                 tomadasdeusogeral: resultado1,
             });
@@ -1043,10 +1056,16 @@
                 resultado2 = 1;
             }
 
+            let projeto = document.getElementById("projeto")?.value.trim() || "";
+
+            let ambiente = document.getElementById("ambiente")?.value.trim() || "";
+
             document.getElementById("resultadoTUE").innerHTML =
                 "Quantidade: " + resultado2 + " tomadas";
 
             mostrarResultado({
+                projeto: projeto,
+                ambiente: ambiente,
                 tamanhodoambiente: perimetro,
                 tomadasdeusoespecifico: resultado2
             });
