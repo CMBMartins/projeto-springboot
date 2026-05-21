@@ -678,21 +678,41 @@
 
 
         // FUNÇÃO PARA EDITAR STATUS
-        function editarStatus(id) {
+        function editarStatus(id, novoStatus) {
+
+            console.log("ID:", id);
+            console.log("STATUS:", novoStatus);
 
             fetch(`${API}/despesas/status/${id}`, {
-                method: "PUT"
-            })
-                .then(res => {
-                    if (!res.ok) throw new Error("Erro ao atualizar status");
-                    return res.json();
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: novoStatus
                 })
-                .then(() => {
+            })
+                .then(response => {
+
+                    console.log("STATUS HTTP:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Erro ao atualizar status");
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+
+                    console.log("Atualizado:", data);
+
                     listarTodos();
                 })
-                .catch(err => {
-                    console.error(err);
-                    alert("❌ Erro ao atualizar");
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert("❌ Erro ao atualizar status");
                 });
         }
 
