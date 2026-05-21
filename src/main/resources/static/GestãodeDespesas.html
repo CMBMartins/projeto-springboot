@@ -191,6 +191,11 @@
         color: white;
     }
 
+    #deletar {
+        background: #ae2b27;
+        color: white;
+    }
+
     #limparCampos {
         background: #f39c12;
         color: white;
@@ -300,6 +305,7 @@
 
                 <button id="salvar" onclick="salvar()">💾Salvar</button>
                 <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="deletar" onclick="deletar()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
             </div>
@@ -619,6 +625,54 @@
                 .catch(err => {
                     console.error(err);
                     alert("❌ Erro ao editar!");
+                });
+        }
+
+
+        // FUNÇÃO PARA EXCLUIR
+        function deletar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const id = document.getElementById("id").value.trim();
+
+            console.log("ID recebido:", id);
+
+            if (!id || isNaN(id)) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/despesas/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Erro ao excluir");
+                    }
+
+                    return response.text();
+                })
+                .then(() => {
+
+                    alert("✅ Registro excluído com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao excluir");
                 });
         }
 
