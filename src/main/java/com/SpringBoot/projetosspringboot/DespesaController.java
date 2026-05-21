@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,23 +16,46 @@ import org.springframework.web.bind.annotation.*;
 public class DespesaController {
 
         @Autowired
-        private DespesaRepository repository;   
+        private DespesaRepository repository;
+
+        @GetMapping
+        public List<Despesa> listar() {
+                return repository.findAll();
+        }
 
         @PostMapping
         public Despesa salvar(@RequestBody Despesa despesa) {
                 return repository.save(despesa);
         }
 
+        // Método Excluir
         @DeleteMapping("/{id}")
-        public void deletar(@PathVariable Integer id) {
-                repository.deleteById(id);
-        }        
+        public ResponseEntity<?> deletar(@PathVariable Integer id) {
+
+                return repository.findById(id)
+                                .map(registro -> {
+
+                                        repository.delete(registro);
+
+                                        return ResponseEntity.ok("Registro excluído com sucesso");
+
+                                }).orElse(ResponseEntity.notFound().build());
+        }
+
+        @GetMapping("/buscar")
+        public List<Despesa> buscar(
+                        @RequestParam String usuario,
+                        @RequestParam String descricao) {
+
+                return repository
+                                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
+        }
 
         @PutMapping("/{id}")
         public Despesa editar(@PathVariable Integer id, @RequestBody Despesa nova) {
 
                 Despesa existente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
+                                .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
 
                 existente.setDescricao(nova.getDescricao());
                 existente.setCategoria(nova.getCategoria());
@@ -42,39 +64,6 @@ public class DespesaController {
                 existente.setData(nova.getData());
 
                 return repository.save(existente);
-        }
-
-        @PutMapping("/status/{id}")
-        public Despesa editarStatus(@PathVariable Integer id) {
-
-        Despesa existente = repository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Despesa não encontrada"));
-
-    // 🔥 Alterna automaticamente
-        if ("PAGA".equalsIgnoreCase(existente.getStatus())) {
-        existente.setStatus("PENDENTE");
-        } else {
-        existente.setStatus("PAGA");
-       }
-
-        return repository.save(existente);
-        }       
-        
-
-    // 💰 RENDA
-    @GetMapping("/renda")
-    public Double totalEntradas(@RequestParam String usuario) {
-    return repository.findByUsuario(usuario)
-        .stream()
-        .filter(d -> d.getStatus() != null &&
-                d.getStatus().equalsIgnoreCase("RECEBIDO"))
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-         }
-   
-        @GetMapping
-        public List<Despesa> listar() {
-                return repository.findAll();
         }
 
         @GetMapping("/usuario")
@@ -87,38 +76,52 @@ public class DespesaController {
         public List<Despesa> ultimas() {
                 return repository.findTop5ByOrderByDataDesc();
         }
-        
 
-@GetMapping("/total")
-public Double total(@RequestParam String usuario) {
+        @GetMapping("/total")
+        public Double totalSaidas(@RequestParam String usuario) {
+                return repository.findByUsuario(usuario)
+                                // return repository.findAll()
+                                .stream()
+                                .filter(d -> d.getStatus() != null &&
+                                                d.getStatus().equalsIgnoreCase("PAGA") ||
+                                                (d.getStatus().equalsIgnoreCase("PENDENTE")))
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
+        }
 
-    return repository.findByUsuario(usuario)
-        .stream()
-        .filter(d -> d.getStatus() != null &&
-            (d.getStatus().equalsIgnoreCase("PAGA") ||
-             d.getStatus().equalsIgnoreCase("PENDENTE")))
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-}
+        // TOTAL DE RENDAS
+        @GetMapping("/renda")
+        public Double totalEntradas(@RequestParam String usuario) {
+                return repository.findByUsuario(usuario)
+                                // return repository.findAll()
+                                .stream()
+                                .filter(d -> d.getStatus() != null &&
+                                                (d.getStatus().equalsIgnoreCase("RECEBIDO")))
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
+        }
 
-    // 💰 RENDA TOTAL (CORRIGIDO)
-    @GetMapping("/renda-total")
-    public Double totalEntradasTotal(@RequestParam String usuario) {
-    return repository.findByUsuario(usuario)
-        .stream()
-        .filter(d -> d.getStatus() != null &&
-                d.getStatus().equalsIgnoreCase("RECEBIDO"))
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-}
+        // SALDO TOTAL
+        @GetMapping("/saldo")
+        public Double calcularSaldo(@RequestParam String usuario) {
+                double despesas = repository.findByUsuario(usuario)
+                                // double despesas = repository.findAll()
+                                .stream()
+                                .filter(d -> d.getStatus() != null &&
+                                                (d.getStatus().equalsIgnoreCase("PAGA") ||
+                                                                d.getStatus().equalsIgnoreCase("PENDENTE")))
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
 
-    @GetMapping("/saldo")
-    public Double saldo(@RequestParam String usuario) {
+                double receitas = repository.findByUsuario(usuario)
+                                .stream()
+                                .filter(d -> d.getStatus() != null &&
+                                                d.getStatus().equalsIgnoreCase("RECEBIDO"))
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
 
-    Double total = repository.calcularSaldo(usuario);
-
-    return total != null ? total : 0.0;
-    }
+                return receitas - despesas;
+        }
 
         // GRAFICO POR CATEGORIA
         @GetMapping("/categoria")
@@ -172,56 +175,59 @@ public Double total(@RequestParam String usuario) {
                                                         return 0.0;
                                                 })));
         }
-        
 
-  // 📅 MÊS (CORRIGIDO)
-  @GetMapping("/mes")
-  public Double totalPagoNoMes(@RequestParam String usuario) {
+        // VALOR DE DESPESAS POR MÊS
+        @GetMapping("/mes")
+        public Double totalPagoNoMes(@RequestParam String usuario) {
 
-    LocalDate hoje = LocalDate.now();
+                LocalDate hoje = LocalDate.now();
 
-    return repository.findByUsuario(usuario)
-        .stream()
-        .filter(d -> d.getData() != null)
-        .filter(d -> d.getData().getMonthValue() == hoje.getMonthValue())
-        
-        // 🔥 FILTRO NOVO (IMPORTANTE)
-        .filter(d -> d.getStatus() != null &&
-            (d.getStatus().equalsIgnoreCase("PAGA") ||
-             d.getStatus().equalsIgnoreCase("PENDENTE")))
-        
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-}
-        
+                return repository.findByUsuario(usuario)
+                                .stream()
 
-// 📊 COMPARATIVO (CORRIGIDO)
-@GetMapping("/comparativo-mensal")
-public Map<String, Double> comparativoMensal(@RequestParam String usuario) {
+                                // 📅 FILTRO DE DATA (mês atual)
+                                .filter(d -> d.getData() != null &&
+                                                d.getData().getMonthValue() == hoje.getMonthValue() &&
+                                                d.getData().getYear() == hoje.getYear())
 
-    LocalDate hoje = LocalDate.now();
-    LocalDate mesAnterior = hoje.minusMonths(1);
+                                // 💰 FILTRO POR STATUS (AGORA SIM)
+                                .filter(d -> d.getStatus() != null &&
+                                                (d.getStatus().equalsIgnoreCase("PAGA") ||
+                                                                d.getStatus().equalsIgnoreCase("PENDENTE")))
 
-    double atual = repository.findByUsuario(usuario)
-        .stream()
-        .filter(d -> d.getData() != null &&
-                d.getData().getMonthValue() == hoje.getMonthValue() &&
-                d.getData().getYear() == hoje.getYear())
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-
-    double anterior = repository.findByUsuario(usuario) // 🔥 CORRIGIDO
-        .stream()
-        .filter(d -> d.getData() != null &&
-                d.getData().getMonthValue() == mesAnterior.getMonthValue() &&
-                d.getData().getYear() == mesAnterior.getYear())
-        .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
-        .sum();
-
-    Map<String, Double> result = new HashMap<>();
-    result.put("atual", atual);
-    result.put("anterior", anterior);
-
-    return result;
+                                // 💸 SOMA
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
         }
+
+        // COMPARATIVO DE DESPESAS MENSAIS
+        @GetMapping("/comparativo-mensal")
+        public Map<String, Double> comparativoMensal(@RequestParam String usuario) {
+                // return repository.findByUsuario(usuario)
+                LocalDate hoje = LocalDate.now();
+                LocalDate mesAnterior = hoje.minusMonths(1);
+
+                double atual = repository.findByUsuario(usuario)
+                                .stream()
+                                .filter(d -> d.getData() != null &&
+                                                d.getData().getMonthValue() == hoje.getMonthValue() &&
+                                                d.getData().getYear() == hoje.getYear())
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
+
+                double anterior = repository.findAll()
+                                .stream()
+                                .filter(d -> d.getData() != null &&
+                                                d.getData().getMonthValue() == mesAnterior.getMonthValue() &&
+                                                d.getData().getYear() == mesAnterior.getYear())
+                                .mapToDouble(d -> d.getValor() != null ? d.getValor() : 0.0)
+                                .sum();
+
+                Map<String, Double> result = new HashMap<>();
+                result.put("atual", atual);
+                result.put("anterior", anterior);
+
+                return result;
+        }
+
 }
