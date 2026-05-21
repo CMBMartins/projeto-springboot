@@ -224,7 +224,7 @@
             font-weight: bold;
         }
 
-        .card-grid {
+        .card1-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 10px;
@@ -368,7 +368,7 @@
 
                 <button id="salvar" onclick="salvar()">💾Salvar</button>
                 <button id="editar" onclick="editar()">✏️Editar</button>
-                <button id="deletar" onclick="deletar()">🗑️Deletar</button>
+                <button id="deletar" onclick="deletar()">🗑️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
                 <button id="buscarAmbiente" onclick="buscarAmbiente()">🔍BusAmbiente</button>
                 <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
@@ -1005,6 +1005,12 @@
 
             let ambiente = document.getElementById("ambiente")?.value.trim() || "";
 
+            let perimetro = parseFloat(document.getElementById("perimetro").value);
+
+            let resultado1 = (perimetro / 5);
+
+            let resultado2 = (perimetro / 3.5);
+
             document.getElementById("resultadoLuz").innerHTML =
                 "Potência necessária: " + resultado.toFixed(2) + " VA";
 
@@ -1013,6 +1019,8 @@
                 ambiente: ambiente,
                 tamanhodoambiente: area,
                 resultado: resultado,
+                tomadasdeusogeral: resultado1,
+                tomadasdeusoespecifico: resultado2
             });
         }
 
@@ -1023,6 +1031,8 @@
             let perimetro = parseFloat(document.getElementById("perimetro").value);
 
             let resultado1 = (perimetro / 5);
+
+            let resultado2 = (perimetro / 3.5);
 
             if (resultado1 < 1) {
                 resultado1 = 1;
@@ -1049,6 +1059,8 @@
         function calcularTUE() {
 
             let perimetro = parseFloat(document.getElementById("especial").value);
+
+            let resultado1 = (perimetro / 5);
 
             let resultado2 = (perimetro / 3.5);
 
@@ -1195,7 +1207,7 @@
             localStorage.removeItem("usuariologado");
             alert("🚪 Logout realizado com sucesso!");
 
-            window.location.href = "PlanilhaEletrica.html";
+            window.location.href = "CalculosEletrico.html";
         }
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
