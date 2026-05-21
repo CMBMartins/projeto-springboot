@@ -18,11 +18,19 @@ public class DespesaController {
         @Autowired
         private DespesaRepository repository;
 
+        // Método Get
         @GetMapping
         public List<Despesa> listar() {
                 return repository.findAll();
         }
 
+        // Método Get
+        @GetMapping("/{id}")
+        public Despesa buscarPorId(@PathVariable Integer id) {
+                return repository.findById(id).orElse(null);
+        }
+
+        // Método Post
         @PostMapping
         public Despesa salvar(@RequestBody Despesa despesa) {
                 return repository.save(despesa);
@@ -42,6 +50,7 @@ public class DespesaController {
                                 }).orElse(ResponseEntity.notFound().build());
         }
 
+        // Método Buscar
         @GetMapping("/buscar")
         public List<Despesa> buscar(
                         @RequestParam String usuario,
@@ -51,6 +60,7 @@ public class DespesaController {
                                 .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
 
+        // Método Salvar
         @PutMapping("/{id}")
         public Despesa editar(@PathVariable Integer id, @RequestBody Despesa nova) {
 
@@ -66,6 +76,7 @@ public class DespesaController {
                 return repository.save(existente);
         }
 
+        // Método Get Usuario
         @GetMapping("/usuario")
         public List<Despesa> listarPorUsuario(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario);
