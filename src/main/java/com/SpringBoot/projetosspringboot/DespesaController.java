@@ -76,6 +76,23 @@ public class DespesaController {
                 return repository.save(existente);
         }
 
+        @PutMapping("/{id}")
+        public ResponseEntity<?> atualizarStatus(
+                        @PathVariable Integer id,
+                        @RequestBody Despesa despesa) {
+
+                return repository.findById(id)
+                                .map(registro -> {
+
+                                        registro.setStatus(despesa.getStatus());
+
+                                        repository.save(registro);
+
+                                        return ResponseEntity.ok(registro);
+                                })
+                                .orElse(ResponseEntity.notFound().build());
+        }
+
         // Método Get Usuario
         @GetMapping("/usuario")
         public List<Despesa> listarPorUsuario(@RequestParam String usuario) {
