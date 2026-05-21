@@ -680,7 +680,7 @@
         // FUNÇÃO PARA EDITAR STATUS
         function editarStatus(id) {
 
-            fetch(API + "/despesas/status/" + id, {
+            fetch(`${API}/despesas/status/${id}`, {
                 method: "PUT"
             })
                 .then(res => {
