@@ -60,7 +60,7 @@ public class DespesaController {
                                 .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
 
-        // Método Salvar
+        // Método Editar Completo
         @PutMapping("/{id}")
         public Despesa editar(@PathVariable Integer id, @RequestBody Despesa nova) {
 
@@ -76,7 +76,8 @@ public class DespesaController {
                 return repository.save(existente);
         }
 
-        @PutMapping("/{id}")
+        // Método Atualizar Somente Status
+        @PutMapping("/status/{id}")
         public ResponseEntity<?> atualizarStatus(
                         @PathVariable Integer id,
                         @RequestBody Despesa despesa) {
