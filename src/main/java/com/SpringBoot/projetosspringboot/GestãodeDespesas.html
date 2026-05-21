@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Despesas Pessoais</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<style>
+    body {
+        font-family: Arial;
+        background: linear-gradient(135deg, #4e73df, #1cc88a);
+        margin: 0;
+    }
+
+    /* CONTAINER */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+    }
+
+    /* CARD */
+    .card {
+
+        background: white;
+        padding: 25px;
+        width: 800px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 8px gray;
+        margin-bottom: 20px;
+    }
+
+    /* TOPO */
+    .topo {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .btn-home {
+        text-decoration: none;
+        background: #4e73df;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 5px;
+    }
+
+    /* LOGO */
+    .logo {
+        text-align: center;
+    }
+
+    .logo img {
+        width: 60px;
+    }
+
+    .logo h1 {
+        margin: 5px 0;
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .grid input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* INPUTS */
+    .grid input,
+    .login input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* BOTÕES */
+    .botoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .botoes button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+    }
+
+    /* CORES */
+    .salvar {
+        background: #1cc88a;
+    }
+
+    .editar {
+        background: #f6c23e;
+    }
+
+    .limpar {
+        background: #858796;
+    }
+
+    .buscar {
+        background: #36b9cc;
+    }
+
+    .listar {
+        background: #4e73df;
+    }
+
+    /* LOGIN */
+    .login {
+        margin-top: 25px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+    }
+
+    .login-botoes {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .login button {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        background: #4e73df;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .campo-direita {
+        text-align: center;
+    }
+
+
+    #usuariologado {
+        padding: 8px 10px;
+        text-align: center;
+        float: right;
+        font-weight: bold;
+        font-size: 14px;
+        color: #003366;
+        background: #e6f2ff;
+        border: 2px solid #007bff;
+        border-radius: 6px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* INPUTS */
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+    }
+
+    /* GRID FORM */
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+
+    #salvar {
+        background: #27ae60;
+        color: white;
+    }
+
+    #editar {
+        background: #73ae27;
+        color: white;
+    }
+
+    #deletar {
+        background: #ae2b27;
+        color: white;
+    }
+
+    #limparCampos {
+        background: #f39c12;
+        color: white;
+    }
+
+    #buscarDespesa {
+        background: #f37712;
+        color: white;
+    }
+
+    #listarTodos {
+        background: #2980b9;
+        color: white;
+    }
+
+    .autenticar {
+        background: #7827ae;
+        color: white;
+    }
+
+    .logout {
+        background: #ae2b27;
+        color: white;
+    }
+
+    /* TABELA */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background: #34495e;
+        color: white;
+    }
+
+    .linha-paga {
+        background-color: #d4edda;
+        /* verde claro */
+    }
+
+    .linha-pendente {
+        background-color: #f8d7da;
+        /* vermelho claro */
+    }
+</style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <!-- TOPO -->
+            <div class="topo">
+
+                <a href="DashboardGestaodeDespesas.html" target="_blank" class="btn-home">
+                    ⬅ Relatórios - Dashboard
+                </a>
+
+                <a href="PaginaPessoal.html" class="btn-home">
+                    ⬅ Página Principal
+                </a>
+
+                <div class="usuario">
+                    <input type="text" id="usuariologado" placeholder="Usuário" readonly>
+                </div>
+
+            </div>
+
+            <!-- LOGO -->
+            <div class="logo">
+                <h1>
+                    <img src="Imagens/carlos1.gif" width="60">
+                    Gestão de Despesas Pessoais
+                </h1>
+            </div>
+
+            <h2>Cadastro de Despesas</h2>
+
+            <!-- FORMULÁRIO -->
+            <div class="grid">
+
+                <input type="text" id="id" placeholder="ID">
+                <input type="date" id="data">
+                <input type="text" id="descricao" placeholder="Descrição">
+                <input type="text" id="categoria" placeholder="Categoria">
+                <input type="text" id="tipo" placeholder="Tipo">
+                <input type="number" id="valor" placeholder="Valor">
+                <input type="text" id="status" placeholder="Status">
+
+
+            </div>
+
+            <!-- BOTÕES -->
+            <div class="botoes">
+
+                <button id="salvar" onclick="salvar()">💾Salvar</button>
+                <button id="editar" onclick="editar()">✏️Editar</button>
+                <button id="deletar" onclick="deletar()">✏️Excluir</button>
+                <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
+                <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
+            </div>
+
+            <!-- LOGIN -->
+            <div class="login">
+
+                <h3>Login</h3>
+
+                <input type="text" id="usuario" placeholder="Usuário">
+                <input type="password" id="senha" placeholder="Senha">
+
+                <div class="login-botoes">
+                    <button onclick="login()">🚪➡️Entrar</button>
+                    <button onclick="logout()">🚪⬅️Sair</button>
+                    <button onclick="cadastrarUsuarios()">💾Cadastrar Usuarios</button>
+                </div>
+
+            </div>
+
+            <!-- LISTA -->
+            <div class="card-lista">
+
+                <h2>Lista de Despesas</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Tipo</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabelaDespesas"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API = "https://projeto-springboot.onrender.com";
+
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+            localStorage.removeItem("usuario");
+            localStorage.removeItem("loggedIn");
+        };
+
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+        }
+
+        //FUNÇÃO PARA INICIAR USUARIO
+        function getUsuario() {
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
+            }
+
+            return user;
+        }
+
+        //FUNÇÃO PARA FECH SEGURO
+        function fetchSeguro(url) {
+            return fetch(url)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("Erro na API");
+                    }
+                    return res.json();
+                });
+        }
+
+
+        // 🔥 FUNÇÃO PARA LISTAR TODAS DESPESAS
+        function listarTodos() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaDespesas");
+
+                    if (!tabela) return;
+
+                    let linhas = "";
+
+                    data.forEach(despesas => {
+
+                        const valor = Number(despesas.valor) || 0;
+
+                        const dataFormatada = despesas.data
+                            ? new Date(despesas.data).toLocaleDateString("pt-BR")
+                            : "";
+
+                        const status = (despesas.status || "")
+                            .toUpperCase()
+                            .trim();
+
+                        let classeLinha = "";
+                        let botao = "";
+
+                        // 🔥 PENDENTE → PAGA
+                        if (status === "PENDENTE") {
+
+                            classeLinha = "linha-pendente";
+
+                            botao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${despesas.id}, 'PAGA')">
+                            💰 Pagar
+                        </button>
+                    `;
+
+                        }
+
+                        // 🔥 PROVISÃO → RECEBIDO
+                        else if (
+                            status === "PROVISÃO" ||
+                            status === "PROVISAO" ||
+                            status === "EM PROVISÃO" ||
+                            status === "EM PROVISAO"
+                        ) {
+
+                            classeLinha = "linha-provisao";
+
+                            botao = `
+                        <button class="btn-receber"
+                            onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
+                            💵 Receber
+                        </button>
+                    `;
+                        }
+
+                        // 🔥 AGENDADO → PAGA
+                        else if (
+                            status === "AGENDADO"
+                        ) {
+
+                            classeLinha = "linha-agendado";
+
+                            botao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${despesas.id}, 'PAGA')">
+                            💵 Pagar
+                        </button>
+                    `;
+                        }
+
+                        // 🔥 PAGA (sem botão)
+                        else if (status === "PAGA") {
+
+                            classeLinha = "linha-paga";
+
+                            botao = `
+                        <span style="color:green;font-weight:bold;">
+                            ✔ Pago
+                        </span>
+                    `;
+                        }
+
+                        // 🔥 RECEBIDO (sem botão)
+                        else if (status === "RECEBIDO") {
+
+                            classeLinha = "linha-recebido";
+
+                            botao = `
+                        <span style="color:blue;font-weight:bold;">
+                            ✔ Recebido
+                        </span>
+                    `;
+                        }
+
+                        else {
+                            botao = "-";
+                        }
+
+                        linhas += `
+                    <tr class="${classeLinha}">
+                        <td>${despesas.id}</td>
+                        <td>${dataFormatada}</td>
+                        <td>${despesas.descricao ?? ""}</td>
+                        <td>${despesas.categoria ?? ""}</td>
+                        <td>${despesas.tipo ?? ""}</td>
+                        <td>
+                            ${valor.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL"
+                        })}
+                        </td>
+                        <td>${despesas.status ?? ""}</td>
+                        <td>${botao}</td>
+                    </tr>
+                `;
+                    });
+
+                    tabela.innerHTML = linhas;
+                });
+        }
+
+
+        // FUNÇÃO PARA SALVAR
+        function salvar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
+
+            const dados = {
+                data: document.getElementById("data").value,
+                descricao: document.getElementById("descricao").value,
+                categoria: document.getElementById("categoria").value,
+                tipo: document.getElementById("tipo").value,
+                valor: Number(document.getElementById("valor").value),
+                status: document.getElementById("status").value,
+                usuario: usuario
+            };
+
+            fetch(API + "/despesas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Erro ao salvar");
+                    return response.json();
+                })
+                .then(() => {
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Erro ao salvar!");
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
+        function editar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja editar estes dados?")) return;
+
+            const id = document.getElementById("id").value;
+
+            if (!id) {
+                alert("Coloque o Id do registro a ser para editado!");
+                return;
+            }
+
+            const dados = {
+                data: document.getElementById("data").value,
+                descricao: document.getElementById("descricao").value,
+                categoria: document.getElementById("categoria").value,
+                tipo: document.getElementById("tipo").value,
+                valor: Number(document.getElementById("valor").value) || 0,
+                status: document.getElementById("status").value,
+                usuario: usuario
+            };
+
+            fetch(`${API}/despesas/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error("Erro do backend:", text);
+                            throw new Error("Erro ao editar");
+                        });
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    alert("✅ Editado com sucesso!");
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("❌ Erro ao editar!");
+                });
+        }
+
+
+        // FUNÇÃO PARA EXCLUIR
+        function deletar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const id = document.getElementById("id").value.trim();
+
+            console.log("ID recebido:", id);
+
+            if (!id || isNaN(id)) {
+                alert("⚠️ ID inválido!");
+                return;
+            }
+
+            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+
+            fetchSeguro(`${API}/despesas/${id}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+
+                    console.log("Status:", response.status);
+
+                    if (!response.ok) {
+                        throw new Error("Erro ao excluir");
+                    }
+
+                    return response.text();
+                })
+                .then(() => {
+
+                    alert("✅ Registro excluído com sucesso!");
+
+                    limparCampos();
+                    listarTodos();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao excluir");
+                });
+        }
+
+
+        // FUNÇÃO PARA EDITAR STATUS
+        function editarStatus(id) {
+
+            fetch(API + "/despesas/status/" + id, {
+                method: "PUT"
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Erro ao atualizar status");
+                    return res.json();
+                })
+                .then(() => {
+                    listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("❌ Erro ao atualizar");
+                });
+        }
+
+
+        // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
+        function buscarDespesa() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaDespesas");
+
+                    if (!tabela) return;
+
+                    let linhas = "";
+
+                    data.forEach(despesas => {
+
+                        const valor = Number(despesas.valor) || 0;
+
+                        const dataFormatada = despesas.data
+                            ? new Date(despesas.data).toLocaleDateString("pt-BR")
+                            : "";
+
+                        const status = (despesas.status || "")
+                            .toUpperCase()
+                            .trim();
+
+                        let classeLinha = "";
+                        let botao = "";
+
+                        // 🔥 PENDENTE → PAGA
+                        if (status === "PENDENTE") {
+
+                            classeLinha = "linha-pendente";
+
+                            botao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${despesas.id}, 'PAGA')">
+                            💰 Pagar
+                        </button>
+                    `;
+
+                        }
+
+                        // 🔥 PROVISÃO → RECEBIDO
+                        else if (
+                            status === "PROVISÃO" ||
+                            status === "PROVISAO" ||
+                            status === "EM PROVISÃO" ||
+                            status === "EM PROVISAO"
+                        ) {
+
+                            classeLinha = "linha-provisao";
+
+                            botao = `
+                        <button class="btn-receber"
+                            onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
+                            💵 Receber
+                        </button>
+                    `;
+                        }
+
+                        // 🔥 PAGA (sem botão)
+                        else if (status === "PAGA") {
+
+                            classeLinha = "linha-paga";
+
+                            botao = `
+                        <span style="color:green;font-weight:bold;">
+                            ✔ Pago
+                        </span>
+                    `;
+                        }
+
+                        // 🔥 RECEBIDO (sem botão)
+                        else if (status === "RECEBIDO") {
+
+                            classeLinha = "linha-recebido";
+
+                            botao = `
+                        <span style="color:blue;font-weight:bold;">
+                            ✔ Recebido
+                        </span>
+                    `;
+                        }
+
+                        else {
+                            botao = "-";
+                        }
+
+                        linhas += `
+                    <tr class="${classeLinha}">
+                        <td>${despesas.id}</td>
+                        <td>${dataFormatada}</td>
+                        <td>${despesas.descricao ?? ""}</td>
+                        <td>${despesas.categoria ?? ""}</td>
+                        <td>${despesas.tipo ?? ""}</td>
+                        <td>
+                            ${valor.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL"
+                        })}
+                        </td>
+                        <td>${despesas.status ?? ""}</td>
+                        <td>${botao}</td>
+                    </tr>
+                `;
+                    });
+
+                    tabela.innerHTML = linhas;
+                });
+        }
+
+
+        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+        function login() {
+
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Informe usuario e senha para realizar Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    usuario,
+                    senha
+                })
+
+            })
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Login inválido");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(data => {
+
+                    localStorage.setItem("usuario", data.usuario);
+                    document.getElementById("usuariologado").value = data.usuario;
+                    alert("Login realizado com sucesso!");
+                    limparLogin();
+                })
+
+
+                .catch(error => {
+
+                    alert("Usuário ou senha incorretos");
+
+                });
+
+        }
+
+
+        // FUNÇÃO EFETUAR O LOGOUT
+        function logout() {
+            localStorage.setItem("usuario", data.usuario);
+            document.getElementById("usuariologado").value = data.usuario;
+            alert("Logout realizado com sucesso!");
+            iniciarSistema();
+            window.location.href = "GestãodeDespesas.html";
+        }
+
+        // FUNÇÃO CADASTRAR USUÁRIOS
+        function cadastrarUsuarios() {
+            window.open("CadastrodeUsuarios.html", "_blank");
+        }
+
+
+        // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
+        function limparLogin() {
+            document.getElementById("usuario").value = "";
+            document.getElementById("senha").value = "";
+
+        }
+
+        // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
+        function limparCampos() {
+            document.getElementById("id").value = "";
+            document.getElementById("data").value = "";
+            document.getElementById("descricao").value = "";
+            document.getElementById("categoria").value = "";
+            document.getElementById("tipo").value = "";
+            document.getElementById("valor").value = "";
+            document.getElementById("status").value = "";
+        }
+
+        window.login = login;
+
+    </script>
+
+</body>
+
+</html>
