@@ -667,31 +667,23 @@
         resultado2 = 1;
     }
 
-    document.getElementById("resultadoTUE").innerHTML =
-        "Quantidade: " + resultado2.toFixed(2) + " tomadas";
+    document.getElementById("resultadoTUE").innerHTML = "Quantidade: " + resultado2.toFixed(2) + " tomadas";
 
     // RESULTADO LUZ
-    document.getElementById("resultadoLuz").innerHTML =
-        "Potência necessária: " + resultado.toFixed(2) + " VA";
+    document.getElementById("resultadoLuz").innerHTML = "Potência necessária: " + resultado.toFixed(2) + " VA";
 
     // CAMPOS DO FORMULÁRIO
-    const projeto =
-        document.getElementById("projeto")?.value.trim() || "";
+    const projeto = document.getElementById("projeto")?.value.trim() || "";
 
-    const ambiente =
-        document.getElementById("ambiente")?.value.trim() || "";
+    const ambiente = document.getElementById("ambiente")?.value.trim() || "";
 
-    const tamanhodoambiente =
-        parseFloat(document.getElementById("tamanhodoambiente")?.value) || 0;
+    const tamanhodoambiente = parseFloat(document.getElementById("tamanhodoambiente")?.value) || 0;
 
-    const perimetrodoambiente =
-        parseFloat(document.getElementById("perimetrodoambiente")?.value) || 0;
+    const perimetrodoambiente = parseFloat(document.getElementById("perimetrodoambiente")?.value) || 0;
 
-    const tipodetomadastue =
-        document.getElementById("tipodetomadastue")?.value.trim() || "";
+    const tipodetomadastue = document.getElementById("tipodetomadastue")?.value.trim() || "";
 
-    const tipodocircuito =
-        document.getElementById("tipodocircuito")?.value.trim() || "";
+    const tipodocircuito = document.getElementById("tipodocircuito")?.value.trim() || "";
 
     // VALIDAÇÕES
     if (!projeto) {
@@ -739,17 +731,11 @@
         ambiente,
         tamanhodoambiente,
         perimetrodoambiente,
-
         potenciadeluz: resultado,
-
         tomadasdeusogeral: resultado1,
-
         tomadasdeusoespecifico: resultado2,
-
         tipodetomadastue,
-
         tipodocircuito,
-
         usuario
     };
 
