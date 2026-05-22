@@ -613,159 +613,189 @@
         }
 
 
-        // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICOS
-        function salvar() {
+    // FUNÇÃO PARA SALVAR NA TABELA CALCULOS ELETRICOS        
+    function salvar() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
+    if (!usuario) {
+        alert("⚠️ Faça Login!");
+        return;
+    }
 
-            // AREA
-            const area = parseFloat(document.getElementById("area")?.value) || 0;
+    // ÁREA
+    const area =
+        parseFloat(document.getElementById("area")?.value) || 0;
 
-            if (area <= 0) {
-                alert("⚠️ Informe a área corretamente.");
-                return;
-            }
+    if (area <= 0) {
+        alert("⚠️ Informe a área corretamente.");
+        return;
+    }
 
-            // CÁLCULO POTÊNCIA DE LUZ
-            let resultado;
+    // CÁLCULO POTÊNCIA DE LUZ
+    let resultado;
 
-            if (area <= 6) {
-                resultado = 100;
-            } else {
-                resultado = 100 + ((area - 6) / 4) * 60;
-            }
+    if (area <= 6) {
 
-            // CÁLCULO DE QUANTIDADES DE TOMADAS TUG           
-            let perimetro = parseFloat(document.getElementById("perimetro").value);
+        resultado = 100;
 
-            let resultado1 = (perimetro / 5);
+    } else {
 
-            if (resultado1 < 1) {
-                resultado1 = 1;
-            }
+        resultado = 100 + ((area - 6) / 4) * 60;
+    }
 
-            document.getElementById("resultadoTUG").innerHTML = "Quantidade: " + resultado1 + " tomadas";
+    // CÁLCULO TUG
+    let perimetro =
+        parseFloat(document.getElementById("perimetro")?.value) || 0;
 
-            mostrarResultado({
-                tamanhodoambiente: perimetro,
-                tomadasdeusogeral: resultado1,
-            });
+    let resultado1 = perimetro / 5;
 
-            // CÁLCULO DE QUANTIDADES DE TOMADAS TUE
-            let perimetro1 = parseFloat(document.getElementById("especial").value);
+    if (resultado1 < 1) {
+        resultado1 = 1;
+    }
 
-            let resultado2 = (perimetro1 / 3.5);
+    document.getElementById("resultadoTUG").innerHTML =
+        "Quantidade: " + resultado1.toFixed(2) + " tomadas";
 
-            if (resultado2 < 1) {
-                resultado2 = 1;
-            }
+    // CÁLCULO TUE
+    let perimetro1 =
+        parseFloat(document.getElementById("especial")?.value) || 0;
 
-            document.getElementById("resultadoTUE").innerHTML = "Quantidade: " + resultado2 + " tomadas";
+    let resultado2 = perimetro1 / 3.5;
 
-            mostrarResultado({
-                tamanhodoambiente: perimetro1,
-                tomadasdeusoespecifico: resultado2
-            });
+    if (resultado2 < 1) {
+        resultado2 = 1;
+    }
 
-            // MOSTRA RESULTADO NA TELA
+    document.getElementById("resultadoTUE").innerHTML =
+        "Quantidade: " + resultado2.toFixed(2) + " tomadas";
 
-            projeto = document.getElementById("projeto")?.value.trim() || "";
+    // RESULTADO LUZ
+    document.getElementById("resultadoLuz").innerHTML =
+        "Potência necessária: " + resultado.toFixed(2) + " VA";
 
-            ambiente = document.getElementById("ambiente")?.value.trim() || "";
+    // CAMPOS DO FORMULÁRIO
+    const projeto =
+        document.getElementById("projeto")?.value.trim() || "";
 
-            document.getElementById("resultadoLuz").innerHTML = "Potência necessária: " + resultado + " VA";
+    const ambiente =
+        document.getElementById("ambiente")?.value.trim() || "";
 
-            // CAMPOS DO FORMULÁRIO
-            const projeto = document.getElementById("projeto")?.value.trim() || "";
-            const ambiente = document.getElementById("ambiente")?.value.trim() || "";
-            const tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
-            const perimetrodoambiente = document.getElementById("perimetrodoambiente")?.value.trim() || "";
+    const tamanhodoambiente =
+        parseFloat(document.getElementById("tamanhodoambiente")?.value) || 0;
 
-            //const tomadasdeusogeral =
-            //parseFloat(document.getElementById("tomadasdeusogeral")?.value) || 0;
+    const perimetrodoambiente =
+        parseFloat(document.getElementById("perimetrodoambiente")?.value) || 0;
 
-            //const tomadasdeusoespecifico =
-            //parseFloat(document.getElementById("tomadasdeusoespecifico")?.value) || 0;
+    const tipodetomadastue =
+        document.getElementById("tipodetomadastue")?.value.trim() || "";
 
-            const tipodetomadastue = document.getElementById("tipodetomadastue")?.value.trim() || "";
+    const tipodocircuito =
+        document.getElementById("tipodocircuito")?.value.trim() || "";
 
-            const tipodocircuito = document.getElementById("tipodocircuito")?.value.trim() || "";
+    // VALIDAÇÕES
+    if (!projeto) {
+        alert("⚠️ Informe o Projeto.");
+        return;
+    }
 
-            // VALIDAÇÕES
-            if (!projeto) {
-                alert("⚠️ Informe o Projeto.");
-                return;
-            }
+    if (!ambiente) {
+        alert("⚠️ Informe o Ambiente.");
+        return;
+    }
 
-            if (!ambiente) {
-                alert("⚠️ Informe o Ambiente.");
-                return;
-            }
+    if (!tamanhodoambiente) {
+        alert("⚠️ Informe o tamanho do Ambiente.");
+        return;
+    }
 
-            if (!tamanhodoambiente) {
-                alert("⚠️ Informe o tamanho do Ambiente.");
-                return;
-            }
+    if (!tipodocircuito) {
+        alert("⚠️ Informe o Tipo do Circuito.");
+        return;
+    }
 
-            if (!tipodocircuito) {
-                alert("⚠️ Informe o Tipo do Circuito.");
-                return;
-            }
+    if (!confirm("Tem certeza que deseja salvar esses dados?")) {
+        return;
+    }
 
-            if (!confirm("Tem certeza que deseja salvar esses dados?")) {
-                return;
-            }
+    // MOSTRAR CARD
+    mostrarResultado({
 
-            // OBJETO PARA SALVAR
-            const dados = {
-                projeto: projeto,
-                ambiente: ambiente,
-                tamanhodoambiente: tamanhodoambiente,
-                perimetrodoambiente: perimetrodoambiente,
-                potenciadeluz: resultado,
-                tomadasdeusogeral: resultado1,
-                tomadasdeusoespecifico: resultado2,
-                tipodetomadastue: tipodetomadastue,
-                tipodocircuito: tipodocircuito,
-                usuario: usuario
-            };
+        projeto,
+        ambiente,
+        tamanhodoambiente,
+        perimetrodoambiente,
+        potenciadeluz: resultado,
+        tomadasdeusogeral: resultado1,
+        tomadasdeusoespecifico: resultado2,
+        tipodetomadastue,
+        tipodocircuito
+    });
 
-            console.log("JSON enviado:", dados);
+    // OBJETO PARA SALVAR
+    const dados = {
 
-            fetchSeguro(`${API}/calculoseletrico`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
-            })
-                .then(async response => {
+        projeto,
+        ambiente,
+        tamanhodoambiente,
+        perimetrodoambiente,
 
-                    console.log("STATUS REAL:", response.status);
+        potenciadeluz: resultado,
 
-                    if (!response.ok) {
-                        const msg = await response.text();
-                        throw new Error(msg);
-                    }
+        tomadasdeusogeral: resultado1,
 
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Salvo:", data);
-                    alert("✅ Dados salvos com sucesso!");
-                    mostrarResultado(resultado);
-                    limparCampos();
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert("❌ " + error.message);
-                });
+        tomadasdeusoespecifico: resultado2,
+
+        tipodetomadastue,
+
+        tipodocircuito,
+
+        usuario
+    };
+
+    console.log("JSON enviado:", dados);
+
+    fetchSeguro(`${API}/calculoseletrico`, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(dados)
+    })
+
+    .then(async response => {
+
+        console.log("STATUS REAL:", response.status);
+
+        if (!response.ok) {
+
+            const msg = await response.text();
+
+            throw new Error(msg);
         }
+
+        return response.json();
+    })
+
+    .then(data => {
+
+        console.log("Salvo:", data);
+
+        alert("✅ Dados salvos com sucesso!");
+
+        limparCampos();
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("❌ " + error.message);
+    });
+    }
 
 
         // FUNÇÃO PARA EDITAR
