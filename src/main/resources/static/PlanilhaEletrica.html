@@ -104,8 +104,8 @@
 
     /* padrão de botão */
     .botoes button {
-        width: 124px;
-        height: 50px;
+        width: 146px;
+        height: 40px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -162,11 +162,6 @@
         color: white;
     }
 
-    #gerarRelatorioPDF {
-        background: #eb2923;
-        color: white;
-    }
-
     .autenticar {
         background: #7827ae;
         color: white;
@@ -202,6 +197,15 @@
 
     .linha-tomada {
         background-color: #e5ffe5;
+    }
+
+    .linha-carga-total {
+
+    background-color: #ffe08a;
+
+    font-weight: bold;
+
+    color: #000;
     }
 
     .card-resultado {
@@ -286,7 +290,6 @@
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
                 <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
                 <button id="listarTodos" onclick="listarTodos()">📋LisProjeto</button>
-                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋QuadroPDF</button>
 
             </div>
 
@@ -343,8 +346,6 @@
         </div>
 
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
 
@@ -416,15 +417,36 @@
 
                     data.forEach(planilha => {
 
-                        // 🎨 Classe da linha
-                        const classeLinha = planilha.circuito === "Iluminação"
-                            ? "linha-iluminacao"
-                            : "linha-tomada";
 
-                        // 🔘 Texto do botão
-                        const textoBotao = planilha.circuito === "Iluminação"
-                            ? "Tomadas"
-                            : "TrocarTipo";
+                        // 🎨 Classe da linha
+                    const circuito =
+                    (planilha.circuito || "").toLowerCase();
+
+                    const classeLinha =
+
+                    circuito === "carga total instalada"
+                    ? "linha-carga-total"
+
+                    : circuito === "iluminação"
+                    ? "linha-iluminacao"
+
+                    : "linha-tomada";
+
+                    planilha.circuito === "Carga Total Instalada"
+                    ? "linha-carga-total"
+
+                    : planilha.circuito === "Iluminação"
+                    ? "linha-iluminacao"
+
+                    : "linha-tomada";
+
+// 🔘 Texto do botão
+const textoBotao =
+
+    planilha.circuito === "Iluminação"
+        ? "Tomadas"
+
+        : "TrocarTipo";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -574,7 +596,7 @@
             const card = document.getElementById("resultadoCard");
 
             card.innerHTML = `
-        <h3>⚡ Memória de Cálculo do Alimentador:</h3>
+        <h3>⚡ Resultado do Cálculo</h3>
 
         <div class="card-grid">
 
@@ -826,7 +848,6 @@
                 });
         }
 
-
         // FUNÇÃO PARA CALCULAR O ALIMENTADOR TOTAL
         function calcularAlimentador() {
 
@@ -900,77 +921,6 @@
                 cabo,
                 disjuntor
             };
-        }
-
-
-        // FUNÇÃO PARA GERAR RELATÓRIO
-        function gerarRelatorioPDF() {
-
-            const usuario = getUsuario();
-
-            // VALIDA LOGIN
-            if (!usuario) {
-
-                alert("⚠️ Faça Login!");
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-
-            const doc = new jsPDF();
-
-            doc.setFontSize(16);
-
-            doc.text("Quadro de Potências Instaladas:", 14, 20);
-
-            let y = 30;
-
-            const linhas =
-                document.querySelectorAll("#tabelaPlanilha tr");
-
-            linhas.forEach((linha) => {
-
-                const colunas = linha.querySelectorAll("td");
-
-                if (colunas.length > 0) {
-
-                    const projeto = colunas[0]?.innerText || "";
-
-                    const circuito = colunas[1]?.innerText || "";
-
-                    const descricao = colunas[2]?.innerText || "";
-
-                    const potenciatotal = colunas[3]?.innerText || "";
-
-                    const potenciacorrigida = colunas[4]?.innerText || "";
-
-                    const tipocircuito = colunas[5]?.innerText || "";
-
-                    const disjuntor = colunas[6]?.innerText || "";
-
-                    const condutor = colunas[7]?.innerText || "";
-
-                    doc.setFontSize(10);
-
-                    doc.text(
-                        `${projeto} | ${circuito} | ${descricao} | ${potenciatotal} | ${potenciacorrigida} | ${tipocircuito} | ${disjuntor} | ${condutor}`,
-                        14,
-                        y
-                    );
-
-                    y += 8;
-
-                    // QUEBRA DE PÁGINA
-                    if (y > 280) {
-
-                        doc.addPage();
-
-                        y = 20;
-                    }
-                }
-            });
-
-            doc.save("relatorio_calculoseletrico.pdf");
         }
 
 
