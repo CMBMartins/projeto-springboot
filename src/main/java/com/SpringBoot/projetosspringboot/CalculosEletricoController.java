@@ -160,13 +160,13 @@ public class CalculosEletricoController {
     }
 
     // Método Buscar por Ambiente
-    @GetMapping("/buscar")
+    @GetMapping("/buscar/ambiente")
     public List<CalculosEletrico> buscarPorAmbiente(@RequestParam String ambiente) {
         return repository.findByAmbienteContainingIgnoreCase(ambiente);
     }
 
     // Método Buscar por Projeto
-    @GetMapping("/buscar")
+    @GetMapping("/buscar/projeto")
     public List<CalculosEletrico> buscarPorProjeto(@RequestParam String projeto) {
         return repository.findByProjetoContainingIgnoreCase(projeto);
     }
