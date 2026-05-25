@@ -924,14 +924,14 @@
                 return;
             }
 
-            const ambiente = document.getElementById("ambiente")?.value.trim();
+            const projeto = document.getElementById("projeto")?.value.trim();
 
             if (!projeto) {
                 alert("⚠️ Informe o Ambiente a ser consultado!");
                 return;
             }
 
-            fetchSeguro(`${API}/calculoseletrico/buscar?projeto=${encodeURIComponent(ambiente)}`)
+            fetchSeguro(`${API}/calculoseletrico/buscar?projeto=${encodeURIComponent(projeto)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
