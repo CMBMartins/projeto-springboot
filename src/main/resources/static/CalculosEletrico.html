@@ -931,7 +931,7 @@
                 return;
             }
 
-            fetchSeguro(`${API}/calculoseletrico/buscar?projeto=${encodeURIComponent(projeto)}`)
+            fetchSeguro(`${API}/calculoseletrico/buscar/projeto?projeto=${encodeURIComponent(projeto)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
