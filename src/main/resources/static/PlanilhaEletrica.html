@@ -201,11 +201,11 @@
 
     .linha-carga-total {
 
-    background-color: #ffe08a;
+        background-color: #ffe08a;
 
-    font-weight: bold;
+        font-weight: bold;
 
-    color: #000;
+        color: #000;
     }
 
     .card-resultado {
@@ -419,34 +419,34 @@
 
 
                         // 🎨 Classe da linha
-                    const circuito =
-                    (planilha.circuito || "").toLowerCase();
+                        const circuito =
+                            (planilha.circuito || "").toLowerCase();
 
-                    const classeLinha =
+                        const classeLinha =
 
-                    circuito === "carga total instalada"
-                    ? "linha-carga-total"
+                            circuito === "carga total instalada"
+                                ? "linha-carga-total"
 
-                    : circuito === "iluminação"
-                    ? "linha-iluminacao"
+                                : circuito === "iluminação"
+                                    ? "linha-iluminacao"
 
-                    : "linha-tomada";
+                                    : "linha-tomada";
 
-                    planilha.circuito === "Carga Total Instalada"
-                    ? "linha-carga-total"
+                        planilha.circuito === "Carga Total Instalada"
+                            ? "linha-carga-total"
 
-                    : planilha.circuito === "Iluminação"
-                    ? "linha-iluminacao"
+                            : planilha.circuito === "Iluminação"
+                                ? "linha-iluminacao"
 
-                    : "linha-tomada";
+                                : "linha-tomada";
 
-// 🔘 Texto do botão
-const textoBotao =
+                        // 🔘 Texto do botão
+                        const textoBotao =
 
-    planilha.circuito === "Iluminação"
-        ? "Tomadas"
+                            planilha.circuito === "Iluminação"
+                                ? "Tomadas"
 
-        : "TrocarTipo";
+                                : "TrocarTipo";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -804,14 +804,35 @@ const textoBotao =
 
                     data.forEach(planilha => {
 
+
+                        // 🎨 Classe da linha
+                        const circuito =
+                            (planilha.circuito || "").toLowerCase();
+
                         const classeLinha =
-                            planilha.circuito === "Iluminação"
+
+                            circuito === "carga total instalada"
+                                ? "linha-carga-total"
+
+                                : circuito === "iluminação"
+                                    ? "linha-iluminacao"
+
+                                    : "linha-tomada";
+
+                        planilha.circuito === "Carga Total Instalada"
+                            ? "linha-carga-total"
+
+                            : planilha.circuito === "Iluminação"
                                 ? "linha-iluminacao"
+
                                 : "linha-tomada";
 
+                        // 🔘 Texto do botão
                         const textoBotao =
+
                             planilha.circuito === "Iluminação"
                                 ? "Tomadas"
+
                                 : "TrocarTipo";
 
                         linhas += `
