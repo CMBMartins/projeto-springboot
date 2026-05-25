@@ -89,6 +89,7 @@ public class CalculosEletricoController {
                     registro.setTomadasdeusogeral(dados.getTomadasdeusogeral());
                     registro.setTomadasdeusoespecifico(dados.getTomadasdeusoespecifico());
                     registro.setTipodocircuito(dados.getTipodocircuito());
+                    registro.setTipodetomadastue(dados.getTipodetomadastue());
                     registro.setUsuario(dados.getUsuario());
 
                     repository.save(registro);
@@ -162,6 +163,12 @@ public class CalculosEletricoController {
     @GetMapping("/buscar")
     public List<CalculosEletrico> buscarPorAmbiente(@RequestParam String ambiente) {
         return repository.findByAmbienteContainingIgnoreCase(ambiente);
+    }
+
+    // Método Buscar por Projeto
+    @GetMapping("/buscar")
+    public List<CalculosEletrico> buscarPorProjeto(@RequestParam String projeto) {
+        return repository.findByProjetoContainingIgnoreCase(projeto);
     }
 
     @GetMapping("/usuario")
