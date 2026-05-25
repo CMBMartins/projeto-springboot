@@ -915,7 +915,7 @@
 
 
         // FUNÇÃO PARA BUSCAR PROJETO
-        function buscarAmbiente() {
+        function buscarProjeto() {
 
             const usuario = getUsuario();
 
@@ -931,7 +931,7 @@
                 return;
             }
 
-            fetchSeguro(`${API}/calculoseletrico/buscar?ambiente=${encodeURIComponent(ambiente)}`)
+            fetchSeguro(`${API}/calculoseletrico/buscar?projeto=${encodeURIComponent(ambiente)}`)
                 .then(response => {
 
                     console.log("Status:", response.status);
