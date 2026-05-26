@@ -414,6 +414,10 @@
 
                     let linhas = "";
 
+                    data
+                        .sort((a, b) => new Date(b.data) - new Date(a.data))
+                        .slice(0, 30)
+
                     data.forEach(despesas => {
 
                         const valor = Number(despesas.valor) || 0;
@@ -735,6 +739,10 @@
                     if (!tabela) return;
 
                     let linhas = "";
+
+                    data
+                        .sort((a, b) => new Date(b.data) - new Date(a.data))
+                        .slice(0, 30)
 
                     data.forEach(despesas => {
 

@@ -835,6 +835,10 @@
 
                     let linhas = "";
 
+                    data
+                        .sort((a, b) => new Date(b.data) - new Date(a.data))
+                        .slice(0, 30)
+
                     data.forEach(d => {
 
                         const valor = Number(d.valor) || 0;
