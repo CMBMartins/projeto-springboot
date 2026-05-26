@@ -838,90 +838,89 @@
                     data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
                         .slice(0, 30)
+                        .forEach(d => {
 
-                    data.forEach(d => {
+                            const valor = Number(d.valor) || 0;
 
-                        const valor = Number(d.valor) || 0;
+                            const status = (d.status || "")
+                                .toUpperCase()
+                                .trim();
 
-                        const status = (d.status || "")
-                            .toUpperCase()
-                            .trim();
+                            let statusClass = "";
+                            let acao = "";
 
-                        let statusClass = "";
-                        let acao = "";
+                            // 🔥 PENDENTE → PAGA
+                            if (status === "PENDENTE") {
 
-                        // 🔥 PENDENTE → PAGA
-                        if (status === "PENDENTE") {
+                                statusClass = "status-pendente";
 
-                            statusClass = "status-pendente";
-
-                            acao = `
+                                acao = `
                         <button class="btn-pagar"
                             onclick="editarStatus(${d.id}, 'PAGA')">
                             💰 Pagar
                         </button>
                     `;
-                        }
+                            }
 
-                        // 🔥 PROVISÃO → RECEBIDO
-                        else if (
-                            status === "PROVISÃO" ||
-                            status === "PROVISAO" ||
-                            status === "EM PROVISÃO" ||
-                            status === "EM PROVISAO"
-                        ) {
+                            // 🔥 PROVISÃO → RECEBIDO
+                            else if (
+                                status === "PROVISÃO" ||
+                                status === "PROVISAO" ||
+                                status === "EM PROVISÃO" ||
+                                status === "EM PROVISAO"
+                            ) {
 
-                            statusClass = "status-provisao";
+                                statusClass = "status-provisao";
 
-                            acao = `
+                                acao = `
                         <button class="btn-receber"
                             onclick="editarStatus(${d.id}, 'RECEBIDO')">
                             💵 Receber
                         </button>
                     `;
-                        }
+                            }
 
-                        // 🔥 PAGA
-                        else if (status === "PAGA") {
+                            // 🔥 PAGA
+                            else if (status === "PAGA") {
 
-                            statusClass = "status-pago";
+                                statusClass = "status-pago";
 
-                            acao = `
+                                acao = `
                         <span style="color:green;font-weight:bold;">
                             ✔ Pago
                         </span>
                     `;
-                        }
+                            }
 
-                        // 🔥 RECEBIDO
-                        else if (status === "RECEBIDO") {
+                            // 🔥 RECEBIDO
+                            else if (status === "RECEBIDO") {
 
-                            statusClass = "status-recebido";
+                                statusClass = "status-recebido";
 
-                            acao = `
+                                acao = `
                         <span style="color:blue;font-weight:bold;">
                             ✔ Recebido
                         </span>
                     `;
-                        }
+                            }
 
-                        // 🔥 AGENDADO
-                        else if (status === "AGENDADO") {
+                            // 🔥 AGENDADO
+                            else if (status === "AGENDADO") {
 
-                            statusClass = "status-agendado";
+                                statusClass = "status-agendado";
 
-                            acao = `
+                                acao = `
                         <span style="color:red;font-weight:bold;">
                             ✔ Agendado
                         </span>
                     `;
-                        }
+                            }
 
-                        else {
-                            acao = "-";
-                        }
+                            else {
+                                acao = "-";
+                            }
 
-                        linhas += `
+                            linhas += `
                 <tr class="linha-tabela">
                     <td>${d.data ?? ""}</td>
                     <td>${d.descricao ?? ""}</td>
@@ -932,7 +931,7 @@
                     <td>${acao}</td>
                 </tr>
                 `;
-                    });
+                        });
 
                     tabela.innerHTML = linhas;
 
