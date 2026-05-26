@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Barramentos</title>
+    <!-- Adiciona o Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Adiciona o jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Adiciona o JavaScript do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/vars.css" />
+    <link rel="stylesheet" href="styles/main-content.css" />
+    <link rel="stylesheet" href="styles/sidebar-footer.css" />
+    <link rel="stylesheet" href="styles/media-query.css" />
+    <!--Media queries devem ser chamados depois do CSS principal -->
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
+        integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/fontawesome.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c0c0c0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        #container {
+            position: relative;
+            width: 700px;
+            height: 550px;
+            border: 3px solid black;
+            display: flex;
+            align-items: center;
+            /* Centraliza verticalmente */
+            justify-content: flex-start;
+            /* Alinha os itens à esquerda */
+            padding-left: 0px;
+            /* Ajusta a distância da borda esquerda */
+            background-color: teal;
+        }
+
+        .linha {
+            position: absolute;
+            width: 3px;
+            background-color: yellow;
+        }
+
+        .linha1 {
+            position: absolute;
+            width: 3px;
+            background-color: red;
+        }
+
+        .linha-vermelha {
+            position: absolute;
+            width: 3px;
+            background-color: red;
+        }
+
+        .botao {
+            width: 120px;
+            height: 80px;
+            background-color: #007BFF;
+            border: 2px solid white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .botao img {
+            max-width: 50px;
+            max-height: 50px;
+        }
+
+        .botao:hover {
+            background-color: #0056b3;
+        }
+
+        .telaprincipal {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 60px;
+            left: 10px;
+        }
+
+        .simulador {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 10px;
+            left: 350px;
+        }
+
+        .telaPrincipal {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 80px;
+            left: 320px;
+        }
+
+        #email {
+            position: absolute;
+            top: 520px;
+            left: 570px;
+            font-style: italic;
+            font-size: 10px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<!-- Cabeçalho-->
+
+<body>
+
+    <div id="container">
+
+        <div class="telaprincipal">
+            <a href="">
+                <span class="fa fa-home"></span>
+                <a href="simuladorALBRAS.html">
+                    <span>TELA PRINCIPAL</span>
+                </a>
+        </div>
+
+        <div class="divider top-divider"></div>
+        <div class="divider bottom-divider"></div>
+
+        <img src="imagensALBRAS/carlos1.PNG" alt="Carlos GIF"
+            style="position: absolute; top: 450px; left: 595px; width: 70px; height: 70px;">
+        <img src="imagensALBRAS/Albras1.JPG" alt="Logo"
+            style="position: absolute; top: 4px; left: 2px; width: 255px; height: 50px;">
+
+        <div class="simulador">MENU DOS BARRAMENTOS</div>
+        <div class="telaPrincipal">Barramentos DE 230 kv</div>
+
+        <div id="email">cmardonio@yahoo.com.br</div>
+
+        <!-- Linha principal 230 kV -->
+        <div class="linha" style="height: 140px; left: 360px; top: 200px;"></div>
+
+        <!-- Barramento 230 kV -->
+        <div class="botao" style="width: 160px; top: 130px; left: 30px;" onclick="abrirTela('telaMTS3,4.html')">
+            <img src="imagensALBRAS/MTS3,4.gif" alt="MT-4"><br>MT-4,3
+        </div>
+        <div class="botao" style=" width: 360px; top: 130px; left: 200px;" onclick="abrirTela('telaMTS.html')">
+            <img src="imagensALBRAS/MTS2,R,1.gif" alt="MT-2"><br>MT-2,R,1
+        </div>
+        <div class="botao" style=" width: 100px; top: 130px; left: 570px;" onclick="abrirTela('telaAL.html')">
+            <img src="imagensALBRAS/AL.gif" alt="AL"><br>
+        </div>
+
+        <!-- Linhas Verticais e horizontais (vermelhas) -->
+        <div class="linha-vermelha" style="height: 3px; width: 640px; left: 30px; top: 135px;"></div>
+
+        <div class="linha1" style="height: 27px; left: 90px; top: 135px;"></div>
+
+        <div class="linha1" style="height: 30px; left: 360px; top: 135px;"></div>
+
+        <div class="linha1" style="height: 22px; left: 615px; top: 135px;"></div>
+
+        <!-- Barramento 34,5 kV -->
+        <div class="botao" style="top: 330px; left: 40px;" onclick="abrirTela('telaT1.html')">
+            <img src="imagensALBRAS/BarraT1.gif" alt="LVR-1"><br>LVR-1
+        </div>
+        <div class="botao" style="top: 330px; left: 170px;" onclick="abrirTela('telaTR.html')">
+            <img src="imagensALBRAS/BarraTR.gif" alt="LVR-R"><br>LVR-R
+        </div>
+        <div class="botao" style="top: 330px; left: 300px;" onclick="abrirTela('telaT2.html')">
+            <img src="imagensALBRAS/BarraT2.gif" alt="LVR-2"><br>LVR-2
+        </div>
+        <div class="botao" style="top: 330px; left: 430px;" onclick="abrirTela('telaT3.html')">
+            <img src="imagensALBRAS/BarraT3.gif" alt="LVR-3"><br>LVR-3
+        </div>
+        <div class="botao" style="top: 330px; left: 560px;" onclick="abrirTela('telaT4.html')">
+            <img src="imagensALBRAS/BarraT4.gif" alt="LVR-4"><br>LVR-4
+        </div>
+    </div>
+
+    <script>
+        function abrirTela(url) {
+            window.location.href = url;
+        }
+    </script>
+
+</body>
+
+</html>
