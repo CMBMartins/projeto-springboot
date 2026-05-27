@@ -9,6 +9,8 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
 
     List<Despesa> findByUsuario(String usuario);
 
-    List<Despesa> findByUsuarioAndDescricaoContainingIgnoreCase(String usuario, String descricao);
+    List<Despesa> findByDescricaoContainingIgnoreCase(String descricao);
+
+    List<Despesa> findByCategoriaContainingIgnoreCase(String categoria);
 
 }
