@@ -18,19 +18,7 @@ public class DespesaController {
         @Autowired
         private DespesaRepository repository;
 
-        // Método Get
-        @GetMapping
-        public List<Despesa> listar() {
-                return repository.findAll();
-        }
-
-        // Método Get
-        @GetMapping("/{id}")
-        public Despesa buscarPorId(@PathVariable Integer id) {
-                return repository.findById(id).orElse(null);
-        }
-
-        // Método Post
+        // Método Post de Salvar
         @PostMapping
         public Despesa salvar(@RequestBody Despesa despesa) {
                 return repository.save(despesa);
@@ -48,16 +36,6 @@ public class DespesaController {
                                         return ResponseEntity.ok("Registro excluído com sucesso");
 
                                 }).orElse(ResponseEntity.notFound().build());
-        }
-
-        // Método Buscar
-        @GetMapping("/buscar")
-        public List<Despesa> buscar(
-                        @RequestParam String usuario,
-                        @RequestParam String descricao) {
-
-                return repository
-                                .findByUsuarioAndDescricaoContainingIgnoreCase(usuario, descricao);
         }
 
         // Método Editar Completo
@@ -94,18 +72,37 @@ public class DespesaController {
                                 .orElse(ResponseEntity.notFound().build());
         }
 
-        // Método Get Usuario
+        // Método Get para Listar Todos
+        @GetMapping
+        public List<Despesa> listar() {
+                return repository.findAll();
+        }
+
+        // Método Get por Id
+        @GetMapping("/{id}")
+        public Despesa buscarPorId(@PathVariable Integer id) {
+                return repository.findById(id).orElse(null);
+        }
+
+        // Método Get Buscar por Usuario
         @GetMapping("/usuario")
         public List<Despesa> listarPorUsuario(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario);
         }
 
-        // ÚLTIMAS 5
+        // Método Get Buscar por Categoria
+        @GetMapping("/buscar/categoria")
+        public List<Despesa> buscarPorCategoria(@RequestParam String categoria) {
+                return repository.findByCategoriaContainingIgnoreCase(categoria);
+        }
+
+        // Método Get Buscar por ÚLTIMAS 5
         @GetMapping("/ultimas")
         public List<Despesa> ultimas() {
                 return repository.findTop5ByOrderByDataDesc();
         }
 
+        // Método Get Buscar por Total
         @GetMapping("/total")
         public Double totalSaidas(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
@@ -118,7 +115,7 @@ public class DespesaController {
                                 .sum();
         }
 
-        // TOTAL DE RENDAS
+        // Método Get Buscar TOTAL DE RENDAS
         @GetMapping("/renda")
         public Double totalEntradas(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
@@ -130,7 +127,7 @@ public class DespesaController {
                                 .sum();
         }
 
-        // SALDO TOTAL
+        // Método Get Buscar por SALDO TOTAL
         @GetMapping("/saldo")
         public Double calcularSaldo(@RequestParam String usuario) {
                 double despesas = repository.findByUsuario(usuario)
@@ -152,7 +149,7 @@ public class DespesaController {
                 return receitas - despesas;
         }
 
-        // GRAFICO POR CATEGORIA
+        // Método Get Buscar por GRAFICO POR CATEGORIA
         @GetMapping("/categoria")
         public Map<String, Double> porCategoria(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
@@ -164,7 +161,7 @@ public class DespesaController {
                                                                 d -> d.getValor() != null ? d.getValor() : 0.0)));
         }
 
-        // STATUS
+        // Método Get Buscar por STATUS
         @GetMapping("/status")
         public Map<String, Long> status(@RequestParam String usuario) {
                 return repository.findByUsuario(usuario)
@@ -175,7 +172,7 @@ public class DespesaController {
                                                 Collectors.counting()));
         }
 
-        // DESPESAS POR MÊS
+        // Método Get Buscar por DESPESAS POR MÊS
         @GetMapping("/mensal")
         public Map<Integer, Double> despesasPorMes(@RequestParam String usuario) {
 
@@ -205,7 +202,7 @@ public class DespesaController {
                                                 })));
         }
 
-        // VALOR DE DESPESAS POR MÊS
+        // Método Get Buscar por VALOR DE DESPESAS POR MÊS
         @GetMapping("/mes")
         public Double totalPagoNoMes(@RequestParam String usuario) {
 
@@ -229,7 +226,7 @@ public class DespesaController {
                                 .sum();
         }
 
-        // COMPARATIVO DE DESPESAS MENSAIS
+        // Método Get Buscr por COMPARATIVO DE DESPESAS MENSAIS
         @GetMapping("/comparativo-mensal")
         public Map<String, Double> comparativoMensal(@RequestParam String usuario) {
                 // return repository.findByUsuario(usuario)
