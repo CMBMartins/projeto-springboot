@@ -762,12 +762,12 @@
 
                     <button class="button" style="top: 159px; left: 152px;" onclick="logout()"
                         title="Pressione para fazer Logout">
-                        <img src="imagensAlbras/botaoHistoricos.JPG" alt="Botão Logout">
+                        <img src="imagensAlbras/Porta.JPG" alt="Botão Logout">
                     </button>
 
                     <button id=btnUsuario class="button" onclick="acessarUsuario()"
                         title="Pressione para Inserir e Editar os Usuários do Sistema">
-                        <img src="imagensAlbras/botãoAlarme.JPG" alt="Botão Usuários">
+                        <img src="imagensAlbras/Alterar Usuário.JPG" alt="Botão Usuários">
                     </button>
 
                     <button id="btnBarramento" class="button" onclick="acessarBarramento()"
@@ -1058,14 +1058,17 @@
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
 
-            const user = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-            if (!user || user === "undefined" || user === "null") {
+            // VERIFICA SE EXISTE LOGIN
+            if (!usuario || usuario.trim() === "") {
+
+                alert("🔒 Faça login para poder acessar essa funcionalidade!");
 
                 return null;
             }
 
-            return user;
+            return usuario;
         }
 
         //FUNÇÃO PARA FECH SEGURO
@@ -1182,15 +1185,14 @@
         // FUNÇÃO PARA ACESSAR ATELA DOS BARRAMENTOS
         function acessarBarramento() {
 
-            const usuario = localStorage.getItem("usuario");
+            const usuario = getUsuario();
 
+            // SE NÃO ESTIVER LOGADO
             if (!usuario) {
-
-                alert("🔒 Faça login para poder acessar essa funcionalidade!");
                 return;
             }
 
-            // liberado            
+            // LIBERADO
             window.open("menudeBarramentos.html", "_blank");
         }
 
@@ -1212,7 +1214,8 @@
 
         function acessarUsuario() {
 
-            const usuario = getUsuario();
+            //const usuario = getUsuario();
+            const usuario = localStorage.getItem("usuario");
 
             if (!usuario) {
                 alert("⚠️ Faça Login para poder acessar essa funcionalidade!!");
