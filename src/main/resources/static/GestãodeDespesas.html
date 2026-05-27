@@ -201,7 +201,7 @@
         color: white;
     }
 
-    #buscarDespesa {
+    #buscarCategoria {
         background: #f37712;
         color: white;
     }
@@ -307,6 +307,7 @@
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="deletar()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
+                <button id="buscarCategoria" onclick="buscarCategoria()">📋Buscar Categoria</button>
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
             </div>
 
@@ -723,7 +724,7 @@
 
 
         // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
-        function buscarDespesa() {
+        function buscarCategoria() {
 
             const usuario = getUsuario();
 
@@ -732,7 +733,7 @@
                 return;
             }
 
-            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+            fetchSeguro(`${API}/despesas/buscar/categoria?categoria=${encodeURIComponent(categoria)}`)
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaDespesas");
