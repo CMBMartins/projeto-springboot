@@ -414,11 +414,12 @@
 
                     let linhas = "";
 
-                    data
+                    // 🔥 ORDENA E LIMITA A 30
+                    const ultimasDespesas = data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
-                        .slice(0, 30)
+                        .slice(0, 30);
 
-                    data.forEach(despesas => {
+                    ultimasDespesas.forEach(despesas => {
 
                         const valor = Number(despesas.valor) || 0;
 
@@ -740,11 +741,12 @@
 
                     let linhas = "";
 
-                    data
+                    // 🔥 ORDENA E LIMITA A 30
+                    const ultimasDespesas = data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
-                        .slice(0, 30)
+                        .slice(0, 30);
 
-                    data.forEach(despesas => {
+                    ultimasDespesas.forEach(despesas => {
 
                         const valor = Number(despesas.valor) || 0;
 
