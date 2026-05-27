@@ -249,6 +249,91 @@
         background-color: #f8d7da;
         /* vermelho claro */
     }
+
+    /* 🔥 LEGENDA DE CATEGORIAS */
+
+    .legenda-categorias {
+
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .legenda-categorias h3 {
+
+        margin-bottom: 12px;
+        color: #003366;
+        font-size: 18px;
+    }
+
+    .tags-categorias {
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* 🔥 TAG PADRÃO */
+
+    .tag {
+
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .tag:hover {
+
+        transform: scale(1.05);
+        cursor: default;
+    }
+
+    /* 🎨 CORES DAS TAGS */
+
+    .supermercado {
+        background: #28a745;
+    }
+
+    .refeicao {
+        background: #fd7e14;
+    }
+
+    .entretenimento {
+        background: #6f42c1;
+    }
+
+    .cartao {
+        background: #dc3545;
+    }
+
+    .medicamentos {
+        background: #17a2b8;
+    }
+
+    .transporte {
+        background: #007bff;
+    }
+
+    .ajuda {
+        background: #20c997;
+    }
+
+    .casa {
+        background: #795548;
+    }
+
+    .renda {
+        background: #198754;
+    }
+
+    .criancas {
+        background: #e83e8c;
+    }
 </style>
 
 </head>
@@ -297,6 +382,26 @@
                 <input type="number" id="valor" placeholder="Valor">
                 <input type="text" id="status" placeholder="Status">
 
+            </div>
+
+            <!-- LEGENDA DE CATEGORIAS -->
+            <div class="legenda-categorias">
+
+                <h3>📌 Principais Categorias Sugeridas:</h3>
+
+                <div class="tags-categorias">
+
+                    <span class="tag supermercado">🛒 Compra de supermercado</span>
+                    <span class="tag refeicao">🍽 Refeição na rua</span>
+                    <span class="tag entretenimento">🎮 Entretenimento</span>
+                    <span class="tag cartao">💳 Cartão de crédito</span>
+                    <span class="tag medicamentos">💊 Medicamentos</span>
+                    <span class="tag transporte">🚗 Despesa com transporte</span>
+                    <span class="tag ajuda">🤝 Ajuda de custo</span>
+                    <span class="tag casa">🏠 Despesa de casa</span>
+                    <span class="tag renda">💰 Renda mensal</span>
+                    <span class="tag criancas">🧒 Despesa com as crianças</span>
+                </div>
 
             </div>
 
@@ -723,7 +828,7 @@
         }
 
 
-        // FUNÇÃO PARA CONSULTAR POR DESCRIÇÃO
+        // 🔍 FUNÇÃO PARA CONSULTAR POR CATEGORIA
         function buscarCategoria() {
 
             const usuario = getUsuario();
@@ -733,16 +838,36 @@
                 return;
             }
 
-            fetchSeguro(`${API}/despesas/buscar/categoria?categoria=${encodeURIComponent(categoria)}`)
+            // 🔥 PEGA A CATEGORIA DO INPUT
+            const categoria = document.getElementById("categoria").value.trim();
+
+            if (!categoria) {
+                alert("⚠️ Informe a categoria!");
+                return;
+            }
+
+            fetchSeguro(
+                `${API}/despesas/buscar/categoria?categoria=${encodeURIComponent(categoria)}&usuario=${encodeURIComponent(usuario)}`
+            )
+
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaDespesas");
 
-                    if (!tabela) return;
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
+
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='8'>Nenhum dado encontrado</td></tr>";
+                        return;
+                    }
 
                     let linhas = "";
 
-                    // 🔥 ORDENA E LIMITA A 30
+                    // 🔥 ORDENA E LIMITA
                     const ultimasDespesas = data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
                         .slice(0, 30);
@@ -762,21 +887,21 @@
                         let classeLinha = "";
                         let botao = "";
 
-                        // 🔥 PENDENTE → PAGA
+                        // 🔥 PENDENTE
                         if (status === "PENDENTE") {
 
                             classeLinha = "linha-pendente";
 
                             botao = `
-                        <button class="btn-pagar"
-                            onclick="editarStatus(${despesas.id}, 'PAGA')">
-                            💰 Pagar
-                        </button>
-                    `;
+                    <button class="btn-pagar"
+                        onclick="editarStatus(${despesas.id}, 'PAGA')">
+                        💰 Pagar
+                    </button>
+                `;
 
                         }
 
-                        // 🔥 PROVISÃO → RECEBIDO
+                        // 🔥 PROVISÃO
                         else if (
                             status === "PROVISÃO" ||
                             status === "PROVISAO" ||
@@ -787,61 +912,71 @@
                             classeLinha = "linha-provisao";
 
                             botao = `
-                        <button class="btn-receber"
-                            onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
-                            💵 Receber
-                        </button>
-                    `;
+                    <button class="btn-receber"
+                        onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
+                        💵 Receber
+                    </button>
+                `;
+
                         }
 
-                        // 🔥 PAGA (sem botão)
+                        // 🔥 PAGA
                         else if (status === "PAGA") {
 
                             classeLinha = "linha-paga";
 
                             botao = `
-                        <span style="color:green;font-weight:bold;">
-                            ✔ Pago
-                        </span>
-                    `;
+                    <span style="color:green;font-weight:bold;">
+                        ✔ Pago
+                    </span>
+                `;
+
                         }
 
-                        // 🔥 RECEBIDO (sem botão)
+                        // 🔥 RECEBIDO
                         else if (status === "RECEBIDO") {
 
                             classeLinha = "linha-recebido";
 
                             botao = `
-                        <span style="color:blue;font-weight:bold;">
-                            ✔ Recebido
-                        </span>
-                    `;
+                    <span style="color:blue;font-weight:bold;">
+                        ✔ Recebido
+                    </span>
+                `;
+
                         }
 
                         else {
+
                             botao = "-";
+
                         }
 
                         linhas += `
-                    <tr class="${classeLinha}">
-                        <td>${despesas.id}</td>
-                        <td>${dataFormatada}</td>
-                        <td>${despesas.descricao ?? ""}</td>
-                        <td>${despesas.categoria ?? ""}</td>
-                        <td>${despesas.tipo ?? ""}</td>
-                        <td>
-                            ${valor.toLocaleString("pt-BR", {
+                <tr class="${classeLinha}">
+                    <td>${despesas.id ?? ""}</td>
+                    <td>${dataFormatada}</td>
+                    <td>${despesas.descricao ?? ""}</td>
+                    <td>${despesas.categoria ?? ""}</td>
+                    <td>${despesas.tipo ?? ""}</td>
+                    <td>
+                        ${valor.toLocaleString("pt-BR", {
                             style: "currency",
                             currency: "BRL"
                         })}
-                        </td>
-                        <td>${despesas.status ?? ""}</td>
-                        <td>${botao}</td>
-                    </tr>
-                `;
+                    </td>
+                    <td>${despesas.status ?? ""}</td>
+                    <td>${botao}</td>
+                </tr>
+            `;
                     });
 
                     tabela.innerHTML = linhas;
+
+                })
+
+                .catch(err => {
+                    console.error("Erro ao buscar categoria:", err);
                 });
         }
 
