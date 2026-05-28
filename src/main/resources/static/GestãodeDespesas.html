@@ -15,7 +15,7 @@
 
 <style>
     body {
-        font-family: Arial;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #4e73df, #1cc88a);
         margin: 0;
     }
@@ -31,12 +31,18 @@
     /* CARD */
     .card {
 
+        width: 100%;
+        max-width: 900px;
         background: white;
         padding: 25px;
-        width: 800px;
         border-radius: 10px;
-        box-shadow: 0px 0px 8px gray;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         margin-bottom: 20px;
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
     }
 
     /* TOPO */
@@ -83,8 +89,19 @@
     .grid input,
     .login input {
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #dfe6e9;
         border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    .grid input:focus,
+    .login input:focus {
+
+        outline: none;
+
+        border-color: #4e73df;
+
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
     }
 
     /* BOTÕES */
@@ -127,8 +144,8 @@
 
     /* LOGIN */
     .login {
-        margin-top: 25px;
-        padding-top: 15px;
+        margin-top: 15px;
+        padding-top: 5px;
         border-top: 1px solid #ddd;
     }
 
@@ -254,9 +271,10 @@
 
     .legenda-categorias {
 
+        width: 100%;
+        max-width: 900px;
         margin-top: 10px;
         padding: 10px;
-        width: 780px;
         height: 190px;
         background: #f8f9fa;
         border-radius: 10px;
@@ -420,7 +438,7 @@
             <!-- LOGIN -->
             <div class="login">
 
-                <h3>Login</h3>
+                <h2>Login</h2>
 
                 <input type="text" id="usuario" placeholder="Usuário">
                 <input type="password" id="senha" placeholder="Senha">
