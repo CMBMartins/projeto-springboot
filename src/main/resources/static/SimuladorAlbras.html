@@ -110,8 +110,9 @@
 
     /* Layout principal */
     .container {
+        display: flex;
         width: 100%;
-        background: #f2f2f2;
+        background: #aaa;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -193,7 +194,6 @@
 
     /* Container flexível */
     .container {
-        display: flex;
         width: 100%;
         background: #aaa;
         display: flex;
@@ -247,7 +247,6 @@
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
-
         color: white;
         background-color: #007bff;
         /* azul padrão */
@@ -425,8 +424,14 @@
         border: 1px solid black;
     }
 
+    body {
+        background: #aaa;
+    }
+
     /* Barramento */
     .barramento {
+        display: flex;
+        background: #aaa;
         position: absolute;
         top: 230px;
         left: -44%;
@@ -435,13 +440,9 @@
         background-color: orange;
     }
 
-    /* Corpo das colunas das Reduções */
-    body {
-        background: #aaa;
-        font-family: Arial;
-    }
-
     .painel {
+        display: flex;
+        background: #aaa;
         position: relative;
         height: 290px;
         display: flex;
