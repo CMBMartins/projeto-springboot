@@ -28,22 +28,25 @@
 </head>
 
 <style>
-    body {
+   body {
+        position: absolute;
+        width: 1500px;
+        height: 850px;
         font-family: Arial, sans-serif;
         background: #f2f2f2;
         margin: 0;
         padding: 0;
-        min-height: 100vh;
+        top: 50px;
+        left: 100px;
         border: 2px solid black;
-        box-sizing: border-box;
     }
 
     .page {
         width: 100%;
         max-width: 1500px;
-        margin: 0 auto;
+        margin: auto;
         background: #f2f2f2;
-        box-sizing: border-box;
+        border: 2px solid black;
     }
 
     /* Barra superior */
@@ -72,25 +75,28 @@
     }
 
     .buttons {
+        background: #aaa;
         display: flex;
-        flex-wrap: wrap;
         gap: 5px;
     }
 
     .buttons button {
+        background: #aaa;
+        top: 155px;
         width: 40px;
         height: 40px;
-        flex-shrink: 0;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
     }
 
     .header {
         background: #aaa;
+        border: 0px solid #CCC;
         padding: 15px;
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
     }
 
     .header img {
@@ -110,27 +116,23 @@
 
     /* Layout principal */
     .container {
+        width: 1495px;
+        height: 250px;
+        background: #f2f2f2;
         display: flex;
-        width: 100%;
-        background: #aaa;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+        justify-content: space-between;
         padding: 20px;
-        box-sizing: border-box;
     }
 
+    /* Controle de Demanda */
     .controle {
-        flex: 1 1 350px;
-        min-width: 300px;
-        max-width: 450px;
         background: #aaa;
         padding: 15px;
         border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        left: 0px;
         border: 2px solid black;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
-
     }
 
     .controle h3 {
@@ -153,19 +155,16 @@
     }
 
     .medicao {
-        flex: 1 1 450px;
-        min-width: 320px;
-        max-width: 650px;
         background: #aaa;
         padding: 15px;
         border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        width: 500px;
         border: 2px solid black;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
     }
 
     .medicao table {
-        display: flex;
-        width: 100%;
+        width: 80%;
         border-collapse: collapse;
     }
 
@@ -183,9 +182,9 @@
     }
 
     #email {
-        position: fixed;
-        bottom: 10px;
-        right: 20px;
+        position: absolute;
+        top: 960px;
+        left: 1370px;
         font-style: italic;
         font-size: 10px;
         color: gray;
@@ -194,14 +193,14 @@
 
     /* Container flexível */
     .container {
-        width: 100%;
         background: #aaa;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        /* Ativa o Flexbox */
+        justify-content: space-between;
+        /* Espaço entre as colunas */
         gap: 20px;
+        /* Espaço entre as divs */
         padding: 20px;
-        box-sizing: border-box;
     }
 
     /* Estilização das seções */
@@ -247,13 +246,13 @@
         font-weight: bold;
         cursor: pointer;
         transition: all 0.3s ease;
+
         color: white;
         background-color: #007bff;
         /* azul padrão */
     }
 
     table {
-        display: flex;
         width: 100%;
         border-collapse: collapse;
     }
@@ -296,11 +295,9 @@
     }
 
     .estrutura {
-        display: flex;
         position: relative;
-        width: 100%;
+        width: 40%;
         height: 210px;
-        max-width: 900px;
         border: 0px solid black;
         background: #aaa;
         text-align: center;
@@ -424,14 +421,8 @@
         border: 1px solid black;
     }
 
-    body {
-        background: #aaa;
-    }
-
     /* Barramento */
     .barramento {
-        display: flex;
-        background: #aaa;
         position: absolute;
         top: 230px;
         left: -44%;
@@ -440,9 +431,13 @@
         background-color: orange;
     }
 
-    .painel {
-        display: flex;
+    /* Corpo das colunas das Reduções */
+    body {
         background: #aaa;
+        font-family: Arial;
+    }
+
+    .painel {
         position: relative;
         height: 290px;
         display: flex;
@@ -492,7 +487,7 @@
     .trafo1 {
         position: absolute;
         top: -30px;
-        left: 21%;
+        left: 13%;
         transform: translateX(-50%);
         background: #999;
         padding: 5px;
@@ -502,7 +497,7 @@
     .trafo2 {
         position: absolute;
         top: -30px;
-        left: 33.4%;
+        left: 29%;
         transform: translateX(-50%);
         background: #999;
         padding: 5px;
@@ -512,7 +507,7 @@
     .trafo3 {
         position: absolute;
         top: -30px;
-        left: 45.7%;
+        left: 44.6%;
         transform: translateX(-50%);
         background: #999;
         padding: 5px;
@@ -522,7 +517,7 @@
     .trafo4 {
         position: absolute;
         top: -30px;
-        left: 58%;
+        left: 60.3%;
         transform: translateX(-50%);
         background: #999;
         padding: 5px;
@@ -694,38 +689,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    }
-
-    @media (max-width: 768px) {
-
-        .header {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .title {
-            font-size: 20px;
-        }
-
-        .datetime {
-            font-size: 14px;
-        }
-
-        .container {
-            flex-direction: column;
-            padding: 10px;
-        }
-
-        .controle,
-        .medicao {
-            width: 100%;
-            min-width: auto;
-            max-width: 100%;
-        }
-
-        .buttons {
-            justify-content: center;
-        }
     }
     
 </style>
