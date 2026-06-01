@@ -28,7 +28,7 @@
 </head>
 
 <style>
-   body {
+    body {
         position: absolute;
         width: 1500px;
         height: 850px;
@@ -690,7 +690,38 @@
         flex-direction: column;
         justify-content: space-between;
     }
-    
+
+    @media (max-width: 768px) {
+
+        .header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 20px;
+        }
+
+        .datetime {
+            font-size: 14px;
+        }
+
+        .container {
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        .controle,
+        .medicao {
+            width: 100%;
+            min-width: auto;
+            max-width: 100%;
+        }
+
+        .buttons {
+            justify-content: center;
+        }
+    }
 </style>
 
 <body>
@@ -700,7 +731,7 @@
         <div class="divider bottom-divider"></div>
 
         <img src="imagensAlbras/carlos1.gif" alt="Logo Carlos"
-            style="position: absolute; top: 885px; left: 1820px; width: 70px; height: 70px;">
+            style="position: absolute; top: 890px; left: 1400px; width: 70px; height: 70px;">
         <img src="imagensAlbras/ALBRAS1.JPG" alt="Logo"
             style="position: absolute; top: 5px; left: 2px; width: 255px; height: 50px;">
 
@@ -708,9 +739,9 @@
         <div class="header">
             <div>
                 <span
-                    class="title">......................................................................................................................
+                    class="title">...........................................................................................
                     SIMULADOR ALBRAS
-                    ..............................................................................................................</span><br><br>
+                    ................................................................................</span><br><br>
 
                 <div class="campo-direita">
                     <input type="text" id="usuariologado" placeholder="Default" style="width:13%;">
@@ -757,18 +788,18 @@
 
                     <button class="button" style="top: 59px; left: 202px;"
                         title="Pressione para Consultar os Relatórios">
-                        <a href="menudeBarramentos.html" target="_blank"> <img src="imagensAlbras/botãoRelatorio.JPG"
+                        <a href="CalculosEletrico.html" target="_blank"> <img src="imagensAlbras/botãoRelatorio.JPG"
                                 alt="Botão Relatório"></a>
                     </button>
 
                     <button class="button" style="top: 159px; left: 152px;" onclick="logout()"
                         title="Pressione para fazer Logout">
-                        <img src="imagensAlbras/Porta.JPG" alt="Botão Logout">
+                        <img src="imagensAlbras/botaoHistoricos.JPG" alt="Botão Logout">
                     </button>
 
                     <button id=btnUsuario class="button" onclick="acessarUsuario()"
                         title="Pressione para Inserir e Editar os Usuários do Sistema">
-                        <img src="imagensAlbras/Alterar Usuário.JPG" alt="Botão Usuários">
+                        <img src="imagensAlbras/botãoAlarme.JPG" alt="Botão Usuários">
                     </button>
 
                     <button id="btnBarramento" class="button" onclick="acessarBarramento()"
@@ -786,19 +817,15 @@
                                 alt="Botão Equipamentos"></a>
                     </button>
 
-                    <button id="btnclassedeManobras" class="button" onclick="acessarclassedeManobras()"
-                        title="Pressione para acessar a Tela das classes de Manobras">
-                        <img src="imagensAlbras/Simulador.JPG" alt="Botão Tela das Classes de Manobras">
-                    </button>
-                    <!--<button class="button" style="top: 59px; left: 252px;"
+                    <button class="button" style="top: 59px; left: 252px;"
                         title="Pressione para Selecionar uma das Classes de Manobra a ser Simulada">
-                        <a href="menudeBarramentos.html" target="_blank"> <img src="imagensAlbras/Simulador.JPG"
+                        <a href="telaMTS.html" target="_blank"> <img src="imagensAlbras/Simulador.JPG"
                                 alt="Botão Simulador"></a>
-                    </button>-->
+                    </button>
 
                     <button class="button" style="top: 59px; left: 352px;"
                         title="Pressione para chamar a tela das SE's Locais">
-                        <a href="menudeBarramentos.html" target="_blank"> <img src="imagensAlbras/botaoSesLocais.JPG"
+                        <a href="telaMTS.html" target="_blank"> <img src="imagensAlbras/botaoSesLocais.JPG"
                                 alt="Botão SE's Locais"></a>
                     </button>
 
@@ -1040,43 +1067,22 @@
 
         const API = "https://projeto-springboot.onrender.com";
 
-        //FUNÇÃO PARA VERIFICAR LOGIN AO CARREGAR
+        // FUNÇÃO DE INICIALIZAÇÃO DAS FUNÇÕES        
+        localStorage.removeItem("usuariologado");
+        document.getElementById("usuariologado").value = "";
+
         window.onload = function () {
-            const usuario = localStorage.getItem("usuario");
 
-            if (usuario) {
+            if (localStorage.getItem("usuariologado")) {
+                liberarFuncoes();
+                document.getElementById("usuariologado").value = data.usuario;
 
-                document.getElementById("usuariologado").value = usuario;
-            };
-        }
+            } else {
 
-
-        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-        function iniciarSistema() {
-            console.log("Sistema iniciado");
-        }
-
-        //FUNÇÃO PARA INICIAR USUARIO
-        function getUsuario() {
-
-            const usuario = localStorage.getItem("usuario");
-
-            // VERIFICA SE EXISTE LOGIN
-            if (!usuario || usuario.trim() === "") {
-
-                alert("🔒 Faça login para poder acessar essa funcionalidade!");
-
-                return null;
+                bloquearFuncoes();
             }
 
-            return usuario;
         }
-
-        //FUNÇÃO PARA FECH SEGURO
-        function fetchSeguro(url, options = {}) {
-            return fetch(url, options); // ✔️ NÃO converte nada
-        }
-
 
         // FUNÇÃO PARA ATUALIZAR DATA E HORA
         function atualizarDataHora() {
@@ -1142,6 +1148,9 @@
                 return;
             }
 
+            // Se passou na validação
+            //alert("✅ Dados preenchidos! Validando login...");
+
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
 
                 method: "POST",
@@ -1169,10 +1178,12 @@
 
                 .then(data => {
 
-                    localStorage.setItem("usuario", data.usuario);
+                    // Mostra o usuário no campo Default
+
                     document.getElementById("usuariologado").value = data.usuario;
                     alert("Login realizado com sucesso!");
                     limparLogin();
+
                 })
 
 
@@ -1181,30 +1192,19 @@
                     alert("Usuário ou senha incorretos");
 
                 });
+
         }
 
         // FUNÇÃO PARA ACESSAR ATELA DOS BARRAMENTOS
         function acessarBarramento() {
 
-            const usuario = getUsuario();
+            //const usuario = document.getElementById("usuario").value;
+            const usuario = localStorage.getItem("usuarioLogado");
 
-            // SE NÃO ESTIVER LOGADO
-            if (!usuario) {
-                return;
-            }
-
-            // LIBERADO
-            window.open("menudeBarramentos.html", "_blank");
-        }
-
-        // FUNÇÃO PARA ACESSAR A TELA DAS CLASSES DE MANOBRAS
-        function acessarclassedeManobras() {
-
-            const usuario = localStorage.getItem("usuario");
+            //console.log("Usuário:", usuario); // 👈 veja no console
 
             if (!usuario) {
-
-                alert("🔒 Faça login para poder acessar essa funcionalidade!");
+                alert("🔒 Acesso bloqueado! Faça login primeiro.");
                 return;
             }
 
@@ -1215,14 +1215,13 @@
 
         function acessarUsuario() {
 
-            //const usuario = getUsuario();
-            const usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuarioLogado");
+            //const usuario = document.getElementById("usuario").value;
 
             if (!usuario) {
-                alert("⚠️ Faça Login para poder acessar essa funcionalidade!!");
+                alert("🔒 Acesso bloqueado! Faça login primeiro.");
                 return;
             }
-
 
             // liberado            
             window.open("GestãodeUsuarios.html", "_blank");
@@ -1231,14 +1230,42 @@
 
         // FUNÇÃO EFETUAR O LOGOUT
         function logout() {
-            localStorage.removeItem("usuario");
-            // LIMPA CAMPO
-            document.getElementById("usuariologado").value = "";
-            alert("✅ Logout realizado com sucesso!");
 
-            window.location.href = "SimuladorAlbras.html";
+            localStorage.removeItem("usuariologado");
+
+            document.getElementById("usuariologado").value = "";
+
+            alert("Logout realizado com sucesso!");
+
+            bloquearFuncoes();
+
         }
 
+        // FUNÇÃO PARA LIBERAR BOTÕES
+        function liberarFuncoes() {
+
+            const usuario = localStorage.getItem("usuarioLogado");
+            //document.getElementById("usuariologado").value = "";
+
+            if (!usuario) {
+                alert("🔒 Acesso bloqueado! Faça login primeiro.");
+                return;
+            }
+
+            document.getElementById("btnBarramento").disabled = false;
+            document.getElementById("btnUsuario").disabled = false;
+            //document.getElementById("Botão Login").disabled = false;           
+
+        }
+
+        // FUNÇÃO PARA BLOQUEAR BOTÕES
+        function bloquearFuncoes() {
+
+            document.getElementById("btnBarramento").disabled = true;
+            document.getElementById("btnUsuario").disabled = true;
+            //document.getElementById("Botão Login").disabled = true;
+            alert("Funções bloqueadas com sucesso!");
+        }
 
         // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
         function limparLogin() {
