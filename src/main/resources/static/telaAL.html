@@ -32,26 +32,23 @@
             font-family: Arial, sans-serif;
             background-color: #c0c0c0;
             margin: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
 
         #container {
+
             position: relative;
-            width: 1200px;
-            height: 850px;
-            margin: 0;
+            width: 95%;
+            max-width: 1200px;
+            min-height: 850px;
             background-color: #c0c0c0;
             border: 3px solid black;
-            display: flex;
-            align-items: center;
-            /* Centraliza verticalmente */
+            margin: auto;
+            overflow-x: auto;
             justify-content: flex-start;
-            /* Alinha os itens à esquerda */
-            padding-left: 0px;
-            /* Ajusta a distância da borda esquerda */
         }
 
         .button {
@@ -76,8 +73,9 @@
 
         #email {
             position: absolute;
-            top: 820px;
-            left: 1070px;
+            bottom: 10px;
+            right: 15px;
+
             font-style: italic;
             font-size: 10px;
             color: gray;
@@ -161,21 +159,23 @@
         }
 
         .simulador {
-            font-size: 40px;
-            font-weight: bold;
-            color: white;
             position: absolute;
             top: 2px;
-            left: 530px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(22px, 3vw, 40px);
+            font-weight: bold;
+            color: white;
         }
 
         .telaPrincipal {
-            font-size: 40px;
-            font-weight: bold;
-            color: white;
             position: absolute;
             top: 80px;
-            left: 320px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(18px, 3vw, 40px);
+            font-weight: bold;
+            color: white;
         }
 
         .telaprincipal {
@@ -190,6 +190,32 @@
         svg {
             background: #c0c0c0;
         }
+
+        @media (max-width: 768px) {
+
+            #container {
+                width: 100%;
+                min-height: auto;
+            }
+
+            .simulador {
+                font-size: 24px;
+            }
+
+            .telaPrincipal {
+                font-size: 22px;
+            }
+
+            .button {
+                width: 40px;
+                height: 40px;
+            }
+
+            #email {
+                font-size: 8px;
+                right: 5px;
+            }
+        }
     </style>
 </head>
 
@@ -200,9 +226,9 @@
         <div class="divider top-divider"></div>
         <div class="divider bottom-divider"></div>
 
-        <img src="imagensAlbras/carlos1.png" alt="Carlos GIF"
+        <img src="imagensALBRAS/carlos1.PNG" alt="Carlos GIF"
             style="position: absolute; top: 750px; left: 1100px; width: 70px; height: 70px;">
-        <img src="imagensAlbras/ALBRAS1.JPG" alt="Logo"
+        <img src="imagensALBRAS/Albras1.JPG" alt="Logo"
             style="position: absolute; top: 4px; left: 2px; width: 255px; height: 50px;">
 
         <div class="simulador">SIMULADOR ALBRAS</div>
