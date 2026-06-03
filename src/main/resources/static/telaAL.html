@@ -40,8 +40,8 @@
 
         #container {
             position: relative;
-            width: 1200px;
-            height: 850px;
+            width: 800px;
+            height: 800px;
             margin: 20px auto;
             background-color: #c0c0c0;
             border: 3px solid black;
@@ -69,9 +69,8 @@
 
         #email {
             position: absolute;
-            bottom: 10px;
-            right: 15px;
-
+            top: 780px;
+            left: 670px;
             font-style: italic;
             font-size: 10px;
             color: gray;
@@ -94,8 +93,8 @@
 
         #painel {
             position: relative;
-            width: 1000px;
-            height: 600px;
+            width: 500px;
+            height: 400px;
             background-color: #ffffff;
             border: 0px solid #000;
         }
@@ -119,7 +118,7 @@
 
         .barraA {
             top: 58px;
-            left: 550px;
+            left: -10px;
             width: 450px;
             height: 4px;
             background-color: red;
@@ -127,7 +126,7 @@
 
         .barraB {
             top: 80px;
-            left: 550px;
+            left: -10px;
             width: 450px;
             height: 4px;
             background-color: red;
@@ -135,23 +134,22 @@
 
 
         .simulador {
-            position: absolute;
-            top: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(22px, 3vw, 40px);
+
+            font-size: 30px;
             font-weight: bold;
             color: white;
+            position: absolute;
+            top: 2px;
+            left: 330px;
         }
 
         .telaPrincipal {
-            position: absolute;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: clamp(18px, 3vw, 40px);
+            font-size: 35px;
             font-weight: bold;
             color: white;
+            position: absolute;
+            top: 80px;
+            left: 220px;
         }
 
         .telaprincipal {
@@ -166,32 +164,6 @@
         svg {
             background: #c0c0c0;
         }
-
-        @media (max-width: 768px) {
-
-            #container {
-                width: 100%;
-                min-height: auto;
-            }
-
-            .simulador {
-                font-size: 24px;
-            }
-
-            .telaPrincipal {
-                font-size: 22px;
-            }
-
-            .button {
-                width: 40px;
-                height: 40px;
-            }
-
-            #email {
-                font-size: 8px;
-                right: 5px;
-            }
-        }
     </style>
 </head>
 
@@ -203,7 +175,7 @@
         <div class="divider bottom-divider"></div>
 
         <img src="imagensAlbras/carlos1.png" alt="Carlos GIF"
-            style="position: absolute; top: 750px; left: 1100px; width: 70px; height: 70px;">
+            style="position: absolute; top: 710px; left: 700px; width: 70px; height: 70px;">
         <img src="imagensAlbras/ALBRAS1.JPG" alt="Logo"
             style="position: absolute; top: 4px; left: 2px; width: 255px; height: 50px;">
 
@@ -231,80 +203,80 @@
             <div class="barra barraB"></div> <!-- Barra B -->
 
             <!-- SECCIONADORAS DO ALIMENTADOR 52 AL -->
-            <div class="panel" style="left: 650px; top: 60px; width: 3px; height: 60px;"></div>
+            <div class="panel" style="left: 45px; top: 60px; width: 3px; height: 60px;"></div>
             <!-- SECCIONADORA 89AL-A -->
             <!-- SECCIONADORAS DO AL -->
-            <div class="panel" style="left: 735px; top: 80px; width: 3px; height: 39px;"></div>
+            <div class="panel" style="left: 130px; top: 80px; width: 3px; height: 39px;"></div>
             <!-- SECCIONADORA 89AL-B -->
-            <div class="panel" style="left: 650px; top: 153px; width: 3px; height: 25px;"></div>
+            <div class="panel" style="left: 45px; top: 153px; width: 3px; height: 25px;"></div>
             <!-- SECCIONADORA 89AL-A -->
             <!-- SECCIONADORA 89 AL-A / SECCIONADORA 89 89 AL-B -->
-            <div class="panel" style="left: 690px; top: 175px; width: 3px; height: 20px;"></div>
+            <div class="panel" style="left: 85px; top: 175px; width: 3px; height: 20px;"></div>
             <!-- SECCIONADORA INFERIOR -->
-            <div class="panel" style="left: 650px; top: 175px; width: 88px; height: 3px;"></div>
+            <div class="panel" style="left: 45px; top: 175px; width: 88px; height: 3px;"></div>
             <!-- SECCIONADORA INFERIOR A PARA B-->
-            <div class="panel" style="left: 735px; top: 153px; width: 3px; height: 25px;"></div>
+            <div class="panel" style="left: 130px; top: 153px; width: 3px; height: 25px;"></div>
             <!-- SECCIONADORA INFERIOR B PARA 52 AL-->
 
             <!-- SECCIONADORA 52 AL -->
-            <div class="panel" style="left: 690px; top: 235px; width: 3px; height: 43px;"></div>
+            <div class="panel" style="left: 85px; top: 235px; width: 3px; height: 43px;"></div>
             <!-- SECCIONADORA INFERIOR 52 AL-->
-            <div class="panel orange" style="left: 690px; top: 314px; width: 3px; height: 124px;"></div>
+            <div class="panel orange" style="left: 85px; top: 314px; width: 3px; height: 124px;"></div>
             <!-- SECCIONADORA INFERIOR 89 AL-->
 
             <!-- SECCIONADORAS DA INTERLIGAÇÃO BT -->
-            <div class="panel" style="left: 800px; top: 60px; width: 3px; height: 60px;"></div>
+            <div class="panel" style="left: 200px; top: 60px; width: 3px; height: 60px;"></div>
             <!-- SECCIONADORA 89BT-A -->
             <!-- SECCIONADORAS DO L2 -->
-            <div class="panel" style="left: 885px; top: 80px; width: 3px; height: 39px;"></div>
+            <div class="panel" style="left: 290px; top: 80px; width: 3px; height: 39px;"></div>
             <!-- SECCIONADORA 89BT-B -->
-            <div class="panel" style="left: 800px; top: 153px; width: 3px; height: 65px;"></div>
+            <div class="panel" style="left: 200px; top: 153px; width: 3px; height: 65px;"></div>
             <!-- SECCIONADORA 89BT-A -->
             <!-- SECCIONADORA 89 BP-A / SECCIONADORA 89 89 BP-B -->
-            <div class="panel" style="left: 800px; top: 215px; width: 88px; height: 3px;"></div>
+            <div class="panel" style="left: 202px; top: 215px; width: 88px; height: 3px;"></div>
             <!-- SECCIONADORA INFERIOR A PARA B-->
-            <div class="panel" style="left: 885px; top: 153px; width: 3px; height: 65px;"></div>
+            <div class="panel" style="left: 290px; top: 153px; width: 3px; height: 65px;"></div>
             <!-- SECCIONADORA INFERIOR BP-B PARA DISJUNTOR-->
-            <div class="panel orange" style="left: 845px; top: 215px; width: 3px; height: 154px;"></div>
+            <div class="panel orange" style="left: 244px; top: 215px; width: 3px; height: 154px;"></div>
             <!-- SECCIONADORA INFERIOR 89 BPA/BPB-->
-            <div class="panel" style="left: 690px; top: 368px; width: 158px; height: 3px;"></div>
+            <div class="panel" style="left: 88px; top: 368px; width: 158px; height: 3px;"></div>
             <!-- SECCIONADORA INFERIOR BP PARA AL-->
 
             <!-- Simbolos Disjuntor 52 AL -->
             <!-- Botões das Seccionadoras A e B 52 AL (botão) -->
-            <svg id="diagrama" width="1000" height="600" style="background: #c0c0c0; display: flex; margin: 0;">
+            <svg id="diagrama" width="500" height="600" style="background: #c0c0c0; display: flex; margin: 0;">
 
                 <!-- Simbolos Disjuntores e Seccionadoras AL -->
                 <!-- Botões das Seccionadoras A e B AL (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnALA" x="627" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnALA" x="23" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
                     onclick="toggleSeccionadoraALA('ALA')" />
-                <text x="630" y="140" onclick="toggleSeccionadora('ALA')">89ALA</text>
+                <text x="25" y="140" onclick="toggleSeccionadora('ALA')">89ALA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnALB" x="712" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnALB" x="107" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
                     onclick="toggleSeccionadoraALB('ALB')" />
-                <text x="714" y="140" onclick="toggleSeccionadora('ALB')">89ALB</text>
+                <text x="106" y="140" onclick="toggleSeccionadora('ALB')">89ALB</text>
 
                 <!-- Símbolo de Disjuntor AL-->
-                <rect id="btnAL" x="665" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                <rect id="btnAL" x="61" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
                     onclick="toggleDisjuntorAL('AL')" /> <!-- Disjuntor -->
                 <line x1="705" y1="214" x2="665" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
-                <text x="707" y="220" onclick="toggleDisjuntor('52AL')">52AL</text>
+                <text x="107" y="220" onclick="toggleDisjuntor('52AL')">52AL</text>
                 <!-- Símbolo da e Seccionadora 89 AL-->
-                <rect id="btnL2" x="667" y="277" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL2" x="63" y="277" width="35" height="35" fill="#c0c0c0" stroke="gray"
                     onclick="toggleSeccionadoraAL('AL')" />
-                <text x="705" y="300" onclick="toggleTransformador('89AL')">89AL</text>
+                <text x="65" y="300" onclick="toggleTransformador('89AL')">89AL</text>
 
                 <!-- Simbolos Disjuntor e Seccionadora BP -->
                 <!-- Botões das Seccionadoras A e B BP (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnBTA" x="777" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBTA" x="177" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
                     onclick="toggleSeccionadoraBPA('BPA')" />
-                <text x="780" y="140" onclick="toggleSeccionadora('BPA')">89BPA</text>
+                <text x="178" y="140" onclick="toggleSeccionadora('BPA')">89BPA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnBTB" x="862" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBTB" x="268" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
                     onclick="toggleSeccionadoraBPB('BPB')" />
-                <text x="864" y="140" onclick="toggleSeccionadora('BPB')">89BPB</text>
+                <text x="270" y="140" onclick="toggleSeccionadora('BPB')">89BPB</text>
 
                 <defs>
                     <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"
@@ -313,7 +285,7 @@
                     </marker>
                 </defs>
                 <!-- Linha do Alimentador AL -->
-                <line x1="685" y1="440" x2="685" y2="450" stroke="red" stroke-width="4" marker-end="url(#arrow)" />
+                <line x1="80" y1="440" x2="80" y2="450" stroke="red" stroke-width="4" marker-end="url(#arrow)" />
 
             </svg>
 
