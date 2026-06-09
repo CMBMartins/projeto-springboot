@@ -43,7 +43,7 @@
             width: 1200px;
             height: 850px;
             margin: 20px auto;
-            background-color: #c0c0c0;
+            background-color: teal;
             border: 3px solid black;
         }
 
@@ -51,7 +51,7 @@
             position: absolute;
             width: 50px;
             height: 48px;
-            background-color: #c0c0c0;
+            background-color: teal;
             border: none;
             cursor: pointer;
         }
@@ -95,7 +95,7 @@
             position: relative;
             width: 1000px;
             height: 600px;
-            background-color: #ffffff;
+            background-color: teal;
             border: 0px solid #000;
         }
 
@@ -158,14 +158,14 @@
         .telaprincipal {
             font-size: 15px;
             font-weight: bold;
-            color: black;
+
             position: absolute;
             top: -45px;
             left: -140px;
         }
 
         svg {
-            background: #c0c0c0;
+            background: transparent;
         }
     </style>
 </head>
@@ -320,15 +320,15 @@
             <!-- SECCIONADORA INFERIOR BT-B PARA DISJUNTOR-->
 
             <!-- Símbolos dos Disjuntores e Transformadores -->
-            <svg id="diagrama" width="1000" height="600" style="background: #c0c0c0; display: flex; margin: 0;">
+            <svg id="diagrama" width="1000" height="600" style="background: teal; display: flex; margin: 0;">
 
                 <!-- Botões das Seccionadoras A e B MT-2 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnA" x="25" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnA" x="25" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMT2A('A')" />
                 <text x="25" y="140" onclick="toggleSeccionadora('A')">89MT2A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnB" x="107" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnB" x="107" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMT2B('B')" />
                 <text x="108" y="140" onclick="toggleSeccionadora('B')">89MT2B</text>
 
@@ -347,11 +347,11 @@
                 <!-- Simbolos Disjuntor e Transformador MT-R -->
                 <!-- Botões das Seccionadoras A e B MT-R (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnRA" x="173" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnRA" x="173" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMTRA('RA')" />
                 <text x="175" y="140" onclick="toggleSeccionadora('RA')">89MTRA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnRB" x="257" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnRB" x="257" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMTRB('RB')" />
                 <text x="258" y="140" onclick="toggleSeccionadora('RB')">89MTRB</text>
 
@@ -370,11 +370,11 @@
                 <!-- Simbolos Disjuntor e Transformador MT-1 -->
                 <!-- Botões das Seccionadoras A e B MT-2 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btn1A" x="323" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btn1A" x="323" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMT1A('1A')" />
                 <text x="325" y="140" onclick="toggleSeccionadora('2A')">89MT1A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btn1B" x="412" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btn1B" x="412" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraMT1B('1B')" />
                 <text x="414" y="140" onclick="toggleSeccionadora('2B')">89MT1B</text>
 
@@ -393,11 +393,11 @@
                 <!-- Simbolos Disjuntor e Seccionadora L1 -->
                 <!-- Botões das Seccionadoras A e B L1 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnL1A" x="471" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL1A" x="471" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL1A('L1A')" />
                 <text x="473" y="140" onclick="toggleSeccionadora('3A')">89L1A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnL1B" x="558" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL1B" x="558" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL1B('L1B')" />
                 <text x="560" y="140" onclick="toggleSeccionadora('3B')">89L1B</text>
 
@@ -407,7 +407,7 @@
                 <line x1="555" y1="214" x2="515" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
                 <text x="557" y="220" onclick="toggleDisjuntor('52L1')">52L1</text>
                 <!-- Símbolo da e Seccionadora L1 89L1-->
-                <rect id="btnL1" x="517" y="278" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL1" x="517" y="278" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL1('L1')" />
                 <text x="555" y="300" onclick="toggleTransformador('89L1')">89L1</text>
                 <defs>
@@ -423,11 +423,11 @@
                 <!-- Simbolos Disjuntor e Seccionadora L2 -->
                 <!-- Botões das Seccionadoras A e B L2 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnL2A" x="627" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL2A" x="627" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL2A('L2A')" />
                 <text x="630" y="140" onclick="toggleSeccionadora('4A')">89L2A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnL2B" x="712" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL2B" x="712" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL2B('L2B')" />
                 <text x="714" y="140" onclick="toggleSeccionadora('4B')">89L2B</text>
 
@@ -437,7 +437,7 @@
                 <line x1="705" y1="214" x2="665" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
                 <text x="707" y="220" onclick="toggleDisjuntor('52L2')">52L2</text>
                 <!-- Símbolo da e Seccionadora 89 L2-->
-                <rect id="btnL2" x="667" y="277" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnL2" x="667" y="277" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraL2('L2')" />
                 <text x="705" y="300" onclick="toggleTransformador('89L2')">89L2</text>
                 <defs>
@@ -453,11 +453,11 @@
                 <!-- Simbolos Disjuntor e Seccionadora BT -->
                 <!-- Botões das Seccionadoras A e B BT (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnBTA" x="777" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBTA" x="777" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraBTA('BTA')" />
                 <text x="780" y="140" onclick="toggleSeccionadora('4A')">89BTA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnBTB" x="862" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBTB" x="862" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraBTB('BTB')" />
                 <text x="864" y="140" onclick="toggleSeccionadora('4B')">89BTB</text>
 
