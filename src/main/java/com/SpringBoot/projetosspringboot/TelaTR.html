@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tela da Barra TR </title>
+    <!-- Adiciona o Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Adiciona o jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Adiciona o JavaScript do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/vars.css" />
+    <link rel="stylesheet" href="styles/main-content.css" />
+    <link rel="stylesheet" href="styles/sidebar-footer.css" />
+    <link rel="stylesheet" href="styles/media-query.css" />
+    <!--Media queries devem ser chamados depois do CSS principal -->
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
+        integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/fontawesome.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
+
+
+    <style>
+        body {
+
+            font-family: Arial, sans-serif;
+            background-color: #c0c0c0;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        #container {
+            position: relative;
+            width: 850px;
+            height: 800px;
+            margin: 20px auto;
+            background-color: teal;
+            border: 3px solid black;
+        }
+
+        .button {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            background-color: teal;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tooltip {
+            font-size: 12px;
+            color: gray;
+            position: absolute;
+        }
+
+        #email {
+            position: absolute;
+            top: 780px;
+            left: 670px;
+            font-style: italic;
+            font-size: 10px;
+            color: gray;
+        }
+
+        .divider {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: blue;
+        }
+
+        .top-divider {
+            top: 0px;
+        }
+
+        .bottom-divider {
+            top: 53px;
+        }
+
+
+        #painel {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            background-color: #ffffff;
+            border: 0px solid #000;
+        }
+
+        .panel {
+            position: absolute;
+            background-color: red;
+        }
+
+        .orange {
+            background-color: yellow;
+        }
+
+        .barra {
+            position: absolute;
+            height: 4px;
+            background-color: blue;
+            height: 4px;
+            background-color: blue;
+        }
+
+        .barraA {
+            top: 58px;
+            left: -10px;
+            width: 400px;
+            height: 4px;
+            background-color: red;
+        }
+
+        .barraB {
+            top: 80px;
+            left: -10px;
+            width: 400px;
+            height: 4px;
+            background-color: red;
+        }
+
+        .simulador {
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 2px;
+            left: 330px;
+        }
+
+        .telaPrincipal {
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 80px;
+            left: 220px;
+        }
+
+        .telaprincipal {
+            font-size: 15px;
+            font-weight: bold;
+            color: black;
+            position: absolute;
+            top: -45px;
+            left: -140px;
+        }
+
+        svg {
+            background: #c0c0c0;
+        }
+    </style>
+</head>
+
+<!-- Cabeçalho-->
+
+<body>
+    <div id="container">
+        <div class="divider top-divider"></div>
+        <div class="divider bottom-divider"></div>
+
+        <img src="imagensAlbras/carlos1.png" alt="Carlos GIF"
+            style="position: absolute; top: 710px; left: 695px; width: 70px; height: 70px;">
+        <img src="imagensAlbras/ALBRAS1.JPG" alt="Logo"
+            style="position: absolute; top: 4px; left: 2px; width: 255px; height: 50px;">
+
+        <div class="simulador">SIMULADOR ALBRAS</div>
+        <div class="telaPrincipal">Tela da Barra TR (MTR)</div>
+
+        <div id="email">cmardonio@yahoo.com.br</div>
+
+        <button class="button" style="top: 130px; left: 152px;"
+            title="Pressione para fazer Login e liberar a operação dos Equipamentos">
+            <!--<h4><div><a href="simuladorALBRAS.php">Chamar a tela Principal</a><br></div></h4>-->
+
+            <div class="telaprincipal">
+                <a href="">
+                    <span class="fa fa-home"></span>
+                    <a href="menudeBarramentos.html">
+                        <span>Menu dos Barramentos</span>
+                    </a>
+            </div>
+            </head>
+
+            <!-- SECCIONADORAS 89 TA-R / SECCIONADORA 89 TA-R -->
+            <!-- BAY TA-R -->
+            <!-- Seccionadora 89 TA-R -->
+            <div class="panel" style="left: 45px; top: 58px; width: 3px; height: 60px;"></div>
+            <!-- Seccionadora 89 MT-4A / Disjuntor -->
+            <div class="panel" style="left: 45px; top: 153px; width: 3px; height: 125px;"></div>
+
+            <!-- SECCIONADORA 89 LVR-R -->
+            <div class="panel" style="left: 195px; top: 58px; width: 3px; height: 60px;"></div>
+            <!-- Seccionadora 89 LVR-RE -->
+            <div class="panel" style="left: 280px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- Seccionadora 89 LVR-RA -->
+            <div class="panel" style="left: 195px; top: 153px; width: 3px; height: 23px;"></div>
+            <!-- SECCIONADORA 89 LVR-RE / DISJUNTOR -->
+            <div class="panel" style="left: 280px; top: 153px; width: 3px; height: 23px;"></div>
+            <!-- DISJUNTOR / TRANSFORMADOR TA-R-->
+            <div class="panel" style="left: 240px; top: 235px; width: 3px; height: 43px;"></div>
+            <!-- SECCIONADORA 89 LVR-R / SECCIONADORA 89 LVR-RE -->
+            <div class="panel" style="left: 195px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA / DISJUNTOR LVR-R -->
+            <div class="panel" style="left: 240px; top: 176px; width: 3px; height: 20px;"></div>
+            <!-- TRANSFORMADOR / BARRA TR -->
+            <div class="panel orange" style="left: 240px; top: 322px; width: 3px; height: 114px;"></div>
+            <!-- BARRA TR -->
+            <div class="panel orange" style="left: 175px; top: 435px; width: 130px; height: 3px;"></div>
+
+            <!-- Barras superiores -->
+            <div class="barra barraA"></div> <!-- Barra R -->
+            <div class="barra barraB"></div> <!-- Barra E -->
+
+            <!-- Simbolos Disjuntor e Transformador LVR-R -->
+            <!-- Botões das Seccionadoras A e B MT-4 (botão) -->
+            <svg id="diagrama" width="600" height="350" style="background: teal; display: flex; margin: 0;">
+
+                <!-- Botões das Seccionadoras R e E LVR-R (botão) -->
+                <!-- Seccionadora R (botão) -->
+                <rect id="btnTAR" x="25" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraTAR('TAR')" />
+                <text x="25" y="140" onclick="toggleSeccionadora('TAR')">89TA-R</text>
+
+                <!-- Símbolo de Transformador TAR-->
+                <line x1="5" y1="300" x2="77" y2="300" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador -->
+                <circle cx="28" cy="298" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="53" cy="298" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <line x1="28" y1="322" x2="28" y2="340" stroke="black" stroke-width="2" />
+                <!-- Três barras horizontais diminuindo de tamanho -->
+                <line x1="18" y1="340" x2="38" y2="340" stroke="black" stroke-width="2" /> <!-- Maior -->
+                <line x1="21" y1="345" x2="35" y2="345" stroke="black" stroke-width="2" /> <!-- Média -->
+                <line x1="24" y1="350" x2="32" y2="350" stroke="black" stroke-width="2" /> <!-- Menor -->
+                <text x="67" y="340" onclick="toggleTransformador('MT4')">TA-R</text>
+
+
+                <!-- Simbolos Disjuntor e Transformador LVR-R -->
+                <!-- Botões das Seccionadoras R e B LVR-R (botão) -->
+                <!-- Seccionadora R (botão) -->
+                <rect id="btnRR" x="173" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVRR('RR')" />
+                <text x="175" y="140" onclick="toggleSeccionadora('RR')">89LR-R</text>
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnRE" x="257" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVRRE('RE')" />
+                <text x="258" y="140" onclick="toggleSeccionadora('RE')">89LR-RE</text>
+
+                <!-- Símbolo de Disjuntor LVRR-->
+                <rect id="btnLVRR" x="216" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorLVRR('LVRR')" /> <!-- Disjuntor -->
+                <line x1="255" y1="214" x2="215" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="257" y="220" onclick="toggleDisjuntor('52LVRR')">52LVR-R</text>
+                <!-- Símbolo de Transformador LVR-R-->
+                <line x1="200" y1="300" x2="270" y2="300" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador -->
+                <circle cx="225" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="245" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="255" y="340" onclick="toggleTransformador('LVRR')">LVR-R</text>
+            </svg>
+
+            <!-- SCRIPTS PARA SECCIONADORAS E DISJUNTORES -->
+            <!-- SECCIONADORA 89TA-R-->
+            <script>
+                function toggleSeccionadoraTAR(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "40") {
+                            linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "40");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "red");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "40");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "60");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVRR-->
+            <script>
+                function toggleSeccionadoraLVRR(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "190") {
+                            linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "190");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "red");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "190");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "210");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVRR-E-->
+            <script>
+                function toggleSeccionadoraLVRRE(tipo) {
+
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "275") {
+                            linha.setAttribute("x2", "295"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "275");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "red");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "275");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "295");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52LVR-R-->
+            <script>
+                function toggleDisjuntorLVRR(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+    </div>
+    </div>
+
+</body>
+
+</html>

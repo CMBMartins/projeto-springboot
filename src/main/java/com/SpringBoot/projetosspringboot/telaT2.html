@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tela do Barramento T2 de 34,5 KV MT-2 </title>
+    <!-- Adiciona o Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Adiciona o jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Adiciona o JavaScript do Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="icons/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="styles/reset.css" />
+    <link rel="stylesheet" href="styles/vars.css" />
+    <link rel="stylesheet" href="styles/main-content.css" />
+    <link rel="stylesheet" href="styles/sidebar-footer.css" />
+    <link rel="stylesheet" href="styles/media-query.css" />
+    <!--Media queries devem ser chamados depois do CSS principal -->
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
+        integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/fontawesome.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
+
+
+    <style>
+        body {
+
+            font-family: Arial, sans-serif;
+            background-color: #c0c0c0;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        #container {
+            position: relative;
+            width: 1500px;
+            height: 850px;
+            margin: 20px auto;
+            background-color: teal;
+            border: 3px solid black;
+        }
+
+        .button {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+            background-color: teal;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tooltip {
+            font-size: 12px;
+            color: gray;
+            position: absolute;
+        }
+
+        #email {
+            position: absolute;
+            top: 820px;
+            left: 1370px;
+            font-style: italic;
+            font-size: 10px;
+            color: gray;
+        }
+
+        .divider {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: blue;
+        }
+
+        .top-divider {
+            top: 0px;
+        }
+
+        .bottom-divider {
+            top: 53px;
+        }
+
+
+        #painel {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            background-color: #ffffff;
+            border: 0px solid #000;
+        }
+
+        .panel {
+            position: absolute;
+            background-color: orange;
+        }
+
+        .panel1 {
+            position: absolute;
+            background-color: yellow;
+        }
+
+        .orange {
+            background-color: yellow;
+        }
+
+        .barra {
+            position: absolute;
+            height: 4px;
+            background-color: blue;
+            height: 4px;
+            background-color: blue;
+        }
+
+        .barraT1 {
+            top: 58px;
+            left: -10px;
+            width: 1250px;
+            height: 4px;
+            background-color: orange;
+        }
+
+        .barraE {
+            top: 80px;
+            left: -10px;
+            width: 1250px;
+            height: 4px;
+            background-color: orange;
+        }
+
+
+        .simulador {
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 2px;
+            left: 530px;
+        }
+
+        .telaPrincipal {
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            top: 80px;
+            left: 320px;
+        }
+
+        .telaprincipal {
+            font-size: 15px;
+            font-weight: bold;
+            color: black;
+            position: absolute;
+            top: -45px;
+            left: -140px;
+        }
+
+        svg {
+            background: #c0c0c0;
+        }
+    </style>
+</head>
+
+<!-- Cabeçalho-->
+
+<body>
+    <div id="container">
+        <div class="divider top-divider"></div>
+        <div class="divider bottom-divider"></div>
+
+        <img src="imagensAlbras/carlos1.png" alt="Carlos GIF"
+            style="position: absolute; top: 750px; left: 1400px; width: 70px; height: 70px;">
+        <img src="imagensAlbras/ALBRAS1.JPG" alt="Logo"
+            style="position: absolute; top: 4px; left: 2px; width: 255px; height: 50px;">
+
+        <div class="simulador">SIMULADOR ALBRAS</div>
+        <div class="telaPrincipal">Tela do Barramento T2 de 34,5 KV MT-2</div>
+
+        <div id="email">cmardonio@yahoo.com.br</div>
+
+        <button class="button" style="top: 130px; left: 152px;"
+            title="Pressione para fazer Login e liberar a operação dos Equipamentos">
+            <!--<h4><div><a href="simuladorALBRAS.php">Chamar a tela Principal</a><br></div></h4>-->
+
+            <div class="telaprincipal">
+                <a href="">
+                    <span class="fa fa-home"></span>
+                    <a href="menudeBarramentos.html">
+                        <span>Menu dos Barramentos</span>
+                    </a>
+            </div>
+            </head>
+
+            <!-- Conexões das barras com os transformadores -->
+            <!-- Barras superiores -->
+            <div class="barra barraT1"></div> <!-- Barra T1 -->
+            <div class="barra barraE"></div> <!-- Barra E -->
+
+            <!-- SECCIONADORAS DA BARRA T2 e E -->
+            <!-- SECCIONADORAS 89 C3 / DISJUNTOR 52 C3 -->
+            <!-- Seccionadora 89 C3 E C3-E -->
+            <div class="panel" style="left: 45px; top: 58px; width: 3px; height: 60px;"></div>
+            <!-- Seccionadora 89 C3E / Disjuntor -->
+            <div class="panel" style="left: 45px; top: 153px; width: 3px; height: 23px;"></div>
+            <!-- Seccionadora 89 C3 -->
+            <div class="panel" style="left: 130px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA 89 C3-E / DISJUNTOR MT- -->
+            <div class="panel" style="left: 129px; top: 154px; width: 3px; height: 23px;"></div>
+            <!-- DISJUNTOR / BANCO-->
+            <div class="panel" style="left: 90px; top: 235px; width: 3px; height: 43px;"></div>
+            <!-- SECCIONADORA C3 / SECCIONADORA C3-E -->
+            <div class="panel" style="left: 45px; top: 175px; width: 87px; height: 3px;"></div>
+            <!-- SECCIONADORA / DISJUNTOR C3 -->
+            <div class="panel" style="left: 90px; top: 176px; width: 3px; height: 20px;"></div>
+            <!-- TRANSFORMADOR / BARRA T2 -->
+
+            <!-- SECCIONADORA 89 C4 E C4-E -->
+            <div class="panel" style="left: 195px; top: 58px; width: 3px; height: 60px;"></div>
+            <!-- Seccionadora 89 C4-E -->
+            <div class="panel" style="left: 280px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- Seccionadora 89 C4 -->
+            <div class="panel" style="left: 195px; top: 153px; width: 3px; height: 23px;"></div>
+            <!-- SECCIONADORA 89 C4-E / DISJUNTOR -->
+            <div class="panel" style="left: 280px; top: 153px; width: 3px; height: 23px;"></div>
+            <!-- DISJUNTOR / BANCO C4-->
+            <div class="panel" style="left: 240px; top: 235px; width: 3px; height: 43px;"></div>
+            <!-- SECCIONADORA 89 C4-E / SECCIONADORA 89 C2-E -->
+            <div class="panel" style="left: 195px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA / DISJUNTOR 52 C4 -->
+            <div class="panel" style="left: 240px; top: 176px; width: 3px; height: 20px;"></div>
+
+            <!-- SECCIONADORAS DO A3 -->
+            <div class="panel" style="left: 345px; top: 60px; width: 3px; height: 60px;"></div>
+            <!-- SECCIONADORA SUPERIOR 89A3-E -->
+            <div class="panel" style="left: 345px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR 89A3-E-->
+            <div class="panel" style="left: 433px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA SUPERIOR 89A3-E -->
+            <div class="panel" style="left: 433px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR 89A3-E-->
+            <!-- SECCIONADORA 89 A3 / DISJUNTOR 52 A3 -->
+            <div class="panel" style="left: 390px; top: 175px; width: 3px; height: 20px;"></div>
+            <!-- LIGAÇÃO DA SECCIONADORA C/ DISJUNTOR A3-->
+            <!-- SECCIONADORA 89 A3 / SECCIONADORA 89 A3-E -->
+            <div class="panel" style="left: 345px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA Ligação entre 89 A3 e A3-E-->
+            <!-- TRANSFORMADOR A3 -->
+            <div class="panel" style="left: 390px; top: 235px; width: 3px; height: 43px;"></div>
+
+            <!-- Barra T2 para A4 -->
+            <!-- SECCIONADORAS TRAFO A4 -->
+            <div class="panel" style="left: 493px; top: 58px; width: 3px; height: 60px;"></div>
+            <!-- SECCIONADORAS DA A4 -->
+            <div class="panel" style="left: 580px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA SUPERIOR -->
+            <div class="panel" style="left: 540px; top: 175px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <!-- SECCIONADORA 89 A4-E / DISJUNTOR 52 A4 -->
+            <div class="panel" style="left: 540px; top: 234px; width: 3px; height: 45px;"></div>
+            <div class="panel" style="left: 493px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA 89 A4 / SECCIONADORA 89 A4-E -->
+            <div class="panel" style="left: 495px; top: 175px; width: 88px; height: 3px;"></div>
+            <div class="panel" style="left: 580px; top: 153px; width: 3px; height: 25px;"></div>
+
+            <!-- SECCIONADORAS DA PLANTA P3 -->
+            <div class="panel" style="left: 650px; top: 60px; width: 3px; height: 60px;"></div>
+            <!-- SECCIONADORA 89 P3 -->
+            <!-- SECCIONADORAS DO P3 -->
+            <div class="panel" style="left: 735px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA P3-E -->
+            <div class="panel" style="left: 650px; top: 153px; width: 3px; height: 25px;"></div> <!-- SECCIONADORA  -->
+            <!-- SECCIONADORA 89 P1 / SECCIONADORA 89 89 P3-E -->
+            <div class="panel" style="left: 690px; top: 175px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <div class="panel" style="left: 650px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA INFERIOR T2 para E-->
+            <div class="panel" style="left: 735px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR E para disjuntor-->
+            <!-- PLANTA P3 -->
+            <div class="panel" style="left: 690px; top: 235px; width: 3px; height: 53px;"></div>
+
+            <!-- SECCIONADORAS DO LVR-2 -->
+            <div class="panel" style="left: 800px; top: 60px; width: 3px; height: 60px;"></div>
+            <!-- SECCIONADORA 89 LVR-2 -->
+            <!-- SECCCIONADORAS DA PLANTA P2 -->
+            <div class="panel" style="left: 885px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA 89 LVR-2E -->
+            <div class="panel" style="left: 800px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA 89 LVR-2 -->
+            <!-- SECCIONADORA 89 P2 / SECCIONADORA 89 89 P2-E -->
+            <div class="panel" style="left: 840px; top: 175px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <div class="panel" style="left: 800px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA INFERIOR T2 para E-->
+            <div class="panel" style="left: 885px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR E PARA DISJUNTOR-->
+            <!-- LINHA DO TRAFO LVR-2 -->
+            <div class="panel" style="left: 840px; top: 235px; width: 3px; height: 53px;"></div>
+
+            <!-- SECCIONADORAS DO  LVR2A-->
+            <div class="panel" style="left: 950px; top: 60px; width: 3px; height: 60px;"></div>
+            <!-- SECCIONADORA 89 LVR2A -->
+            <!-- SECCCIONADORAS DO LVR2A -->
+            <div class="panel" style="left: 1035px; top: 80px; width: 3px; height: 39px;"></div>
+            <!-- SECCIONADORA 89 LVR-2AE -->
+            <div class="panel" style="left: 950px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA 89 LVR-2A -->
+            <!-- SECCIONADORA 89 P2 / SECCIONADORA 89 89 P2-E -->
+            <div class="panel" style="left: 990px; top: 175px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <div class="panel" style="left: 950px; top: 175px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA INFERIOR T2 para E-->
+            <div class="panel" style="left: 1035px; top: 153px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR E PARA DISJUNTOR-->
+            <!-- LINHA DO TRAFO LVR-3 -->
+            <div class="panel" style="left: 990px; top: 235px; width: 3px; height: 53px;"></div>
+
+            <!-- SECCIONADORAS DOS RETIFICADORES 08 a 12-->
+            <!-- SECCIONADORAS 89 RF-08 / DISJUNTOR 52 RF-08 -->
+            <!-- Seccionadora 89 RF-08 E RF08-E -->
+            <div class="panel1" style="left: 45px; top: 370px; width: 3px; height: 48px;"></div>
+            <!-- Seccionadora 89 RF08-E / Disjuntor -->
+            <div class="panel1" style="left: 45px; top: 453px; width: 3px; height: 23px;"></div>
+            <!-- Seccionadora 89 RF08 -->
+            <div class="panel1" style="left: 130px; top: 400px; width: 3px; height: 19px;"></div>
+            <!-- SECCIONADORA 89 RF08-E-E / DISJUNTOR RF-08- -->
+            <div class="panel1" style="left: 129px; top: 454px; width: 3px; height: 23px;"></div>
+            <!-- DISJUNTOR / RF08-->
+            <div class="panel1" style="left: 90px; top: 535px; width: 3px; height: 33px;"></div>
+            <!-- SECCIONADORA RF08 / SECCIONADORA RF08-E -->
+            <div class="panel1" style="left: 45px; top: 475px; width: 87px; height: 3px;"></div>
+            <!-- SECCIONADORA / DISJUNTOR RF08 -->
+            <div class="panel1" style="left: 90px; top: 476px; width: 3px; height: 20px;"></div>
+            <!-- TRANSFORMADOR / BARRA R -->
+
+            <!-- SECCIONADORA 89 RF09 E RF09-E -->
+            <div class="panel1" style="left: 195px; top: 370px; width: 3px; height: 48px;"></div>
+            <!-- Seccionadora 89 C4-E -->
+            <div class="panel1" style="left: 280px; top: 400px; width: 3px; height: 19px;"></div>
+            <!-- Seccionadora 89 C4 -->
+            <div class="panel1" style="left: 195px; top: 453px; width: 3px; height: 23px;"></div>
+            <!-- SECCIONADORA 89 C4-E / DISJUNTOR -->
+            <div class="panel1" style="left: 280px; top: 453px; width: 3px; height: 23px;"></div>
+            <!-- DISJUNTOR / BANCO C4-->
+            <div class="panel1" style="left: 240px; top: 535px; width: 3px; height: 33px;"></div>
+            <!-- SECCIONADORA 89 C4-E / SECCIONADORA 89 C2-E -->
+            <div class="panel1" style="left: 195px; top: 475px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA / DISJUNTOR 52 C4 -->
+            <div class="panel1" style="left: 240px; top: 476px; width: 3px; height: 20px;"></div>
+
+            <!-- SECCIONADORAS DO RF 10 -->
+            <div class="panel1" style="left: 345px; top: 370px; width: 3px; height: 48px;"></div>
+            <!-- SECCIONADORA SUPERIOR 89RF10-E -->
+            <div class="panel1" style="left: 345px; top: 453px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR 89A3-E-->
+            <div class="panel1" style="left: 433px; top: 400px; width: 3px; height: 19px;"></div>
+            <!-- SECCIONADORA SUPERIOR 89A3-E -->
+            <div class="panel1" style="left: 433px; top: 453px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR 89A3-E-->
+            <!-- SECCIONADORA 89 RF10 / DISJUNTOR 52 RF10 -->
+            <div class="panel1" style="left: 390px; top: 475px; width: 3px; height: 20px;"></div>
+            <!-- LIGAÇÃO DA SECCIONADORA C/ DISJUNTOR A3-->
+            <!-- SECCIONADORA 89 RF10 / SECCIONADORA 89 A3-E -->
+            <div class="panel1" style="left: 345px; top: 475px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA Ligação entre 89 A3 e A3-E-->
+            <!-- TRANSFORMADOR RF10 -->
+            <div class="panel1" style="left: 390px; top: 535px; width: 3px; height: 33px;"></div>
+
+            <!-- SECCIONADORAS TRAFO RF11 -->
+            <div class="panel1" style="left: 493px; top: 370px; width: 3px; height: 48px;"></div>
+            <!-- SECCIONADORAS DA A4 -->
+            <div class="panel1" style="left: 580px; top:400px; width: 3px; height: 19px;"></div>
+            <!-- SECCIONADORA SUPERIOR -->
+            <div class="panel1" style="left: 540px; top: 475px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <!-- SECCIONADORA 89 RF11-E / DISJUNTOR 52 RF11 -->
+            <div class="panel1" style="left: 540px; top: 534px; width: 3px; height: 33px;"></div>
+            <div class="panel1" style="left: 493px; top: 453px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA 89 RF11 / SECCIONADORA 89 RF11-E -->
+            <div class="panel1" style="left: 495px; top: 475px; width: 88px; height: 3px;"></div>
+            <div class="panel1" style="left: 580px; top: 453px; width: 3px; height: 25px;"></div>
+
+            <!-- SECCIONADORAS DO RF12 -->
+            <div class="panel1" style="left: 650px; top: 370px; width: 3px; height: 48px;"></div>
+            <!-- SECCIONADORA 89 RF12 -->
+            <!-- SECCIONADORAS DO RF12 -->
+            <div class="panel1" style="left: 735px; top: 400px; width: 3px; height: 19px;"></div>
+            <!-- SECCIONADORA RF12-E -->
+            <div class="panel1" style="left: 650px; top: 453px; width: 3px; height: 25px;"></div> <!-- SECCIONADORA  -->
+            <!-- SECCIONADORA 89 RF12 / SECCIONADORA 89 89 RF12-E -->
+            <div class="panel1" style="left: 690px; top: 475px; width: 3px; height: 20px;"></div>
+            <!-- SECCIONADORA INFERIOR -->
+            <div class="panel1" style="left: 650px; top: 475px; width: 88px; height: 3px;"></div>
+            <!-- SECCIONADORA INFERIOR T2 para E-->
+            <div class="panel1" style="left: 735px; top: 453px; width: 3px; height: 25px;"></div>
+            <!-- SECCIONADORA INFERIOR E para disjuntor-->
+            <!-- PLANTA RF12 -->
+            <div class="panel1" style="left: 690px; top: 535px; width: 3px; height: 33px;"></div>
+
+
+            <!-- SIMBOLOS DAS SECCIONADORAS E DISJUNTORES -->
+            <!-- BOTÕES DAS SECCIONADORAS T2 e E C3 (botão) -->
+            <svg id="diagrama" width="1200" height="615" style="background: teal; display: flex; margin: 0;">
+
+                <!-- Botões das Seccionadoras T2 e E (botão) -->
+                <!-- Seccionadora C3 (botão) -->
+                <rect id="btnC3" x="25" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraC3('C3')" />
+                <text x="25" y="140" onclick="toggleSeccionadora('C3')">89C3</text>
+                <!-- Seccionadora C3-E (botão) -->
+                <rect id="btnC3" x="107" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraC3E('C3E')" />
+                <text x="108" y="140" onclick="toggleSeccionadora('C3E')">89C3E</text>
+                <!-- Símbolo de Disjuntor do C3 -->
+                <rect id="btnDC3" x="365" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDC3('DC3')" /> <!-- Disjuntor -->
+                <line x1="405" y1="214" x2="365" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="107" y="220" onclick="toggleDisjuntor('DC3')">52C3</text>
+                <!-- Símbolo dO BANCO C3-->
+                <image href="imagensAlbras/Capacitor.JPG" x="65" y="272" width="40" height="40" />
+                <text x="87" y="340" onclick="toggleTransformador('52C3')">C3</text>
+
+
+                <!-- Botões das Seccionadoras e Disjuntor do Banco C4 e B C4E (botão) -->
+                <!-- Seccionadora C4 (botão) -->
+                <rect id="btnC4" x="173" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraC4('C4')" />
+                <text x="175" y="140" onclick="toggleSeccionadora('C4')">89C4</text>
+                <!-- Seccionadora C4-E (botão) -->
+                <rect id="btnC4E" x="257" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraC4E('C4E')" />
+                <text x="258" y="140" onclick="toggleSeccionadora('C4E')">89C4E</text>
+                <!-- Símbolo de Disjuntor BANCO C4-->
+                <rect id="btnDC4" x="216" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDC4('DC4')" /> <!-- Disjuntor -->
+                <line x1="255" y1="214" x2="215" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="257" y="220" onclick="toggleDisjuntorC4('DC4')">52C4</text>
+                <!-- Símbolo DO BANCO C4 -->
+                <image href="imagensAlbras/Capacitor.JPG" x="215" y="272" width="40" height="40" />
+                <text x="237" y="340" onclick="toggleTransformador('C4')">C4</text>
+
+                <!-- Simbolos Disjuntor e Transformador A3 -->
+                <!-- Botões das Seccionadoras T2 e E (botão) -->
+                <!-- Seccionadora A3 (botão) -->
+                <rect id="btnA3" x="323" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraA3('A3')" />
+                <text x="325" y="140" onclick="toggleSeccionadora('1A')">89A3</text>
+                <!-- Seccionadora A3E (botão) -->
+                <rect id="btnA3E" x="412" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraA3E('A3E')" />
+                <text x="414" y="140" onclick="toggleSeccionadora('1AE')">89A3-E</text>
+                <!-- Símbolo de Disjuntor A3-->
+                <rect id="btnDA3" x="66" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDA3('DA3')" /> <!-- Disjuntor -->
+                <line x1="105" y1="214" x2="65" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="407" y="220" onclick="toggleDisjuntor('DA3')">52A3</text>
+                <!-- Símbolo de Transformador A3-->
+                <line x1="350" y1="300" x2="420" y2="300" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador LVR1A-->
+                <circle cx="375" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="395" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="387" y="340" onclick="toggleTransformador('A3')">A3</text>
+
+                <!-- Simbolos Disjuntor e Seccionadora A4 -->
+                <!-- Botões das Seccionadoras T2 e A4 (botão) -->
+                <!-- Seccionadora A4 (botão) -->
+                <rect id="btnA4" x="471" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraA4('A4')" />
+                <text x="473" y="140" onclick="toggleSeccionadora('A4')">89A4</text>
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnA4E" x="558" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraA4E('A4E')" />
+                <text x="560" y="140" onclick="toggleSeccionadora('A4E')">89A4-E</text>
+                <!-- Símbolo de Disjuntor do A4-->
+                <rect id="btnDA4" x="515" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDA4('DA4')" /> <!-- Disjuntor -->
+                <line x1="555" y1="214" x2="515" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="557" y="220" onclick="toggleDisjuntorA4('DA4')">52A4</text>
+                <!-- Símbolo de Transformador A4-->
+                <line x1="500" y1="300" x2="570" y2="300" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador -->
+                <circle cx="525" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="545" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="537" y="340" onclick="toggleTransformadorA4('A4')">A4</text>
+
+                <!-- Botões das Seccionadoras PLANTA P3 (botão) -->
+                <!-- Seccionadora PALANTA P3 (botão) -->
+                <rect id="btnP3" x="627" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraP3('P3')" />
+                <text x="630" y="140" onclick="toggleSeccionadora('89P3')">89P3</text>
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnP3E" x="712" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraP3E('P3E')" />
+                <text x="714" y="140" onclick="toggleSeccionadora('89P3E')">89P3E</text>
+                <!-- Símbolo de PLANTA da P3-->
+                <rect id="btnDP3" x="665" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDP3('DP3')" /> <!-- Disjuntor -->
+                <line x1="705" y1="214" x2="665" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="707" y="220" onclick="toggleDisjuntor('DP3')">52P3</text>
+                <!-- Linha do Alimentador P3 -->
+                <text x="690" y="333" onclick="toggleTransformador('P3')">P3</text>
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"
+                        markerUnits="strokeWidth">
+                        <polygon points="0 0, 10 5, 0 10" fill="red" />
+                    </marker>
+                </defs>
+                <!-- Linha do Alimentador P3 -->
+                <line x1="685" y1="295" x2="685" y2="307" stroke="red" stroke-width="4" marker-end="url(#arrow)" />
+
+                <!-- Símbolos dO TRAFO LVR2-->
+                <rect id="btnLVR2" x="777" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVR2('LVR2')" />
+                <text x="780" y="140" onclick="toggleSeccionadora('89P2')">89LVR2</text>
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnLVR2E" x="862" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVR2E('LVR2E')" />
+                <text x="864" y="140" onclick="toggleSeccionadora('89P2E')">89LVR2E</text>
+                <!-- Símbolo dO TRAFO LVR2 -->
+                <rect id="btnDLVR2" x="815" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDLVR2('DLVR2')" /> <!-- Disjuntor -->
+                <line x1="855" y1="214" x2="815" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="857" y="220" onclick="toggleDisjuntor('52DP2')">52LVR2</text>
+                <!-- Símbolo de Transformador LVR-2-->
+                <line x1="800" y1="310" x2="870" y2="310" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador -->
+                <circle cx="825" cy="310" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="845" cy="310" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="837" y="640" onclick="toggleTransformadorLVR2('LVR2')">LVR-2</text>
+                <!-- Linha do Alimentador LVR2 -->
+                <text x="840" y="348" onclick="toggleTransformador('LVR2')">LVR2</text>
+                <!-- Linha do Alimentador LVR2 -->
+                <line x1="835" y1="334" x2="835" y2="370" stroke="yellow" stroke-width="4" />
+
+                <!-- Símbolos dO TRAFO LVR2A -->
+                <rect id="btnLVR2A" x="927" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVR2A('LVR2A')" />
+                <text x="930" y="140" onclick="toggleSeccionadora('89LVR2A')">89LVR2A</text>
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnLVR2AE" x="1012" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraLVR2AE('LVR2AE')" />
+                <text x="1014" y="140" onclick="toggleSeccionadora('89LVR2AE')">89LVR2AE</text>
+                <!-- Símbolo DO DISJUNTOR TRAFO LVR2A -->
+                <rect id="btnDLVR2A" x="965" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDLVR2A('DLVR2A')" /> <!-- Disjuntor -->
+                <line x1="1005" y1="214" x2="965" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+                <text x="1007" y="220" onclick="toggleDisjuntor('52LVR2A')">52LVR2A</text>
+                <!-- Símbolo de Transformador LVR2A-->
+                <line x1="950" y1="310" x2="1020" y2="310" stroke="orange" stroke-width="4" />
+                <!-- Base do transformador -->
+                <circle cx="975" cy="310" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="995" cy="310" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="987" y="640" onclick="toggleTransformadorLVR2('LVR2A')">LVR2-A</text>
+                <!-- Linha do Alimentador LVR2A -->
+                <text x="990" y="348" onclick="toggleTransformador('LVR2')">LVR2A</text>
+                <!-- Linha do Alimentador LVR2A -->
+                <line x1="985" y1="334" x2="985" y2="570" stroke="yellow" stroke-width="4" />
+
+                <!-- Imagem do transformador LVR2-A -->
+                <line x1="700" y1="400" x2="700" y2="450" /> <!-- 89 RF-18 -->
+                <image href="imagensAlbras/RF.JPG" x="968" y="560" width="40" height="40" />
+
+
+                <!-- SIMBOLOS DAS SECCIONADORAS E DISJUNTORES DOS RETIFICADORES 08 A 12-->
+                <!-- Botões das Seccionadoras R e E RR (botão) -->
+                <!-- Barramentos R E RR DOS RETIFICADORES 08 A 12 -->
+                <line x1="20" y1="370" x2="900" y2="370" stroke="yellow" stroke-width="4" />
+                <!-- Linha horizontal principal -->
+                <line x1="20" y1="400" x2="900" y2="400" stroke="yellow" stroke-width="4" />
+                <!-- Linha horizontal principal -->
+
+                <!-- Seccionadora RF 08 (botão) -->
+                <rect id="btnRF08" x="25" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF08('RF08')" />
+                <!-- Seccionadora RF08E (botão) -->
+                <rect id="btnRF08E" x="107" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF08E('RF08E')" />
+                <!-- Símbolo de DISJUNTOR RF08-->
+                <rect id="btnDRF08" x="66" y="495" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDRF08('DRF08')" /> <!-- Disjuntor -->
+                <line x1="105" y1="514" x2="65" y2="514" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+
+                <!-- Seccionadora RF09 (botão) -->
+                <rect id="btnRF09" x="173" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF09('RF09')" />
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnRF09" x="257" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF09E('RF09E')" />
+                <!-- Símbolo de Disjuntor RF09-->
+                <rect id="btnDRF09" x="216" y="495" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDRF09('DRF09')" /> <!-- Disjuntor -->
+                <line x1="215" y1="514" x2="255" y2="514" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+
+                <!-- Seccionadora RF10 (botão) -->
+                <rect id="btnRF10" x="323" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF10('RF10')" />
+                <!-- Seccionadora E (botão) -->
+                <rect id="btnRF10E" x="412" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF10E('RF10E')" />
+                <!-- Símbolo de Disjuntor do RF10 -->
+                <rect id="btnDRF10" x="365" y="495" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDRF10('DRF10')" /> <!-- Disjuntor -->
+                <line x1="405" y1="514" x2="365" y2="514" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+
+                <!-- Seccionadora RF-11 (botão) -->
+                <rect id="btnRF11" x="471" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF11('RF11')" />
+                <!-- Seccionadora RF11-E (botão) -->
+                <rect id="btnRF11E" x="558" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF11E('RF11E')" />
+                <!-- Símbolo de Disjuntor do RF11-->
+                <rect id="btnDRF11" x="515" y="495" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDRF11('DRF11')" /> <!-- Disjuntor -->
+                <line x1="555" y1="514" x2="515" y2="514" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+
+                <!-- Seccionadora RF12 (botão) -->
+                <rect id="btnRF12" x="627" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF12('RF12')" />
+                <!-- Seccionadora RF12-E (botão) -->
+                <rect id="btnRF12E" x="712" y="417" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                    onclick="toggleSeccionadoraRF12E('RF12E')" />
+                <!-- Símbolo DO DISJUNTOR RF12-->
+                <rect id="btnDRF12" x="665" y="495" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorDRF12('DRF12')" /> <!-- Disjuntor -->
+                <line x1="705" y1="514" x2="665" y2="514" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
+
+                <!-- IMAGENS DOS TRANSFORMADORES -->
+                <line x1="200" y1="400" x2="200" y2="450" /> <!-- 89 RF-08 -->
+                <image href="imagensAlbras/RF.JPG" x="665" y="560" width="40" height="40" />
+                <line x1="300" y1="400" x2="300" y2="450" /> <!-- 89 RF-09 -->
+                <image href="imagensAlbras/RF.JPG" x="515" y="560" width="40" height="40" />
+                <line x1="400" y1="400" x2="400" y2="450" /> <!-- 89 RF-10 -->
+                <image href="imagensAlbras/RF.JPG" x="365" y="560" width="40" height="40" />
+                <line x1="500" y1="400" x2="500" y2="450" /> <!-- 89 RF-11 -->
+                <image href="imagensAlbras/RF.JPG" x="215" y="560" width="40" height="40" />
+                <line x1="600" y1="400" x2="600" y2="450" /> <!-- 89 RF-12 -->
+                <image href="imagensAlbras/RF.JPG" x="65" y="560" width="40" height="40" />
+
+                <!-- Textos -->
+                <text x="25" y="430" fill="black" font-size="14">RF-08</text>
+                <text x="110" y="430" fill="black" font-size="14">RF-08E</text>
+                <text x="175" y="430" fill="black" font-size="14">RF-09</text>
+                <text x="260" y="430" fill="black" font-size="14">RF-09E</text>
+                <text x="325" y="430" fill="black" font-size="14">RF-10</text>
+                <text x="415" y="430" fill="black" font-size="14">RF-10E</text>
+                <text x="470" y="430" fill="black" font-size="14">RF-11</text>
+                <text x="560" y="430" fill="black" font-size="14">RF-11E</text>
+                <text x="630" y="430" fill="black" font-size="14">RF-12</text>
+                <text x="710" y="430" fill="black" font-size="14">RF-12E</text>
+
+                <text x="110" y="520" fill="black" font-size="14">52 RF-08</text>
+                <text x="257" y="520" fill="black" font-size="14">52 RF-09</text>
+                <text x="410" y="520" fill="black" font-size="14">52 RF-10</text>
+                <text x="560" y="520" fill="black" font-size="14">52 RF-11</text>
+                <text x="710" y="520" fill="black" font-size="14">52 RF-12</text>
+
+                <text x="60" y="605" fill="black" font-size="14">RETIF-08</text>
+                <text x="210" y="605" fill="black" font-size="14">RETIF-09</text>
+                <text x="360" y="605" fill="black" font-size="14">RETIF-10</text>
+                <text x="510" y="605" fill="black" font-size="14">RETIF-11</text>
+                <text x="660" y="605" fill="black" font-size="14">RETIF-12</text>
+                <text x="960" y="605" fill="black" font-size="14">RETIF-13</text>
+            </svg>
+
+            <!-- Scripts das Seccionadoras do BANCO C3 -->
+            <!-- Seccionadora 89C3 -->
+            <script>
+                function toggleSeccionadoraC3(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "40") {
+                            linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "40");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "40");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "60");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 C3-E-->
+            <script>
+                function toggleSeccionadoraC3E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "125") {
+                            linha.setAttribute("x2", "145"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "125");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "125");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "145");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89C4-->
+            <script>
+                function toggleSeccionadoraC4(tipo) {
+
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "190") {
+                            linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "190");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "190");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "210");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89C4E-->
+            <script>
+                function toggleSeccionadoraC4E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "275") {
+                            linha.setAttribute("x2", "295"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "275");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "275");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "295");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 A3-->
+            <script>
+                function toggleSeccionadoraA3(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "340") {
+                            linha.setAttribute("x2", "360"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "340");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "340");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "360");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 A3E-->
+            <script>
+                function toggleSeccionadoraA3E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "428") {
+                            linha.setAttribute("x2", "448"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "428");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "428");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "448");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 A4-->
+            <script>
+                function toggleSeccionadoraA4(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "489") {
+                            linha.setAttribute("x2", "509"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "489");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "ORANGE");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "489");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "509");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 A4E-->
+            <script>
+                function toggleSeccionadoraA4E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "576") {
+                            linha.setAttribute("x2", "596"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "576");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "ORANGE");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "576");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "596");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 P3-->
+            <script>
+                function toggleSeccionadoraP3(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "646") {
+                            linha.setAttribute("x2", "666"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "116");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "646");
+                            linha.setAttribute("y2", "116");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "646");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "666");
+                        linha.setAttribute("y2", "116");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89P3E-->
+            <script>
+                function toggleSeccionadoraP3E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "730") {
+                            linha.setAttribute("x2", "750"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "730");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "730");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "750");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVR2-->
+            <script>
+                function toggleSeccionadoraLVR2(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "796") {
+                            linha.setAttribute("x2", "816"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "116");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "796");
+                            linha.setAttribute("y2", "116");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "796");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "796");
+                        linha.setAttribute("y2", "116");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVR2E-->
+            <script>
+                function toggleSeccionadoraLVR2E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "880") {
+                            linha.setAttribute("x2", "900"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "880");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "880");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "880");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVR2A-->
+            <script>
+                function toggleSeccionadoraLVR2A(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "946") {
+                            linha.setAttribute("x2", "966"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "116");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "946");
+                            linha.setAttribute("y2", "116");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "946");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "946");
+                        linha.setAttribute("y2", "116");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 LVR2AE-->
+            <script>
+                function toggleSeccionadoraLVR2AE(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "1030") {
+                            linha.setAttribute("x2", "1050"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "1030");
+                            linha.setAttribute("y2", "118");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "orange");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "1030");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "1030");
+                        linha.setAttribute("y2", "118");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+
+
+            <!-- Scripts das Seccionadoras do RF08 A 12 -->
+            <!-- Seccionadora 89 RF08 -->
+            <script>
+                function toggleSeccionadoraRF08(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "40") {
+                            linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "40");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "40");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "60");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF08-E -->
+            <script>
+                function toggleSeccionadoraRF08E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "125") {
+                            linha.setAttribute("x2", "145"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "125");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "125");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "145");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF09-->
+            <script>
+                function toggleSeccionadoraRF09(tipo) {
+
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "190") {
+                            linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "190");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "190");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "210");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF09E-->
+            <script>
+                function toggleSeccionadoraRF09E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "275") {
+                            linha.setAttribute("x2", "295"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "275");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "275");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "295");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF10-->
+            <script>
+                function toggleSeccionadoraRF10(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "340") {
+                            linha.setAttribute("x2", "360"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "340");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "340");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "360");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF10E-->
+            <script>
+                function toggleSeccionadoraRF10E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "428") {
+                            linha.setAttribute("x2", "448"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "428");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "428");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "448");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF11-->
+            <script>
+                function toggleSeccionadoraRF11(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "489") {
+                            linha.setAttribute("x2", "509"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "489");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "489");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "509");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF11E-->
+            <script>
+                function toggleSeccionadoraRF11E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "576") {
+                            linha.setAttribute("x2", "596"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "576");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "576");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "596");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF12-->
+            <script>
+                function toggleSeccionadoraRF12(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "646") {
+                            linha.setAttribute("x2", "666"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "416");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "646");
+                            linha.setAttribute("y2", "416");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "646");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "666");
+                        linha.setAttribute("y2", "416");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+            <!-- Seccionadora 89 RF12E-->
+            <script>
+                function toggleSeccionadoraRF12E(tipo) {
+                    let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (linha) {
+                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+                        if (linha.getAttribute("x2") === "730") {
+                            linha.setAttribute("x2", "750"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "418");
+                        } else {
+                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+                            linha.setAttribute("x2", "730");
+                            linha.setAttribute("y2", "418");
+                        }
+                    } else {
+                        // Criamos a linha inicial como fechada (vertical)
+                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                        linha.setAttribute("id", "linha" + tipo);
+                        linha.setAttribute("stroke", "yellow");
+                        linha.setAttribute("stroke-width", "4");
+                        linha.setAttribute("x1", "730");
+                        linha.setAttribute("y1", "452");
+                        linha.setAttribute("x2", "750");
+                        linha.setAttribute("y2", "418");
+
+                        document.getElementById("diagrama").appendChild(linha);
+                    }
+                }
+            </script>
+
+
+
+            <!-- Disjuntor 52C3-->
+            <script>
+                function toggleDisjuntorDC3(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52C4-->
+            <script>
+                function toggleDisjuntorDC4(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 A3-->
+            <script>
+                function toggleDisjuntorDA3(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 A4-->
+            <script>
+                function toggleDisjuntorDA4(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52P1-->
+            <script>
+                function toggleDisjuntorDP3(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 LVR2-->
+            <script>
+                function toggleDisjuntorDLVR2(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 LVR2A-->
+            <script>
+                function toggleDisjuntorDLVR2A(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- SCRIPTS DOS Disjuntores 52 RF08 a RF12-->
+            <!-- Disjuntor 52 RF08-->
+            <script>
+                function toggleDisjuntorDRF08(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 RF09-->
+            <script>
+                function toggleDisjuntorDRF09(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 RF10-->
+            <script>
+                function toggleDisjuntorDRF10(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 RF11-->
+            <script>
+                function toggleDisjuntorDRF11(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+            <!-- Disjuntor 52 RF12-->
+            <script>
+                function toggleDisjuntorDRF12(tipo) {
+                    let botao = document.getElementById('btn' + tipo);
+
+                    if (botao) {
+                        if (botao.style.fill === "red") {
+                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                        } else {
+                            // Criamos uma nova linha se ela ainda não existe           
+                            botao.style.fill = "red";
+                        }
+                    }
+                }
+            </script>
+
+    </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu das Manobras</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d9d9d9;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .janela {
+            width: 650px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .titulo-barra {
+            background: #ececec;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .cabecalho {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .icone {
+            width: 55px;
+            margin-right: 15px;
+        }
+
+        .cabecalho h1 {
+            color: blue;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            font-size: 20px;
+        }
+
+        .grid-botoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin: 20px;
+            border: 1px solid #7f8fa6;
+        }
+
+        .grid-botoes button {
+
+            height: 70px;
+            font-size: 18px;
+            cursor: pointer;
+
+            border: 1px solid #7f8fa6;
+
+            background: linear-gradient(to bottom,
+                    #f4f4f4,
+                    #d7e3f4);
+
+            transition: 0.3s;
+        }
+
+        .grid-botoes button:hover {
+            background: linear-gradient(to bottom,
+                    #dbe9ff,
+                    #b9d0f0);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="janela">
+
+        <div class="titulo-barra">
+            Menu das Manobras
+        </div>
+
+        <div class="cabecalho">
+            <img src="imagensAlbras/ALBRAS1.JPG" alt="Torre" class="icone">
+            <h1>Menu das Manobras</h1>
+        </div>
+
+        <h2>Habilitar Classes de Manobras</h2>
+
+        <div class="grid-botoes">
+
+            <button onclick="abrirEletroNorte()">
+                Manobras da ELETRONORTE
+            </button>
+
+            <button onclick="abrir230KV()">
+                Manobras de 230 kV
+            </button>
+
+            <button onclick="abrirReducao()">
+                Manobras da Redução
+            </button>
+
+            <button onclick="abrirTransferencia()">
+                Manobras de Transferência
+            </button>
+
+            <button onclick="abrirGeradores()">
+                Manobras Geradores
+            </button>
+
+            <button onclick="fecharTela()">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        function abrirEletroNorte() {
+            alert("Abrindo Manobras da ELETRONORTE...");
+            // window.open("eletroNorte.html");
+        }
+
+        function abrir230KV() {
+            alert("Abrindo Manobras de 230 kV...");
+            // window.open("230kv.html");
+        }
+
+        function abrirReducao() {
+            alert("Abrindo Manobras da Redução...");
+            // window.open("reducao.html");
+        }
+
+        function abrirTransferencia() {
+            alert("Abrindo Manobras de Transferência...");
+            // window.open("transferencia.html");
+        }
+
+        function abrirGeradores() {
+            alert("Abrindo Manobras Geradores...");
+            // window.open("geradores.html");
+        }
+
+        function fecharTela() {
+            window.close();
+        }
+    </script>
+
+</body>
+
+</html>
