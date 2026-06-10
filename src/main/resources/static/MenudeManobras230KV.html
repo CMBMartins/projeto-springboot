@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Menu das Manobras</title>
+    <title>Menu das Manobras de 230 KV</title>
     <link rel="stylesheet" href="style.css">
     <!-- Adiciona o Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -59,14 +59,13 @@
 
         .cabecalho {
             display: flex;
-            align-items: left;
-            justify-content: left;
+            align-items: center;
+            justify-content: center;
             margin-top: 20px;
-            margin-left: 60px;
         }
 
         .icone {
-            width: 85px;
+            width: 55px;
             margin-right: 15px;
             width: 120px;
             height: auto;
@@ -92,22 +91,42 @@
             border: 1px solid #7f8fa6;
         }
 
-        .grid-botoes button {
+        .grid-botoes1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin: 20px;
+            border: 1px solid #7f8fa6;
+        }
 
+        .grid-botoes button {
             height: 70px;
             font-size: 18px;
             cursor: pointer;
-
             border: 1px solid #7f8fa6;
-
             background: linear-gradient(to bottom,
                     #f4f4f4,
                     #d7e3f4);
+            transition: 0.3s;
+        }
 
+        .grid-botoes1 button {
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            border: 1px solid #7f8fa6;
+            background: linear-gradient(to bottom,
+                    #f4f4f4,
+                    #d7e3f4);
             transition: 0.3s;
         }
 
         .grid-botoes button:hover {
+            background: linear-gradient(to bottom,
+                    #dbe9ff,
+                    #b9d0f0);
+        }
+
+        .grid-botoes1 button:hover {
             background: linear-gradient(to bottom,
                     #dbe9ff,
                     #b9d0f0);
@@ -121,44 +140,75 @@
     <div class="janela">
 
         <div class="titulo-barra">
-            Menu das Manobras
+            Menu das Manobras de 230 KV
         </div>
 
         <div class="telaprincipal">
-            <a href="">
+            <a href="SimuladorAlbras.html">
                 <span class="fa fa-home"></span>
-                <a href="SimuladorAlbras.html">
-                    <span>Tela Principal</span>
-                </a>
+                <span>Tela Principal</span>
+            </a>
         </div>
 
         <div class="cabecalho">
             <img src="imagensAlbras/ALBRAS1.JPG" alt="Torre" class="icone">
-            <h1>Menu das Manobras</h1>
+            <h1>Menu das Manobras de 230 KV</h1>
         </div>
 
         <h2>Habilitar Classes de Manobras</h2>
 
         <div class="grid-botoes">
 
-            <button onclick="abrirEletroNorte()">
-                Manobras da ELETRONORTE
+            <button onclick="enerL1()">
+                Energizar a Linha 1
             </button>
 
-            <button onclick="abrir230KV()">
-                Manobras de 230 kV
+            <button onclick="enerL2()">
+                Energizar a Linha 2
             </button>
 
-            <button onclick="abrirReducao()">
-                Manobras da Redução
+            <button onclick="enerL1BarraA()">
+                Energizar a Linha 1 e Barra A
             </button>
 
-            <button onclick="abrirTransferencia()">
-                Manobras de Transferência
+            <button onclick="enerBayMT1()">
+                Energizar o Bay do MT1
             </button>
 
-            <button onclick="abrirGeradores()">
-                Manobras Geradores
+            <button onclick="enerBayMTR()">
+                Energizar o Bay do MTR
+            </button>
+
+            <button onclick="enerBayMT2()">
+                Energizar o Bay do MT2
+            </button>
+
+            <button onclick="enerBayMT3()">
+                Energizar o Bay do MT3
+            </button>
+
+            <button onclick="enerBayMT4()">
+                Energizar o Bay do MT4
+            </button>
+
+            <button onclick="desenerL1()">
+                Desenergizar a Linha 1
+            </button>
+
+            <button onclick="desenerL2()">
+                Desenergizar a Linha 2
+            </button>
+
+        </div>
+
+        <div class="grid-botoes1">
+
+            <button onclick="manobraExecutada()">
+                Manobra Executada
+            </button>
+
+            <button onclick="manobraPadrao()">
+                Manobra Padrão
             </button>
 
             <button onclick="fecharTela()">
@@ -172,12 +222,14 @@
     <script src="script.js"></script>
 
     <script>
-        function abrirEletroNorte() {
-            window.open("MenudasManobrasEletronorte.html");
+        function EnerL1() {
+            alert("Abrindo Manobras da L1");
+            // window.open("eletroNorte.html");
         }
 
-        function abrir230KV() {
-            window.open("MenudeManobras230kv.html");
+        function EnerL2() {
+            alert("Abrindo Manobras de 230 kV...");
+            // window.open("230kv.html");
         }
 
         function abrirReducao() {

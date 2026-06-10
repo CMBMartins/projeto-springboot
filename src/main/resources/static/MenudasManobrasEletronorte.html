@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Menu das Manobras</title>
+    <title>Menu das Manobras da Eletronorte</title>
     <link rel="stylesheet" href="style.css">
     <!-- Adiciona o Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -59,14 +59,13 @@
 
         .cabecalho {
             display: flex;
-            align-items: left;
-            justify-content: left;
+            align-items: center;
+            justify-content: center;
             margin-top: 20px;
-            margin-left: 60px;
         }
 
         .icone {
-            width: 85px;
+            width: 55px;
             margin-right: 15px;
             width: 120px;
             height: auto;
@@ -92,22 +91,42 @@
             border: 1px solid #7f8fa6;
         }
 
-        .grid-botoes button {
+        .grid-botoes1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            margin: 20px;
+            border: 1px solid #7f8fa6;
+        }
 
+        .grid-botoes button {
             height: 70px;
             font-size: 18px;
             cursor: pointer;
-
             border: 1px solid #7f8fa6;
-
             background: linear-gradient(to bottom,
                     #f4f4f4,
                     #d7e3f4);
+            transition: 0.3s;
+        }
 
+        .grid-botoes1 button {
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            border: 1px solid #7f8fa6;
+            background: linear-gradient(to bottom,
+                    #f4f4f4,
+                    #d7e3f4);
             transition: 0.3s;
         }
 
         .grid-botoes button:hover {
+            background: linear-gradient(to bottom,
+                    #dbe9ff,
+                    #b9d0f0);
+        }
+
+        .grid-botoes1 button:hover {
             background: linear-gradient(to bottom,
                     #dbe9ff,
                     #b9d0f0);
@@ -121,44 +140,51 @@
     <div class="janela">
 
         <div class="titulo-barra">
-            Menu das Manobras
+            Menu das Manobras da Eletronorte
         </div>
 
         <div class="telaprincipal">
-            <a href="">
+            <a href="SimuladorAlbras.html">
                 <span class="fa fa-home"></span>
-                <a href="SimuladorAlbras.html">
-                    <span>Tela Principal</span>
-                </a>
+                <span>Tela Principal</span>
+            </a>
         </div>
 
         <div class="cabecalho">
             <img src="imagensAlbras/ALBRAS1.JPG" alt="Torre" class="icone">
-            <h1>Menu das Manobras</h1>
+            <h1>Menu das Manobras da Eletronorte</h1>
         </div>
 
         <h2>Habilitar Classes de Manobras</h2>
 
         <div class="grid-botoes">
 
-            <button onclick="abrirEletroNorte()">
-                Manobras da ELETRONORTE
+            <button onclick="desenAlbras()">
+                Desenergizar ALBRAS
             </button>
 
-            <button onclick="abrir230KV()">
-                Manobras de 230 kV
+            <button onclick="enerAlbras()">
+                Energizar ALBRAS
             </button>
 
-            <button onclick="abrirReducao()">
-                Manobras da Redução
+            <button onclick="PrepAlbras()">
+                Preparação da ALBRAS
             </button>
 
-            <button onclick="abrirTransferencia()">
-                Manobras de Transferência
+            <button onclick="enerGerador()">
+                Energizar Geradores
             </button>
 
-            <button onclick="abrirGeradores()">
-                Manobras Geradores
+        </div>
+
+        <div class="grid-botoes1">
+
+            <button onclick="manobraExecutada()">
+                Manobra Executada
+            </button>
+
+            <button onclick="manobraPadrao()">
+                Manobra Padrão
             </button>
 
             <button onclick="fecharTela()">
@@ -173,11 +199,13 @@
 
     <script>
         function abrirEletroNorte() {
-            window.open("MenudasManobrasEletronorte.html");
+            alert("Abrindo Manobras da ELETRONORTE...");
+            // window.open("eletroNorte.html");
         }
 
         function abrir230KV() {
-            window.open("MenudeManobras230kv.html");
+            alert("Abrindo Manobras de 230 kV...");
+            // window.open("230kv.html");
         }
 
         function abrirReducao() {
