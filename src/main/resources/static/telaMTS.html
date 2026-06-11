@@ -470,8 +470,16 @@
             </svg>
 
             <!-- Scripts das Seccionadoras e dos Transformadores -->
-            <!-- Seccionadora 89MT1A-->
+            <!-- Seccionadora 89MT2A-->
+
+
             <script>
+
+                let seccionadora89l1fechada = false;
+                let seccionadora89l1afechada = false;
+                let seccionadora89l1bfechada = false;
+                let disjuntor52l1fechado = false;
+
                 function toggleSeccionadoraMT2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -499,10 +507,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89MT2B-->
-            <script>
+
                 function toggleSeccionadoraMT2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -530,10 +536,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89MTRA-->
-            <script>
+
                 function toggleSeccionadoraMTRA(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
@@ -562,10 +566,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89MTRB-->
-            <script>
+
                 function toggleSeccionadoraMTRB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -593,10 +595,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89MT1A-->
-            <script>
+
                 function toggleSeccionadoraMT1A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -624,10 +624,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89MT1B-->
-            <script>
+
                 function toggleSeccionadoraMT1B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -655,41 +653,57 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89L1A-->
-            <script>
+
                 function toggleSeccionadoraL1A(tipo) {
+
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
-                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+
                         if (linha.getAttribute("x2") === "489") {
-                            linha.setAttribute("x2", "509"); // Move para direita (linha inclinada)
+
+                            // ABERTA
+                            linha.setAttribute("x2", "509");
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l1afechada = false;
+
                         } else {
-                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+
+                            // FECHADA
                             linha.setAttribute("x2", "489");
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l1afechada = true;
+
+                            verificarEnerL1();
                         }
+
                     } else {
-                        // Criamos a linha inicial como fechada (vertical)
-                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        linha = document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "line"
+                        );
+
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "489");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "509");
+                        linha.setAttribute("x2", "489");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89l1afechada = true;
+
+                        verificarEnerL1();
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89L1B-->
-            <script>
+
                 function toggleSeccionadoraL1B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -715,12 +729,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        verificarEnerL1();
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89L2A-->
-            <script>
+
                 function toggleSeccionadoraL2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -748,10 +762,9 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89L2B-->
-            <script>
+
+
                 function toggleSeccionadoraL2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -779,26 +792,38 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89L1-->
-            <script>
+
                 function toggleSeccionadoraL1(tipo) {
+
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
-                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+
                         if (linha.getAttribute("x2") === "535") {
-                            linha.setAttribute("x2", "555"); // Move para direita (linha inclinada)
+
+                            // ABERTA
+                            linha.setAttribute("x2", "555");
                             linha.setAttribute("y2", "280");
+
+                            seccionadora89l1fechada = false;
+
                         } else {
-                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+
+                            // FECHADA
                             linha.setAttribute("x2", "535");
                             linha.setAttribute("y2", "280");
+
+                            seccionadora89l1fechada = true;
                         }
+
                     } else {
-                        // Criamos a linha inicial como fechada (vertical)
-                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        linha = document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "line"
+                        );
+
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
@@ -808,12 +833,14 @@
                         linha.setAttribute("y2", "280");
 
                         document.getElementById("diagrama").appendChild(linha);
-                    }
-                }
-            </script>
 
-            <!-- Seccionadora 82L2-->
-            <script>
+                        seccionadora89l1fechada = true;
+                    }
+
+                    verificarEnerL1();
+                }
+
+
                 function toggleSeccionadoraL2(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -841,10 +868,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89BTA-->
-            <script>
+
                 function toggleSeccionadoraBTA(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -872,10 +897,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Seccionadora 89BTB-->
-            <script>
+
                 function toggleSeccionadoraBTB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -903,10 +926,8 @@
                         document.getElementById("diagrama").appendChild(linha);
                     }
                 }
-            </script>
 
-            <!-- Disjuntor 52MT2-->
-            <script>
+
                 function toggleDisjuntorMT2(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -920,10 +941,8 @@
                         }
                     }
                 }
-            </script>
 
-            <!-- Disjuntor 52MTR-->
-            <script>
+
                 function toggleDisjuntorMTR(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -937,10 +956,8 @@
                         }
                     }
                 }
-            </script>
 
-            <!-- Disjuntor 52MT1-->
-            <script>
+
                 function toggleDisjuntorMT1(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -954,27 +971,34 @@
                         }
                     }
                 }
-            </script>
 
-            <!-- Disjuntor 52L1-->
-            <script>
+
                 function toggleDisjuntorL1(tipo) {
+
                     let botao = document.getElementById('btn' + tipo);
 
                     if (botao) {
+
                         if (botao.style.fill === "red") {
-                            botao.style.fill = "green"; // Muda para aberto (verde)
+
+                            // ABERTO
+                            botao.style.fill = "green";
+
+                            disjuntor52l1fechado = false;
 
                         } else {
-                            // Criamos uma nova linha se ela ainda não existe           
+
+                            // FECHADO
                             botao.style.fill = "red";
+
+                            disjuntor52l1fechado = true;
                         }
                     }
-                }
-            </script>
 
-            <!-- Disjuntor 52L2-->
-            <script>
+                    verificarEnerL1();
+                }
+
+
                 function toggleDisjuntorL2(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -988,10 +1012,8 @@
                         }
                     }
                 }
-            </script>
 
-            <!-- Disjuntor 52BT-->
-            <script>
+
                 function toggleDisjuntorBT(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -1005,6 +1027,44 @@
                         }
                     }
                 }
+
+
+                function verificarEnerL1() {
+
+                    console.log("verificarEnerL1 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerL1Habilitada =
+                        localStorage.getItem("enerL1Habilitada") === "true";
+
+                    if (!enerL1Habilitada ||
+                        manobraAtual !== "EnergizarLinha1") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89l1fechada &&
+                        seccionadora89l1afechada &&
+                        disjuntor52l1fechado ||
+                        seccionadora89l1bfechada
+                    ) {
+
+                        alert("✅ Manobra Energizar Linha 1 concluída com sucesso!");
+
+                        localStorage.setItem(
+                            "enerL1Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
             </script>
 
     </div>

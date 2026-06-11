@@ -222,28 +222,64 @@
     <script src="script.js"></script>
 
     <script>
-        function EnerL1() {
-            alert("Abrindo Manobras da L1");
-            // window.open("eletroNorte.html");
+
+        function enerL1() {
+
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarLinha1"
+            );
+
+            localStorage.setItem(
+                "enerL1Habilitada",
+                "true"
+            );
+
+            alert("Manobra Energizar Linha 1 habilitada.");
         }
 
-        function EnerL2() {
-            alert("Abrindo Manobras de 230 kV...");
+        function enerL2() {
+            alert("Abrindo Manobras para Energizar a L2...");
             // window.open("230kv.html");
         }
 
-        function abrirReducao() {
-            alert("Abrindo Manobras da Redução...");
+        function enerL1BarraA() {
+            alert("Abrindo Manobras para energizar a Linha 1 e Barra A...");
             // window.open("reducao.html");
         }
 
-        function abrirTransferencia() {
-            alert("Abrindo Manobras de Transferência...");
+        function enerBayMT1() {
+            alert("Abrindo Manobras de Energização do Bay MT1...");
             // window.open("transferencia.html");
         }
 
-        function abrirGeradores() {
-            alert("Abrindo Manobras Geradores...");
+        function enerBayMTR() {
+            alert("Abrindo Manobras de Energização do Bay do MTR ...");
+            // window.open("geradores.html");
+        }
+
+        function enerBayMT2() {
+            alert("Abrindo Manobras de Energização do Bay do MT2...");
+            // window.open("geradores.html");
+        }
+
+        function enerBayMT3() {
+            alert("Abrindo Manobras de Energização do Bay do MT3...");
+            // window.open("geradores.html");
+        }
+
+        function enerBayMT4() {
+            alert("Abrindo Manobras de Energização do Bay do MT4...");
+            // window.open("geradores.html");
+        }
+
+        function desenerL1() {
+            alert("Abrindo Manobras de Desenergização da L1 ...");
+            // window.open("geradores.html");
+        }
+
+        function desenerL2() {
+            alert("Abrindo Manobras de Desenergização da L2...");
             // window.open("geradores.html");
         }
 
