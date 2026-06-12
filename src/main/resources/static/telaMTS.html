@@ -688,6 +688,7 @@
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
+                        if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1A?")) return;
 
                         if (linha.getAttribute("x2") === "489") {
 
@@ -735,6 +736,7 @@
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
+                        if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1B?")) return;
 
                         // FECHADA -> ABERTA
                         if (linha.getAttribute("x2") === "576") {
@@ -843,6 +845,7 @@
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
+                        if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1?")) return;
 
                         if (linha.getAttribute("x2") === "535") {
 
@@ -1029,6 +1032,7 @@
                     let botao = document.getElementById('btn' + tipo);
 
                     if (botao) {
+                        if (!confirm("Tem certeza que deseja alterar o estado do Disjuntor 52L1?")) return;
 
                         if (botao.style.fill === "red") {
 
