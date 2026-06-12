@@ -239,8 +239,17 @@
         }
 
         function enerL2() {
-            alert("Abrindo Manobras para Energizar a L2...");
-            // window.open("230kv.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarLinha2"
+            );
+
+            localStorage.setItem(
+                "enerL2Habilitada",
+                "true"
+            );
+
+            alert("Manobra Energizar Linha 2 habilitada.");
         }
 
         function enerL1BarraA() {
