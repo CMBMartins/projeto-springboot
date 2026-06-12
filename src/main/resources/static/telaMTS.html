@@ -401,6 +401,21 @@
                     onclick="toggleSeccionadoraL1B('L1B')" />
                 <text x="560" y="140" onclick="toggleSeccionadora('3B')">89L1B</text>
 
+                <!-- Seccionadora A -->
+                <rect id="btnL1A" x="471" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraL1A('L1A')" />
+                <text x="473" y="140">89L1A</text>
+                <!-- Linha da 89L1A (ABERTA) -->
+                <line id="linhaL1A" x1="489" y1="152" x2="509" y2="118" stroke="red" stroke-width="4" />
+
+                <!-- Seccionadora B -->
+                <rect id="btnL1B" x="558" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraL1B('L1B')" />
+                <text x="560" y="140">89L1B</text>
+                <!-- Linha da 89L1B (ABERTA) -->
+                <line id="linhaL1B" x1="576" y1="152" x2="596" y2="118" stroke="red" stroke-width="4" />
+
+
                 <!-- Símbolo de Disjuntor do L1-->
                 <rect id="btnL1" x="515" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
                     onclick="toggleDisjuntorL1('L1')" /> <!-- Disjuntor -->
@@ -475,11 +490,19 @@
 
             <script>
 
+                //DECLARAÇÕES DAS VARIÁVEIS
                 let seccionadora89l1fechada = false;
                 let seccionadora89l1afechada = false;
                 let seccionadora89l1bfechada = false;
                 let disjuntor52l1fechado = false;
+                let seccionadora89l2fechada = false;
+                let seccionadora89l2afechada = false;
+                let seccionadora89l2bfechada = false;
+                let disjuntor52l2fechado = false;
 
+                //FUNÇÕES PARA AÇÕES DE FECHADAS E ABERTAS DOS EQUIPAMENTOS//
+
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT2A//
                 function toggleSeccionadoraMT2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -509,6 +532,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT2B//
                 function toggleSeccionadoraMT2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -538,6 +562,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MTRA//
                 function toggleSeccionadoraMTRA(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
@@ -568,6 +593,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MTRB//
                 function toggleSeccionadoraMTRB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -596,7 +622,7 @@
                     }
                 }
 
-
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT1A//
                 function toggleSeccionadoraMT1A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -626,6 +652,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT1B//
                 function toggleSeccionadoraMT1B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -655,6 +682,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L1A//
                 function toggleSeccionadoraL1A(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
@@ -676,8 +704,6 @@
                             linha.setAttribute("y2", "118");
 
                             seccionadora89l1afechada = true;
-
-                            verificarEnerL1();
                         }
 
                     } else {
@@ -698,43 +724,61 @@
                         document.getElementById("diagrama").appendChild(linha);
 
                         seccionadora89l1afechada = true;
-
-                        verificarEnerL1();
                     }
+                    verificarEnerL1();
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L1B//
                 function toggleSeccionadoraL1B(tipo) {
+
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
-                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+
+                        // FECHADA -> ABERTA
                         if (linha.getAttribute("x2") === "576") {
-                            linha.setAttribute("x2", "596"); // Move para direita (linha inclinada)
+
+                            linha.setAttribute("x2", "596");
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l1bfechada = false;
+
                         } else {
-                            // Se a linha já está inclinada, voltamos para vertical (fechada)
+
+                            // ABERTA -> FECHADA
                             linha.setAttribute("x2", "576");
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l1bfechada = true;
                         }
+
                     } else {
-                        // Criamos a linha inicial como fechada (vertical)
-                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        // Cria já FECHADA
+                        linha = document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "line"
+                        );
+
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "576");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "596");
+                        linha.setAttribute("x2", "576");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
 
-                        verificarEnerL1();
+                        seccionadora89l1bfechada = true;
                     }
+
+                    console.log("89L1B =", seccionadora89l1bfechada);
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L2A//
                 function toggleSeccionadoraL2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -763,8 +807,7 @@
                     }
                 }
 
-
-
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L2B//
                 function toggleSeccionadoraL2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -794,6 +837,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L1//
                 function toggleSeccionadoraL1(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
@@ -841,6 +885,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L2//
                 function toggleSeccionadoraL2(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -870,6 +915,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS BTA//
                 function toggleSeccionadoraBTA(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -899,6 +945,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS BTB//
                 function toggleSeccionadoraBTB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -928,6 +975,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR MT2//
                 function toggleDisjuntorMT2(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -943,6 +991,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR MTR//
                 function toggleDisjuntorMTR(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -958,6 +1007,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR MT1//
                 function toggleDisjuntorMT1(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -973,6 +1023,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR L1//
                 function toggleDisjuntorL1(tipo) {
 
                     let botao = document.getElementById('btn' + tipo);
@@ -999,6 +1050,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR L2//
                 function toggleDisjuntorL2(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -1014,6 +1066,7 @@
                 }
 
 
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR BT//
                 function toggleDisjuntorBT(tipo) {
                     let botao = document.getElementById('btn' + tipo);
 
@@ -1029,6 +1082,9 @@
                 }
 
 
+                //FUNÇÕES DAS MANOBRAS INTELIGENTES//
+
+                //FUNÇÃO PARA MANOBRA DA ENERGIZAÇÃO DA LINHA 1
                 function verificarEnerL1() {
 
                     console.log("verificarEnerL1 executou");
@@ -1047,14 +1103,49 @@
                     if (
                         seccionadora89l1fechada &&
                         seccionadora89l1afechada &&
-                        disjuntor52l1fechado ||
-                        seccionadora89l1bfechada
+                        disjuntor52l1fechado
                     ) {
 
                         alert("✅ Manobra Energizar Linha 1 concluída com sucesso!");
 
                         localStorage.setItem(
                             "enerL1Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA MANOBRA DA ENERGIZAÇÃO DA LINHA 2
+                function verificarEnerL2() {
+
+                    console.log("verificarEnerL2 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerL2Habilitada =
+                        localStorage.getItem("enerL2Habilitada") === "true";
+
+                    if (!enerL2Habilitada ||
+                        manobraAtual !== "EnergizarLinha2") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89l2fechada &&
+                        seccionadora89l2Bfechada &&
+                        disjuntor52l2fechado
+                    ) {
+
+                        alert("✅ Manobra Energizar Linha 2 concluída com sucesso!");
+
+                        localStorage.setItem(
+                            "enerL2Habilitada",
                             "false"
                         );
 
