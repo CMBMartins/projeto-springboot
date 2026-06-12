@@ -799,18 +799,27 @@
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
-                        // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
+
                         if (linha.getAttribute("x2") === "730") {
                             linha.setAttribute("x2", "750"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l2bfechada = false;
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "730");
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89l2bfechada = true;
                         }
                     } else {
-                        // Criamos a linha inicial como fechada (vertical)
-                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        linha = document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "line"
+                        );
+
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
@@ -820,7 +829,9 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+                        seccionadora89l2bfechada = true;
                     }
+                    verificarEnerL2();
                 }
 
 
@@ -878,18 +889,26 @@
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
-                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
+
                         if (linha.getAttribute("x2") === "685") {
                             linha.setAttribute("x2", "705"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "278");
+
+                            seccionadora89l2fechada = false;
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "685");
                             linha.setAttribute("y2", "278");
+
+                            seccionadora89l2fechada = true;
                         }
                     } else {
-                        // Criamos a linha inicial como fechada (vertical)
-                        linha = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+                        linha = document.createElementNS(
+                            "http://www.w3.org/2000/svg",
+                            "line"
+                        );
+
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
@@ -899,6 +918,7 @@
                         linha.setAttribute("y2", "278");
 
                         document.getElementById("diagrama").appendChild(linha);
+                        seccionadora89l2fechada = true;
                     }
                     verificarEnerL2();
                 }
@@ -1021,17 +1041,11 @@
                         if (!confirm("Tem certeza que deseja alterar o estado do Disjuntor 52L1?")) return;
 
                         if (botao.style.fill === "red") {
-
-                            // ABERTO
                             botao.style.fill = "green";
-
                             disjuntor52l1fechado = false;
 
                         } else {
-
-                            // FECHADO
                             botao.style.fill = "red";
-
                             disjuntor52l1fechado = true;
                         }
                     }
@@ -1047,12 +1061,14 @@
                     if (botao) {
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
+                            disjuntor52l2fechado = false;
 
                         } else {
-                            // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+                            disjuntor52l2fechado = true;
                         }
                     }
+                    verificarEnerL2();
                 }
 
 
@@ -1128,7 +1144,7 @@
 
                     if (
                         seccionadora89l2fechada &&
-                        seccionadora89l2Bfechada &&
+                        seccionadora89l2bfechada &&
                         disjuntor52l2fechado
                     ) {
 
