@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ordem de Manobra Padrão</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #dcdcdc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .janela {
+            width: 800px;
+            background: #f2f2f2;
+            border: 2px solid #999;
+            padding: 20px;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, .3);
+        }
+
+        .titulo {
+            text-align: center;
+            color: blue;
+            font-size: 38px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: red;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .lista-manobras {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 40px;
+            margin-bottom: 30px;
+        }
+
+        .item {
+            font-size: 18px;
+            font-style: italic;
+            color: #222;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .botoes button {
+            width: 130px;
+            height: 40px;
+            border: 1px solid #666;
+            background: #c0c0ff;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .botoes button:hover {
+            background: #9fa8ff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="janela">
+
+        <div class="titulo">
+            Manobra Padrão!
+        </div>
+
+        <div class="subtitulo" id="nomeManobra">
+            Nenhuma Manobra Habilitada
+        </div>
+        
+        <div class="lista-manobras" id="listaManobras">
+        </div>
+
+        <div class="botoes">
+            <button onclick="visualizar()">Visualizar</button>
+            <button onclick="limpar()">Limpar</button>
+            <button onclick="window.close()">Sair</button>
+        </div>
+
+    </div>
+
+    <script>
+
+            function visualizar() {
+                carregarManobra();
+            }
+       
+        
+        function limpar() {
+            
+         document.getElementById("nomeManobra").innerHTML =
+        "Nenhuma Manobra Habilitada";
+
+         document.getElementById("listaManobras").innerHTML = "";
+
+        document.getElementById("listaManobras").style.display =
+        "none";
+
+        localStorage.removeItem(
+        "manobraAtual"
+        );
+
+        localStorage.removeItem(
+            "enerL1Habilitada"
+            );
+        }
+
+
+        function carregarManobra() {
+
+        let codigo =
+        localStorage.getItem(
+        "manobraAtual"
+        );
+
+        if (!codigo) {
+        return;
+        }
+
+        let manobra =
+        manobras[codigo];
+
+        if (!manobra) {
+        return;
+        }
+
+
+        document.getElementById(
+        "nomeManobra"
+        ).innerHTML = manobra.titulo;
+
+        let lista =
+        document.getElementById(
+            "listaManobras"
+        );
+
+        lista.innerHTML = "";
+
+        manobra.passos.forEach(
+        (passo, indice) => {
+
+            lista.innerHTML +=
+                `<div class="item">
+                    ${indice + 1}. ${passo}
+                </div>`;
+
+                }
+        );
+
+        lista.style.display = "grid";
+        }
+        
+
+        const manobras = {
+
+        PrepararSEAlbras: {
+
+        titulo: "OM para Preparar a SE ALBRAS",
+
+        passos: [
+
+            "Abrir Seccionadora 89 A2-E",
+            "Abrir Seccionadora 89 A4-E",
+            "Abrir Seccionadora 89 A6-E",
+            "Abrir Seccionadora 89 A8-E",
+            "Fechar Disjuntor 52 TU"
+        ]
+    },
+
+    EnergizarLinha1: {
+
+        titulo: "OM para Energizar Linha 1",
+
+        passos: [
+
+            "Fechar Seccionadora 89L1",
+            "Fechar Seccionadora 89L1A ou 89L1B",
+            "Fechar Disjuntor 52L1"
+        ]
+    },
+
+    DesenergizarLinha1: {
+
+        titulo: "OM para Desenergizar Linha 1",
+
+        passos: [
+
+            "Abrir Disjuntor 52L1",
+            "Abrir Seccionadora 89L1A",
+            "Abrir Seccionadora 89L1"
+        ]
+    },
+
+    EnergizarTR1: {
+
+        titulo: "OM para Energizar TR1",
+
+        passos: [
+
+            "Fechar Seccionadora 89TR1",
+            "Fechar Disjuntor 52TR1"
+        ]
+    }
+    };
+
+    window.onload = function () {
+    carregarManobra();
+    setInterval(carregarManobra, 1000);
+    };
+
+    </script>
+
+</body>
+
+</html>
