@@ -100,9 +100,9 @@
 
     <script>
 
-            function visualizar() {
-                carregarManobra();
-            }
+        function visualizar() {
+            carregarManobra();
+        }
        
         
         function limpar() {
@@ -143,7 +143,6 @@
         return;
         }
 
-
         document.getElementById(
         "nomeManobra"
         ).innerHTML = manobra.titulo;
@@ -169,22 +168,7 @@
         lista.style.display = "grid";
         }
         
-
         const manobras = {
-
-        PrepararSEAlbras: {
-
-        titulo: "OM para Preparar a SE ALBRAS",
-
-        passos: [
-
-            "Abrir Seccionadora 89 A2-E",
-            "Abrir Seccionadora 89 A4-E",
-            "Abrir Seccionadora 89 A6-E",
-            "Abrir Seccionadora 89 A8-E",
-            "Fechar Disjuntor 52 TU"
-        ]
-    },
 
     EnergizarLinha1: {
 
@@ -193,7 +177,7 @@
         passos: [
 
             "Fechar Seccionadora 89L1",
-            "Fechar Seccionadora 89L1A ou 89L1B",
+            "Fechar Seccionadora 89L1A",
             "Fechar Disjuntor 52L1"
         ]
     },
@@ -210,16 +194,31 @@
         ]
     },
 
-    EnergizarTR1: {
+    EnergizarLinha2: {
 
-        titulo: "OM para Energizar TR1",
+        titulo: "OM para Energizar Linha 2",
 
         passos: [
 
-            "Fechar Seccionadora 89TR1",
-            "Fechar Disjuntor 52TR1"
+            "Fechar Seccionadora 89L2",
+            "Fechar Seccionadora 89L2B",
+            "Fechar Disjuntor 52L2"
         ]
-    }
+    },
+
+    DesenergizarLinha2: {
+
+        titulo: "OM para Desenergizar Linha 2",
+
+        passos: [
+
+            "Abrir Disjuntor 52L2",
+            "Abrir Seccionadora 89L2B",
+            "Abrir Seccionadora 89L2"
+        ]
+    },
+
+    
     };
 
     window.onload = function () {

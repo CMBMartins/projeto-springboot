@@ -283,13 +283,31 @@
         }
 
         function desenerL1() {
-            alert("Abrindo Manobras de Desenergização da L1 ...");
-            // window.open("geradores.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "DesenergizarLinha1"
+            );
+
+            localStorage.setItem(
+                "DesenergizarL1Habilitada",
+                "true"
+            );
+
+            alert("Manobra Desenergização Linha 1 habilitada.");
         }
 
         function desenerL2() {
-            alert("Abrindo Manobras de Desenergização da L2...");
-            // window.open("geradores.html");
+           localStorage.setItem(
+                "manobraAtual",
+                "DesenergizarLinha2"
+            );
+
+            localStorage.setItem(
+                "DesenergizarL2Habilitada",
+                "true"
+            );
+
+            alert("Manobra Desenergizar Linha 2 habilitada.");
         }
 
         function fecharTela() {
