@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Ordem de Manobra Padrão</title>
+    <title>Ordem de Manobra Executada</title>
 
     <style>
         body {
@@ -80,7 +80,7 @@
     <div class="janela">
 
         <div class="titulo">
-            Manobra Padrão!
+            Manobra Executada!
         </div>
 
         <div class="subtitulo" id="nomeManobra">
@@ -121,107 +121,67 @@
         }
 
 
-        function carregarManobra() {
+    // FUNÇÃO QUE MOSTRA A MANOBRA  EXECUTADA QUE FOI  HABILITADA
+    function carregarManobra() {
 
-        let codigo =
+    let codigo =
         localStorage.getItem(
-        "manobraAtual"
+            "manobraAtual"
         );
 
-        if (!codigo) {
+    if (!codigo) {
         return;
-        }
+    }
 
-        let manobra =
+    let manobra =
         manobras[codigo];
 
-        if (!manobra) {
+    if (!manobra) {
         return;
-        }
+    }
 
-        document.getElementById(
+    document.getElementById(
         "nomeManobra"
-        ).innerHTML = manobra.titulo;
+    ).innerHTML =
+        manobra.titulo;
 
-        let lista =
+    let lista =
         document.getElementById(
             "listaManobras"
         );
 
-        lista.innerHTML = "";
+    lista.innerHTML = "";
 
-        manobra.passos.forEach(
+    let passosExecutados =
+        JSON.parse(
+            localStorage.getItem(
+                "passosExecutados"
+            )
+        ) || [];
+
+    manobra.passos.forEach(
         (passo, indice) => {
 
-            lista.innerHTML +=
-                `<div class="item">
+            let executado =
+                passosExecutados.includes(
+                    passo
+                );
+
+            lista.innerHTML += `
+                <div class="item"
+                    style="
+                    color:${executado ? 'green' : 'black'};
+                    font-weight:${executado ? 'bold' : 'normal'};
+                    ">
+                    ${executado ? '✅' : '⬜'}
                     ${indice + 1}. ${passo}
-                </div>`;
-
-                }
-        );
-
-        lista.style.display = "grid";
+                </div>
+            `;
         }
+    );
 
-          
-        const manobras = {
-
-        EnergizarLinha1: {
-
-        titulo: "OM para Energizar Linha 1",
-
-        passos: [
-
-            "Fechar Seccionadora 89L1",
-            "Fechar Seccionadora 89L1A",
-            "Fechar Disjuntor 52L1"
-        ]
-        },
-
-        DesenergizarLinha1: {
-
-        titulo: "OM para Desenergizar Linha 1",
-
-        passos: [
-
-            "Abrir Disjuntor 52L1",
-            "Abrir Seccionadora 89L1A",
-            "Abrir Seccionadora 89L1"
-        ]
-        },
-
-        EnergizarLinha2: {
-
-        titulo: "OM para Energizar Linha 2",
-
-        passos: [
-
-            "Fechar Seccionadora 89L2",
-            "Fechar Seccionadora 89L2B",
-            "Fechar Disjuntor 52L2"
-        ]
-    },
-
-        DesenergizarLinha2: {
-
-        titulo: "OM para Desenergizar Linha 2",
-
-        passos: [
-
-            "Abrir Disjuntor 52L2",
-            "Abrir Seccionadora 89L2B",
-            "Abrir Seccionadora 89L2"
-        ]
-    },
-
-    
-    };
-
-    window.onload = function () {
-    carregarManobra();
-    setInterval(carregarManobra, 1000);
-    };
+    lista.style.display = "grid";
+}
 
     </script>
 
