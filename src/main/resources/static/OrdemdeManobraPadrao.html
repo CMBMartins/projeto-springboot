@@ -86,7 +86,7 @@
         <div class="subtitulo" id="nomeManobra">
             Nenhuma Manobra Habilitada
         </div>
-        
+
         <div class="lista-manobras" id="listaManobras">
         </div>
 
@@ -103,125 +103,131 @@
         function visualizar() {
             carregarManobra();
         }
-       
-        
+
+
         function limpar() {
-            
-         document.getElementById("nomeManobra").innerHTML =
-        "Nenhuma Manobra Habilitada";
 
-         document.getElementById("listaManobras").innerHTML = "";
+            document.getElementById("nomeManobra").innerHTML =
+                "Nenhuma Manobra Habilitada";
 
-        document.getElementById("listaManobras").style.display =
-        "none";
+            document.getElementById("listaManobras").innerHTML = "";
 
-        localStorage.removeItem(
-        "manobraAtual"
-        );        
+            document.getElementById("listaManobras").style.display =
+                "none";
+
+            localStorage.removeItem(
+                "manobraAtual"
+            );
         }
 
 
         function carregarManobra() {
 
-        let codigo =
-        localStorage.getItem(
-        "manobraAtual"
-        );
+            console.log("manobraAtual:",
+                localStorage.getItem("manobraAtual"));
 
-        if (!codigo) {
-        return;
-        }
+            console.log("passosExecutados:",
+                localStorage.getItem("passosExecutados"));
 
-        let manobra =
-        manobras[codigo];
+            let codigo =
+                localStorage.getItem(
+                    "manobraAtual"
+                );
 
-        if (!manobra) {
-        return;
-        }
+            if (!codigo) {
+                return;
+            }
 
-        document.getElementById(
-        "nomeManobra"
-        ).innerHTML = manobra.titulo;
+            let manobra =
+                manobras[codigo];
 
-        let lista =
-        document.getElementById(
-            "listaManobras"
-        );
+            if (!manobra) {
+                return;
+            }
 
-        lista.innerHTML = "";
+            document.getElementById(
+                "nomeManobra"
+            ).innerHTML = manobra.titulo;
 
-        manobra.passos.forEach(
-        (passo, indice) => {
+            let lista =
+                document.getElementById(
+                    "listaManobras"
+                );
 
-            lista.innerHTML +=
-                `<div class="item">
+            lista.innerHTML = "";
+
+            manobra.passos.forEach(
+                (passo, indice) => {
+
+                    lista.innerHTML +=
+                        `<div class="item">
                     ${indice + 1}. ${passo}
                 </div>`;
 
                 }
-        );
+            );
 
-        lista.style.display = "grid";
+            lista.style.display = "grid";
         }
 
-          
+
         const manobras = {
 
-        EnergizarLinha1: {
+            EnergizarLinha1: {
 
-        titulo: "OM para Energizar Linha 1",
+                titulo: "OM para Energizar Linha 1",
 
-        passos: [
+                passos: [
 
-            "Fechar Seccionadora 89L1",
-            "Fechar Seccionadora 89L1A",
-            "Fechar Disjuntor 52L1"
-        ]
-        },
+                    "Fechar Seccionadora 89L1",
+                    "Fechar Seccionadora 89L1A",
+                    "Fechar Disjuntor 52L1"
+                ]
+            },
 
-        DesenergizarLinha1: {
+            DesenergizarLinha1: {
 
-        titulo: "OM para Desenergizar Linha 1",
+                titulo: "OM para Desenergizar Linha 1",
 
-        passos: [
+                passos: [
 
-            "Abrir Disjuntor 52L1",
-            "Abrir Seccionadora 89L1A",
-            "Abrir Seccionadora 89L1"
-        ]
-        },
+                    "Abrir Disjuntor 52L1",
+                    "Abrir Seccionadora 89L1A",
+                    "Abrir Seccionadora 89L1"
+                ]
+            },
 
-        EnergizarLinha2: {
+            EnergizarLinha2: {
 
-        titulo: "OM para Energizar Linha 2",
+                titulo: "OM para Energizar Linha 2",
 
-        passos: [
+                passos: [
 
-            "Fechar Seccionadora 89L2",
-            "Fechar Seccionadora 89L2B",
-            "Fechar Disjuntor 52L2"
-        ]
-    },
+                    "Fechar Seccionadora 89L2",
+                    "Fechar Seccionadora 89L2B",
+                    "Fechar Disjuntor 52L2"
+                ]
+            },
 
-        DesenergizarLinha2: {
+            DesenergizarLinha2: {
 
-        titulo: "OM para Desenergizar Linha 2",
+                titulo: "OM para Desenergizar Linha 2",
 
-        passos: [
+                passos: [
 
-            "Abrir Disjuntor 52L2",
-            "Abrir Seccionadora 89L2B",
-            "Abrir Seccionadora 89L2"
-        ]
-    },
+                    "Abrir Disjuntor 52L2",
+                    "Abrir Seccionadora 89L2B",
+                    "Abrir Seccionadora 89L2"
+                ]
+            },
 
-    
-    };
 
-    window.onload = function () {
-    carregarManobra();
-    setInterval(carregarManobra, 1000);
-    };
+        };
+
+        window.onload = function () {
+            carregarManobra();
+            setInterval(carregarManobra, 1000);
+        };
 
     </script>
 

@@ -235,13 +235,21 @@
                 "true"
             );
 
-            alert("Manobra Energizar Linha 1 habilitada.");
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Energizar Linha 1 habilitada."
+            );
         }
+
 
         function enerL2() {
             localStorage.setItem(
                 "manobraAtual",
-                "EnergizarLinha2"
+                "EnergizarLinha1"
             );
 
             localStorage.setItem(
@@ -249,7 +257,14 @@
                 "true"
             );
 
-            alert("Manobra Energizar Linha 2 habilitada.");
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Energizar Linha 2 habilitada."
+            );
         }
 
         function enerL1BarraA() {
@@ -289,25 +304,39 @@
             );
 
             localStorage.setItem(
-                "DesenergizarL1Habilitada",
+                "desenerL1Habilitada",
                 "true"
             );
 
-            alert("Manobra Desenergização Linha 1 habilitada.");
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Desenergizar Linha 1 habilitada."
+            );
         }
 
         function desenerL2() {
-           localStorage.setItem(
+            localStorage.setItem(
                 "manobraAtual",
                 "DesenergizarLinha2"
             );
 
             localStorage.setItem(
-                "DesenergizarL2Habilitada",
+                "desenerL2Habilitada",
                 "true"
             );
 
-            alert("Manobra Desenergizar Linha 2 habilitada.");
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Desenergizar Linha 2 habilitada."
+            );
         }
 
         function fecharTela() {
@@ -315,7 +344,11 @@
         }
 
         function manobraPadrao() {
-        window.open("OrdemdeManobraPadrao.html", "_blank");
+            window.open("OrdemdeManobraPadrao.html", "_blank");
+        }
+
+        function manobraExecutada() {
+            window.open("OrdemdeManobraExecutada.html", "_blank");
         }
 
     </script>

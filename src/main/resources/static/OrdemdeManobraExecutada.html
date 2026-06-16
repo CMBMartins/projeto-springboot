@@ -86,7 +86,7 @@
         <div class="subtitulo" id="nomeManobra">
             Nenhuma Manobra Habilitada
         </div>
-        
+
         <div class="lista-manobras" id="listaManobras">
         </div>
 
@@ -103,85 +103,149 @@
         function visualizar() {
             carregarManobra();
         }
-       
-        
+
+
         function limpar() {
-            
-         document.getElementById("nomeManobra").innerHTML =
-        "Nenhuma Manobra Habilitada";
 
-         document.getElementById("listaManobras").innerHTML = "";
+            document.getElementById("nomeManobra").innerHTML =
+                "Nenhuma Manobra Habilitada";
 
-        document.getElementById("listaManobras").style.display =
-        "none";
+            document.getElementById("listaManobras").innerHTML = "";
 
-        localStorage.removeItem(
-        "manobraAtual"
-        );        
+            document.getElementById("listaManobras").style.display =
+                "none";
+
+            localStorage.removeItem(
+                "manobraAtual"
+            );
         }
 
 
-    // FUNÇÃO QUE MOSTRA A MANOBRA  EXECUTADA QUE FOI  HABILITADA
-    function carregarManobra() {
+        // FUNÇÃO QUE MOSTRA A MANOBRA  EXECUTADA QUE FOI  HABILITADA
+        function carregarManobra() {
 
-    let codigo =
-        localStorage.getItem(
-            "manobraAtual"
-        );
-
-    if (!codigo) {
-        return;
-    }
-
-    let manobra =
-        manobras[codigo];
-
-    if (!manobra) {
-        return;
-    }
-
-    document.getElementById(
-        "nomeManobra"
-    ).innerHTML =
-        manobra.titulo;
-
-    let lista =
-        document.getElementById(
-            "listaManobras"
-        );
-
-    lista.innerHTML = "";
-
-    let passosExecutados =
-        JSON.parse(
-            localStorage.getItem(
-                "passosExecutados"
-            )
-        ) || [];
-
-    manobra.passos.forEach(
-        (passo, indice) => {
-
-            let executado =
-                passosExecutados.includes(
-                    passo
+            let codigo =
+                localStorage.getItem(
+                    "manobraAtual"
                 );
 
-            lista.innerHTML += `
+            if (!codigo) {
+                return;
+            }
+
+            let manobra =
+                manobras[codigo];
+
+            if (!manobra) {
+                return;
+            }
+
+            document.getElementById(
+                "nomeManobra"
+            ).innerHTML =
+                manobra.titulo;
+
+            let lista =
+                document.getElementById(
+                    "listaManobras"
+                );
+
+            lista.innerHTML = "";
+
+            let passosExecutados =
+                JSON.parse(
+                    localStorage.getItem(
+                        "passosExecutados"
+                    )
+                ) || [];
+
+            if (passosExecutados.length === 0) {
+
+                lista.innerHTML =
+                    "<div class='item'>Nenhum passo executado ainda...</div>";
+
+            } else {
+
+                passosExecutados.forEach(
+                    (passo, indice) => {
+
+                        lista.innerHTML += `
                 <div class="item"
                     style="
-                    color:${executado ? 'green' : 'black'};
-                    font-weight:${executado ? 'bold' : 'normal'};
+                        color:green;
+                        font-weight:bold;
                     ">
-                    ${executado ? '✅' : '⬜'}
-                    ${indice + 1}. ${passo}
+                    ✅ ${indice + 1}. ${passo}
                 </div>
             `;
-        }
-    );
+                    }
+                );
+            }
 
-    lista.style.display = "grid";
-}
+            lista.style.display = "grid";
+        }
+
+        window.onload = function () {
+
+            carregarManobra();
+
+            setInterval(
+                carregarManobra,
+                1000
+            );
+        };
+
+        const manobras = {
+
+            EnergizarLinha1: {
+
+                titulo: "OM para Energizar Linha 1",
+
+                passos: [
+
+                    "Fechar Seccionadora 89L1",
+                    "Fechar Seccionadora 89L1A",
+                    "Fechar Disjuntor 52L1"
+                ]
+            },
+
+            DesenergizarLinha1: {
+
+                titulo: "OM para Desenergizar Linha 1",
+
+                passos: [
+
+                    "Abrir Disjuntor 52L1",
+                    "Abrir Seccionadora 89L1A",
+                    "Abrir Seccionadora 89L1"
+                ]
+            },
+
+            EnergizarLinha2: {
+
+                titulo: "OM para Energizar Linha 2",
+
+                passos: [
+
+                    "Fechar Seccionadora 89L2",
+                    "Fechar Seccionadora 89L2B",
+                    "Fechar Disjuntor 52L2"
+                ]
+            },
+
+            DesenergizarLinha2: {
+
+                titulo: "OM para Desenergizar Linha 2",
+
+                passos: [
+
+                    "Abrir Disjuntor 52L2",
+                    "Abrir Seccionadora 89L2B",
+                    "Abrir Seccionadora 89L2"
+                ]
+            },
+
+        };
 
     </script>
 
