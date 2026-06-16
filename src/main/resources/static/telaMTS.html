@@ -694,6 +694,9 @@
                             linha.setAttribute("y2", "118");
 
                             seccionadora89l1afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L1A"
+                            );
 
                         } else {
 
@@ -722,6 +725,10 @@
                         document.getElementById("diagrama").appendChild(linha);
 
                         seccionadora89l1afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L1A"
+                        );
+                        console.log("89L1A FECHADA");
                     }
                     verificarEnerL1();
                 }
@@ -817,6 +824,9 @@
                             linha.setAttribute("y2", "118");
 
                             seccionadora89l2bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L2B"
+                            );
 
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
@@ -842,6 +852,10 @@
 
                         document.getElementById("diagrama").appendChild(linha);
                         seccionadora89l2bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L2B"
+                        );
+                        console.log("89L2B FECHADA");
                     }
                     verificarEnerL2();
                 }
@@ -862,6 +876,10 @@
                             linha.setAttribute("y2", "280");
 
                             seccionadora89l1fechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L1"
+                            );
+
 
                         } else {
 
@@ -890,6 +908,10 @@
                         document.getElementById("diagrama").appendChild(linha);
 
                         seccionadora89l1fechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L1"
+                        );
+                        console.log("89L1 FECHADA");
                     }
 
                     verificarEnerL1();
@@ -907,6 +929,9 @@
                             linha.setAttribute("y2", "278");
 
                             seccionadora89l2fechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L2"
+                            );
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "685");
@@ -931,6 +956,10 @@
 
                         document.getElementById("diagrama").appendChild(linha);
                         seccionadora89l2fechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L2"
+                        );
+                        console.log("89L2 FECHADA");
                     }
                     verificarEnerL2();
                 }
@@ -1055,10 +1084,17 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green";
                             disjuntor52l1fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52L1"
+                            );
 
                         } else {
                             botao.style.fill = "red";
                             disjuntor52l1fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52L1"
+                            );
+                            console.log("Disjuntor 52 L1 FECHADO");
                         }
                     }
 
@@ -1074,10 +1110,17 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
                             disjuntor52l2fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52L2"
+                            );
 
                         } else {
                             botao.style.fill = "red";
                             disjuntor52l2fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52L2"
+                            );
+                            console.log("Disjuntor 52 L2 FECHADO");
                         }
                     }
                     verificarEnerL2();
@@ -1172,6 +1215,29 @@
                             ""
                         );
                     }
+                }
+
+                function registrarPasso(texto) {
+
+                    let passosExecutados =
+                        JSON.parse(
+                            localStorage.getItem("passosExecutados")
+                        ) || [];
+
+                    if (!passosExecutados.includes(texto)) {
+
+                        passosExecutados.push(texto);
+
+                        localStorage.setItem(
+                            "passosExecutados",
+                            JSON.stringify(passosExecutados)
+                        );
+                    }
+
+                    console.log(
+                        "passosExecutados:",
+                        passosExecutados
+                    );
                 }
 
             </script>
