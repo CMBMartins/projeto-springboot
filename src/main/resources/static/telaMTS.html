@@ -332,17 +332,17 @@
                     onclick="toggleSeccionadoraMT2B('B')" />
                 <text x="108" y="140" onclick="toggleSeccionadora('B')">89MT2B</text>
 
-                <!-- Símbolo de Disjuntor do MT-2-->
-                <rect id="btnMT2" x="365" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
-                    onclick="toggleDisjuntorMT2('MT2')" /> <!-- Disjuntor -->
+                <!-- Símbolo de Disjuntor do MT-1-->
+                <rect id="btnMT1" x="365" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorMT1('MT1')" /> <!-- Disjuntor -->
                 <line x1="405" y1="214" x2="365" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
-                <text x="407" y="220" onclick="toggleDisjuntor('52MT2')">52MT1</text>
-                <!-- Símbolo de Transformador MT-2-->
+                <text x="407" y="220" onclick="toggleDisjuntor('52MT1')">52MT1</text>
+                <!-- Símbolo de Transformador MT-1-->
                 <line x1="50" y1="300" x2="120" y2="300" stroke="orange" stroke-width="4" />
-                <!-- Base do transformador -->
-                <circle cx="75" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
-                <circle cx="95" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
-                <text x="87" y="340" onclick="toggleTransformador('MT1')">MT2</text>
+                <!-- Base do transformador MT1 -->
+                <circle cx="375" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="395" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="387" y="340" onclick="toggleTransformador('MT1')">MT1</text>
 
                 <!-- Simbolos Disjuntor e Transformador MT-R -->
                 <!-- Botões das Seccionadoras A e B MT-R (botão) -->
@@ -367,7 +367,6 @@
                 <circle cx="245" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
                 <text x="237" y="340" onclick="toggleTransformador('MTR')">MTR</text>
 
-                <!-- Simbolos Disjuntor e Transformador MT-1 -->
                 <!-- Botões das Seccionadoras A e B MT-2 (botão) -->
                 <!-- Seccionadora A (botão) -->
                 <rect id="btn1A" x="323" y="117" width="35" height="35" fill="teal" stroke="black"
@@ -378,17 +377,17 @@
                     onclick="toggleSeccionadoraMT1B('1B')" />
                 <text x="414" y="140" onclick="toggleSeccionadora('2B')">89MT1B</text>
 
-                <!-- Símbolo de Disjuntor MT-1-->
-                <rect id="btnMT1" x="66" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
-                    onclick="toggleDisjuntorMT1('MT1')" /> <!-- Disjuntor -->
+                <!-- Símbolo de Disjuntor e Tranformador MT-2-->
+                <rect id="btnMT2" x="66" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
+                    onclick="toggleDisjuntorMT2('MT2')" /> <!-- Disjuntor -->
                 <line x1="105" y1="214" x2="65" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
-                <text x="107" y="220" onclick="toggleDisjuntor('52MT1')">52MT2</text>
-                <!-- Símbolo de Transformador MT-1-->
+                <text x="107" y="220" onclick="toggleDisjuntor('52MT2')">52MT2</text>
+                <!-- Símbolo de Transformador MT-2-->
                 <line x1="350" y1="300" x2="420" y2="300" stroke="orange" stroke-width="4" />
-                <!-- Base do transformador -->
-                <circle cx="375" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
-                <circle cx="395" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
-                <text x="387" y="340" onclick="toggleTransformador('MT1')">MT1</text>
+                <circle cx="75" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 1 -->
+                <circle cx="95" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
+                <text x="87" y="340" onclick="toggleTransformador('MT2')">MT2</text>
+
 
                 <!-- Simbolos Disjuntor e Seccionadora L1 -->
                 <!-- Botões das Seccionadoras A e B L1 (botão) -->
@@ -699,13 +698,14 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
                         seccionadora89mt1afechada = true;
                         registrarPasso(
                             "Fechar Seccionadora 89MT1A"
                         );
                         console.log("89MT1A FECHADA");
                     }
-                    verificarEnerL1BarraA()
+                    verificarEnerL1BarraA();
                 }
 
 
@@ -803,7 +803,7 @@
                         console.log("89L1A FECHADA");
                     }
                     verificarEnerL1();
-                    verificarEnerL1BarraA()
+                    verificarEnerL1BarraA();
                 }
 
 
@@ -1007,6 +1007,7 @@
                     }
 
                     verificarEnerL1();
+                    verificarEnerL1BarraA();
                 }
 
 
@@ -1150,20 +1151,22 @@
                 }
 
 
-                //FUNÇÃO DAS AÇÕES DO DISJUNTOR MT1//
+                //FUNÇÃO DAS AÇÕES DO DISJUNTOR MT1//                
                 function toggleDisjuntorMT1(tipo) {
+
                     let botao = document.getElementById('btn' + tipo);
 
                     if (botao) {
+                        if (!confirm("Tem certeza que deseja alterar o estado do Disjuntor 52MT1?")) return;
+
                         if (botao.style.fill === "red") {
-                            botao.style.fill = "green"; // Muda para aberto (verde)
+                            botao.style.fill = "green";
                             disjuntor52mt1fechado = false;
                             registrarPasso(
                                 "Abrir Disjuntor 52MT1"
                             );
 
                         } else {
-                            // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
                             disjuntor52mt1fechado = true;
                             registrarPasso(
@@ -1172,7 +1175,9 @@
                             console.log("Disjuntor 52 MT1 FECHADO");
                         }
                     }
-                    verificarEnerL1BarraA()
+
+                    verificarEnerL1();
+                    verificarEnerL1BarraA();
                 }
 
 
@@ -1202,7 +1207,7 @@
                     }
 
                     verificarEnerL1();
-                    verificarEnerL1BarraA()
+                    verificarEnerL1BarraA();
                 }
 
 
