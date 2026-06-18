@@ -322,17 +322,17 @@
             <!-- Símbolos dos Disjuntores e Transformadores -->
             <svg id="diagrama" width="1000" height="600" style="background: teal; display: flex; margin: 0;">
 
-                <!-- Botões das Seccionadoras A e B MT-2 (botão) -->
+                <!-- Botões das Seccionadoras A e B MT-1 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnA" x="25" y="117" width="35" height="35" fill="teal" stroke="black"
-                    onclick="toggleSeccionadoraMT2A('A')" />
-                <text x="25" y="140" onclick="toggleSeccionadora('A')">89MT2A</text>
+                <rect id="btn1A" x="323" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraMT1A('1A')" />
+                <text x="325" y="140" onclick="toggleSeccionadora('2A')">89MT1A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnB" x="107" y="117" width="35" height="35" fill="teal" stroke="black"
-                    onclick="toggleSeccionadoraMT2B('B')" />
-                <text x="108" y="140" onclick="toggleSeccionadora('B')">89MT2B</text>
+                <rect id="btn1B" x="412" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraMT1B('1B')" />
+                <text x="414" y="140" onclick="toggleSeccionadora('1B')">89MT1B</text>
 
-                <!-- Símbolo de Disjuntor do MT-1-->
+                <!-- Símbolo de Disjuntor e Transformador do MT-1-->
                 <rect id="btnMT1" x="365" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
                     onclick="toggleDisjuntorMT1('MT1')" /> <!-- Disjuntor -->
                 <line x1="405" y1="214" x2="365" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
@@ -367,15 +367,16 @@
                 <circle cx="245" cy="300" r="24" stroke="black" stroke-width="2" fill="none" /> <!-- Bobina 2 -->
                 <text x="237" y="340" onclick="toggleTransformador('MTR')">MTR</text>
 
+
                 <!-- Botões das Seccionadoras A e B MT-2 (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btn1A" x="323" y="117" width="35" height="35" fill="teal" stroke="black"
-                    onclick="toggleSeccionadoraMT1A('1A')" />
-                <text x="325" y="140" onclick="toggleSeccionadora('2A')">89MT1A</text>
+                <rect id="btnA" x="25" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraMT2A('A')" />
+                <text x="25" y="140" onclick="toggleSeccionadora('A')">89MT2A</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btn1B" x="412" y="117" width="35" height="35" fill="teal" stroke="black"
-                    onclick="toggleSeccionadoraMT1B('1B')" />
-                <text x="414" y="140" onclick="toggleSeccionadora('2B')">89MT1B</text>
+                <rect id="btnB" x="107" y="117" width="35" height="35" fill="teal" stroke="black"
+                    onclick="toggleSeccionadoraMT2B('B')" />
+                <text x="108" y="140" onclick="toggleSeccionadora('B')">89MT2B</text>
 
                 <!-- Símbolo de Disjuntor e Tranformador MT-2-->
                 <rect id="btnMT2" x="66" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
@@ -467,10 +468,6 @@
                 <text x="862" y="230" onclick="toggleDisjuntor('52L2')">52BT</text>
 
             </svg>
-
-            <!-- Scripts das Seccionadoras e dos Transformadores -->
-            <!-- Seccionadora 89MT2A-->
-
 
             <script>
 
@@ -706,6 +703,7 @@
                         console.log("89MT1A FECHADA");
                     }
                     verificarEnerL1BarraA();
+                    verificarDesenerL1BarraA;
                 }
 
 
@@ -804,6 +802,8 @@
                     }
                     verificarEnerL1();
                     verificarEnerL1BarraA();
+                    verificarDesenerL1();
+                    verificarDesenerL1BarraA;
                 }
 
 
@@ -950,6 +950,7 @@
                         console.log("89L2B FECHADA");
                     }
                     verificarEnerL2();
+                    verificarDesenerL2()
                 }
 
 
@@ -1008,6 +1009,8 @@
 
                     verificarEnerL1();
                     verificarEnerL1BarraA();
+                    verificarDesenerL1();
+                    verificarDesenerL1BarraA;
                 }
 
 
@@ -1056,6 +1059,7 @@
                         console.log("89L2 FECHADA");
                     }
                     verificarEnerL2();
+                    verificarDesenerL2();
                 }
 
 
@@ -1178,8 +1182,8 @@
 
                     verificarEnerL1();
                     verificarEnerL1BarraA();
+                    verificarDesenerL1BarraA();
                 }
-
 
                 //FUNÇÃO DAS AÇÕES DO DISJUNTOR L1//
                 function toggleDisjuntorL1(tipo) {
@@ -1208,6 +1212,8 @@
 
                     verificarEnerL1();
                     verificarEnerL1BarraA();
+                    verificarDesenerL1()
+                    verificarDesenerL1BarraA
                 }
 
 
@@ -1233,6 +1239,7 @@
                         }
                     }
                     verificarEnerL2();
+                    verificarDesenerL2()
                 }
 
 
@@ -1254,7 +1261,7 @@
 
                 //FUNÇÕES DAS MANOBRAS INTELIGENTES//
 
-                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 1
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO  E DESENERGIZAÇÃO DA LINHA 1
                 function verificarEnerL1() {
 
                     console.log("verificarEnerL1 executou");
@@ -1290,7 +1297,45 @@
                     }
                 }
 
-                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 2
+                function verificarDesenerL1() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerL1Habilitada =
+                        localStorage.getItem("desenerL1Habilitada") === "true";
+
+                    if (
+                        !desenerL1Habilitada ||
+                        manobraAtual !== "DesenergizarLinha1"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52l1fechado &&
+                        !seccionadora89l1afechada &&
+                        !seccionadora89l1fechada
+                    ) {
+
+                        alert(
+                            "✅ Manobra Desenergizar Linha 1 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerL1Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DA LINHA 2
                 function verificarEnerL2() {
 
                     console.log("verificarEnerL2 executou");
@@ -1326,7 +1371,45 @@
                     }
                 }
 
-                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 1 E BARRA A
+                function verificarDesenerL2() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerL2Habilitada =
+                        localStorage.getItem("desenerL2Habilitada") === "true";
+
+                    if (
+                        !desenerL2Habilitada ||
+                        manobraAtual !== "DesenergizarLinha2"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52l2fechado &&
+                        !seccionadora89l2afechada &&
+                        !seccionadora89l2fechada
+                    ) {
+
+                        alert(
+                            "✅ Manobra Desenergizar Linha 2 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerL2Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DA LINHA 1 E BARRA A
                 function verificarEnerL1BarraA() {
 
                     console.log("verificarEnerL1BarraA executou");
@@ -1360,6 +1443,45 @@
                         localStorage.setItem(
                             "manobraAtual",
                             ""
+                        );
+                    }
+                }
+
+                function verificarDesenerL1BarraA() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerL1BarraAHabilitada =
+                        localStorage.getItem("desenerL1BarraAHabilitada") === "true";
+
+                    if (
+                        !desenerL1BarraAHabilitada ||
+                        manobraAtual !== "DesenergizarLinha1BarraA"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt1fechado &&
+                        !seccionadora89mt1afechada &&
+                        !disjuntor52l1fechado &&
+                        !seccionadora89l1afechada &&
+                        !seccionadora89l1fechada
+                    ) {
+
+                        alert(
+                            "✅ Manobra Desenergizar Linha 1 e Barra A concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerL1BarraAHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
                         );
                     }
                 }
