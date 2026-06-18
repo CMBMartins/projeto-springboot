@@ -249,7 +249,7 @@
         function enerL2() {
             localStorage.setItem(
                 "manobraAtual",
-                "EnergizarLinha1"
+                "EnergizarLinha2"
             );
 
             localStorage.setItem(
@@ -267,34 +267,114 @@
             );
         }
 
+
         function enerL1BarraA() {
-            alert("Abrindo Manobras para energizar a Linha 1 e Barra A...");
-            // window.open("reducao.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarLinha1BarraA"
+            );
+
+            localStorage.setItem(
+                "enerL1BarraAHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert("Manobra para energizar a Linha 1 e Barra A habilitada");
         }
 
         function enerBayMT1() {
-            alert("Abrindo Manobras de Energização do Bay MT1...");
-            // window.open("transferencia.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayMT1"
+            );
+
+            localStorage.setItem(
+                "enerBayMT1",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobra de Energização do Bay MT1 habilitada");
         }
 
         function enerBayMTR() {
-            alert("Abrindo Manobras de Energização do Bay do MTR ...");
-            // window.open("geradores.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayMTR"
+            );
+
+            localStorage.setItem(
+                "enerBayMTRHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobra de Energização do Bay do MTR habilitada");
         }
 
         function enerBayMT2() {
-            alert("Abrindo Manobras de Energização do Bay do MT2...");
-            // window.open("geradores.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayMT2"
+            );
+
+            localStorage.setItem(
+                "enerBayMT2Habilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobra de Energização do Bay do MT2 habilitada");
         }
 
         function enerBayMT3() {
-            alert("Abrindo Manobras de Energização do Bay do MT3...");
-            // window.open("geradores.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayMT3"
+            );
+
+            localStorage.setItem(
+                "enerBayMT3Habilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobras de Energização do Bay do MT3 habilitada");
         }
 
         function enerBayMT4() {
-            alert("Abrindo Manobras de Energização do Bay do MT4...");
-            // window.open("geradores.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayMT4"
+            );
+
+            localStorage.setItem(
+                "enerBayMT4Habilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobras de Energização do Bay do MT4 habilitada");
         }
 
         function desenerL1() {

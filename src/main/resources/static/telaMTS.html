@@ -508,6 +508,12 @@
                         if (linha.getAttribute("x2") === "40") {
                             linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt2afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT2A"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "40");
@@ -525,6 +531,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mt2afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT2A"
+                        );
+                        console.log("89MT2A FECHADA");
                     }
                 }
 
@@ -538,6 +550,12 @@
                         if (linha.getAttribute("x2") === "125") {
                             linha.setAttribute("x2", "145"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt2bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT2B"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "125");
@@ -555,6 +573,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mt2bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT2B"
+                        );
+                        console.log("89MT2B FECHADA");
                     }
                 }
 
@@ -569,6 +593,12 @@
                         if (linha.getAttribute("x2") === "190") {
                             linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mtrafechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MTRA"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "190");
@@ -586,6 +616,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mtrafechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MTRA"
+                        );
+                        console.log("89MTRA FECHADA");
                     }
                 }
 
@@ -599,6 +635,12 @@
                         if (linha.getAttribute("x2") === "275") {
                             linha.setAttribute("x2", "295"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mtrbfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MTRB"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "275");
@@ -616,6 +658,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mtrbfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MTRB"
+                        );
+                        console.log("89MTRB FECHADA");
                     }
                 }
 
@@ -628,6 +676,12 @@
                         if (linha.getAttribute("x2") === "340") {
                             linha.setAttribute("x2", "360"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt1afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT1A"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "340");
@@ -645,7 +699,13 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+                        seccionadora89mt1afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT1A"
+                        );
+                        console.log("89MT1A FECHADA");
                     }
+                    verificarEnerL1BarraA()
                 }
 
 
@@ -658,6 +718,12 @@
                         if (linha.getAttribute("x2") === "428") {
                             linha.setAttribute("x2", "448"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt1bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT1B"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "428");
@@ -675,6 +741,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mt1bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT1B"
+                        );
+                        console.log("89MT1B FECHADA");
                     }
                 }
 
@@ -731,6 +803,7 @@
                         console.log("89L1A FECHADA");
                     }
                     verificarEnerL1();
+                    verificarEnerL1BarraA()
                 }
 
 
@@ -749,6 +822,9 @@
                             linha.setAttribute("y2", "118");
 
                             seccionadora89l1bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L1B"
+                            );
 
                         } else {
 
@@ -778,6 +854,9 @@
                         document.getElementById("diagrama").appendChild(linha);
 
                         seccionadora89l1bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L1B"
+                        );
                     }
 
                     console.log("89L1B =", seccionadora89l1bfechada);
@@ -793,6 +872,12 @@
                         if (linha.getAttribute("x2") === "646") {
                             linha.setAttribute("x2", "666"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "116");
+
+                            seccionadora89l2afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89L2A"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "646");
@@ -810,6 +895,12 @@
                         linha.setAttribute("y2", "116");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89l2afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89L2A"
+                        );
+                        console.log("89L2A FECHADA");
                     }
                 }
 
@@ -851,6 +942,7 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
                         seccionadora89l2bfechada = true;
                         registrarPasso(
                             "Fechar Seccionadora 89L2B"
@@ -955,6 +1047,7 @@
                         linha.setAttribute("y2", "278");
 
                         document.getElementById("diagrama").appendChild(linha);
+
                         seccionadora89l2fechada = true;
                         registrarPasso(
                             "Fechar Seccionadora 89L2"
@@ -1064,12 +1157,22 @@
                     if (botao) {
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
+                            disjuntor52mt1fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52MT1"
+                            );
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+                            disjuntor52mt1fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52MT1"
+                            );
+                            console.log("Disjuntor 52 MT1 FECHADO");
                         }
                     }
+                    verificarEnerL1BarraA()
                 }
 
 
@@ -1099,6 +1202,7 @@
                     }
 
                     verificarEnerL1();
+                    verificarEnerL1BarraA()
                 }
 
 
@@ -1145,7 +1249,7 @@
 
                 //FUNÇÕES DAS MANOBRAS INTELIGENTES//
 
-                //FUNÇÃO PARA MOSTRAR A MANOBRA DA ENERGIZAÇÃO DA LINHA 1
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 1
                 function verificarEnerL1() {
 
                     console.log("verificarEnerL1 executou");
@@ -1181,7 +1285,7 @@
                     }
                 }
 
-                //FUNÇÃO PARA MOSTRAR A MANOBRA DA ENERGIZAÇÃO DA LINHA 2
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 2
                 function verificarEnerL2() {
 
                     console.log("verificarEnerL2 executou");
@@ -1207,6 +1311,44 @@
 
                         localStorage.setItem(
                             "enerL2Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO DA LINHA 1 E BARRA A
+                function verificarEnerL1BarraA() {
+
+                    console.log("verificarEnerL1BarraA executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerL1BarraAHabilitada =
+                        localStorage.getItem("enerL1BarraAHabilitada") === "true";
+
+                    if (!enerL1BarraAHabilitada ||
+                        manobraAtual !== "EnergizarLinha1BarraA") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89l1fechada &&
+                        seccionadora89l1afechada &&
+                        disjuntor52l1fechado &&
+                        seccionadora89mt1afechada &&
+                        disjuntor52mt1fechado
+                    ) {
+
+                        alert("✅ Manobra Energizar Linha 1 e Barra A concluída com sucesso!");
+
+                        localStorage.setItem(
+                            "enerL1BarraAHabilitada",
                             "false"
                         );
 
