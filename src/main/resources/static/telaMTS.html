@@ -815,6 +815,7 @@
                     }
                     verificarEnerL1BarraA();
                     verificarDesenerL1BarraA;
+                    verificarEnerBayMT1()
                 }
 
 
@@ -865,6 +866,7 @@
                         );
                         console.log("89MT1B FECHADA");
                     }
+                    verificarEnerBayMT1()
                 }
 
 
@@ -1376,10 +1378,10 @@
                             console.log("Disjuntor 52 MT1 FECHADO");
                         }
                     }
-
                     verificarEnerL1();
                     verificarEnerL1BarraA();
                     verificarDesenerL1BarraA();
+                    verificarEnerBayMT1();
                 }
 
                 //FUNÇÃO DAS AÇÕES DO DISJUNTOR L1//
@@ -1409,8 +1411,8 @@
 
                     verificarEnerL1();
                     verificarEnerL1BarraA();
-                    verificarDesenerL1()
-                    verificarDesenerL1BarraA
+                    verificarDesenerL1();
+                    verificarDesenerL1BarraA;
                 }
 
 
@@ -1436,7 +1438,7 @@
                         }
                     }
                     verificarEnerL2();
-                    verificarDesenerL2()
+                    verificarDesenerL2();
                 }
 
 
@@ -1769,6 +1771,83 @@
                         );
                     }
                 }
+
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1
+                function verificarEnerBayMT1() {
+
+                    console.log("verificarEnerBayMT1 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayMT1Habilitada =
+                        localStorage.getItem("enerBayMT1Habilitada") === "true";
+
+                    if (!enerBayMT1Habilitada ||
+                        manobraAtual !== "EnergizarBayMT1") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89mt1afechada &&
+                        disjuntor52mt1fechado ||
+                        seccionadora89mt1bfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay do MT1 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayMT1Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayMT1() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayMT1Habilitada =
+                        localStorage.getItem("desenerBayMT1Habilitada") === "true";
+
+                    if (
+                        !desenerBayMT1Habilitada ||
+                        manobraAtual !== "DesenergizarBayMT1"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt1fechado &&
+                        !seccionadora89mt1afechada ||
+                        !seccionadora89mt1bfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay do MT1 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayMT1Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
 
                 //FUNÇÃO PARA GUARDAR OS PASSOS EXECUTADOS NAS MANOBRAS
                 function registrarPasso(texto) {
