@@ -1774,6 +1774,7 @@
 
 
                 //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1
+                // FUNÇÃO PARA CONFERIR A MANOBRA DE ENERGIZAÇÃO DO BAY DO MT1
                 function verificarEnerBayMT1() {
 
                     console.log("verificarEnerBayMT1 executou");
@@ -1791,12 +1792,11 @@
 
                     if (
                         seccionadora89mt1afechada &&
-                        disjuntor52mt1fechado ||
-                        seccionadora89mt1bfechada
+                        disjuntor52mt1fechado
                     ) {
 
                         mostrarMensagemManobra(
-                            "✅ Manobra Energizar Bay do MT1 concluída com sucesso!"
+                            "✅ Manobra Energizar o Bay do MT1 concluída com sucesso!"
                         );
 
                         localStorage.setItem(
