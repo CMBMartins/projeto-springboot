@@ -815,7 +815,8 @@
                     }
                     verificarEnerL1BarraA();
                     verificarDesenerL1BarraA;
-                    verificarEnerBayMT1()
+                    verificarEnerBayMT1();
+                    verificarDesenerBayMT1();
                 }
 
 
@@ -1382,6 +1383,7 @@
                     verificarEnerL1BarraA();
                     verificarDesenerL1BarraA();
                     verificarEnerBayMT1();
+                    verificarDesenerBayMT1();
                 }
 
                 //FUNÇÃO DAS AÇÕES DO DISJUNTOR L1//
@@ -1773,11 +1775,10 @@
                 }
 
 
-                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1
-                // FUNÇÃO PARA CONFERIR A MANOBRA DE ENERGIZAÇÃO DO BAY DO MT1
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1                
                 function verificarEnerBayMT1() {
 
-                    console.log("verificarEnerBayMT1 executou");
+                    console.log("verificarBayMT1 executou");
 
                     let manobraAtual =
                         localStorage.getItem("manobraAtual");
@@ -1796,7 +1797,7 @@
                     ) {
 
                         mostrarMensagemManobra(
-                            "✅ Manobra Energizar o Bay do MT1 concluída com sucesso!"
+                            "✅ Manobra Energizar Bay do MT1 concluída com sucesso!"
                         );
 
                         localStorage.setItem(
@@ -1828,12 +1829,11 @@
 
                     if (
                         !disjuntor52mt1fechado &&
-                        !seccionadora89mt1afechada ||
-                        !seccionadora89mt1bfechada
+                        !seccionadora89mt1afechada 
                     ) {
 
                         mostrarMensagemManobra(
-                            "✅ Manobra Desenergizar Bay do MT1 concluída com sucesso!"
+                            "✅ Manobra Desenergizar Bay MT1 concluída com sucesso!"
                         );
 
                         localStorage.setItem(

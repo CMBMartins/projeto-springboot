@@ -338,14 +338,15 @@
             alert("Manobra para energizar a Linha 2 e Barra B habilitada");
         }
 
-        function enerBayMT1() {
+         function enerBayMT1() {
+
             localStorage.setItem(
                 "manobraAtual",
                 "EnergizarBayMT1"
             );
 
             localStorage.setItem(
-                "enerBayMT1",
+                "enerBayMT1Habilitada",
                 "true"
             );
 
@@ -353,8 +354,12 @@
                 "passosExecutados",
                 JSON.stringify([])
             );
-            alert("Manobra de Energização do Bay MT1 habilitada");
+
+            alert(
+                "Manobra para Energizar o Bay do MT1 habilitada com sucesso!"
+            );
         }
+
 
         function enerBayMTR() {
             localStorage.setItem(
