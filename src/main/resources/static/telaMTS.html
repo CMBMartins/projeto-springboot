@@ -164,6 +164,26 @@
             left: -140px;
         }
 
+
+        .popupManobra {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid white;
+            box-shadow: 0px 0px 20px black;
+            min-width: 600px;
+            z-index: 9999;
+        }
+
         svg {
             background: transparent;
         }
@@ -318,6 +338,8 @@
             <!-- SECCIONADORA INFERIOR A para B-->
             <div class="panel" style="left: 885px; top: 153px; width: 3px; height: 65px;"></div>
             <!-- SECCIONADORA INFERIOR BT-B PARA DISJUNTOR-->
+
+            <div id="popupManobra" class="popupManobra"></div>
 
             <!-- Símbolos dos Disjuntores e Transformadores -->
             <svg id="diagrama" width="1000" height="600" style="background: teal; display: flex; margin: 0;">
@@ -493,11 +515,68 @@
                 let seccionadora89btbfechada = false;
                 let disjuntor52btfechado = false;
 
+                //SCRIPT COM AS FUNÇÕES PARA OS FEEDS BACKS DO SISTEMA//
+
+                //FUNÇÕES PARA MOSTRAR MENSAGENS DE FEED BACK//
+                function mostrarMensagemManobra(texto) {
+                    let popup =
+                        document.getElementById(
+                            "popupManobra"
+                        );
+
+                    popup.innerHTML = texto;
+                    popup.style.display =
+                        "block";
+                    setTimeout(function () {
+
+                        popup.style.display =
+                            "none";
+                    }, 4000);
+                }
+
+                //FUNÇÕES PARA DEFINIR SELETIVIDADE DAS MENSAGENS//
+                function mostrarMensagemManobra(texto, tipo = "sucesso") {
+
+                    let popup =
+                        document.getElementById("popupManobra");
+
+                    popup.innerHTML = texto;
+
+                    if (tipo === "sucesso") {
+                        popup.style.backgroundColor = "#28a745";
+                    }
+
+                    if (tipo === "erro") {
+                        popup.style.backgroundColor = "#dc3545";
+                    }
+
+                    if (tipo === "aviso") {
+                        popup.style.backgroundColor = "#ffc107";
+                        popup.style.color = "black";
+                    }
+
+                    popup.style.display = "block";
+
+                    setTimeout(() => {
+                        popup.style.display = "none";
+                        popup.style.color = "white";
+                    }, 4000);
+                }
+
+                //SCRIPTS PARA INTERFACE GRÁFICA E AÇÕES DOS EQUIPAMENTOS//
                 //FUNÇÕES PARA AÇÕES DE FECHADAS E ABERTAS DOS EQUIPAMENTOS//
 
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT2A//
                 function toggleSeccionadoraMT2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52mt2fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
@@ -541,6 +620,14 @@
                 function toggleSeccionadoraMT2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52mt2fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
                         if (linha.getAttribute("x2") === "125") {
@@ -581,6 +668,14 @@
 
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MTRA//
                 function toggleSeccionadoraMTRA(tipo) {
+
+                    if (disjuntor52mtrfechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -626,6 +721,14 @@
                 function toggleSeccionadoraMTRB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52mtrfechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
                         if (linha.getAttribute("x2") === "275") {
@@ -666,6 +769,14 @@
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT1A//
                 function toggleSeccionadoraMT1A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52mt1fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
@@ -711,6 +822,14 @@
                 function toggleSeccionadoraMT1B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52mt1fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
                         if (linha.getAttribute("x2") === "428") {
@@ -753,6 +872,14 @@
                 function toggleSeccionadoraL1A(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52l1fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
                         if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1A?")) return;
@@ -812,6 +939,14 @@
 
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52l1fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
                         if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1B?")) return;
 
@@ -867,8 +1002,15 @@
                 function toggleSeccionadoraL2A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52l2fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
-                        // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
                         if (linha.getAttribute("x2") === "646") {
                             linha.setAttribute("x2", "666"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "116");
@@ -907,6 +1049,14 @@
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS L2B//
                 function toggleSeccionadoraL2B(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52l2fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
 
@@ -958,6 +1108,14 @@
                 function toggleSeccionadoraL1(tipo) {
 
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52l1fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
                         if (!confirm("Tem certeza que deseja alterar o estado da seccionadora 89L1?")) return;
@@ -1018,6 +1176,14 @@
                 function toggleSeccionadoraL2(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52l2fechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
 
                         if (linha.getAttribute("x2") === "685") {
@@ -1067,6 +1233,14 @@
                 function toggleSeccionadoraBTA(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
+                    if (disjuntor52btfechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
+
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
                         if (linha.getAttribute("x2") === "796") {
@@ -1096,6 +1270,14 @@
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS BTB//
                 function toggleSeccionadoraBTB(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
+
+                    if (disjuntor52btfechado) {
+                        mostrarMensagemManobra(
+                            "❌ Lógica de intertravamento incorreta!"
+                        );
+
+                        return;
+                    }
 
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
@@ -1129,13 +1311,26 @@
 
                     if (botao) {
                         if (botao.style.fill === "red") {
-                            botao.style.fill = "green"; // Muda para aberto (verde)
+                            botao.style.fill = "green";
+                            disjuntor52mt2fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52MT2"
+                            );
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+
+                            disjuntor52mt2fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52MT2"
+                            );
+                            console.log("Disjuntor 52 MT2 FECHADO");
                         }
                     }
+                    verificarEnerL2();
+                    verificarEnerL2BarraB();
+                    verificarDesenerL2BarraB();
                 }
 
 
@@ -1146,10 +1341,12 @@
                     if (botao) {
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
+                            disjuntor52mtrfechado = false;
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+                            disjuntor52mtrfechado = true;
                         }
                     }
                 }
@@ -1250,10 +1447,12 @@
                     if (botao) {
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
+                            disjuntor52btfechado = false;
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+                            disjuntor52btfechado = true;
                         }
                     }
                 }
@@ -1283,7 +1482,9 @@
                         disjuntor52l1fechado
                     ) {
 
-                        alert("✅ Manobra Energizar Linha 1 concluída com sucesso!");
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Linha 1 concluída com sucesso!"
+                        );
 
                         localStorage.setItem(
                             "enerL1Habilitada",
@@ -1318,7 +1519,7 @@
                         !seccionadora89l1fechada
                     ) {
 
-                        alert(
+                        mostrarMensagemManobra(
                             "✅ Manobra Desenergizar Linha 1 concluída com sucesso!"
                         );
 
@@ -1357,7 +1558,9 @@
                         disjuntor52l2fechado
                     ) {
 
-                        alert("✅ Manobra Energizar Linha 2 concluída com sucesso!");
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Linha 2 concluída com sucesso!"
+                        );
 
                         localStorage.setItem(
                             "enerL2Habilitada",
@@ -1392,7 +1595,7 @@
                         !seccionadora89l2fechada
                     ) {
 
-                        alert(
+                        mostrarMensagemManobra(
                             "✅ Manobra Desenergizar Linha 2 concluída com sucesso!"
                         );
 
@@ -1433,7 +1636,9 @@
                         disjuntor52mt1fechado
                     ) {
 
-                        alert("✅ Manobra Energizar Linha 1 e Barra A concluída com sucesso!");
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Linha 1 e Barra A concluída com sucesso!"
+                        );
 
                         localStorage.setItem(
                             "enerL1BarraAHabilitada",
@@ -1470,12 +1675,91 @@
                         !seccionadora89l1fechada
                     ) {
 
-                        alert(
+                        mostrarMensagemManobra(
                             "✅ Manobra Desenergizar Linha 1 e Barra A concluída com sucesso!"
                         );
 
                         localStorage.setItem(
                             "desenerL1BarraAHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DA LINHA 2 E BARRA B
+                function verificarEnerL2BarraB() {
+
+                    console.log("verificarEnerL2BarraB executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerL2BarraBHabilitada =
+                        localStorage.getItem("enerL2BarraBHabilitada") === "true";
+
+                    if (!enerL2BarraBHabilitada ||
+                        manobraAtual !== "EnergizarLinha2BarraB") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89l2fechada &&
+                        seccionadora89l2bfechada &&
+                        disjuntor52l2fechado &&
+                        seccionadora89mt2bfechada &&
+                        disjuntor52mt2fechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Linha L2 e Barra B concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerL2BarraBHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerL2BarraB() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerL2BarraBHabilitada =
+                        localStorage.getItem("desenerL2BarraBHabilitada") === "true";
+
+                    if (
+                        !desenerL2BarraBHabilitada ||
+                        manobraAtual !== "DesenergizarLinha2BarraB"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt2fechado &&
+                        !seccionadora89mt2bfechada &&
+                        !disjuntor52l2fechado &&
+                        !seccionadora89l2bfechada &&
+                        !seccionadora89l2fechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Linha L2 e Barra B concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerL2BarraBHabilitada",
                             "false"
                         );
 

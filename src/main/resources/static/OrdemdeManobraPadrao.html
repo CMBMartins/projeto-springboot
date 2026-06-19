@@ -178,7 +178,6 @@
                 titulo: "OM para Energizar Linha 1",
 
                 passos: [
-
                     "Fechar Seccionadora 89L1",
                     "Fechar Seccionadora 89L1A",
                     "Fechar Disjuntor 52L1"
@@ -190,7 +189,6 @@
                 titulo: "OM para Desenergizar Linha 1",
 
                 passos: [
-
                     "Abrir Disjuntor 52L1",
                     "Abrir Seccionadora 89L1A",
                     "Abrir Seccionadora 89L1"
@@ -202,7 +200,6 @@
                 titulo: "OM para Energizar Linha 2",
 
                 passos: [
-
                     "Fechar Seccionadora 89L2",
                     "Fechar Seccionadora 89L2B",
                     "Fechar Disjuntor 52L2"
@@ -214,7 +211,6 @@
                 titulo: "OM para Desenergizar Linha 2",
 
                 passos: [
-
                     "Abrir Disjuntor 52L2",
                     "Abrir Seccionadora 89L2B",
                     "Abrir Seccionadora 89L2"
@@ -226,7 +222,6 @@
                 titulo: "OM para Energizar Linha 1 e Barra A",
 
                 passos: [
-
                     "Fechar Seccionadora 89L1",
                     "Fechar Seccionadora 89L1A",
                     "Fechar Disjuntor 52L1",
@@ -248,12 +243,37 @@
                 ]
             },
 
+            EnergizarLinha2BarraB: {
+
+                titulo: "OM para Energizar Linha 2 e Barra B",
+
+                passos: [
+                    "Fechar Seccionadora 89L2",
+                    "Fechar Seccionadora 89L2B",
+                    "Fechar Disjuntor 52L2",
+                    "Fechar Seccionadora 89MT2B",
+                    "Fechar Disjuntor 52MT2"
+                ]
+            },
+
+            DesenergizarLinha2BarraB: {
+
+                titulo: "OM para Desenergizar Linha 2 e Barra B",
+
+                passos: [
+                    "Abrir Disjuntor 52MT2",
+                    "Abrir Seccionadora 89MT2B",
+                    "Abrir Disjuntor 52L2",
+                    "Abrir Seccionadora 89L2B",
+                    "Abrir Seccionadora 89L2"
+                ]
+            },
+
             EnergizarBayMT1: {
 
                 titulo: "OM para Energizar Bay do MT1",
 
                 passos: [
-
                     "Fechar Seccionadora 89MT1A",
                     "Fechar Disjuntor 52MT1"
                 ]
@@ -265,7 +285,7 @@
 
                 passos: [
                     "Abrir Disjuntor 52MT1",
-                    "Abrir Seccionadora 89MT1A",
+                    "Abrir Seccionadora 89MT1A"
                 ]
             },
 

@@ -203,12 +203,12 @@
                 Desenergizar a Linha 2
             </button>
 
-            <button onclick="desenerL2BarraB()">
-                Desenergizar a Linha 2 e Barra B
+            <button onclick="desenerL1BarraA()">
+                Desenergizar a Linha 1 e Barra A
             </button>
 
-            <button onclick="desenerL2BarraA()">
-                Desenergizar a Linha 1 e Barra A
+            <button onclick="desenerL2BarraB()">
+                Desenergizar a Linha 2 e Barra B
             </button>
 
             <button onclick="desenerBayMT1()">
@@ -317,6 +317,25 @@
             );
 
             alert("Manobra para energizar a Linha 1 e Barra A habilitada");
+        }
+
+        function enerL2BarraB() {
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarLinha2BarraB"
+            );
+
+            localStorage.setItem(
+                "enerL2BarraBHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert("Manobra para energizar a Linha 2 e Barra B habilitada");
         }
 
         function enerBayMT1() {
