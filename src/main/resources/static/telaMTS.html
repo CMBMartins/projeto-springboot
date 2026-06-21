@@ -714,6 +714,8 @@
                         );
                         console.log("89MTRA FECHADA");
                     }
+                    verificarEnerBayMTR();
+                    verificarDesenerBayMTR();
                 }
 
 
@@ -763,7 +765,10 @@
                             "Fechar Seccionadora 89MTRB"
                         );
                         console.log("89MTRB FECHADA");
-                    }
+                    }                    
+                    
+                    verificarEnerBayMTR();
+                    verificarDesenerBayMTR();
                 }
 
                 //FUNÇÃO DAS AÇÕES DAS SECCIONADORAS MT1A//
@@ -867,6 +872,9 @@
                         );
                         console.log("89MT1B FECHADA");
                     }
+                    verificarEnerL1BarraA();                   
+                    verificarEnerBayMT1();
+                    verificarDesenerBayMT1();
                     verificarEnerBayMT1()
                 }
 
@@ -1334,6 +1342,8 @@
                     verificarEnerL2();
                     verificarEnerL2BarraB();
                     verificarDesenerL2BarraB();
+                    verificarEnerBayMT2();
+                    verificarDesenerBayMT2();
                 }
 
 
@@ -1352,6 +1362,8 @@
                             disjuntor52mtrfechado = true;
                         }
                     }
+                    verificarEnerBayMTR();
+                    verificarDesenerBayMTR();
                 }
 
 
@@ -1793,6 +1805,7 @@
 
                     if (
                         seccionadora89mt1afechada &&
+                        seccionadora89mt1bfechada ||
                         disjuntor52mt1fechado
                     ) {
 
@@ -1848,6 +1861,79 @@
                     }
                 }
 
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MTR                
+                function verificarEnerBayMTR() {
+
+                    console.log("verificarBayMTR executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayMTRHabilitada =
+                        localStorage.getItem("enerBayMTRHabilitada") === "true";
+
+                    if (!enerBayMTRHabilitada ||
+                        manobraAtual !== "EnergizarBayMTR") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89mtrafechada &&
+                        seccionadora89mt1rfechada ||
+                        disjuntor52mtrfechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay do MTR concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayMTRHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayMTR() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayMTRHabilitada =
+                        localStorage.getItem("desenerBayMTRHabilitada") === "true";
+
+                    if (
+                        !desenerBayMTRHabilitada ||
+                        manobraAtual !== "DesenergizarBayMTR"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mtrfechado &&
+                        !seccionadora89mtrafechada 
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay MTR concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayMTRHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
 
                 //FUNÇÃO PARA GUARDAR OS PASSOS EXECUTADOS NAS MANOBRAS
                 function registrarPasso(texto) {
