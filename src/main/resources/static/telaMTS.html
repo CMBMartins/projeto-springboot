@@ -52,6 +52,7 @@
             width: 50px;
             height: 48px;
             background-color: teal;
+            color: white;
             border: none;
             cursor: pointer;
         }
@@ -59,7 +60,45 @@
         .button img {
             width: 100%;
             height: 100%;
+            color: white;
         }
+
+        .btnConfiguracaoInicial {
+            position: absolute;
+            top: 80px;
+            left: 1020px;
+            width: 120px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btnConfiguracaoInicial:hover {
+            background-color: #004c99;
+        }
+
+        .btnlinkPagina {
+            position: absolute;
+            top: 80px;
+            left: 10px;
+            width: 120px;
+            height: 45px;
+            background-color: #0066cc;
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btnlinkPagina:hover {
+            background-color: #004c99;
+        }
+
 
         .tooltip {
             font-size: 12px;
@@ -205,19 +244,19 @@
         <div class="simulador">SIMULADOR ALBRAS</div>
         <div class="telaPrincipal">Tela dos Trafos de 230 Kv</div>
 
+        <button class="btnlinkPagina" onclick="linkPagina()">
+            Menu dos Barramentos
+        </button>
+
+        <button class="btnConfiguracaoInicial" onclick="configuracaoInicial()">
+            Configuração Inicial
+        </button>
+
         <div id="email">cmardonio@yahoo.com.br</div>
 
         <button class="button" style="top: 130px; left: 152px;"
-            title="Pressione para fazer Login e liberar a operação dos Equipamentos">
+            title="Pressione para fazer colocar os Equipamentos na configuração inicial">
             <!--<h4><div><a href="simuladorALBRAS.php">Chamar a tela Principal</a><br></div></h4>-->
-
-            <div class="telaprincipal">
-                <a href="">
-                    <span class="fa fa-home"></span>
-                    <a href="menudeBarramentos.html">
-                        <span>Pagina Principal</span>
-                    </a>
-            </div>
             </head>
 
             <!-- LINHAS DAS SECCIONADORAS E DISJUNTORES -->
@@ -341,7 +380,7 @@
 
             <div id="popupManobra" class="popupManobra"></div>
 
-            <!-- Símbolos dos Disjuntores e Transformadores -->
+            <!-- Ações das Seccionadoras dos Disjuntores e Transformadores e seus Simbolos-->
             <svg id="diagrama" width="1000" height="600" style="background: teal; display: flex; margin: 0;">
 
                 <!-- Botões das Seccionadoras A e B MT-1 (botão) -->
@@ -613,6 +652,7 @@
                         );
                         console.log("89MT2A FECHADA");
                     }
+                    verificarEnerBayMT2()
                 }
 
 
@@ -663,6 +703,8 @@
                         );
                         console.log("89MT2B FECHADA");
                     }
+                    verificarEnerBayMT2();
+                    verificarDesenerBayMT2();
                 }
 
 
@@ -765,8 +807,8 @@
                             "Fechar Seccionadora 89MTRB"
                         );
                         console.log("89MTRB FECHADA");
-                    }                    
-                    
+                    }
+
                     verificarEnerBayMTR();
                     verificarDesenerBayMTR();
                 }
@@ -872,7 +914,7 @@
                         );
                         console.log("89MT1B FECHADA");
                     }
-                    verificarEnerL1BarraA();                   
+                    verificarEnerL1BarraA();
                     verificarEnerBayMT1();
                     verificarDesenerBayMT1();
                     verificarEnerBayMT1()
@@ -941,7 +983,7 @@
                     verificarEnerL1();
                     verificarEnerL1BarraA();
                     verificarDesenerL1();
-                    verificarDesenerL1BarraA;
+                    verificarDesenerL1BarraA();
                 }
 
 
@@ -1179,7 +1221,7 @@
                     verificarEnerL1();
                     verificarEnerL1BarraA();
                     verificarDesenerL1();
-                    verificarDesenerL1BarraA;
+                    verificarDesenerL1BarraA();
                 }
 
 
@@ -1426,7 +1468,7 @@
                     verificarEnerL1();
                     verificarEnerL1BarraA();
                     verificarDesenerL1();
-                    verificarDesenerL1BarraA;
+                    verificarDesenerL1BarraA();
                 }
 
 
@@ -1471,6 +1513,16 @@
                             disjuntor52btfechado = true;
                         }
                     }
+                }
+
+                function linkPagina() {
+                    window.open("menudeBarramentos.html", "_blank");
+                }
+
+
+                function configuracaoInicial() {
+                    toggleDisjuntorBT(disjuntor52btfechado = true);
+                    alert("Configuração Inicial carregada com sucesso!");
                 }
 
 
@@ -1842,7 +1894,7 @@
 
                     if (
                         !disjuntor52mt1fechado &&
-                        !seccionadora89mt1afechada 
+                        !seccionadora89mt1afechada
                     ) {
 
                         mostrarMensagemManobra(
@@ -1878,9 +1930,9 @@
                     }
 
                     if (
-                        seccionadora89mtrafechada &&
-                        seccionadora89mt1rfechada ||
-                        disjuntor52mtrfechado
+                        disjuntor52mtrfechado &&
+                        seccionadora89mtrafechada ||
+                        seccionadora89mtrbfechada
                     ) {
 
                         mostrarMensagemManobra(
@@ -1916,7 +1968,7 @@
 
                     if (
                         !disjuntor52mtrfechado &&
-                        !seccionadora89mtrafechada 
+                        !seccionadora89mtrafechada
                     ) {
 
                         mostrarMensagemManobra(
@@ -1925,6 +1977,80 @@
 
                         localStorage.setItem(
                             "desenerBayMTRHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MTR                
+                function verificarEnerBayMT2() {
+
+                    console.log("verificarBayMT2 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayMT2Habilitada =
+                        localStorage.getItem("enerBayMT2Habilitada") === "true";
+
+                    if (!enerBayMT2Habilitada ||
+                        manobraAtual !== "EnergizarBayMT2") {
+                        return;
+                    }
+
+                    if (
+                        disjuntor52mt2fechado &&
+                        seccionadora89mt2bfechada ||
+                        seccionadora89mt2afechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay do MT2 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayMT2Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayMT2() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayMT2Habilitada =
+                        localStorage.getItem("desenerBayMT2Habilitada") === "true";
+
+                    if (
+                        !desenerBayMT2Habilitada ||
+                        manobraAtual !== "DesenergizarBayMT2"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt2fechado &&
+                        !seccionadora89mt2bfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay MT2 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayMT2Habilitada",
                             "false"
                         );
 
