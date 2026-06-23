@@ -166,10 +166,30 @@
             left: -140px;
         }
 
+        .popupManobra {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid white;
+            box-shadow: 0px 0px 20px black;
+            min-width: 600px;
+            z-index: 9999;
+        }
+
         svg {
             background: #c0c0c0;
         }
     </style>
+
 </head>
 
 <!-- Cabeçalho-->
@@ -247,7 +267,9 @@
             <div class="barra barraA"></div> <!-- Barra A -->
             <div class="barra barraB"></div> <!-- Barra B -->
 
-            <!-- Simbolos Disjuntor e Transformador MT-3 E MT-4 -->
+            <div id="popupManobra" class="popupManobra"></div>
+
+            <!-- Simbolos Disjuntor e Transformador MT-3 E MT-4 Através de SVG-->
             <!-- Botões das Seccionadoras A e B MT-4 (botão) -->
             <svg id="diagrama" width="320" height="350" style="background: teal; display: flex; margin: 0;">
 
@@ -300,6 +322,62 @@
             <!-- SCRIPTS PARA SECCIONADORAS E DISJUNTORES -->
             <!-- SECCIONADORA 89MT4-A-->
             <script>
+
+                //DECLARAÇÕES DAS VARIÁVEIS
+                let seccionadora89mt3afechada = false;
+                let seccionadora89mt3bfechada = false;
+                let disjuntor52mt3fechado = false;
+                let seccionadora89mt4afechada = false;
+                let seccionadora89mt4bfechada = false;
+                let disjuntor52mt4fechado = false;
+
+                //SCRIPT COM AS FUNÇÕES PARA OS FEEDS BACKS DO SISTEMA//
+                //FUNÇÕES PARA MOSTRAR MENSAGENS DE FEED BACK//
+                function mostrarMensagemManobra(texto) {
+                    let popup =
+                        document.getElementById(
+                            "popupManobra"
+                        );
+
+                    popup.innerHTML = texto;
+                    popup.style.display =
+                        "block";
+                    setTimeout(function () {
+
+                        popup.style.display =
+                            "none";
+                    }, 4000);
+                }
+
+                //FUNÇÕES PARA DEFINIR SELETIVIDADE DAS MENSAGENS//
+                function mostrarMensagemManobra(texto, tipo = "sucesso") {
+
+                    let popup =
+                        document.getElementById("popupManobra");
+
+                    popup.innerHTML = texto;
+
+                    if (tipo === "sucesso") {
+                        popup.style.backgroundColor = "#28a745";
+                    }
+
+                    if (tipo === "erro") {
+                        popup.style.backgroundColor = "#dc3545";
+                    }
+
+                    if (tipo === "aviso") {
+                        popup.style.backgroundColor = "#ffc107";
+                        popup.style.color = "black";
+                    }
+
+                    popup.style.display = "block";
+
+                    setTimeout(() => {
+                        popup.style.display = "none";
+                        popup.style.color = "white";
+                    }, 4000);
+                }
+
                 function toggleSeccionadoraMT4A(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
@@ -308,6 +386,12 @@
                         if (linha.getAttribute("x2") === "40") {
                             linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt4afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT4A"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "40");
@@ -321,11 +405,19 @@
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "40");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "60");
+                        linha.setAttribute("x2", "40");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mt4afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT4A"
+                        );
+                        console.log("89MT4A FECHADA");
                     }
+                    verificarEnerBayMT4();
+                    verificarDesenerBayMT4();
                 }
             </script>
 
@@ -339,6 +431,12 @@
                         if (linha.getAttribute("x2") === "125") {
                             linha.setAttribute("x2", "145"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt4bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT4B"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "125");
@@ -352,11 +450,19 @@
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "125");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "145");
+                        linha.setAttribute("x2", "125");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89mt4bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT4B"
+                        );
+                        console.log("89MT4B FECHADA");
                     }
+                    verificarEnerBayMT4();
+                    verificarDesenerBayMT4();
                 }
             </script>
 
@@ -371,6 +477,11 @@
                         if (linha.getAttribute("x2") === "190") {
                             linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt3afechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT3A"
+                            );
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "190");
@@ -384,11 +495,18 @@
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "190");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "210");
+                        linha.setAttribute("x2", "190");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+                        seccionadora89mt3afechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT3A"
+                        );
+                        console.log("89MT3A FECHADA");
                     }
+                    verificarEnerBayMT3();
+                    verificarDesenerBayMT3();
                 }
             </script>
 
@@ -402,6 +520,12 @@
                         if (linha.getAttribute("x2") === "275") {
                             linha.setAttribute("x2", "295"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89mt3bfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89MT3B"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "275");
@@ -415,11 +539,18 @@
                         linha.setAttribute("stroke-width", "4");
                         linha.setAttribute("x1", "275");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "295");
+                        linha.setAttribute("x2", "275");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+                        seccionadora89mt3bfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89MT3B"
+                        );
+                        console.log("89MT3B FECHADA");
                     }
+                    verificarEnerBayMT3();
+                    verificarDesenerBayMT3();
                 }
             </script>
 
@@ -432,11 +563,23 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
 
+                            disjuntor52mt4fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52MT4"
+                            );
+
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+
+                            disjuntor52mt4fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52MT4"
+                            );
                         }
                     }
+                    verificarEnerBayMT4();
+                    verificarDesenerBayMT4();
                 }
             </script>
 
@@ -447,14 +590,206 @@
 
                     if (botao) {
                         if (botao.style.fill === "red") {
-                            botao.style.fill = "green"; // Muda para aberto (verde)
+                            botao.style.fill = "green";
+
+                            disjuntor52mt3fechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52MT3"
+                            );
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+
+                            disjuntor52mt3fechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52MT3"
+                            );
+                            console.log("Disjuntor 52 MT3 FECHADO");
                         }
                     }
+                    verificarEnerBayMT3();
+                    verificarDesenerBayMT3();
                 }
+
+                function linkPagina() {
+                    window.open("menudeBarramentos.html", "_blank");
+                }
+
+                //FUNÇÃO PARA GUARDAR OS PASSOS EXECUTADOS NAS MANOBRAS
+                function registrarPasso(texto) {
+
+                    let passosExecutados =
+                        JSON.parse(
+                            localStorage.getItem("passosExecutados")
+                        ) || [];
+
+                    if (!passosExecutados.includes(texto)) {
+
+                        passosExecutados.push(texto);
+
+                        localStorage.setItem(
+                            "passosExecutados",
+                            JSON.stringify(passosExecutados)
+                        );
+                    }
+
+                    console.log(
+                        "passosExecutados:",
+                        passosExecutados
+                    );
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1                
+                function verificarEnerBayMT3() {
+
+                    console.log("verificarBayMT3 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayMT3Habilitada =
+                        localStorage.getItem("enerBayMT3Habilitada") === "true";
+
+                    if (!enerBayMT3Habilitada ||
+                        manobraAtual !== "EnergizarBayMT3") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89mt3afechada &&
+                        disjuntor52mt3fechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay do MT3 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayMT3Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayMT3() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayMT3Habilitada =
+                        localStorage.getItem("desenerBayMT3Habilitada") === "true";
+
+                    if (
+                        !desenerBayMT3Habilitada ||
+                        manobraAtual !== "DesenergizarBayMT3"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt3fechado &&
+                        !seccionadora89mt3afechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay MT3 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayMT3Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1                
+                function verificarEnerBayMT4() {
+
+                    console.log("verificarBayMT4 executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayMT4Habilitada =
+                        localStorage.getItem("enerBayMT4Habilitada") === "true";
+
+                    if (!enerBayMT4Habilitada ||
+                        manobraAtual !== "EnergizarBayMT4") {
+
+                        console.log("Saiu no primeiro IF");
+                        return;
+                    }
+
+                    if (
+                        seccionadora89mt4bfechada &&
+                        disjuntor52mt4fechado
+                    ) {
+
+                        console.log("ENTROU NA CONDIÇÃO FINAL");
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay do MT4 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayMT4Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayMT4() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayMT4Habilitada =
+                        localStorage.getItem("desenerBayMT4Habilitada") === "true";
+
+                    if (
+                        !desenerBayMT4Habilitada ||
+                        manobraAtual !== "DesenergizarBayMT4"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52mt4fechado &&
+                        !seccionadora89mt4bfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay MT4 concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayMT4Habilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
             </script>
 
     </div>

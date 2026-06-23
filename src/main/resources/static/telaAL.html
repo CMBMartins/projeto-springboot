@@ -95,7 +95,7 @@
             position: relative;
             width: 500px;
             height: 400px;
-            background-color: #ffffff;
+            background-color: teal;
             border: 0px solid #000;
         }
 
@@ -159,6 +159,25 @@
             position: absolute;
             top: -45px;
             left: -140px;
+        }
+
+        .popupManobra {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid white;
+            box-shadow: 0px 0px 20px black;
+            min-width: 600px;
+            z-index: 9999;
         }
 
         svg {
@@ -242,6 +261,8 @@
             <div class="panel" style="left: 88px; top: 368px; width: 158px; height: 3px;"></div>
             <!-- SECCIONADORA INFERIOR BP PARA AL-->
 
+            <div id="popupManobra" class="popupManobra"></div>
+
             <!-- Simbolos Disjuntor 52 AL -->
             <!-- Botões das Seccionadoras A e B 52 AL (botão) -->
             <svg id="diagrama" width="500" height="600" style="background: teal; display: flex; margin: 0;">
@@ -249,34 +270,34 @@
                 <!-- Simbolos Disjuntores e Seccionadoras AL -->
                 <!-- Botões das Seccionadoras A e B AL (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnALA" x="23" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnALA" x="23" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraALA('ALA')" />
-                <text x="25" y="140" onclick="toggleSeccionadora('ALA')">89ALA</text>
+                <text x="25" y="140" onclick="toggleSeccionadoraALA('ALA')">89ALA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnALB" x="107" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnALB" x="107" y="117" width="35" height="35" fill=" teal" stroke="black"
                     onclick="toggleSeccionadoraALB('ALB')" />
-                <text x="106" y="140" onclick="toggleSeccionadora('ALB')">89ALB</text>
+                <text x="106" y="140" onclick="toggleSeccionadoraALB('ALB')">89ALB</text>
 
                 <!-- Símbolo de Disjuntor AL-->
                 <rect id="btnAL" x="61" y="195" width="40" height="38" fill="green" stroke="black" stroke-width="2"
                     onclick="toggleDisjuntorAL('AL')" /> <!-- Disjuntor -->
                 <line x1="705" y1="214" x2="665" y2="214" stroke="black" stroke-width="2" /> <!-- Corte no meio -->
-                <text x="107" y="220" onclick="toggleDisjuntor('52AL')">52AL</text>
+                <text x="107" y="220" onclick="toggleDisjuntorAL('52AL')">52AL</text>
                 <!-- Símbolo da e Seccionadora 89 AL-->
-                <rect id="btnL2" x="63" y="277" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnAL" x="63" y="277" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraAL('AL')" />
                 <text x="65" y="300" onclick="toggleTransformador('89AL')">89AL</text>
 
                 <!-- Simbolos Disjuntor e Seccionadora BP -->
                 <!-- Botões das Seccionadoras A e B BP (botão) -->
                 <!-- Seccionadora A (botão) -->
-                <rect id="btnBTA" x="177" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBPA" x="177" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraBPA('BPA')" />
-                <text x="178" y="140" onclick="toggleSeccionadora('BPA')">89BPA</text>
+                <text x="178" y="140" onclick="toggleSeccionadoraBPA('BPA')">89BPA</text>
                 <!-- Seccionadora B (botão) -->
-                <rect id="btnBTB" x="268" y="117" width="35" height="35" fill="#c0c0c0" stroke="gray"
+                <rect id="btnBPB" x="268" y="117" width="35" height="35" fill="teal" stroke="black"
                     onclick="toggleSeccionadoraBPB('BPB')" />
-                <text x="270" y="140" onclick="toggleSeccionadora('BPB')">89BPB</text>
+                <text x="270" y="140" onclick="toggleSeccionadoraBPB('BPB')">89BPB</text>
 
                 <defs>
                     <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"
@@ -291,18 +312,80 @@
 
             <!-- Seccionadora 89AL-A-->
             <script>
+
+                //DECLARAÇÕES DAS VARIÁVEIS
+                let seccionadora89mt3afechada = false;
+                let seccionadora89mt3bfechada = false;
+                let disjuntor52mt3fechado = false;
+                let seccionadora89mt4afechada = false;
+                let seccionadora89mt4bfechada = false;
+                let disjuntor52mt4fechado = false;
+
+                //SCRIPT COM AS FUNÇÕES PARA OS FEEDS BACKS DO SISTEMA//
+                //FUNÇÕES PARA MOSTRAR MENSAGENS DE FEED BACK//
+                function mostrarMensagemManobra(texto) {
+                    let popup =
+                        document.getElementById(
+                            "popupManobra"
+                        );
+
+                    popup.innerHTML = texto;
+                    popup.style.display =
+                        "block";
+                    setTimeout(function () {
+
+                        popup.style.display =
+                            "none";
+                    }, 4000);
+                }
+
+                //FUNÇÕES PARA DEFINIR SELETIVIDADE DAS MENSAGENS//
+                function mostrarMensagemManobra(texto, tipo = "sucesso") {
+
+                    let popup =
+                        document.getElementById("popupManobra");
+
+                    popup.innerHTML = texto;
+
+                    if (tipo === "sucesso") {
+                        popup.style.backgroundColor = "#28a745";
+                    }
+
+                    if (tipo === "erro") {
+                        popup.style.backgroundColor = "#dc3545";
+                    }
+
+                    if (tipo === "aviso") {
+                        popup.style.backgroundColor = "#ffc107";
+                        popup.style.color = "black";
+                    }
+
+                    popup.style.display = "block";
+
+                    setTimeout(() => {
+                        popup.style.display = "none";
+                        popup.style.color = "white";
+                    }, 4000);
+                }
+
                 function toggleSeccionadoraALA(tipo) {
                     let linha = document.querySelector(`#linha${tipo}`);
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "646") {
-                            linha.setAttribute("x2", "666"); // Move para direita (linha inclinada)
-                            linha.setAttribute("y2", "116");
+                        if (linha.getAttribute("x2") === "40") {
+                            linha.setAttribute("x2", "60"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+
+                            seccionadora89alafechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89ALA"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "646");
-                            linha.setAttribute("y2", "116");
+                            linha.setAttribute("x2", "40");
+                            linha.setAttribute("y2", "118");
                         }
                     } else {
                         // Criamos a linha inicial como fechada (vertical)
@@ -310,14 +393,21 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "646");
+                        linha.setAttribute("x1", "40");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "666");
-                        linha.setAttribute("y2", "116");
+                        linha.setAttribute("x2", "40");
+                        linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89alafechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89ALA"
+                        );
+                        console.log("89ALA FECHADA");
                     }
                 }
+
             </script>
 
             <!-- Seccionadora 89ALB-->
@@ -327,12 +417,18 @@
 
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "730") {
-                            linha.setAttribute("x2", "750"); // Move para direita (linha inclinada)
+                        if (linha.getAttribute("x2") === "125") {
+                            linha.setAttribute("x2", "145"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89albfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89ALB"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "730");
+                            linha.setAttribute("x2", "125");
                             linha.setAttribute("y2", "118");
                         }
                     } else {
@@ -341,12 +437,18 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "730");
+                        linha.setAttribute("x1", "125");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "750");
+                        linha.setAttribute("x2", "125");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89albfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89ALB"
+                        );
+                        console.log("89ALB FECHADA");
                     }
                 }
             </script>
@@ -358,13 +460,19 @@
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "685") {
-                            linha.setAttribute("x2", "705"); // Move para direita (linha inclinada)
-                            linha.setAttribute("y2", "278");
+                        if (linha.getAttribute("x2") === "140") {
+                            linha.setAttribute("x2", "160"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
+
+                            seccionadora89alfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89AL"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "685");
-                            linha.setAttribute("y2", "278");
+                            linha.setAttribute("x2", "140");
+                            linha.setAttribute("y2", "118");
                         }
                     } else {
                         // Criamos a linha inicial como fechada (vertical)
@@ -372,12 +480,18 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "685");
-                        linha.setAttribute("y1", "312");
-                        linha.setAttribute("x2", "685");
-                        linha.setAttribute("y2", "278");
+                        linha.setAttribute("x1", "140");
+                        linha.setAttribute("y1", "152");
+                        linha.setAttribute("x2", "140");
+                        linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89alfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89AL"
+                        );
+                        console.log("89AL FECHADA");
                     }
                 }
             </script>
@@ -392,6 +506,12 @@
                         if (linha.getAttribute("x2") === "796") {
                             linha.setAttribute("x2", "816"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "116");
+
+                            seccionadora89bpafechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89BPA"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "796");
@@ -409,6 +529,12 @@
                         linha.setAttribute("y2", "116");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89bpafechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89BPA"
+                        );
+                        console.log("89BPA FECHADA");
                     }
                 }
             </script>
@@ -423,6 +549,12 @@
                         if (linha.getAttribute("x2") === "880") {
                             linha.setAttribute("x2", "900"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
+
+                            seccionadora89bpbfechada = false;
+                            registrarPasso(
+                                "Abrir Seccionadora 89BPB"
+                            );
+
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
                             linha.setAttribute("x2", "880");
@@ -440,6 +572,12 @@
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
+
+                        seccionadora89bpbfechada = true;
+                        registrarPasso(
+                            "Fechar Seccionadora 89BPB"
+                        );
+                        console.log("89BPB FECHADA");
                     }
                 }
             </script>
@@ -453,12 +591,128 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
 
+                            disjuntor52alfechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52AL"
+                            );
+
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
+
+                            disjuntor52alfechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52AL"
+                            );
                         }
                     }
                 }
+
+                function linkPagina() {
+                    window.open("menudeBarramentos.html", "_blank");
+                }
+
+                //FUNÇÃO PARA GUARDAR OS PASSOS EXECUTADOS NAS MANOBRAS
+                function registrarPasso(texto) {
+
+                    let passosExecutados =
+                        JSON.parse(
+                            localStorage.getItem("passosExecutados")
+                        ) || [];
+
+                    if (!passosExecutados.includes(texto)) {
+
+                        passosExecutados.push(texto);
+
+                        localStorage.setItem(
+                            "passosExecutados",
+                            JSON.stringify(passosExecutados)
+                        );
+                    }
+
+                    console.log(
+                        "passosExecutados:",
+                        passosExecutados
+                    );
+                }
+
+                //FUNÇÃO PARA CONFERIR A MANOBRA DA ENERGIZAÇÃO E DESENERGIZAÇÃO DO BAY DO MT1                
+                function verificarEnerBayAl() {
+
+                    console.log("verificarBayAL executou");
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerBayALHabilitada =
+                        localStorage.getItem("enerBayALHabilitada") === "true";
+
+                    if (!enerBayALHabilitada ||
+                        manobraAtual !== "EnergizarBayAL") {
+                        return;
+                    }
+
+                    if (
+                        seccionadora89alfechada &&
+                        disjuntor52alfechado ||
+                        seccionadora89bpafechada ||
+                        seccionadora89bpbfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar Bay da Alunorte concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerBayALHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraAtual",
+                            ""
+                        );
+                    }
+                }
+
+                function verificarDesenerBayAl() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerBayALHabilitada =
+                        localStorage.getItem("desenerBayALHabilitada") === "true";
+
+                    if (
+                        !desenerBayALHabilitada ||
+                        manobraAtual !== "DesenergizarBayAl"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !seccionadora89alfechada &&
+                        !disjuntor52alfechado ||
+                        !seccionadora89bpafechada ||
+                        seccionadora89bpbfechada
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar Bay da Alunorte concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerBayALHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
             </script>
 
     </div>
