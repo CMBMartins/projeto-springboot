@@ -187,13 +187,17 @@
                 Energizar o Bay do MT2
             </button>
 
-            <!--button onclick="enerBayMT3()">
+            <button onclick="enerBayMT3()">
                 Energizar o Bay do MT3
-            </!--button>
+            </button>
 
-            <button-- onclick="enerBayMT4()">
+            <button onclick="enerBayMT4()">
                 Energizar o Bay do MT4
-            </button-->
+            </button>
+
+            <button onclick="enerBayAl()">
+                Energizar o Bay da Alunorte
+            </button>
 
             <button onclick="desenerL1()">
                 Desenergizar a Linha 1
@@ -223,13 +227,17 @@
                 Desenergizar o Bay do MT2
             </button>
 
-            <!--button onclick="desenerBayMT3()">
+            <button onclick="desenerBayMT3()">
                 Desenergizar o Bay do MT3
-            </!--button>
+            </button>
 
-            <button-- onclick="desenerBayMT4()">
+            <button onclick="desenerBayMT4()">
                 Desenergizar o Bay do MT4
-            </button-->
+            </button>
+
+            <button onclick="desenerBayAl()">
+                Desenergizar o Bay da Alunorte
+            </button>
 
         </div>
 
@@ -360,7 +368,6 @@
             );
         }
 
-
         function enerBayMTR() {
             localStorage.setItem(
                 "manobraAtual",
@@ -431,6 +438,24 @@
                 JSON.stringify([])
             );
             alert("Manobras de Energização do Bay do MT4 habilitada");
+        }
+
+        function enerBayAl() {
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarBayAL"
+            );
+
+            localStorage.setItem(
+                "enerBayALHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+            alert("Manobras de Energização do Bay da Alunorte habilitada");
         }
 
         function desenerL1() {
@@ -619,6 +644,27 @@
 
             alert(
                 "Manobra Desenergizar Bay do MT4 habilitada."
+            );
+        }
+
+        function desenerBayAl() {
+            localStorage.setItem(
+                "manobraAtual",
+                "DesenergizarBayAL"
+            );
+
+            localStorage.setItem(
+                "desenerBayALHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Desenergizar Bay da Alunorte habilitada."
             );
         }
 
