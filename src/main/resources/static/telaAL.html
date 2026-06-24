@@ -406,6 +406,8 @@
                         );
                         console.log("89ALA FECHADA");
                     }
+                    verificarEnerBayAl();
+                    verificarDesenerBayAl();
                 }
 
             </script>
@@ -460,9 +462,9 @@
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "140") {
-                            linha.setAttribute("x2", "160"); // Move para direita (linha inclinada)
-                            linha.setAttribute("y2", "118");
+                        if (linha.getAttribute("x2") === "80") {
+                            linha.setAttribute("x2", "100"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "278");
 
                             seccionadora89alfechada = false;
                             registrarPasso(
@@ -471,8 +473,8 @@
 
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "140");
-                            linha.setAttribute("y2", "118");
+                            linha.setAttribute("x2", "80");
+                            linha.setAttribute("y2", "278");
                         }
                     } else {
                         // Criamos a linha inicial como fechada (vertical)
@@ -480,10 +482,10 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "140");
-                        linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "140");
-                        linha.setAttribute("y2", "118");
+                        linha.setAttribute("x1", "80");
+                        linha.setAttribute("y1", "312");
+                        linha.setAttribute("x2", "80");
+                        linha.setAttribute("y2", "278");
 
                         document.getElementById("diagrama").appendChild(linha);
 
@@ -493,6 +495,8 @@
                         );
                         console.log("89AL FECHADA");
                     }
+                    verificarEnerBayAl();
+                    verificarDesenerBayAl();
                 }
             </script>
 
@@ -503,9 +507,9 @@
 
                     if (linha) {
                         // Se a linha está na posição vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "796") {
-                            linha.setAttribute("x2", "816"); // Move para direita (linha inclinada)
-                            linha.setAttribute("y2", "116");
+                        if (linha.getAttribute("x2") === "196") {
+                            linha.setAttribute("x2", "210"); // Move para direita (linha inclinada)
+                            linha.setAttribute("y2", "118");
 
                             seccionadora89bpafechada = false;
                             registrarPasso(
@@ -514,8 +518,8 @@
 
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "796");
-                            linha.setAttribute("y2", "116");
+                            linha.setAttribute("x2", "196");
+                            linha.setAttribute("y2", "118");
                         }
                     } else {
                         // Criamos a linha inicial como fechada (vertical)
@@ -523,10 +527,10 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "796");
+                        linha.setAttribute("x1", "196");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "796");
-                        linha.setAttribute("y2", "116");
+                        linha.setAttribute("x2", "196");
+                        linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
 
@@ -536,6 +540,8 @@
                         );
                         console.log("89BPA FECHADA");
                     }
+                    verificarEnerBayAl();
+                    verificarDesenerBayAl();
                 }
             </script>
 
@@ -546,8 +552,8 @@
 
                     if (linha) {
                         // Se a linha está na vertical (fechada), alteramos para inclinada (aberta)
-                        if (linha.getAttribute("x2") === "880") {
-                            linha.setAttribute("x2", "900"); // Move para direita (linha inclinada)
+                        if (linha.getAttribute("x2") === "286") {
+                            linha.setAttribute("x2", "306"); // Move para direita (linha inclinada)
                             linha.setAttribute("y2", "118");
 
                             seccionadora89bpbfechada = false;
@@ -557,7 +563,7 @@
 
                         } else {
                             // Se a linha já está inclinada, voltamos para vertical (fechada)
-                            linha.setAttribute("x2", "880");
+                            linha.setAttribute("x2", "286");
                             linha.setAttribute("y2", "118");
                         }
                     } else {
@@ -566,9 +572,9 @@
                         linha.setAttribute("id", "linha" + tipo);
                         linha.setAttribute("stroke", "red");
                         linha.setAttribute("stroke-width", "4");
-                        linha.setAttribute("x1", "880");
+                        linha.setAttribute("x1", "286");
                         linha.setAttribute("y1", "152");
-                        linha.setAttribute("x2", "880");
+                        linha.setAttribute("x2", "286");
                         linha.setAttribute("y2", "118");
 
                         document.getElementById("diagrama").appendChild(linha);
@@ -579,6 +585,8 @@
                         );
                         console.log("89BPB FECHADA");
                     }
+                    verificarEnerBayAl();
+                    verificarDesenerBayAl();
                 }
             </script>
 
@@ -606,6 +614,8 @@
                             );
                         }
                     }
+                    verificarEnerBayAl();
+                    verificarDesenerBayAl();
                 }
 
                 function linkPagina() {
@@ -654,6 +664,7 @@
 
                     if (
                         seccionadora89alfechada &&
+                        seccionadora89alafechada &&
                         disjuntor52alfechado ||
                         seccionadora89bpafechada ||
                         seccionadora89bpbfechada
@@ -685,16 +696,17 @@
 
                     if (
                         !desenerBayALHabilitada ||
-                        manobraAtual !== "DesenergizarBayAl"
+                        manobraAtual !== "DesenergizarBayAL"
                     ) {
                         return;
                     }
 
                     if (
-                        !seccionadora89alfechada &&
-                        !disjuntor52alfechado ||
+                        !disjuntor52alfechado &&
+                        !seccionadora89alafechada &&
+                        !seccionadora89alfechada ||
                         !seccionadora89bpafechada ||
-                        seccionadora89bpbfechada
+                        !seccionadora89bpbfechada
                     ) {
 
                         mostrarMensagemManobra(
