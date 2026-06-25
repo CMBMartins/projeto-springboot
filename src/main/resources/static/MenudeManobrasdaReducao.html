@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Menu das Manobras de Tranferência</title>
+    <title>Menu das Manobras das Reduções</title>
     <link rel="stylesheet" href="style.css">
     <!-- Adiciona o Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -152,43 +152,43 @@
 
         <div class="cabecalho">
             <img src="imagensAlbras/ALBRAS1.JPG" alt="Torre" class="icone">
-            <h1>Menu de Manobras de Transferência</h1>
+            <h1>Menu de Manobras das Reduções</h1>
         </div>
 
         <h2>Habilitar Classes de Manobras</h2>
 
         <div class="grid-botoes">
 
-            <button onclick="transfLVR1LVRR()">
-                Transferir LVR1 para LVRR
+            <button onclick="enerRed1()">
+                Energizar a Redução 1
             </button>
 
-            <button onclick="transfLVR2LVRR()">
-                Transferir LVR2 para LVRR
+            <button onclick="enerRed2()">
+                Energizar a Redução 2
             </button>
 
-            <button onclick="transfLVR3LVRR()">
-                Transferir LVR3 para LVRR
+            <button onclick="enerRed3()">
+                Energizar a Redução 3
             </button>
 
-            <button onclick="transLVR4LVRR()">
-                Transferir LVR4 para LVRR
+            <button onclick="enerRed4()">
+                Energizar a Redução 4
             </button>
 
-            <button onclick="desenerLVRRLVR1()">
-                Transferir LVRR para LVR1
+            <button onclick="desenerRed1()">
+                Desenergizar a Redução 1
             </button>
 
-            <button onclick="desenerLVRRLVR2()">
-                Transferir LVRR para LVR2
+            <button onclick="desenerRed2()">
+                Desenergizar a Redução 2
             </button>
 
-            <button onclick="desenerLVRRLVR3()">
-                Transferir LVRR para LVR3
+            <button onclick="desenerRed3()">
+                Desenergizar a Redução 3
             </button>
 
-            <button onclick="desenerLVRRLVR4()">
-                Transferir LVRR para LVR4
+            <button onclick="desenerRed4()">
+                Desenergizar a Redução 4
             </button>
 
         </div>
@@ -215,15 +215,15 @@
 
     <script>
 
-        function transfLVR1LVRR() {
+        function enerRed1() {
 
             localStorage.setItem(
                 "manobraAtual",
-                "TransferirLVR1LVRR"
+                "EnergizarRed1"
             );
 
             localStorage.setItem(
-                "transfLVR1LVRRHabilitada",
+                "enerRed1Habilitada",
                 "true"
             );
 
@@ -233,7 +233,7 @@
             );
 
             alert(
-                "Manobra para transferir do LVR1 para o LVR1."
+                "Manobra Energizar Redução 1 habilitada."
             );
         }
 

@@ -159,20 +159,24 @@
 
         <div class="grid-botoes">
 
-            <button onclick="desenAlbras()">
-                Desenergizar ALBRAS
+            <button onclick="desenerAlbras()">
+                Desenergizar SE ALBRAS
             </button>
 
             <button onclick="enerAlbras()">
-                Energizar ALBRAS
+                Energizar SE ALBRAS
             </button>
 
             <button onclick="PrepAlbras()">
-                Preparação da ALBRAS
+                Preparação da SE ALBRAS
             </button>
 
             <button onclick="enerGerador()">
-                Energizar Geradores
+                Energizar os Geradores
+            </button>
+
+            <button onclick="desenerGeradores()">
+                Desenergizar os Geradores
             </button>
 
         </div>
@@ -198,34 +202,123 @@
     <script src="script.js"></script>
 
     <script>
-        function desenAlbras() {
-            alert("Abrindo Manobras Desenergizar Albras...");
-            // window.open("eletroNorte.html");
+        function desenerAlbras() {
+            localStorage.setItem(
+                "manobraAtual",
+                "DesenergizarAlbras"
+            );
+
+            localStorage.setItem(
+                "desenerAlbrasHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Desenergizar a SE Albras habilitada."
+            );
         }
 
         function enerAlbras() {
-            alert("Abrindo Manobras Energizar Albras...");
-            // window.open("230kv.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarAlbras"
+            );
+
+            localStorage.setItem(
+                "enerAlbrasHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Energizar a SE Albras habilitada."
+            );
         }
 
         function PrepAlbras() {
-            alert("Abrindo Manobras Preparar SE Albras...");
-            // window.open("reducao.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "PrepAlbras"
+            );
+
+            localStorage.setItem(
+                "prepAlbrasHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra para Preparar a SE ALBRAS habilitada."
+            );
         }
 
         function enerGerador() {
-            alert("Abrindo Manobras para Energizar Gerador...");
-            // window.open("transferencia.html");
+            localStorage.setItem(
+                "manobraAtual",
+                "EnergizarGeradores"
+            );
+
+            localStorage.setItem(
+                "enerGeradoresHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Energizar os Geradores habilitada."
+            );
         }
 
-        function desenGerador() {
-            alert("Abrindo Manobras para Desenergizar Gerador...");
-            // window.open("geradores.html");
+        function desenerGeradores() {
+            localStorage.setItem(
+                "manobraAtual",
+                "DesenergizarGeradores"
+            );
+
+            localStorage.setItem(
+                "desenerGeradoresHabilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra Desenergizar os Geradores habilitada."
+            );
         }
 
         function fecharTela() {
             window.close();
         }
+
+        function manobraPadrao() {
+            window.open("OrdemdeManobraPadrao.html", "_blank");
+        }
+
+        function manobraExecutada() {
+            window.open("OrdemdeManobraExecutada.html", "_blank");
+        }
+
     </script>
 
 </body>
