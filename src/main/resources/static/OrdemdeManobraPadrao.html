@@ -123,23 +123,20 @@
 
         function carregarManobra() {
 
-            console.log("manobraAtual:",
-                localStorage.getItem("manobraAtual"));
-
-            console.log("passosExecutados:",
-                localStorage.getItem("passosExecutados"));
-
-            let codigo =
-                localStorage.getItem(
-                    "manobraAtual"
-                );
+            let codigo = localStorage.getItem("manobraAtual");
 
             if (!codigo) {
                 return;
             }
 
-            let manobra =
-                manobras[codigo];
+            console.log("manobraAtual:", codigo);
+
+            console.log(
+                "passosExecutados:",
+                JSON.parse(localStorage.getItem("passosExecutados")) || []
+            );
+
+            let manobra = manobras[codigo];
 
             if (!manobra) {
                 return;
@@ -492,7 +489,7 @@
                     "Fechar Seccionadora 89LVR1",
                     "Fechar Disjuntor 52LVR1",
                     "Fechar Seccionadora 89LVR1A",
-                    "Fechar Disjuntor 52LVR1A",
+                    "Fechar Disjuntor 52LVR1A"
                 ]
             },
 
@@ -504,87 +501,79 @@
                     "Abrir Disjuntor 52LVR1A",
                     "Abrir Seccionadora 89LVR1A",
                     "Abrir Disjuntor 52LVR1",
-                    "Abrir Seccionadora 89LVR1",
+                    "Abrir Seccionadora 89LVR1"
                 ]
             },
 
-            EnergizarBayMTR: {
+            EnergizarRed2: {
 
-                titulo: "OM para Energizar Bay do MTR",
+                titulo: "OM para Energizar a Redução 2",
 
                 passos: [
-                    "Fechar Seccionadora 89MTRA",
-                    "Fechar Disjuntor 52MTR"
+                    "Fechar Seccionadora 89LVR2",
+                    "Fechar Disjuntor 52LVR2",
+                    "Fechar Seccionadora 89LVR2A",
+                    "Fechar Disjuntor 52LVR2A"
                 ]
             },
 
-            DesenergizarBayMTR: {
+            DesenergizarRed2: {
 
-                titulo: "OM para Desenergizar Bay do MTR",
+                titulo: "OM para Desenergizar a Redução2",
 
                 passos: [
-                    "Abrir Disjuntor 52MTR",
-                    "Abrir Seccionadora 89MTRA"
+                    "Abrir Disjuntor 52LVR2A",
+                    "Abrir Seccionadora 89LVR2A",
+                    "Abrir Disjuntor 52LVR2",
+                    "Abrir Seccionadora 89LVR2"
                 ]
             },
 
-            EnergizarBayMT2: {
+            EnergizarRed3: {
 
-                titulo: "OM para Energizar Bay do MT2",
+                titulo: "OM para Energizar a Redução 3",
 
                 passos: [
-                    "Fechar Seccionadora 89MT2B",
-                    "Fechar Disjuntor 52MT2"
+                    "Fechar Seccionadora 89LVR3",
+                    "Fechar Disjuntor 52LVR3",
+                    "Fechar Seccionadora 89LVR3A",
+                    "Fechar Disjuntor 52LVR3A"
                 ]
             },
 
-            DesenergizarBayMT2: {
+            DesenergizarRed3: {
 
-                titulo: "OM para Desenergizar Bay do MT2",
+                titulo: "OM para Desenergizar a Redução3",
 
                 passos: [
-                    "Abrir Disjuntor 52MT2",
-                    "Abrir Seccionadora 89MT2B"
+                    "Abrir Disjuntor 52LVR3A",
+                    "Abrir Seccionadora 89LVR3A",
+                    "Abrir Disjuntor 52LVR3",
+                    "Abrir Seccionadora 89LVR3"
                 ]
             },
 
-            EnergizarBayMT3: {
+            EnergizarRed4: {
 
-                titulo: "OM para Energizar Bay do MT3",
+                titulo: "OM para Energizar a Redução 4",
 
                 passos: [
-                    "Fechar Seccionadora 89MT3A",
-                    "Fechar Disjuntor 52MT3"
+                    "Fechar Seccionadora 89LVR4",
+                    "Fechar Disjuntor 52LVR4",
+                    "Fechar Seccionadora 89LVR4A",
+                    "Fechar Disjuntor 52LVR4A"
                 ]
             },
 
-            DesenergizarBayMT3: {
+            DesenergizarRed4: {
 
-                titulo: "OM para Desenergizar Bay do MT3",
-
-                passos: [
-                    "Abrir Disjuntor 52MT3",
-                    "Abrir Seccionadora 89MT3A"
-                ]
-            },
-
-            EnergizarBayMT4: {
-
-                titulo: "OM para Energizar Bay do MT4",
+                titulo: "OM para Desenergizar a Redução 4",
 
                 passos: [
-                    "Fechar Seccionadora 89MT4B",
-                    "Fechar Disjuntor 52MT4"
-                ]
-            },
-
-            DesenergizarBayMT4: {
-
-                titulo: "OM para Desenergizar Bay do MT4",
-
-                passos: [
-                    "Abrir Disjuntor 52MT4",
-                    "Abrir Seccionadora 89MT4B"
+                    "Abrir Disjuntor 52LVR4A",
+                    "Abrir Seccionadora 89LVR4A",
+                    "Abrir Disjuntor 52LVR4",
+                    "Abrir Seccionadora 89LVR4"
                 ]
             },
 
@@ -596,7 +585,7 @@
                     "Fechar Seccionadora 89G1",
                     "Fechar Disjuntor 52G1",
                     "Fechar Seccionadora 89G2",
-                    "Fechar Disjuntor 52G2",
+                    "Fechar Disjuntor 52G2"
                 ]
             },
 
@@ -608,7 +597,7 @@
                     "Abrir Seccionadora 89G1",
                     "Abrir Disjuntor 52G1",
                     "Abrir Seccionadora 89G2",
-                    "Abrir Disjuntor 52G2",
+                    "Abrir Disjuntor 52G2"
                 ]
             },
 
