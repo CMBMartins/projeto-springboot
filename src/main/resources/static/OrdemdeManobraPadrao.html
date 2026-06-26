@@ -399,7 +399,7 @@
                     "Disjuntor 52L1 Fechado",
                     "Disjuntor 52L2 Fechado",
                     "Disjuntor 52BT Fechado",
-                    "Disjuntor 52AL fechado",
+                    "Disjuntor 52AL Fechado",
                     "Disjuntor 52MT1 Fechado",
                     "Disjuntor 52MTR Fechado",
                     "Disjuntor 52MT2 Fechado",
@@ -427,29 +427,188 @@
                 titulo: "OM para Desenergizar a SE Albras",
 
                 passos: [
-                    "Disjuntor 52L1 Fechado",
-                    "Disjuntor 52L2 Fechado",
-                    "Disjuntor 52BT Fechado",
-                    "Disjuntor 52AL fechado",
-                    "Disjuntor 52MT1 Fechado",
-                    "Disjuntor 52MTR Fechado",
-                    "Disjuntor 52MT2 Fechado",
-                    "Disjuntor 52MT3 Fechado",
-                    "Disjuntor 52MT4 Fechado",
-                    "Disjuntor 52A1 Fechado",
-                    "Disjuntor 52A2 Fechado",
-                    "Disjuntor 52A3 Fechado",
-                    "Disjuntor 52A4 Fechado",
-                    "Disjuntor 52A5 Fechado",
-                    "Disjuntor 52A6 Fechado",
-                    "Disjuntor 52A7 Fechado",
-                    "Disjuntor 52A8 Fechado",
-                    "Disjuntor 52P1 Fechado",
-                    "Disjuntor 52P2 Fechado",
-                    "Disjuntor 52P3 Fechado",
-                    "Disjuntor 52P4 Fechado",
-                    "Disjuntor 52P5 Fechado",
-                    "Disjuntor 52P6 Fechado"
+                    "Disjuntor 52L1 Aberto",
+                    "Disjuntor 52L2 Aberto",
+                    "Disjuntor 52BT Aberto",
+                    "Disjuntor 52AL Aberto",
+                    "Disjuntor 52MT1 Aberto",
+                    "Disjuntor 52MTR Aberto",
+                    "Disjuntor 52MT2 Aberto",
+                    "Disjuntor 52MT3 Aberto",
+                    "Disjuntor 52MT4 Aberto",
+                    "Disjuntor 52A1 Aberto",
+                    "Disjuntor 52A2 Aberto",
+                    "Disjuntor 52A3 Aberto",
+                    "Disjuntor 52A4 Aberto",
+                    "Disjuntor 52A5 Aberto",
+                    "Disjuntor 52A6 Aberto",
+                    "Disjuntor 52A7 Aberto",
+                    "Disjuntor 52A8 Aberto",
+                    "Disjuntor 52P1 Aberto",
+                    "Disjuntor 52P2 Aberto",
+                    "Disjuntor 52P3 Aberto",
+                    "Disjuntor 52P4 Aberto",
+                    "Disjuntor 52P5 Aberto",
+                    "Disjuntor 52P6 Aberto"
+                ]
+            },
+
+            PrepAlbras: {
+
+                titulo: "OM para Preparar a SE Albras",
+
+                passos: [
+                    "Disjuntor 52L1 Aberto",
+                    "Disjuntor 52L2 Aberto",
+                    "Disjuntor 52BT Aberto",
+                    "Disjuntor 52AL Aberto",
+                    "Disjuntor 52MT1 Aberto",
+                    "Disjuntor 52MTR Aberto",
+                    "Disjuntor 52MT2 Aberto",
+                    "Disjuntor 52MT3 Aberto",
+                    "Disjuntor 52MT4 Aberto",
+                    "Disjuntor 52A1 Aberto",
+                    "Disjuntor 52A2 Aberto",
+                    "Disjuntor 52A3 Aberto",
+                    "Disjuntor 52A4 Aberto",
+                    "Disjuntor 52A5 Aberto",
+                    "Disjuntor 52A6 Aberto",
+                    "Disjuntor 52A7 Aberto",
+                    "Disjuntor 52A8 Aberto",
+                    "Disjuntor 52P1 Aberto",
+                    "Disjuntor 52P2 Aberto",
+                    "Disjuntor 52P3 Aberto",
+                    "Disjuntor 52P4 Aberto",
+                    "Disjuntor 52P5 Aberto",
+                    "Disjuntor 52P6 Aberto"
+                ]
+            },
+
+            EnergizarRed1: {
+
+                titulo: "OM para Energizar a Redução 1",
+
+                passos: [
+                    "Fechar Seccionadora 89LVR1",
+                    "Fechar Disjuntor 52LVR1",
+                    "Fechar Seccionadora 89LVR1A",
+                    "Fechar Disjuntor 52LVR1A",
+                ]
+            },
+
+            DesenergizarRed1: {
+
+                titulo: "OM para Desenergizar a Redução1",
+
+                passos: [
+                    "Abrir Disjuntor 52LVR1A",
+                    "Abrir Seccionadora 89LVR1A",
+                    "Abrir Disjuntor 52LVR1",
+                    "Abrir Seccionadora 89LVR1",
+                ]
+            },
+
+            EnergizarBayMTR: {
+
+                titulo: "OM para Energizar Bay do MTR",
+
+                passos: [
+                    "Fechar Seccionadora 89MTRA",
+                    "Fechar Disjuntor 52MTR"
+                ]
+            },
+
+            DesenergizarBayMTR: {
+
+                titulo: "OM para Desenergizar Bay do MTR",
+
+                passos: [
+                    "Abrir Disjuntor 52MTR",
+                    "Abrir Seccionadora 89MTRA"
+                ]
+            },
+
+            EnergizarBayMT2: {
+
+                titulo: "OM para Energizar Bay do MT2",
+
+                passos: [
+                    "Fechar Seccionadora 89MT2B",
+                    "Fechar Disjuntor 52MT2"
+                ]
+            },
+
+            DesenergizarBayMT2: {
+
+                titulo: "OM para Desenergizar Bay do MT2",
+
+                passos: [
+                    "Abrir Disjuntor 52MT2",
+                    "Abrir Seccionadora 89MT2B"
+                ]
+            },
+
+            EnergizarBayMT3: {
+
+                titulo: "OM para Energizar Bay do MT3",
+
+                passos: [
+                    "Fechar Seccionadora 89MT3A",
+                    "Fechar Disjuntor 52MT3"
+                ]
+            },
+
+            DesenergizarBayMT3: {
+
+                titulo: "OM para Desenergizar Bay do MT3",
+
+                passos: [
+                    "Abrir Disjuntor 52MT3",
+                    "Abrir Seccionadora 89MT3A"
+                ]
+            },
+
+            EnergizarBayMT4: {
+
+                titulo: "OM para Energizar Bay do MT4",
+
+                passos: [
+                    "Fechar Seccionadora 89MT4B",
+                    "Fechar Disjuntor 52MT4"
+                ]
+            },
+
+            DesenergizarBayMT4: {
+
+                titulo: "OM para Desenergizar Bay do MT4",
+
+                passos: [
+                    "Abrir Disjuntor 52MT4",
+                    "Abrir Seccionadora 89MT4B"
+                ]
+            },
+
+            EnergizarGeradores: {
+
+                titulo: "OM para Energizar os Geradores",
+
+                passos: [
+                    "Fechar Seccionadora 89G1",
+                    "Fechar Disjuntor 52G1",
+                    "Fechar Seccionadora 89G2",
+                    "Fechar Disjuntor 52G2",
+                ]
+            },
+
+            DesenergizarGeradores: {
+
+                titulo: "OM para Desenergizar os Geradores",
+
+                passos: [
+                    "Abrir Seccionadora 89G1",
+                    "Abrir Disjuntor 52G1",
+                    "Abrir Seccionadora 89G2",
+                    "Abrir Disjuntor 52G2",
                 ]
             },
 
