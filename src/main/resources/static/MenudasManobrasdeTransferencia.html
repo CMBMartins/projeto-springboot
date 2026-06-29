@@ -171,23 +171,23 @@
                 Transferir LVR3 para LVRR
             </button>
 
-            <button onclick="transLVR4LVRR()">
+            <button onclick="transfLVR4LVRR()">
                 Transferir LVR4 para LVRR
             </button>
 
-            <button onclick="desenerLVRRLVR1()">
+            <button onclick="transfLVRRLVR1()">
                 Transferir LVRR para LVR1
             </button>
 
-            <button onclick="desenerLVRRLVR2()">
+            <button onclick="transfLVRRLVR2()">
                 Transferir LVRR para LVR2
             </button>
 
-            <button onclick="desenerLVRRLVR3()">
+            <button onclick="transfLVRRLVR3()">
                 Transferir LVRR para LVR3
             </button>
 
-            <button onclick="desenerLVRRLVR4()">
+            <button onclick="transfLVRRLVR4()">
                 Transferir LVRR para LVR4
             </button>
 
@@ -233,19 +233,20 @@
             );
 
             alert(
-                "Manobra para transferir do LVR1 para o LVR1."
+                "Manobra para transferir do LVR1 para o LVRR."
             );
         }
 
 
-        function enerRed2() {
+        function transfLVR2LVRR() {
+
             localStorage.setItem(
                 "manobraAtual",
-                "EnergizarRed2"
+                "TransferirLVR2LVRR"
             );
 
             localStorage.setItem(
-                "enerRed2Habilitada",
+                "transfLVR2LVRRHabilitada",
                 "true"
             );
 
@@ -255,58 +256,20 @@
             );
 
             alert(
-                "Manobra Energizar Linha 2 habilitada."
+                "Manobra para transferir do LVR2 para o LVRR."
             );
         }
 
 
-        function enerRed3() {
+        function transfLVR3LVRR() {
+
             localStorage.setItem(
                 "manobraAtual",
-                "EnergizarRed3"
+                "TransferirLVR3LVRR"
             );
 
             localStorage.setItem(
-                "enerRed3Habilitada",
-                "true"
-            );
-
-            localStorage.setItem(
-                "passosExecutados",
-                JSON.stringify([])
-            );
-
-            alert("Manobra para energizar a Redução3 habilitada");
-        }
-
-        function enerRed4() {
-            localStorage.setItem(
-                "manobraAtual",
-                "EnergizarRed4"
-            );
-
-            localStorage.setItem(
-                "enerRed4Habilitada",
-                "true"
-            );
-
-            localStorage.setItem(
-                "passosExecutados",
-                JSON.stringify([])
-            );
-
-            alert("Manobra para energizar Redução 4 habilitada");
-        }
-
-
-        function desenerRed1() {
-            localStorage.setItem(
-                "manobraAtual",
-                "DesenergizarRed1"
-            );
-
-            localStorage.setItem(
-                "desenerRed1Habilitada",
+                "transfLVR3LVRRHabilitada",
                 "true"
             );
 
@@ -316,18 +279,19 @@
             );
 
             alert(
-                "Manobra Desenergizar Redução 1 habilitada."
+                "Manobra para transferir do LVR3 para o LVRR."
             );
         }
 
-        function desenerRed2() {
+        function transfLVR4LVRR() {
+
             localStorage.setItem(
                 "manobraAtual",
-                "DesenergizarRed2"
+                "TransferirLVR4LVRR"
             );
 
             localStorage.setItem(
-                "desenerRed2Habilitada",
+                "transfLVR4LVRRHabilitada",
                 "true"
             );
 
@@ -337,18 +301,19 @@
             );
 
             alert(
-                "Manobra Desenergizar Redução 2 habilitada."
+                "Manobra para transferir do LVR4 para o LVRR."
             );
         }
 
-        function desenerRed3() {
+        function transfLVRRLVR1() {
+
             localStorage.setItem(
                 "manobraAtual",
-                "DesenergizarRed3"
+                "TransferirLVRRLVR1"
             );
 
             localStorage.setItem(
-                "desenerRed3Habilitada",
+                "transfLVRRLVR1Habilitada",
                 "true"
             );
 
@@ -358,18 +323,20 @@
             );
 
             alert(
-                "Manobra Desenergizar Redução 3 habilitada."
+                "Manobra para transferir do LVRR para o LVR1."
             );
         }
 
-        function desenerRed4() {
+
+        function transfLVRRLVR2() {
+
             localStorage.setItem(
                 "manobraAtual",
-                "DesenergizarRed4"
+                "TransferirLVRRLVR2"
             );
 
             localStorage.setItem(
-                "desenerRed4Habilitada",
+                "transfLVRRLVR2Habilitada",
                 "true"
             );
 
@@ -379,9 +346,55 @@
             );
 
             alert(
-                "Manobra Desenergizar Redução 4 habilitada."
+                "Manobra para transferir do LVRR para o LVR2."
             );
         }
+
+
+        function transfLVRRLVR3() {
+
+            localStorage.setItem(
+                "manobraAtual",
+                "TransferirLVRRLVR3"
+            );
+
+            localStorage.setItem(
+                "transfLVRRLVR3Habilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra para transferir do LVRR para o LVR3."
+            );
+        }
+
+        function transfLVRRLVR4() {
+
+            localStorage.setItem(
+                "manobraAtual",
+                "TransferirLVRRLVR4"
+            );
+
+            localStorage.setItem(
+                "transfLVRRLVR4Habilitada",
+                "true"
+            );
+
+            localStorage.setItem(
+                "passosExecutados",
+                JSON.stringify([])
+            );
+
+            alert(
+                "Manobra para transferir do LVRR para o LVR4."
+            );
+        }
+
 
         function fecharTela() {
             window.close();
