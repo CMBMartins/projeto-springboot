@@ -383,6 +383,146 @@
                         }
                     }
                 }
+
+                //FUNÇÕES PARA EXECUÇÃOS DAS MANOBRAS INTELIGENTES
+                function verificarDesenerAlbras() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let desenerAlbrasHabilitada =
+                        localStorage.getItem("desenerAlbrasHabilitada") === "true";
+
+                    if (
+                        !desenerAlbrasHabilitada ||
+                        manobraAtual !== "DesenergizarAlbras"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        !disjuntor52l1fechado &&
+                        !disjuntor52l2fechado &&
+                        !disjuntor52btfechado &&
+                        !disjuntor52alfechado &&
+                        !disjuntor52mt1fechado &&
+                        !disjuntor52mtrfechado &&
+                        !disjuntor52mt2fechado &&
+                        !disjuntor52mt3fechado &&
+                        !disjuntor52mt4fechado &&
+                        !disjuntor52a1fechado &&
+                        !disjuntor52a2fechado &&
+                        !disjuntor52a3fechado &&
+                        !disjuntor52a4fechado &&
+                        !disjuntor52a5fechado &&
+                        !disjuntor52a6fechado &&
+                        !disjuntor52a7fechado &&
+                        !disjuntor52a8fechado &&
+                        !disjuntor52p1fechado &&
+                        !disjuntor52p2fechado &&
+                        !disjuntor52p3fechado &&
+                        !disjuntor52p4fechado &&
+                        !disjuntor52p5fechado &&
+                        !disjuntor52p6fechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Desenergizar a SE Albras concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "desenerAlbrasHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                function verificarEnerAlbras() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerAlbrasHabilitada =
+                        localStorage.getItem("enerAlbrasHabilitada") === "true";
+
+                    if (
+                        !enerAlbrasHabilitada ||
+                        manobraAtual !== "energizarAlbras"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        disjuntor52l1fechado &&
+                        disjuntor52l2fechado &&
+                        disjuntor52btfechado &&
+                        disjuntor52alfechado &&
+                        disjuntor52mt1fechado &&
+                        disjuntor52mtrfechado &&
+                        disjuntor52mt2fechado &&
+                        disjuntor52mt3fechado &&
+                        disjuntor52mt4fechado &&
+                        disjuntor52a1fechado &&
+                        disjuntor52a2fechado &&
+                        disjuntor52a3fechado &&
+                        disjuntor52a4fechado &&
+                        disjuntor52a5fechado &&
+                        disjuntor52a6fechado &&
+                        disjuntor52a7fechado &&
+                        disjuntor52a8fechado &&
+                        disjuntor52p1fechado &&
+                        disjuntor52p2fechado &&
+                        disjuntor52p3fechado &&
+                        disjuntor52p4fechado &&
+                        disjuntor52p5fechado &&
+                        disjuntor52p6fechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar a SE Albras concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerAlbrasHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                //FUNÇÃO PARA GUARDAR OS PASSOS EXECUTADOS NAS MANOBRAS
+                function registrarPasso(texto) {
+
+                    let passosExecutados =
+                        JSON.parse(
+                            localStorage.getItem("passosExecutados")
+                        ) || [];
+
+                    if (!passosExecutados.includes(texto)) {
+
+                        passosExecutados.push(texto);
+
+                        localStorage.setItem(
+                            "passosExecutados",
+                            JSON.stringify(passosExecutados)
+                        );
+                    }
+
+                    console.log(
+                        "passosExecutados:",
+                        passosExecutados
+                    );
+                }
+
             </script>
     </div>
     </div>
