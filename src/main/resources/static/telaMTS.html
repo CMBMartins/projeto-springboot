@@ -1397,15 +1397,23 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
                             disjuntor52mtrfechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52MTR"
+                            );
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
                             disjuntor52mtrfechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52MTR"
+                            );
                         }
                     }
                     verificarEnerBayMTR();
                     verificarDesenerBayMTR();
+                    verificarEnerAlbras();
+                    verificarDesenerAlbras();
                 }
 
 
@@ -1508,14 +1516,22 @@
                         if (botao.style.fill === "red") {
                             botao.style.fill = "green"; // Muda para aberto (verde)
                             disjuntor52btfechado = false;
+                            registrarPasso(
+                                "Abrir Disjuntor 52BT"
+                            );
 
                         } else {
                             // Criamos uma nova linha se ela ainda não existe           
                             botao.style.fill = "red";
                             disjuntor52btfechado = true;
+                            registrarPasso(
+                                "Fechar Disjuntor 52BT"
+                            );
+                            console.log("Disjuntor 52 BT FECHADO");
                         }
                     }
-                    verificarDesenerSEAlbras();
+                    verificarDesenerAlbras();
+                    verificarEnerAlbras();
                 }
 
                 function linkPagina() {
@@ -2111,7 +2127,64 @@
                         );
 
                         localStorage.setItem(
-                            "desenerBayMT2Habilitada",
+                            "desenerAlbrasHabilitada",
+                            "false"
+                        );
+
+                        localStorage.setItem(
+                            "manobraConcluida",
+                            "true"
+                        );
+                    }
+                }
+
+                function verificarEnerAlbras() {
+
+                    let manobraAtual =
+                        localStorage.getItem("manobraAtual");
+
+                    let enerAlbrasHabilitada =
+                        localStorage.getItem("enerAlbrasHabilitada") === "true";
+
+                    if (
+                        !enerAlbrasHabilitada ||
+                        manobraAtual !== "energizarAlbras"
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        disjuntor52l1fechado &&
+                        disjuntor52l2fechado &&
+                        disjuntor52btfechado &&
+                        disjuntor52alfechado &&
+                        disjuntor52mt1fechado &&
+                        disjuntor52mtrfechado &&
+                        disjuntor52mt2fechado &&
+                        disjuntor52mt3fechado &&
+                        disjuntor52mt4fechado &&
+                        disjuntor52a1fechado &&
+                        disjuntor52a2fechado &&
+                        disjuntor52a3fechado &&
+                        disjuntor52a4fechado &&
+                        disjuntor52a5fechado &&
+                        disjuntor52a6fechado &&
+                        disjuntor52a7fechado &&
+                        disjuntor52a8fechado &&
+                        disjuntor52p1fechado &&
+                        disjuntor52p2fechado &&
+                        disjuntor52p3fechado &&
+                        disjuntor52p4fechado &&
+                        disjuntor52p5fechado &&
+                        disjuntor52p6fechado
+                    ) {
+
+                        mostrarMensagemManobra(
+                            "✅ Manobra Energizar a SE Albras concluída com sucesso!"
+                        );
+
+                        localStorage.setItem(
+                            "enerAlbrasHabilitada",
                             "false"
                         );
 

@@ -314,12 +314,13 @@
             <script>
 
                 //DECLARAÇÕES DAS VARIÁVEIS
-                let seccionadora89mt3afechada = false;
-                let seccionadora89mt3bfechada = false;
-                let disjuntor52mt3fechado = false;
-                let seccionadora89mt4afechada = false;
-                let seccionadora89mt4bfechada = false;
-                let disjuntor52mt4fechado = false;
+                let seccionadora89alafechada = false;
+                let seccionadora89albfechada = false;
+                let seccionadora89alfechada = false;
+                let disjuntor52alfechado = false;
+                let seccionadora89bpafechada = false;
+                let seccionadora89bpbfechada = false;
+                let disjuntor52btfechado = false;
 
                 //SCRIPT COM AS FUNÇÕES PARA OS FEEDS BACKS DO SISTEMA//
                 //FUNÇÕES PARA MOSTRAR MENSAGENS DE FEED BACK//
@@ -616,6 +617,8 @@
                     }
                     verificarEnerBayAl();
                     verificarDesenerBayAl();
+                    verificarDesenerAlbras();
+                    verificarEnerAlbras();
                 }
 
                 function linkPagina() {
