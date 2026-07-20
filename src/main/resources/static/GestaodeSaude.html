@@ -318,7 +318,7 @@
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <h2>💰 Monitoração da Saúde</h2>
+            <h2>💊 Monitoração de Medicamentos</h2>
 
             <nav>
                 <a href="#">📊 Dashboard</a>
@@ -471,350 +471,64 @@
         }
 
         //DASHBOARD COMPLETO (usa endpoints específicos)
-        function carregarDashboard() {
-            const usuario = localStorage.getItem("usuario");
+        async function carregarDashboard() {
 
-            //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-            window.onload = function () {
-                //carregarDashboard();
-            }
+            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
 
-            function iniciarSistema() {
-                console.log("Sistema iniciado");
-                listarTodos();
-            }
+            const dados = await resposta.json();
 
+            document.getElementById("proximoMedicamento").innerHTML =
+                dados.proximoMedicamento
+                    ? dados.proximoMedicamento.medicamento +
+                    "<br><small>" +
+                    dados.proximoMedicamento.horarioPrevisto +
+                    "</small>"
+                    : "-";
 
-            // TOTAL
-            fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
-                .then(res => res.json())
-                .then(data => {
-                    console.log("TOTAL:", data);
+            document.getElementById("ultimoMedicamento").innerHTML =
+                dados.ultimoConsumido
+                    ? dados.ultimoConsumido.medicamento +
+                    "<br><small>" +
+                    dados.ultimoConsumido.horarioConsumido +
+                    "</small>"
+                    : "-";
 
-                    document.getElementById("total").innerText =
-                        Number(data || 0).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        });
-                });
+            document.getElementById("resumoDiario").innerHTML =
+                "Consumidos: " + dados.consumidosHoje +
+                "<br>Pendentes: " + dados.pendentes;
 
-            // RENDA
-            fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log("RENDA:", data);
-                    document.getElementById("renda").innerText =
-                        Number(data || 0).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        });
-                });
+            document.getElementById("adesao").innerHTML =
+                dados.adesao.toFixed(1) + "%";
 
-            // MÊS
-            fetch(`${API}/despesas/mes?usuario=${encodeURIComponent(usuario)}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log("MES:", data);
+            document.getElementById("compartimentos").innerHTML =
+                dados.compartimentosOcupados +
+                " / " +
+                (dados.compartimentosOcupados +
+                    dados.compartimentosVazios);
 
-                    const valor =
-                        typeof data === "number" ? data :
-                            data.mes || data.total || 0;
+            document.getElementById("statusCamera").innerHTML =
+                dados.statusSensor;
 
-                    document.getElementById("mes").innerText =
-                        Number(valor || 0).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        });
-                });
+            document.getElementById("proximosHorarios").innerHTML =
+                dados.proximoMedicamento
+                    ? dados.proximoMedicamento.horarioPrevisto
+                    : "-";
 
-
-            // STATUS
-            fetch(`${API}/despesas/status?usuario=${encodeURIComponent(usuario)}`)
-                .then(res => res.json())
-                .then(data => {
-                    console.log("STATUS:", data);
-                    document.getElementById("pagas").innerText = data.PAGA || 0;
-                    document.getElementById("pendentes").innerText = data.PENDENTE || 0;
-                });
-
-
-            // FUNÇÃO DE SALDO = RENDA - DESPESAS (PAGA + PENDENTE)
-            Promise.all([
-                fetch(`${API}/despesas/renda?usuario=${encodeURIComponent(usuario)}`).then(res => res.json()),
-                fetch(`${API}/despesas/total?usuario=${encodeURIComponent(usuario)}`).then(res => res.json())
-            ])
-                .then(([renda, totalDespesas]) => {
-
-                    console.log("RENDA:", renda);
-                    console.log("DESPESAS:", totalDespesas);
-
-                    const saldo = (renda || 0) - (totalDespesas || 0);
-                    const elemento = document.getElementById("saldo");
-
-                    document.getElementById("saldo").innerText =
-                        Number(saldo).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        });
-
-                    // Remove classes antigas
-                    elemento.classList.remove("positivo", "negativo");
-
-                    // Aplica cor conforme valor
-                    if (saldo < 0) {
-                        elemento.classList.add("negativo");
-                    } else {
-                        elemento.classList.add("positivo");
-                    }
-                });
-        }
-
-        //FUNÇÃO PARA CARREGAR GRÁFICO POR CATEGORIA
-        function carregarGraficoCategoria() {
-            const usuario = getUsuario();
-
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                return;
-            }
-
-            fetch(API + "/despesas/categoria?usuario=" + usuario)
-                .then(async res => {
-
-                    if (!res.ok) {
-                        const erro = await res.text();
-                        console.error("Erro categoria:", erro);
-                        throw new Error("Erro ao carregar categorias");
-                    }
-
-                    return res.json();
-                })
-                .then(data => {
-
-                    console.log("CATEGORIA:", data); // 🔥 debug
-
-                    const canvas = document.getElementById("graficoCategoria");
-
-                    if (!canvas) {
-                        console.error("Canvas não encontrado!");
-                        return;
-                    }
-
-                    if (!data || Object.keys(data).length === 0) {
-                        console.warn("Sem dados para gráfico");
-                        return;
-                    }
-
-                    // 🔥 destruir gráfico anterior
-                    if (window.graficoCategoria instanceof Chart) {
-                        window.graficoCategoria.destroy();
-                    }
-
-                    window.graficoCategoria = new Chart(canvas, {
-                        type: "pie",
-                        data: {
-                            labels: Object.keys(data),
-                            datasets: [{
-                                data: Object.values(data)
-                            }]
-                        }
-                    });
-
-                })
-                .catch(err => console.error("Erro gráfico:", err));
+            document.getElementById("situacaoHoje").innerHTML =
+                "Atrasados: " + dados.atrasados;
         }
 
 
-        // FUNÇÃO PARA GERAR GRÁFICO DE DESPESAS MENSAIS
-        function carregarGraficoMensal() {
-
-            const usuario = getUsuario();
-
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                return;
-            }
-
-            //fetch(API + "/mensal?usuario=" + usuario)
-            fetch(API + "/despesas/mensal?usuario=" + usuario)
-                .then(async res => {
-                    if (!res.ok) {
-                        const erro = await res.text();
-                        console.error("Erro API:", erro);
-                        throw new Error("Erro mensal");
-                    }
-                    return res.json();
-                })
-
-                .then(data => {
-
-                    console.log("MENSAL:", data); // debug
-
-                    if (!data || Object.keys(data).length === 0) {
-                        console.warn("Sem dados mensais");
-                        return;
-                    }
-
-                    const mesesNomes = [
-                        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-                        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-                    ];
-
-                    // ordenar meses
-                    const meses = Object.keys(data)
-                        .map(m => parseInt(m))
-                        .sort((a, b) => a - b);
-
-                    const labels = meses.map(m => mesesNomes[m - 1]);
-                    const valores = meses.map(m => Number(data[m]) || 0);
-
-                    // ATUALIZA CARD (SEPARADO)
-                    const mesAtual = new Date().getMonth() + 1;
-                    const valorMes = Number(data[mesAtual]) || 0;
-
-                    const elValorMes = document.getElementById("valorMes");
-                    if (elValorMes) {
-                        elValorMes.innerText = valorMes.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        });
-                    }
-
-                    // GRÁFICO
-                    const canvas = document.getElementById("graficoMes");
-
-                    if (!canvas) {
-                        console.error("Canvas não encontrado!");
-                        return;
-                    }
-
-                    if (window.graficoMes instanceof Chart) {
-                        window.graficoMes.destroy();
-                    }
-
-                    window.graficoMes = new Chart(canvas, {
-                        type: "bar", // MELHOR que pie para mensal
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: "Gastos por mês",
-                                data: valores
-                            }]
-                        }
-                    });
-                })
-                .catch(err => console.error("Erro mensal:", err));
+        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+        window.onload = function () {
+            //carregarDashboard();
         }
 
-
-        // 🔥 FUNÇÃO PARA FORMATAR OS VALORES
-        function formatar(valor) {
-            return (Number(valor) || 0).toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
+        function iniciarSistema() {
+            console.log("Sistema iniciado");
+            listarTodos();
         }
 
-
-        // FUNÇÃO DE CARD DO TOTAL GERAL DAS DESPESAS          
-        function carregarTotal() {
-
-            const usuario = getUsuario();
-
-            if (!usuario) return;
-
-            fetchSeguro(API + "/despesas/total?usuario=" + usuario)
-                .then(total => {
-                    const el = document.getElementById("total");
-                    if (el) el.innerText = formatar(total);
-                })
-                .catch(err => console.error("Erro total:", err));
-        }
-
-        // FUNÇÃO PARA O CARD DO TOTAL DAS RENDAS          
-        function carregarRenda() {
-
-            const usuario = getUsuario();
-            if (!usuario) return;
-
-            fetchSeguro(API + "/despesas/renda?usuario=" + usuario)
-                .then(total => {
-                    const el = document.getElementById("renda");
-                    if (el) el.innerText = formatar(renda);
-                })
-                .catch(err => console.error("Erro renda:", err));
-        }
-
-
-        //FUNÇÃO PARA O CARD DE COMPARATIVO MENSAL
-        function carregarComparativoMensal() {
-
-            const usuario = getUsuario();
-
-            if (!usuario) return;
-
-            fetchSeguro(API + "/despesas/comparativo-mensal?usuario=" + usuario)
-                .then(data => {
-
-                    const atual = Number(data?.atual) || 0;
-                    const anterior = Number(data?.anterior) || 0;
-
-                    const diferenca = atual - anterior;
-                    const percentual = anterior !== 0
-                        ? ((diferenca / anterior) * 100).toFixed(1)
-                        : 0;
-
-                    let texto = "→ R$ 0,00";
-                    let cor = "gray";
-
-                    if (diferenca > 0) {
-                        texto = "↑ +" + formatar(diferenca);
-                        cor = "green";
-                    } else if (diferenca < 0) {
-                        texto = "↓ " + formatar(diferenca);
-                        cor = "red";
-                    }
-
-                    texto += ` (${percentual}%)`;
-
-                    const el = document.getElementById("tendencia");
-                    if (el) {
-                        el.innerText = texto;
-                        el.style.color = cor;
-                    }
-
-                })
-                .catch(err => console.error("Erro comparativo:", err));
-        }
-
-
-        // FUNÇÃO PARA O CARD DO STATUS DE DESPESAS
-        function gerarGraficoStatus() {
-
-            const usuario = getUsuario();
-
-            if (!usuario) return;
-
-            fetchSeguro(API + "/despesas/status?usuario=" + usuario)
-                .then(data => {
-                    const pagas = data.PAGA || data.Paga || 0;
-                    const pendentes = data.PENDENTE || data.Pendente || 0;
-
-                    const ctx = document.getElementById("graficoStatus");
-
-                    new Chart(ctx, {
-                        type: "doughnut",
-                        data: {
-                            labels: ["Pagas", "Pendentes"],
-                            datasets: [{
-                                data: [pagas, pendentes]
-                            }]
-                        }
-                    });
-
-                })
-                .catch(error => console.error("Erro gráfico status:", error));
-        }
 
 
         // 📋 FUNÇÃO LISTAR TODAS DESPESAS (DASHBOARD)
@@ -827,10 +541,10 @@
                 return;
             }
 
-            fetchSeguro(API + "/despesas/usuario?usuario=" + encodeURIComponent(usuario))
+            fetchSeguro(API + "/saude/usuario?usuario=" + encodeURIComponent(usuario))
                 .then(data => {
 
-                    const tabela = document.getElementById("ultimasDespesas");
+                    const tabela = document.getElementById("ultimasSaude");
 
                     if (!tabela) return;
 
@@ -929,11 +643,12 @@
 
                             linhas += `
                 <tr class="linha-tabela">
-                    <td>${d.data ?? ""}</td>
-                    <td>${d.descricao ?? ""}</td>
-                    <td class="valor">${formatar(valor)}</td>
-                    <td class="${statusClass}">
-                        ${d.status ?? ""}
+                    <th>💊 Medicamento</th>
+                            <th>🧪 Compartimento</th>
+                            <th>⏰ Horario Previsto</th>
+                            <th>✅ Horario Consumido</th>
+                            <th>📷 Sensor</th>
+                            <th>⚙️ Status</th>
                     </td>
                     <td>${acao}</td>
                 </tr>
@@ -991,12 +706,6 @@
                     alert("Login realizado com sucesso!");
 
                     carregarDashboard();
-                    carregarGraficoCategoria();
-                    carregarGraficoMensal();
-                    gerarGraficoStatus();
-                    carregarComparativoMensal();
-                    carregarTotal();
-                    listarTodos();
                     limparLogin();
                 })
                 .catch(error => {
