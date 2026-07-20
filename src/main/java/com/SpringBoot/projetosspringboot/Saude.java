@@ -1,6 +1,8 @@
 package com.SpringBoot.projetosspringboot;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,14 +14,16 @@ public class Saude {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDate data;
-    private String descricao;
-    private String categoria;
-    private String tipo;
-    private Double valor;
-    private String status;
+    private String medicamento;
+    private String compartimento;
+    private LocalTime horarioPrevisto;
+    private LocalTime horarioConsumido;
+    private Boolean consumido;
+    private Boolean atrasado;
+    private Boolean compartimentoVazio;
+    private String statusSensor;
+    private LocalDateTime ultimaLeituraCamera;
     private String usuario;
-    
 
     public Integer getId() {
         return id;
@@ -29,60 +33,84 @@ public class Saude {
         this.id = id;
     }
 
-    public LocalDate getData() {
-        return data;
+    public String getMedicamento() {
+        return medicamento;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setMedicamento(String medicamento) {
+        this.medicamento = medicamento;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getCompartimento() {
+        return compartimento;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setCompartimento(String compartimento) {
+        this.compartimento = compartimento;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public LocalTime getHorarioPrevisto() {
+        return horarioPrevisto;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setHorarioPrevisto(LocalTime horarioPrevisto) {
+        this.horarioPrevisto = horarioPrevisto;
     }
 
-    public String getTipo() {
-        return tipo;
+    public LocalTime getHorarioConsumido() {
+        return horarioConsumido;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setHorarioConsumido(LocalTime horarioConsumido) {
+        this.horarioConsumido = horarioConsumido;
     }
 
-    public Double getValor() {
-        return valor;
+    public Boolean getConsumido() {
+        return consumido;
     }
 
-    public void setValor(Double valor) {
-        this.valor = valor;
+    public void setConsumido(Boolean consumido) {
+        this.consumido = consumido;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getAtrasado() {
+        return atrasado;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAtrasado(Boolean atrasado) {
+        this.atrasado = atrasado;
+    }
+
+    public Boolean getCompartimentoVazio() {
+        return compartimentoVazio;
+    }
+
+    public void setCompartimentoVazio(Boolean compartimentoVazio) {
+        this.compartimentoVazio = compartimentoVazio;
+    }
+
+    public String getStatusSensor() {
+        return statusSensor;
+    }
+
+    public void setStatusSensor(String statusSensor) {
+        this.statusSensor = statusSensor;
+    }
+
+    public LocalDateTime getUltimaLeituraCamera() {
+        return ultimaLeituraCamera;
+    }
+
+    public void setUltimaLeituraCamera(LocalDateTime ultimaLeituraCamera) {
+        this.ultimaLeituraCamera = ultimaLeituraCamera;
     }
 
     public String getUsuario() {
-    return usuario;
-}
+        return usuario;
+    }
 
-public void setUsuario(String usuario) {
-    this.usuario = usuario;
-}
-   
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
 }
