@@ -518,6 +518,128 @@
                 "Atrasados: " + dados.atrasados;
         }
 
+        async function graficoHorarios() {
+
+            const resposta =
+                await fetch(API + "/grafico-horarios?usuario=" + usuario);
+
+            const dados = await resposta.json();
+
+            new Chart(
+                document.getElementById("graficoHorarios"),
+                {
+                    type: "bar",
+
+                    data: {
+
+                        labels: Object.keys(dados),
+
+                        datasets: [{
+
+                            label: "Medicamentos",
+
+                            data: Object.values(dados)
+
+                        }]
+                    }
+                });
+        }
+
+        async function graficoAdesao() {
+
+            const resposta =
+                await fetch(API + "/grafico-adesao?usuario=" + usuario);
+
+            const dados =
+                await resposta.json();
+
+            new Chart(
+
+                document.getElementById("graficoAdesao"),
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: Object.keys(dados),
+
+                        datasets: [{
+
+                            label: "Adesão",
+
+                            data: Object.values(dados)
+
+                        }]
+                    }
+
+                });
+
+        }
+
+        async function graficoMedicamentos() {
+
+            const resposta =
+                await fetch(API + "/grafico-medicamentos?usuario=" + usuario);
+
+            const dados =
+                await resposta.json();
+
+            new Chart(
+
+                document.getElementById("graficoMedicamentos"),
+
+                {
+
+                    type: "pie",
+
+                    data: {
+
+                        labels: Object.keys(dados),
+
+                        datasets: [{
+
+                            data: Object.values(dados)
+
+                        }]
+                    }
+
+                });
+
+        }
+
+        async function graficoStatus() {
+
+            const resposta =
+                await fetch(API + "/grafico-status?usuario=" + usuario);
+
+            const dados =
+                await resposta.json();
+
+            new Chart(
+
+                document.getElementById("graficoStatus"),
+
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: Object.keys(dados),
+
+                        datasets: [{
+
+                            data: Object.values(dados)
+
+                        }]
+                    }
+
+                });
+
+        }
+
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -528,7 +650,6 @@
             console.log("Sistema iniciado");
             listarTodos();
         }
-
 
 
         // 📋 FUNÇÃO LISTAR TODAS DESPESAS (DASHBOARD)
@@ -707,6 +828,11 @@
 
                     carregarDashboard();
                     limparLogin();
+                    graficoHorarios();
+                    graficoAdesao();
+                    graficoMedicamentos();
+                    graficoStatus();
+
                 })
                 .catch(error => {
                     alert("Usuário ou senha incorretos");
