@@ -354,7 +354,7 @@
             <div class="logo">
                 <h1>
                     <img src="Imagens/carlos1.gif" width="50">
-                    Relatórios de Dados da Saúde
+                    Monitor Inteligente de Medicamentos
                 </h1>
             </div>
 
@@ -364,38 +364,43 @@
             <section class="cards">
 
                 <div class="card">
-                    <h3>💸 Total de Medicamentos</h3>
-                    <p id="total">R$ 0,00</p>
+                    <h3>💊 Próximo Medicamento</h3>
+                    <p id="proximoMedicamento">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>💰 Valor Total</h3>
-                    <p id="renda">R$ 0,00</p>
+                    <h3>✅ Último Medicamento Consumido</h3>
+                    <p id="ultimoMedicamento">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>📅 Despesas do Mês Atual</h3>
-                    <p id="mes">0</p>
+                    <h3>📅 Resumo Diário</h3>
+                    <p id="resumoDiario">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>📊 Tendência</h3>
-                    <p id="tendencia">-</p>
+                    <h3>📈 Adesão ao Tratamento</h3>
+                    <p id="adesao">0%</p>
                 </div>
 
                 <div class="card">
-                    <h3>💵 Saldo</h3>
-                    <p id="saldo">0</p>
+                    <h3>🧪 Compartimentos Monitorados</h3>
+                    <p id="compartimentos">0</p>
                 </div>
 
                 <div class="card">
-                    <h3>✅ Medicamentos Comprados</h3>
-                    <p id="pagas">0</p>
+                    <h3>📷 Status da Câmera</h3>
+                    <p id="statusCamera">ONLINE</p>
                 </div>
 
                 <div class="card">
-                    <h3>⏳ Medicamentos Pendentes</h3>
-                    <p id="pendentes">0</p>
+                    <h3>⏰ Próximos Horários</h3>
+                    <p id="proximosHorarios">-</p>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Hoje</h3>
+                    <p id="situacaohoje">-</p>
                 </div>
 
             </section>
@@ -403,13 +408,13 @@
             <section class="graficos">
 
                 <div class="grafico">
-                    <h3>🥧 Por Categoria</h3>
-                    <canvas id="graficoCategoria"></canvas>
+                    <h3>⏰ Consumo por Horário</h3>
+                    <canvas id="graficoHorarios"></canvas>
                 </div>
 
                 <div class="grafico">
-                    <h3>📈 Despesas Por Mêses</h3>
-                    <canvas id="graficoMes"></canvas>
+                    <h3>📈 Adesão Semanal</h3>
+                    <canvas id="graficoAdesao"></canvas>
                 </div>
 
             </section>
@@ -422,9 +427,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>📅 Data</th>
-                            <th>📝 Descrição</th>
-                            <th>💰 Categoria</th>
+                            <th>💊 Medicamento</th>
+                            <th>🧪 Compartimento</th>
+                            <th>⏰ Horario Previsto</th>
+                            <th>✅ Horario Consumido</th>
+                            <th>📷 Sensor</th>
                             <th>⚙️ Status</th>
                         </tr>
                     </thead>
