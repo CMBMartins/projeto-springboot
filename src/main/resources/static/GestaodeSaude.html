@@ -473,8 +473,9 @@
         //DASHBOARD COMPLETO (usa endpoints específicos)
         async function carregarDashboard() {
 
-            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
+            let usuario = localStorage.getItem("usuario");
 
+            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
             const dados = await resposta.json();
 
             document.getElementById("proximoMedicamento").innerHTML =
@@ -520,6 +521,8 @@
 
         async function graficoHorarios() {
 
+            let usuario = localStorage.getItem("usuario");
+
             const resposta =
                 await fetch(API + "/grafico-horarios?usuario=" + usuario);
 
@@ -546,6 +549,8 @@
         }
 
         async function graficoAdesao() {
+
+            let usuario = localStorage.getItem("usuario");
 
             const resposta =
                 await fetch(API + "/grafico-adesao?usuario=" + usuario);
@@ -580,6 +585,8 @@
 
         async function graficoMedicamentos() {
 
+            let usuario = localStorage.getItem("usuario");
+
             const resposta =
                 await fetch(API + "/grafico-medicamentos?usuario=" + usuario);
 
@@ -610,6 +617,8 @@
         }
 
         async function graficoStatus() {
+
+            let usuario = localStorage.getItem("usuario");
 
             const resposta =
                 await fetch(API + "/grafico-status?usuario=" + usuario);
@@ -852,7 +861,7 @@
             alert("Logout realizado com sucesso!");
 
             // 🔥 Redirecionar (recomendado)
-            window.location.href = "DashboardGestaodeSaude.html";
+            window.location.href = "GestaodeSaude.html";
         }
 
 
