@@ -23,6 +23,22 @@ public class SaudeController {
                 return repository.save(saude);
         }
 
+        @PostMapping("/camera")
+        public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
+
+                Saude medicamento = repository
+                                .findByCompartimento(leitura.getCompartimento())
+                                .orElseThrow(() -> new RuntimeException("Compartimento não encontrado."));
+
+                medicamento.setConsumido(true);
+                medicamento.setHorarioConsumido(leitura.getDataHora().toLocalTime());
+                medicamento.setUltimaLeituraCamera(leitura.getDataHora());
+
+                repository.save(medicamento);
+
+                return ResponseEntity.ok("Leitura da câmera registrada com sucesso.");
+        }
+
         @GetMapping
         public List<Saude> listar() {
                 return repository.findAll();

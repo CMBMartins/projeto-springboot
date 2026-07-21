@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SaudeRepository extends JpaRepository<Saude, Integer> {
 
+    Optional<Saude> findByCompartimento(String compartimento);
+
     // Listar por usuário
     List<Saude> findByUsuario(String usuario);
 
