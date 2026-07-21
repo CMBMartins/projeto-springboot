@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro das Ações dos Medicamentos</title>
+    <title>Cadastro de Medicamentos</title>
 
     <link rel="stylesheet" href="dashboard.css">
 
@@ -119,28 +119,7 @@
         border-radius: 5px;
         color: white;
         cursor: pointer;
-    }
-
-    /* CORES */
-    .salvar {
-        background: #1cc88a;
-    }
-
-    .editar {
-        background: #f6c23e;
-    }
-
-    .limpar {
-        background: #858796;
-    }
-
-    .buscar {
-        background: #36b9cc;
-    }
-
-    .listar {
-        background: #4e73df;
-    }
+    }    
 
     /* LOGIN */
     .login {
@@ -228,9 +207,24 @@
         color: white;
     }
 
+    #consumido {
+        background: white;
+        color: blue;
+    }
+
     .autenticar {
         background: #7827ae;
         color: white;
+    }
+
+    #consumido {
+        background: white;
+        color: blue;
+    }
+
+    #statusSensor {
+        background: white;
+        color: blue;
     }
 
     .logout {
@@ -319,45 +313,26 @@
 
     /* 🎨 CORES DAS TAGS */
 
-    .medicamento {
+    .exforge {
         background: #28a745;
     }
 
-    .compartimento {
+    .metformina {
         background: #fd7e14;
     }
 
-    .horarioprevisto {
+    .coenzimaq10 {
         background: #6f42c1;
     }
 
-    .consumido {
+    .rosuvastatina {
         background: #dc3545;
     }
 
-    .medicamentos {
-        background: #17a2b8;
+    .tansulosina {
+        background: #dc3545;
     }
-
-    .transporte {
-        background: #007bff;
-    }
-
-    .ajuda {
-        background: #20c997;
-    }
-
-    .casa {
-        background: #795548;
-    }
-
-    .renda {
-        background: #198754;
-    }
-
-    .criancas {
-        background: #e83e8c;
-    }
+    
 </style>
 
 </head>
@@ -396,18 +371,16 @@
             <h2>Cadastro de Ações de Medicamentos</h2>
 
             <!-- FORMULÁRIO -->
-            <form id="frmSaude">
+            <div class="grid">
+                
+                <input type="text" id="medicamento" placeholder="Medicamento">
+                <input type="text" id="compartimento" placeholder="Compartimento">
+                <input type="text" id="horarioprevisto" placeholder="Horario Previsto">
+                <input type="number" id="consumido" placeholder="Horário do Consumo">
+                
+            </div>
 
-                <label>Medicamento</label>
-                <input type="text" id="medicamento">
-
-                <label>Compartimento</label>
-                <input type="text" id="compartimento">
-
-                <label>Horário Previsto</label>
-                <input type="time" id="horarioPrevisto">
-
-                <label>Consumido</label>
+            <label>Medicamento Consumido</label>
 
                 <select id="consumido">
                     <option value="false">Não</option>
@@ -434,14 +407,15 @@
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
             </div>
 
-            <!-- LEGENDA DE CATEGORIAS -->
+            <!-- LEGENDA DE NOMES DE MEDICAMENTOS -->
             <div class="legenda-categorias">
-                <h3>📌 Principais Categorias Sugeridas:</h3>
+                <h3>📌 Principais Medicamentos Sugeridos:</h3>
                 <div class="tags-categorias">
-                    <span class="tag medicamento">💊 Nome do medicamento</span>
-                    <span class="tag compartimento">🧪 Compartimento</span>
-                    <span class="tag horarioprevisto">⏰ Horario Previsto</span>
-                    <span class="tag consumido">✅ Horário do Consumo</span>
+                    <span class="tag exforge">💊 Exforge</span>
+                    <span class="tag metformina">🧪 Metformina</span>
+                    <span class="tag coenzimaq10">⏰ Coenzima Q10</span>
+                    <span class="tag rosuvastatina">✅ Rosuvastatina+Ezetimiba</span>
+                    <span class="tag tansulosina">✅ Tansulosina</span>
                 </div>
             </div>
 
