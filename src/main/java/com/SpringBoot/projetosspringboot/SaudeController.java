@@ -145,4 +145,30 @@ public class SaudeController {
                 return repository.countByUsuarioAndAtrasadoTrue(usuario);
 
         }
+
+        @GetMapping("/dashboard")
+        public DashboardSaudeDTO dashboard(@RequestParam String usuario) {
+
+                DashboardSaudeDTO dto = new DashboardSaudeDTO();
+
+                dto.setProximoMedicamento(
+                                repository.findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(usuario)
+                                                .orElse(null));
+
+                dto.setUltimoConsumido(
+                                repository.findTopByUsuarioAndConsumidoTrueOrderByHorarioConsumidoDesc(usuario)
+                                                .orElse(null));
+
+                dto.setConsumidosHoje(
+                                repository.countByUsuarioAndConsumidoTrue(usuario));
+
+                dto.setPendentes(
+                                repository.countByUsuarioAndConsumidoFalse(usuario));
+
+                dto.setAtrasados(
+                                repository.countByUsuarioAndAtrasadoTrue(usuario));
+
+                return dto;
+        }
+
 }
