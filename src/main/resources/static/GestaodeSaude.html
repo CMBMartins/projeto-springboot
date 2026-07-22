@@ -427,16 +427,18 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>🚪➡️ ID</th>
                             <th>💊 Medicamento</th>
                             <th>🧪 Compartimento</th>
                             <th>⏰ Horario Previsto</th>
                             <th>✅ Horario Consumido</th>
                             <th>📷 Sensor</th>
                             <th>⚙️ Status</th>
+                            <th>💾 Ação</th>
                         </tr>
                     </thead>
 
-                    <tbody id="ultimasSaude"></tbody>
+                    <tbody id="tabelaSaude"></tbody>
                 </table>
 
             </section>
@@ -661,136 +663,99 @@
         }
 
 
-        // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)
-        async function listarTodos() {
+    // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)       
+    async function listarTodos() {
 
-        const usuario = localStorage.getItem("usuario");
+    const usuario = localStorage.getItem("usuario");
 
-        if (!usuario) {
+    if (!usuario) {
         alert("Usuário não encontrado.");
         return;
+    }
+
+    try {
+
+        const resposta = await fetch(
+            API + "/usuario?usuario=" + encodeURIComponent(usuario)
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao carregar medicamentos.");
         }
 
-        fetchSeguro(`${API}/saude/usuario?usuario=${encodeURIComponent(usuario)}`)
-                .then(data => {
+        const medicamentos = await resposta.json();
 
-                    const tabela = document.getElementById("tabelaSaude");
+        const tabela = document.getElementById("tabelaSaude");
 
-                    if (!tabela) return;
+        tabela.innerHTML = "";
 
-                    let linhas = "";
+        medicamentos.forEach(saude => {
 
-                    // 🔥 ORDENA E LIMITA A 30
-                    const ultimosMedicamentos = data
-                        .sort((a, b) => new Date(b.data) - new Date(a.data))
-                        .slice(0, 30);
+            let status = "";
+            let cor = "";
 
-                    ultimosMedicamentos.forEach(saude => {
+            if (saude.consumido) {
 
-                        const valor = Number(saude.valor) || 0;
+                status = "✅ Consumido";
+                cor = "#d4edda";
 
-                        const dataFormatada = saude.data
-                            ? new Date(saude.data).toLocaleDateString("pt-BR")
-                            : "";
+            } else if (saude.atrasado) {
 
-                        const status = (saude.consumido || "")
-                            .toUpperCase()
-                            .trim();
+                status = "⚠ Atrasado";
+                cor = "#fff3cd";
 
-                        let classeLinha = "";
-                        let botao = "";
+            } else {
 
-                        // 🔥 PENDENTE → CONSUMO
-                        if (consumido === "PENDENTE") {
-
-                            classeLinha = "linha-pendente";
-
-                            botao = `
-                        <button class="btn-pagar"
-                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                            💰 Consumir
-                        </button>
-                    `;
-
-                        }
-
-                        // 🔥 Previsto → NÃO CONSUMIDO
-                        else if (
-                            status === "EM PREVISÃO" ||
-                            status === "EM PREVISÃO" ||
-                            status === "CONSUMIDO" ||
-                            status === "CONSUMIDO"
-                        ) {
-
-                            classeLinha = "linha-provisao";
-
-                            botao = `
-                        <button class="btn-receber"
-                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                            💵 Previsto
-                        </button>
-                    `;
-                        }
-
-                        // 🔥 PREVISÃO → CONSUMIDO
-                        else if (
-                            status === "PREVISAO"
-                        ) {
-
-                            classeLinha = "linha-agendado";
-
-                            botao = `
-                        <button class="btn-pagar"
-                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                            💵 Pagar
-                        </button>
-                    `;
-                        }
-
-                        // 🔥 CONSUMIDO (sem botão)
-                        else if (consumido === "CONSUMIDO") {
-
-                            classeLinha = "linha-paga";
-
-                            botao = `
-                        <span style="color:green;font-weight:bold;">
-                            ✔ Consumido
-                        </span>
-                    `;
-                        }
-
-                        // 🔥 CONSUMIDO (sem botão)
-                        else if (status === "CONSUMIDO") {
-
-                            classeLinha = "linha-recebido";
-
-                            botao = `
-                        <span style="color:blue;font-weight:bold;">
-                            ✔ Consumido
-                        </span>
-                    `;
-                        }
-
-                        else {
-                            botao = "-";
-                        }
-
-                        linhas += `
-                    <tr class="${classeLinha}">
-                        <td>${saude.id}</td>                        
-                        <td>${saude.medicamento ?? ""}</td>
-                        <td>${saude.compartimento ?? ""}</td>
-                        <td>${saude.horarioprevisto ?? ""}</td>
-                        <td>${saude.horarioconsumido ?? ""}</td>                        
-                        <td>${botao}</td>
-                    </tr>
-                `;
-                    });
-
-                    tabela.innerHTML = linhas;
-                });
+                status = "⏰ Pendente";
+                cor = "#f8d7da";
             }
 
+            tabela.innerHTML += `
+
+            <tr style="background:${cor}">
+
+                <td>${saude.id}</td>
+                <td>${saude.medicamento}</td>
+                <td>${saude.compartimento}</td>
+                <td>${saude.horarioPrevisto ?? "-"}</td>
+                <td>${saude.horarioConsumido ?? "-"}</td>
+                <td>${status}</td>
+                <td>${saude.statusSensor ?? "-"}</td>
+
+                <td>
+
+                    <button
+                        onclick="editar(${saude.id})"
+                        class="btn-editar">
+
+                        ✏ Editar
+
+                    </button>
+
+                    <button
+                        onclick="excluir(${saude.id})"
+                        class="btn-excluir">
+
+                        🗑 Excluir
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        alert("Erro ao carregar medicamentos.");
+
+    }
+}
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
@@ -852,16 +817,11 @@
         // FUNÇÃO EFETUAR O LOGOUT        
         function logout() {
 
-            // 🔥 Remove o usuário do sistema
             localStorage.removeItem("usuario");
 
-            // 🔥 Limpa o campo na tela
             const campo = document.getElementById("usuariologado");
             if (campo) campo.value = "";
-
             alert("Logout realizado com sucesso!");
-
-            // 🔥 Redirecionar (recomendado)
             window.location.href = "GestaodeSaude.html";
         }
 
