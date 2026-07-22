@@ -404,7 +404,7 @@
                 <button id="deletar" onclick="deletar()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
                 <button id="buscarCategoria" onclick="buscarCategoria()">📋Buscar Categoria</button>
-                <button id="listarTodos" onclick="listarTodos()">📋Listar Despesas</button>
+                <button id="listarTodos" onclick="listarTodos()">📋Listar Medicamentos</button>
             </div>
 
             <!-- LEGENDA DE NOMES DE MEDICAMENTOS -->
@@ -438,7 +438,7 @@
             <!-- LISTA -->
             <div class="card-lista">
 
-                <h2>Lista de Despesas</h2>
+                <h2>Lista de Medicamentos</h2>
 
                 <table>
 
@@ -449,6 +449,7 @@
                             <th>Compartimento</th>
                             <th>Horário Previsto</th>
                             <th>Horario Consumido</th>
+                            <th>Consumido:</th>
                         </tr>
                     </thead>
 
@@ -502,7 +503,7 @@
 
 
         // 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
-        function listarTodos() {
+        async function listarTodos() {
 
             const usuario = getUsuario();
 
@@ -511,7 +512,7 @@
                 return;
             }
 
-            fetchSeguro(`${API}/despesas/usuario?usuario=${encodeURIComponent(usuario)}`)
+            fetchSeguro(`${API}/saude/usuario?usuario=${encodeURIComponent(usuario)}`)
                 .then(data => {
 
                     const tabela = document.getElementById("tabelaSaude");
@@ -521,74 +522,74 @@
                     let linhas = "";
 
                     // 🔥 ORDENA E LIMITA A 30
-                    const ultimasDespesas = data
+                    const ultimosMedicamentos = data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
                         .slice(0, 30);
 
-                    ultimasDespesas.forEach(despesas => {
+                    ultimosMedicamentos.forEach(saude => {
 
-                        const valor = Number(despesas.valor) || 0;
+                        const valor = Number(saude.valor) || 0;
 
-                        const dataFormatada = despesas.data
-                            ? new Date(despesas.data).toLocaleDateString("pt-BR")
+                        const dataFormatada = saude.data
+                            ? new Date(saude.data).toLocaleDateString("pt-BR")
                             : "";
 
-                        const status = (despesas.status || "")
+                        const status = (saude.consumido || "")
                             .toUpperCase()
                             .trim();
 
                         let classeLinha = "";
                         let botao = "";
 
-                        // 🔥 PENDENTE → PAGA
-                        if (status === "PENDENTE") {
+                        // 🔥 PENDENTE → CONSUMO
+                        if (consumido === "PENDENTE") {
 
                             classeLinha = "linha-pendente";
 
                             botao = `
                         <button class="btn-pagar"
-                            onclick="editarStatus(${despesas.id}, 'PAGA')">
-                            💰 Pagar
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                            💰 Consumir
                         </button>
                     `;
 
                         }
 
-                        // 🔥 PROVISÃO → RECEBIDO
+                        // 🔥 Previsto → NÃO CONSUMIDO
                         else if (
-                            status === "PROVISÃO" ||
-                            status === "PROVISAO" ||
-                            status === "EM PROVISÃO" ||
-                            status === "EM PROVISAO"
+                            status === "EM PREVISÃO" ||
+                            status === "EM PREVISÃO" ||
+                            status === "CONSUMIDO" ||
+                            status === "CONSUMIDO"
                         ) {
 
                             classeLinha = "linha-provisao";
 
                             botao = `
                         <button class="btn-receber"
-                            onclick="editarStatus(${despesas.id}, 'RECEBIDO')">
-                            💵 Receber
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                            💵 Previsto
                         </button>
                     `;
                         }
 
-                        // 🔥 AGENDADO → PAGA
+                        // 🔥 PREVISÃO → CONSUMIDO
                         else if (
-                            status === "AGENDADO"
+                            status === "PREVISAO"
                         ) {
 
                             classeLinha = "linha-agendado";
 
                             botao = `
                         <button class="btn-pagar"
-                            onclick="editarStatus(${despesas.id}, 'PAGA')">
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
                             💵 Pagar
                         </button>
                     `;
                         }
 
-                        // 🔥 PAGA (sem botão)
-                        else if (status === "PAGA") {
+                        // 🔥 CONSUMIDO (sem botão)
+                        else if (consumido === "CONSUMIDO") {
 
                             classeLinha = "linha-paga";
 
@@ -599,14 +600,14 @@
                     `;
                         }
 
-                        // 🔥 RECEBIDO (sem botão)
-                        else if (status === "RECEBIDO") {
+                        // 🔥 CONSUMIDO (sem botão)
+                        else if (status === "CONSUMIDO") {
 
                             classeLinha = "linha-recebido";
 
                             botao = `
                         <span style="color:blue;font-weight:bold;">
-                            ✔ Recebido
+                            ✔ Consumido
                         </span>
                     `;
                         }
@@ -617,18 +618,11 @@
 
                         linhas += `
                     <tr class="${classeLinha}">
-                        <td>${despesas.id}</td>
-                        <td>${dataFormatada}</td>
-                        <td>${despesas.descricao ?? ""}</td>
-                        <td>${despesas.categoria ?? ""}</td>
-                        <td>${despesas.tipo ?? ""}</td>
-                        <td>
-                            ${valor.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        })}
-                        </td>
-                        <td>${despesas.status ?? ""}</td>
+                        <td>${saude.id}</td>                        
+                        <td>${saude.medicamento ?? ""}</td>
+                        <td>${saude.compartimento ?? ""}</td>
+                        <td>${saude.horarioprevisto ?? ""}</td>
+                        <td>${saude.horarioconsumido ?? ""}</td>                        
                         <td>${botao}</td>
                     </tr>
                 `;

@@ -661,135 +661,135 @@
         }
 
 
-        // 📋 FUNÇÃO LISTAR TODAS DESPESAS (DASHBOARD)
-        function listarTodos() {
+        // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)
+        async function listarTodos() {
 
-            const usuario = getUsuario();
+        const usuario = localStorage.getItem("usuario");
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                return;
-            }
+        if (!usuario) {
+        alert("Usuário não encontrado.");
+        return;
+        }
 
-            fetchSeguro(API + "/saude/usuario?usuario=" + encodeURIComponent(usuario))
+        fetchSeguro(`${API}/saude/usuario?usuario=${encodeURIComponent(usuario)}`)
                 .then(data => {
 
-                    const tabela = document.getElementById("ultimasSaude");
+                    const tabela = document.getElementById("tabelaSaude");
 
                     if (!tabela) return;
 
-                    if (!Array.isArray(data) || data.length === 0) {
-                        tabela.innerHTML =
-                            "<tr><td colspan='5'>Sem dados</td></tr>";
-                        return;
-                    }
-
                     let linhas = "";
 
-                    data
+                    // 🔥 ORDENA E LIMITA A 30
+                    const ultimosMedicamentos = data
                         .sort((a, b) => new Date(b.data) - new Date(a.data))
-                        .slice(0, 30)
-                        .forEach(d => {
+                        .slice(0, 30);
 
-                            const valor = Number(d.valor) || 0;
+                    ultimosMedicamentos.forEach(saude => {
 
-                            const status = (d.status || "")
-                                .toUpperCase()
-                                .trim();
+                        const valor = Number(saude.valor) || 0;
 
-                            let statusClass = "";
-                            let acao = "";
+                        const dataFormatada = saude.data
+                            ? new Date(saude.data).toLocaleDateString("pt-BR")
+                            : "";
 
-                            // 🔥 PENDENTE → PAGA
-                            if (status === "PENDENTE") {
+                        const status = (saude.consumido || "")
+                            .toUpperCase()
+                            .trim();
 
-                                statusClass = "status-pendente";
+                        let classeLinha = "";
+                        let botao = "";
 
-                                acao = `
+                        // 🔥 PENDENTE → CONSUMO
+                        if (consumido === "PENDENTE") {
+
+                            classeLinha = "linha-pendente";
+
+                            botao = `
                         <button class="btn-pagar"
-                            onclick="editarStatus(${d.id}, 'PAGA')">
-                            💰 Pagar
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                            💰 Consumir
                         </button>
                     `;
-                            }
 
-                            // 🔥 PROVISÃO → RECEBIDO
-                            else if (
-                                status === "PROVISÃO" ||
-                                status === "PROVISAO" ||
-                                status === "EM PROVISÃO" ||
-                                status === "EM PROVISAO"
-                            ) {
+                        }
 
-                                statusClass = "status-provisao";
+                        // 🔥 Previsto → NÃO CONSUMIDO
+                        else if (
+                            status === "EM PREVISÃO" ||
+                            status === "EM PREVISÃO" ||
+                            status === "CONSUMIDO" ||
+                            status === "CONSUMIDO"
+                        ) {
 
-                                acao = `
+                            classeLinha = "linha-provisao";
+
+                            botao = `
                         <button class="btn-receber"
-                            onclick="editarStatus(${d.id}, 'RECEBIDO')">
-                            💵 Receber
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                            💵 Previsto
                         </button>
                     `;
-                            }
+                        }
 
-                            // 🔥 PAGA
-                            else if (status === "PAGA") {
+                        // 🔥 PREVISÃO → CONSUMIDO
+                        else if (
+                            status === "PREVISAO"
+                        ) {
 
-                                statusClass = "status-pago";
+                            classeLinha = "linha-agendado";
 
-                                acao = `
+                            botao = `
+                        <button class="btn-pagar"
+                            onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                            💵 Pagar
+                        </button>
+                    `;
+                        }
+
+                        // 🔥 CONSUMIDO (sem botão)
+                        else if (consumido === "CONSUMIDO") {
+
+                            classeLinha = "linha-paga";
+
+                            botao = `
                         <span style="color:green;font-weight:bold;">
-                            ✔ Pago
+                            ✔ Consumido
                         </span>
                     `;
-                            }
+                        }
 
-                            // 🔥 RECEBIDO
-                            else if (status === "RECEBIDO") {
+                        // 🔥 CONSUMIDO (sem botão)
+                        else if (status === "CONSUMIDO") {
 
-                                statusClass = "status-recebido";
+                            classeLinha = "linha-recebido";
 
-                                acao = `
+                            botao = `
                         <span style="color:blue;font-weight:bold;">
-                            ✔ Recebido
+                            ✔ Consumido
                         </span>
                     `;
-                            }
+                        }
 
-                            // 🔥 AGENDADO
-                            else if (status === "AGENDADO") {
+                        else {
+                            botao = "-";
+                        }
 
-                                statusClass = "status-agendado";
-
-                                acao = `
-                        <span style="color:red;font-weight:bold;">
-                            ✔ Agendado
-                        </span>
-                    `;
-                            }
-
-                            else {
-                                acao = "-";
-                            }
-
-                            linhas += `
-                <tr class="linha-tabela">
-                    <th>💊 Medicamento</th>
-                            <th>🧪 Compartimento</th>
-                            <th>⏰ Horario Previsto</th>
-                            <th>✅ Horario Consumido</th>
-                            <th>📷 Sensor</th>
-                            <th>⚙️ Status</th>
-                    </td>
-                    <td>${acao}</td>
-                </tr>
+                        linhas += `
+                    <tr class="${classeLinha}">
+                        <td>${saude.id}</td>                        
+                        <td>${saude.medicamento ?? ""}</td>
+                        <td>${saude.compartimento ?? ""}</td>
+                        <td>${saude.horarioprevisto ?? ""}</td>
+                        <td>${saude.horarioconsumido ?? ""}</td>                        
+                        <td>${botao}</td>
+                    </tr>
                 `;
-                        });
+                    });
 
                     tabela.innerHTML = linhas;
-
-                })
-                .catch(error => console.error("Erro:", error));
-        }
+                });
+            }
 
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
@@ -841,6 +841,7 @@
                     graficoAdesao();
                     graficoMedicamentos();
                     graficoStatus();
+                    listarTodos();                   
 
                 })
                 .catch(error => {
