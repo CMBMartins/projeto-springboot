@@ -406,8 +406,9 @@
 
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
-                <input type="text" id="horarioprevisto" placeholder="Horario Previsto">
+                <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
                 <input type="number" id="consumido" placeholder="Horário do Consumo">
+                <input type="text" id="statusSensor" placeholder="Status do Sensor" value="Aguardando leitura">
 
             </div>
 
@@ -698,6 +699,65 @@
 
             }
 
+        }
+
+        async function editar(id) {
+
+            try {
+
+                const resposta = await fetch(API + "/saude/" + id);
+
+                if (!resposta.ok) {
+                    throw new Error("Registro não encontrado");
+                }
+
+                const medicamento = await resposta.json();
+
+                document.getElementById("id").value = medicamento.id;
+                document.getElementById("medicamento").value = medicamento.medicamento;
+                document.getElementById("compartimento").value = medicamento.compartimento;
+                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
+                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
+                document.getElementById("statusSensor").value = medicamento.statusSensor;
+
+            } catch (e) {
+
+                console.log(e);
+
+            }
+
+        }
+
+        // ======================================
+        // EXCLUIR MEDICAMENTO
+        // ======================================
+        async function excluir(id) {
+
+            if (!confirm("Deseja realmente excluir este medicamento?")) {
+                return;
+            }
+
+            try {
+
+                const resposta = await fetch(API + "/" + id, {
+                    method: "DELETE"
+                });
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao excluir.");
+                }
+
+                alert("Medicamento excluído com sucesso!");
+
+                listarTodos();
+                carregarDashboard();
+
+            } catch (erro) {
+
+                console.error(erro);
+                alert("Erro ao excluir o medicamento.");
+
+            }
         }
 
 
