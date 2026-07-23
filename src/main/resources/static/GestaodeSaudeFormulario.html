@@ -119,7 +119,7 @@
         border-radius: 5px;
         color: white;
         cursor: pointer;
-    }
+    }    
 
     /* LOGIN */
     .login {
@@ -232,38 +232,6 @@
         color: white;
     }
 
-    .btn-excluir {
-        background: red;
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: 0.3s;
-    }
-
-    .btn-excluir:hover {
-        background: #b02a37;
-        transform: scale(1.05);
-    }
-
-    /* Editar */
-    .btn-editar {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: 0.3s;
-    }
-
-    .btn-editar:hover {
-        background: #1e7e34;
-    }
-
     /* TABELA */
 
     table {
@@ -364,6 +332,7 @@
     .tansulosina {
         background: #dc3545;
     }
+    
 </style>
 
 </head>
@@ -403,28 +372,27 @@
 
             <!-- FORMULÁRIO -->
             <div class="grid">
-
+                
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
-                <input type="number" id="consumido" placeholder="Horário do Consumo">
-                <input type="text" id="statusSensor" placeholder="Status do Sensor" value="Aguardando leitura">
-
+                <input type="time" id="consumido" placeholder="Horário do Consumo">
+                
             </div>
 
             <label>Medicamento Consumido</label>
 
-            <select id="consumido">
-                <option value="false">Não</option>
-                <option value="true">Sim</option>
-            </select>
+                <select id="consumido">
+                    <option value="false">Não</option>
+                    <option value="true">Sim</option>
+                </select>
 
-            <label>Status Sensor</label>
+                <label>Status Sensor</label>
 
-            <select id="statusSensor">
-                <option>ONLINE</option>
-                <option>OFFLINE</option>
-            </select>
+                <select id="statusSensor">
+                    <option>ONLINE</option>
+                    <option>OFFLINE</option>
+                </select>
 
             </form>
 
@@ -502,13 +470,6 @@
 
         const API = "https://projeto-springboot.onrender.com/saude";
 
-        const parametros = new URLSearchParams(window.location.search);
-        const id = parametros.get("id");
-
-        if (id) {
-            carregarMedicamento(id);
-        }
-
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
             localStorage.removeItem("usuario");
@@ -542,69 +503,55 @@
                 });
         }
 
-        async function carregarMedicamento(id) {
-
-            const resposta = await fetch(API + "/saude/" + id);
-
-            const medicamento = await resposta.json();
-
-            document.getElementById("id").value = medicamento.id;
-            document.getElementById("medicamento").value = medicamento.medicamento;
-            document.getElementById("compartimento").value = medicamento.compartimento;
-            document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
-            document.getElementById("horarioConsumido").value = medicamento.horarioConsumido ?? "";
-            document.getElementById("statusSensor").value = medicamento.statusSensor;
-        }
-
 
         // 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
         async function listarTodos() {
 
-            const usuario = localStorage.getItem("usuario");
+    const usuario = localStorage.getItem("usuario");
 
-            if (!usuario) {
-                alert("Usuário não encontrado.");
-                return;
+    if (!usuario) {
+        alert("Usuário não encontrado.");
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch(
+            API + "/usuario?usuario=" + encodeURIComponent(usuario)
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao carregar medicamentos.");
+        }
+
+        const medicamentos = await resposta.json();
+
+        const tabela = document.getElementById("tabelaSaude");
+
+        tabela.innerHTML = "";
+
+        medicamentos.forEach(saude => {
+
+            let status = "";
+            let cor = "";
+
+            if (saude.consumido) {
+
+                status = "✅ Consumido";
+                cor = "#d4edda";
+
+            } else if (saude.atrasado) {
+
+                status = "⚠ Atrasado";
+                cor = "#fff3cd";
+
+            } else {
+
+                status = "⏰ Pendente";
+                cor = "#f8d7da";
             }
 
-            try {
-
-                const resposta = await fetch(
-                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
-                );
-
-                if (!resposta.ok) {
-                    throw new Error("Erro ao carregar medicamentos.");
-                }
-
-                const medicamentos = await resposta.json();
-
-                const tabela = document.getElementById("tabelaSaude");
-
-                tabela.innerHTML = "";
-
-                medicamentos.forEach(saude => {
-
-                    let status = "";
-                    let cor = "";
-
-                    if (saude.consumido) {
-
-                        status = "✅ Consumido";
-                        cor = "#d4edda";
-
-                    } else if (saude.atrasado) {
-
-                        status = "⚠ Atrasado";
-                        cor = "#fff3cd";
-
-                    } else {
-
-                        status = "⏰ Pendente";
-                        cor = "#f8d7da";
-                    }
-
-                    tabela.innerHTML += `
+            tabela.innerHTML += `
 
             <tr style="background:${cor}">
 
@@ -640,18 +587,17 @@
 
             `;
 
-                });
+        });
 
-            } catch (erro) {
+    } catch (erro) {
 
-                console.error(erro);
+        console.error(erro);
 
-                alert("Erro ao carregar medicamentos.");
+        alert("Erro ao carregar medicamentos.");
 
-            }
-        }
+    }
+}
 
-        // 🔥 FUNÇÃO PARA SALVAR OS MEDICAMENTOS
         async function salvar() {
 
             event.preventDefault();
@@ -685,13 +631,13 @@
 
             };
 
-            const resposta = await fetch(API + "/saude", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
-            });
+            const resposta = await fetch(API, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dados)
+    });
 
             if (resposta.ok) {
 
@@ -699,65 +645,6 @@
 
             }
 
-        }
-
-        async function editar(id) {
-
-            try {
-
-                const resposta = await fetch(API + "/saude/" + id);
-
-                if (!resposta.ok) {
-                    throw new Error("Registro não encontrado");
-                }
-
-                const medicamento = await resposta.json();
-
-                document.getElementById("id").value = medicamento.id;
-                document.getElementById("medicamento").value = medicamento.medicamento;
-                document.getElementById("compartimento").value = medicamento.compartimento;
-                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
-                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("statusSensor").value = medicamento.statusSensor;
-
-            } catch (e) {
-
-                console.log(e);
-
-            }
-
-        }
-
-        // ======================================
-        // EXCLUIR MEDICAMENTO
-        // ======================================
-        async function excluir(id) {
-
-            if (!confirm("Deseja realmente excluir este medicamento?")) {
-                return;
-            }
-
-            try {
-
-                const resposta = await fetch(API + "/" + id, {
-                    method: "DELETE"
-                });
-
-                if (!resposta.ok) {
-                    throw new Error("Erro ao excluir.");
-                }
-
-                alert("Medicamento excluído com sucesso!");
-
-                listarTodos();
-                carregarDashboard();
-
-            } catch (erro) {
-
-                console.error(erro);
-                alert("Erro ao excluir o medicamento.");
-
-            }
         }
 
 
