@@ -90,6 +90,37 @@ public class SaudeController {
 
         }
 
+        @PutMapping("/{id}/status")
+        public ResponseEntity<Saude> atualizarStatus(
+        @PathVariable Integer id,
+        @RequestBody StatusSaudeDTO dto) {
+
+       Saude saude = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Medicamento não encontrado."));
+
+    switch (dto.getStatus()) {
+
+        case "CONSUMIDO":
+            saude.setConsumido(true);
+            saude.setAtrasado(false);
+            break;
+
+        case "ATRASADO":
+            saude.setConsumido(false);
+            saude.setAtrasado(true);
+            break;
+
+        case "PENDENTE":
+            saude.setConsumido(false);
+            saude.setAtrasado(false);
+            break;
+    }
+
+    repository.save(saude);
+
+    return ResponseEntity.ok(saude);
+    }
+
         // ============================
         // CONSULTAS
         // ============================
