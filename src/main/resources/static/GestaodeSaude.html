@@ -771,7 +771,39 @@
         alert("Erro ao carregar medicamentos.");
 
     }
-}
+    }
+
+    async function excluir(id) {
+
+    if (!confirm("Deseja realmente excluir este medicamento?")) {
+        return;
+    }
+
+    try {
+
+        const resposta = await fetch(`${API}/saude/${id}`, {
+            method: "DELETE"
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao excluir o medicamento.");
+        }
+
+        alert("Medicamento excluído com sucesso!");
+
+        // Atualiza a tabela
+        listarTodos();
+
+        // Atualiza os cards do dashboard
+        carregarDashboard();
+
+    } catch (erro) {
+
+        console.error(erro);
+        alert("Erro ao excluir o medicamento.");
+
+    }
+    }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
