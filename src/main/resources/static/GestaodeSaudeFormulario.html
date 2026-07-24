@@ -404,7 +404,8 @@
 
             <!-- FORMULÁRIO -->
             <div class="grid">
-                
+
+                <input type="hidden" id="id">
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">               
@@ -537,7 +538,7 @@
         }
 
 
-    // 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
+    //// 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
     async function listarTodos() {
 
     const usuario = localStorage.getItem("usuario");
@@ -550,7 +551,7 @@
     try {
 
         const resposta = await fetch(
-        API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
+            API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
         );
 
         if (!resposta.ok) {
@@ -567,56 +568,78 @@
 
             let status = "";
             let cor = "";
+            let botao = "";
+
+            // ===== STATUS =====
 
             if (saude.consumido) {
 
                 status = "✅ Consumido";
                 cor = "#d4edda";
 
+                botao = `
+                    <span style="color:green;font-weight:bold">
+                        ✔ Consumido
+                    </span>
+                `;
+
             } else if (saude.atrasado) {
 
-                status = "⚠ Atrasado";
+                status = "⚠️ Atrasado";
                 cor = "#fff3cd";
+
+                botao = `
+                    <button class="btn-atrasado"
+                        onclick="editarStatus(${saude.id}, 'PENDENTE')">
+                        ⏰ Marcar como Pendente
+                    </button>
+                `;
 
             } else {
 
                 status = "⏰ Pendente";
                 cor = "#f8d7da";
+
+                botao = `
+                    <button class="btn-consumido"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        ✅ Consumido
+                    </button>
+
+                    <button class="btn-atrasado"
+                        onclick="editarStatus(${saude.id}, 'ATRASADO')">
+                        ⚠️ Atrasado
+                    </button>
+                `;
             }
 
             tabela.innerHTML += `
 
-            <tr style="background:${cor}">
+                <tr style="background:${cor}">
 
-                <td>${saude.id}</td>
-                <td>${saude.medicamento}</td>
-                <td>${saude.compartimento}</td>
-                <td>${saude.horarioPrevisto ?? "-"}</td>
-                <td>${saude.horarioConsumido ?? "-"}</td>
-                <td>${status}</td>
-                <td>${saude.statusSensor ?? "-"}</td>
+                    <td>${saude.id}</td>
+                    <td>${saude.medicamento}</td>
+                    <td>${saude.compartimento}</td>
+                    <td>${saude.horarioPrevisto ?? "-"}</td>
+                    <td>${saude.horarioConsumido ?? "-"}</td>
+                    <td>${status}</td>
+                    <td>${saude.statusSensor ?? "-"}</td>
 
-                <td>
+                    <td>
 
-                    <button
-                        onclick="editar(${saude.id})"
-                        class="btn-editar">
+                        ${botao}
 
-                        ✏ Editar
+                        <button
+                            onclick="excluir(${saude.id})"
+                            class="btn-excluir">
 
-                    </button>
+                            🗑 Excluir
 
-                    <button
-                        onclick="excluir(${saude.id})"
-                        class="btn-excluir">
+                        </button>
 
-                        🗑 Excluir
+                    </td>
 
-                    </button>
-
-                </td>
-
-            </tr>
+                </tr>
 
             `;
 
@@ -625,10 +648,10 @@
     } catch (erro) {
 
         console.error(erro);
-
         alert("Erro ao carregar medicamentos.");
         }
     }
+
 
     // FUNÇÃO PARA PARA SALVAR NA TABELA
     async function salvar(){
@@ -686,6 +709,7 @@
                 });
     }
 
+    // FUNÇÃO PARA PARA EXCLUIR NA TABELA
     async function excluir(id) {
 
     if (!confirm("Deseja realmente excluir este medicamento?")) {
