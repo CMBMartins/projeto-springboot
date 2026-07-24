@@ -4,15 +4,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "bancosaude")
 
 public class Saude {
-
-    @NotBlank(message = "O medicamento é obrigatório.")
-    @Column(nullable = false)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
