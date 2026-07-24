@@ -261,6 +261,38 @@
         /* vermelho claro */
     }
 
+    .btn-excluir {
+        background: red;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .btn-excluir:hover {
+        background: #b02a37;
+        transform: scale(1.05);
+    }
+
+    .btn-editar {
+        background: green;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .btn-editar:hover {
+        background: green;
+        transform: scale(1.05);
+    }
+
     /* 🔥 LEGENDA DE CATEGORIAS */
 
     .legenda-categorias {
@@ -375,10 +407,9 @@
                 
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
-                <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
-                <input type="time" id="consumido" placeholder="Horário do Consumo">
+                <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">               
                 
-            </div>
+            </div>    
 
             <label>Medicamento Consumido</label>
 
@@ -468,7 +499,9 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com/saude";
+        //const API = "http://localhost:8084/saude";
+        const API = "https://projeto-springboot.onrender.com";
+        //const API = "https://projeto-springboot.onrender.com/saude";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -504,8 +537,8 @@
         }
 
 
-        // 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
-        async function listarTodos() {
+    // 🔥 FUNÇÃO PARA LISTAR TODOS OS MEDICAMENTOS
+    async function listarTodos() {
 
     const usuario = localStorage.getItem("usuario");
 
@@ -517,7 +550,7 @@
     try {
 
         const resposta = await fetch(
-            API + "/usuario?usuario=" + encodeURIComponent(usuario)
+        API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
         );
 
         if (!resposta.ok) {
@@ -594,59 +627,64 @@
         console.error(erro);
 
         alert("Erro ao carregar medicamentos.");
-
-    }
-}
-
-        async function salvar() {
-
-            event.preventDefault();
-
-            let dados = {
-
-                medicamento:
-                    document.getElementById("medicamento").value,
-
-                compartimento:
-                    document.getElementById("compartimento").value,
-
-                horarioPrevisto:
-                    document.getElementById("horarioPrevisto").value,
-
-                horarioConsumido: null,
-
-                consumido: false,
-
-                atrasado: false,
-
-                compartimentoVazio: false,
-
-                statusSensor:
-                    document.getElementById("statusSensor").value,
-
-                ultimaLeituraCamera: null,
-
-                usuario:
-                    localStorage.getItem("usuario")
-
-            };
-
-            const resposta = await fetch(API, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dados)
-    });
-
-            if (resposta.ok) {
-
-                alert("Medicamento cadastrado.");
-
-            }
-
         }
+    }
 
+    // FUNÇÃO PARA PARA SALVAR NA TABELA
+    async function salvar(){
+
+    event.preventDefault();
+
+    let dados={
+
+        medicamento:
+        document.getElementById("medicamento").value,
+
+        compartimento:
+        document.getElementById("compartimento").value,
+
+        horarioPrevisto:
+        document.getElementById("horarioPrevisto").value,
+
+        horarioConsumido:null,
+
+        consumido:false,
+
+        atrasado:false,
+
+        compartimentoVazio:false,
+
+        statusSensor:
+        document.getElementById("statusSensor").value,
+
+        ultimaLeituraCamera:null,
+
+        usuario:
+        localStorage.getItem("usuario")
+
+    };
+
+    fetch(API + "/saude", {
+    method: "POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify(dados)
+    })
+
+    .then(response => {
+                    if (!response.ok) throw new Error("Erro ao salvar");
+                    return response.json();
+                })
+                .then(() => {
+                    limparCampos();
+                    //listarTodos();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Erro ao salvar!");
+                });
+    }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function login() {
@@ -671,7 +709,7 @@
             }
 
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
-
+            
                 method: "POST",
 
                 headers: {
@@ -737,14 +775,10 @@
         }
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
-        function limparCampos() {
-            document.getElementById("id").value = "";
-            document.getElementById("data").value = "";
-            document.getElementById("descricao").value = "";
-            document.getElementById("categoria").value = "";
-            document.getElementById("tipo").value = "";
-            document.getElementById("valor").value = "";
-            document.getElementById("status").value = "";
+        function limparCampos() {            
+            document.getElementById("medicamento").value = "";
+            document.getElementById("compartimento").value = "";
+            document.getElementById("horarioPrevisto").value = "";            
         }
 
         window.login = login;
