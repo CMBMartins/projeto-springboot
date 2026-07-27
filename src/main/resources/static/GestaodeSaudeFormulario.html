@@ -432,12 +432,24 @@
         background: #fd7e14;
     }
 
+    .vitaminaB12 {
+        background: #17a2b8;
+    }
+
+    .oleodeSementedeAbobora {
+        background: #20c997;
+    }
+
     .coenzimaq10 {
         background: #6f42c1;
     }
 
+    .vitaminaD3 {
+        background: #007bff;
+    }
+
     .rosuvastatina {
-        background: #dc3545;
+        background: #e83e8c;
     }
 
     .tansulosina {
@@ -518,13 +530,16 @@
 
             <!-- LEGENDA DE NOMES DE MEDICAMENTOS -->
             <div class="legenda-categorias">
-                <h3>📌 Principais Medicamentos Sugeridos:</h3>
+                <h3>📌 Medicamentos Sugeridos e seus Compartimentos:</h3>
                 <div class="tags-categorias">
-                    <span class="tag exforge">💊 Exforge</span>
-                    <span class="tag metformina">💊 Metformina</span>
-                    <span class="tag coenzimaq10">💊 Coenzima Q10</span>
-                    <span class="tag rosuvastatina">💊 Rosuvastatina+Ezetimiba</span>
-                    <span class="tag tansulosina">💊 Tansulosina</span>
+                    <span class="tag exforge">💊 Exforge320/25/10:A1</span>
+                    <span class="tag metformina">💊 Metformina:A2</span>
+                    <span class="tag vitaminaB12">💊 Vitamina B12:A3</span>
+                    <span class="tag oleodeSementedeAbobora">💊 Oléo de Semente de Abobora:A4</span>
+                    <span class="tag coenzimaq10">💊 Coenzima Q10:A5</span>
+                    <span class="tag vitaminaD3">💊 Vitamina D3:A6</span>
+                    <span class="tag rosuvastatina">💊 Rosuvastatina+Ezetimiba 20/10:A7</span>
+                    <span class="tag tansulosina">💊 Tansulosina 0,4mg:A8</span>
                 </div>
             </div>
 
@@ -559,7 +574,7 @@
                             <th>⏰ Horario Previsto</th>
                             <th>⏰ Horario Consumido</th>
                             <th>✅ Consumido</th>
-                            <th>⚙️ Status</th>
+                            <th>📷 Status</th>
                             <th>💾 Ação</th>
                         </tr>
                     </thead>
@@ -717,8 +732,7 @@
                 <td>${saude.medicamento}</td>
                 <td>${saude.compartimento}</td>
                 <td>${saude.horarioPrevisto ?? "-"}</td>
-                <td>${saude.horarioConsumido ?? "-"}</td>
-                
+                <td>${saude.horarioConsumido ?? "-"}</td>                
                 <td>${saude.consumido ?? "-"}</td>
                 <td>${saude.statusSensor}</td>                
 
@@ -753,6 +767,15 @@
 
         // 🔥 FUNÇÃO PARA SALVAR OS MEDICAMENTOS
         async function salvar() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                alert("Usuário não encontrado.");
+                return;
+            }
+
+            try {
 
             event.preventDefault();
 
@@ -800,9 +823,24 @@
 
             }
 
+            } catch (erro) {
+
+                console.error(erro);
+
+                alert("Erro ao Salvar Medicamentos.");
+
+            }
+
         }
 
         async function editar(id) {
+
+            const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                alert("Usuário não encontrado.");
+                return;
+            }
 
             try {
 

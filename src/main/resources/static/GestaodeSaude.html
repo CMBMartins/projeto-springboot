@@ -101,6 +101,14 @@
         outline: none;
     }
 
+    label {
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
 
     .btn {
         padding: 10px;
@@ -161,6 +169,38 @@
         transform: scale(1.05);
     }
 
+    .btn-atrasado {
+        background: orange;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .btn-atrasado:hover {
+        background: orange;
+        transform: scale(1.05);
+    }
+
+    .btn-consumido {
+        background: green;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.3s;
+    }
+
+    .btn-consumido:hover {
+        background: green;
+        transform: scale(1.05);
+    }
+
     /* Editar */
     .btn-editar {
         background: #28a745;
@@ -175,6 +215,46 @@
 
     .btn-editar:hover {
         background: #1e7e34;
+    }
+
+    #consumido {
+        width: 100px;
+        height: 35px;
+        padding: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #0d47a1;
+        background-color: #ffffff;
+        border: 2px solid #2196f3;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    #consumido {
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    #statusSensor {
+        width: 100px;
+        height: 35px;
+        padding: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #0d47a1;
+        background-color: #ffffff;
+        border: 2px solid #2196f3;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    #statusSensor {
+        text-align: center;
+        letter-spacing: 1px;
     }
 
     /* CONTEÚDO */
@@ -338,7 +418,7 @@
 
             <nav>
                 <a href="#">📊 Dashboard</a>
-                <a href="GestaodeSaudeFormulario.html">➕ Gestão da Saúde</a>
+                <a href="GestaodeSaudeFormulario.html">➕ Cadastro dos Medicamentos</a>
                 <a href="#" onclick="gerarRelatorioPDF(); return false;" class="btn-nav">
                     📄 Relatórios
                 </a>
@@ -363,6 +443,20 @@
                     <button class="btn btn-login" onclick="fazerLogin()">Entrar</button>
                     <button class="btn btn-logout" onclick="logout()">Sair</button>
                     <button class="btn btn-cadastro" onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
+
+            <label>Medicamento Consumido:</label>
+
+            <select id="consumido">
+            <option value="false">Não</option>
+            <option value="true">Sim</option>
+            </select>
+
+            <label>Status Sensor:</label>
+
+            <select id="statusSensor">
+            <option>ONLINE</option>
+            <option>OFFLINE</option>
+            </select>
                 </div>
 
             </div>
@@ -448,8 +542,8 @@
                             <th>🧪 Compartimento</th>
                             <th>⏰ Horario Previsto</th>
                             <th>✅ Horario Consumido</th>
-                            <th>📷 Sensor</th>
-                            <th>⚙️ Status</th>
+                            <th>💊 Consumido</th>                            
+                            <th>📷 Status</th>
                             <th>💾 Ação</th>
                         </tr>
                     </thead>
@@ -709,21 +803,47 @@
 
                     let status = "";
                     let cor = "";
+                    let botao = "";
 
                     if (saude.consumido) {
 
                         status = "✅ Consumido";
                         cor = "#d4edda";
 
+                        botao = `
+                    <span style="color:green;font-weight:bold">
+                        ✔ Consumido
+                    </span>
+                `;
+
                     } else if (saude.atrasado) {
 
-                        status = "⚠ Atrasado";
+                        status = "⚠️ Atrasado";
                         cor = "#fff3cd";
+
+                        botao = `
+                    <button class="btn-atrasado"
+                        onclick="editarStatus(${saude.id}, 'PENDENTE')">
+                        ⏰ Marcar como Pendente
+                    </button>
+                `;
 
                     } else {
 
                         status = "⏰ Pendente";
                         cor = "#f8d7da";
+
+                        botao = `
+                    <button class="btn-consumido"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        ✅ Consumido
+                    </button>
+
+                    <button class="btn-atrasado"
+                        onclick="editarStatus(${saude.id}, 'ATRASADO')">
+                        ⚠️ Atrasado
+                    </button>
+                `;
                     }
 
                     tabela.innerHTML += `
@@ -734,19 +854,13 @@
                 <td>${saude.medicamento}</td>
                 <td>${saude.compartimento}</td>
                 <td>${saude.horarioPrevisto ?? "-"}</td>
-                <td>${saude.horarioConsumido ?? "-"}</td>
-                <td>${status}</td>
-                <td>${saude.statusSensor ?? "-"}</td>
+                <td>${saude.horarioConsumido ?? "-"}</td>                
+                <td>${saude.consumido ?? "-"}</td>
+                <td>${saude.statusSensor}</td> 
 
                 <td>
 
-                    <button
-                        onclick="editar(${saude.id})"
-                        class="btn-editar">
-
-                        ✏ Editar
-
-                    </button>
+                   ${botao}
 
                     <button
                         onclick="excluir(${saude.id})"
@@ -820,12 +934,11 @@
 
                 const medicamento = await resposta.json();
 
-                document.getElementById("id").value = medicamento.id;
                 document.getElementById("medicamento").value = medicamento.medicamento;
                 document.getElementById("compartimento").value = medicamento.compartimento;
                 document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
                 document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("statusSensor").value = medicamento.statusSensor;
+                document.getElementById("consumido").value = medicamento.consumido;                
 
             } catch (e) {
 
@@ -833,6 +946,29 @@
 
             }
 
+        }
+
+        async function editarStatus(id, status) {
+
+            const resposta = await fetch(`${API}/saude/${id}/status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            });
+
+            if (resposta.ok) {
+
+                listarTodos();
+
+            } else {
+
+                alert("Erro ao atualizar o status.");
+
+            }
         }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
