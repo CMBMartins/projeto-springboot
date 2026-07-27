@@ -161,8 +161,9 @@
         transform: scale(1.05);
     }
 
+    /* Editar */
     .btn-editar {
-        background: green;
+        background: #28a745;
         color: white;
         border: none;
         padding: 6px 12px;
@@ -173,8 +174,7 @@
     }
 
     .btn-editar:hover {
-        background: green;
-        transform: scale(1.05);
+        background: #1e7e34;
     }
 
     /* CONTEÚDO */
@@ -338,7 +338,7 @@
 
             <nav>
                 <a href="#">📊 Dashboard</a>
-                <a href="GestaodeSaude.html">➕ Gestão da Saúde</a>
+                <a href="GestaodeSaudeFormulario.html">➕ Gestão da Saúde</a>
                 <a href="#" onclick="gerarRelatorioPDF(); return false;" class="btn-nav">
                     📄 Relatórios
                 </a>
@@ -467,7 +467,7 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com";
+        const API = "https://projeto-springboot.onrender.com/saude";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -493,7 +493,7 @@
 
             let usuario = localStorage.getItem("usuario");
 
-            const resposta = await fetch(`${API}/saude/dashboard?usuario=${encodeURIComponent(usuario)}`);
+            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
             const dados = await resposta.json();
 
             document.getElementById("proximoMedicamento").innerHTML =
@@ -679,54 +679,54 @@
         }
 
 
-    // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)       
-    async function listarTodos() {
+        // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)       
+        async function listarTodos() {
 
-    const usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-    if (!usuario) {
-        alert("Usuário não encontrado.");
-        return;
-    }
-
-    try {
-
-        const resposta = await fetch(
-        API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
-        );
-
-        if (!resposta.ok) {
-            throw new Error("Erro ao carregar medicamentos.");
-        }
-
-        const medicamentos = await resposta.json();
-
-        const tabela = document.getElementById("tabelaSaude");
-
-        tabela.innerHTML = "";
-
-        medicamentos.forEach(saude => {
-
-            let status = "";
-            let cor = "";
-
-            if (saude.consumido) {
-
-                status = "✅ Consumido";
-                cor = "#d4edda";
-
-            } else if (saude.atrasado) {
-
-                status = "⚠ Atrasado";
-                cor = "#fff3cd";
-
-            } else {
-
-                status = "⏰ Pendente";
-                cor = "#f8d7da";
+            if (!usuario) {
+                alert("Usuário não encontrado.");
+                return;
             }
 
-            tabela.innerHTML += `
+            try {
+
+                const resposta = await fetch(
+                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
+                );
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao carregar medicamentos.");
+                }
+
+                const medicamentos = await resposta.json();
+
+                const tabela = document.getElementById("tabelaSaude");
+
+                tabela.innerHTML = "";
+
+                medicamentos.forEach(saude => {
+
+                    let status = "";
+                    let cor = "";
+
+                    if (saude.consumido) {
+
+                        status = "✅ Consumido";
+                        cor = "#d4edda";
+
+                    } else if (saude.atrasado) {
+
+                        status = "⚠ Atrasado";
+                        cor = "#fff3cd";
+
+                    } else {
+
+                        status = "⏰ Pendente";
+                        cor = "#f8d7da";
+                    }
+
+                    tabela.innerHTML += `
 
             <tr style="background:${cor}">
 
@@ -762,48 +762,78 @@
 
             `;
 
-        });
+                });
 
-    } catch (erro) {
+            } catch (erro) {
 
-        console.error(erro);
+                console.error(erro);
 
-        alert("Erro ao carregar medicamentos.");
+                alert("Erro ao carregar medicamentos.");
 
-    }
-    }
-
-    async function excluir(id) {
-
-    if (!confirm("Deseja realmente excluir este medicamento?")) {
-        return;
-    }
-
-    try {
-
-        const resposta = await fetch(`${API}/saude/${id}`, {
-            method: "DELETE"
-        });
-
-        if (!resposta.ok) {
-            throw new Error("Erro ao excluir o medicamento.");
+            }
         }
 
-        alert("Medicamento excluído com sucesso!");
+        // ======================================
+        // EXCLUIR MEDICAMENTO
+        // ======================================
+        async function excluir(id) {
 
-        // Atualiza a tabela
-        listarTodos();
+            if (!confirm("Deseja realmente excluir este medicamento?")) {
+                return;
+            }
 
-        // Atualiza os cards do dashboard
-        carregarDashboard();
+            try {
 
-    } catch (erro) {
+                const resposta = await fetch(API + "/" + id, {
+                    method: "DELETE"
+                });
 
-        console.error(erro);
-        alert("Erro ao excluir o medicamento.");
+                if (!resposta.ok) {
+                    throw new Error("Erro ao excluir.");
+                }
 
-    }
-    }
+                alert("Medicamento excluído com sucesso!");
+
+                listarTodos();
+                carregarDashboard();
+
+            } catch (erro) {
+
+                console.error(erro);
+                alert("Erro ao excluir o medicamento.");
+
+            }
+        }
+
+        // ======================================
+        // EDITAR MEDICAMENTO
+        // ======================================
+        async function editar(id) {
+
+            try {
+
+                const resposta = await fetch(API + "/saude/" + id);
+
+                if (!resposta.ok) {
+                    throw new Error("Registro não encontrado");
+                }
+
+                const medicamento = await resposta.json();
+
+                document.getElementById("id").value = medicamento.id;
+                document.getElementById("medicamento").value = medicamento.medicamento;
+                document.getElementById("compartimento").value = medicamento.compartimento;
+                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
+                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
+                document.getElementById("statusSensor").value = medicamento.statusSensor;
+
+            } catch (e) {
+
+                console.log(e);
+
+            }
+
+        }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
@@ -854,7 +884,7 @@
                     graficoAdesao();
                     graficoMedicamentos();
                     graficoStatus();
-                    listarTodos();                   
+                    listarTodos();
 
                 })
                 .catch(error => {
