@@ -486,9 +486,8 @@
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
-                <input type="time" id="horarioConsumido" placeholder="Horário do Consumo"><br>
 
-            </div>
+            </div><br>
 
             <label>Medicamento Consumido:</label>
 
@@ -648,7 +647,7 @@
             try {
 
                 const resposta = await fetch(
-                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
+                    API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
                 );
 
                 if (!resposta.ok) {
@@ -770,7 +769,7 @@
 
                 horarioConsumido: null,
 
-                consumido: false,
+                consumido: document.getElementById("consumido").value,
 
                 atrasado: false,
 
@@ -797,6 +796,7 @@
             if (resposta.ok) {
 
                 alert("Medicamento cadastrado.");
+                limparCampos();
 
             }
 
@@ -839,7 +839,7 @@
 
             try {
 
-                const resposta = await fetch(API + "/" + id, {
+                const resposta = await fetch(`${API}/${id}`, {
                     method: "DELETE"
                 });
 
@@ -974,13 +974,9 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
-            document.getElementById("id").value = "";
-            document.getElementById("data").value = "";
-            document.getElementById("descricao").value = "";
-            document.getElementById("categoria").value = "";
-            document.getElementById("tipo").value = "";
-            document.getElementById("valor").value = "";
-            document.getElementById("status").value = "";
+            document.getElementById("medicamento").value = "";
+            document.getElementById("compartimento").value = "";
+            document.getElementById("horarioPrevisto").value = "";
         }
 
         window.login = login;
