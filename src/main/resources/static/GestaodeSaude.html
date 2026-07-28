@@ -1094,11 +1094,11 @@
             const doc = new jsPDF();
 
             doc.setFontSize(16);
-            doc.text("Relatório de Despesas", 14, 20);
+            doc.text("Relatório de Saude", 14, 20);
 
             let y = 30;
 
-            const linhas = document.querySelectorAll("#ultimasDespesas tr");
+            const linhas = document.querySelectorAll("#ultimasSaude tr");
 
             linhas.forEach((linha, index) => {
 
@@ -1124,7 +1124,7 @@
                 }
             });
 
-            doc.save("relatorio_despesas.pdf");
+            doc.save("relatorio_saude.pdf");
         }
 
         //window.login = login;
