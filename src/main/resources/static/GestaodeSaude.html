@@ -590,50 +590,69 @@
         //DASHBOARD COMPLETO (usa endpoints específicos)
         async function carregarDashboard() {
 
-            let usuario = localStorage.getItem("usuario");
+            try {
 
-            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
-            const dados = await resposta.json();
+                const usuario = localStorage.getItem("usuario");
 
-            document.getElementById("proximoMedicamento").innerHTML =
-                dados.proximoMedicamento
-                    ? dados.proximoMedicamento.medicamento +
-                    "<br><small>" +
-                    dados.proximoMedicamento.horarioPrevisto +
-                    "</small>"
-                    : "-";
+                const resposta = await fetch(
+                    `${API}/dashboard?usuario=${encodeURIComponent(usuario)}`
+                );
 
-            document.getElementById("ultimoMedicamento").innerHTML =
-                dados.ultimoConsumido
-                    ? dados.ultimoConsumido.medicamento +
-                    "<br><small>" +
-                    dados.ultimoConsumido.horarioConsumido +
-                    "</small>"
-                    : "-";
+                if (!resposta.ok) {
+                    console.error("Erro:", resposta.status);
+                    console.error(await resposta.text());
+                    return;
+                }
 
-            document.getElementById("resumoDiario").innerHTML =
-                "Consumidos: " + dados.consumidosHoje +
-                "<br>Pendentes: " + dados.pendentes;
+                const dados = await resposta.json();
 
-            document.getElementById("adesao").innerHTML =
-                dados.adesao.toFixed(1) + "%";
+                console.log("Dashboard:", dados);
 
-            document.getElementById("compartimentos").innerHTML =
-                dados.compartimentosOcupados +
-                " / " +
-                (dados.compartimentosOcupados +
-                    dados.compartimentosVazios);
+                document.getElementById("proximoMedicamento").innerHTML =
+                    dados.proximoMedicamento
+                        ? dados.proximoMedicamento.medicamento +
+                        "<br><small>" +
+                        dados.proximoMedicamento.horarioPrevisto +
+                        "</small>"
+                        : "-";
 
-            document.getElementById("statusCamera").innerHTML =
-                dados.statusSensor;
+                document.getElementById("ultimoMedicamento").innerHTML =
+                    dados.ultimoConsumido
+                        ? dados.ultimoConsumido.medicamento +
+                        "<br><small>" +
+                        dados.ultimoConsumido.horarioConsumido +
+                        "</small>"
+                        : "-";
 
-            document.getElementById("proximosHorarios").innerHTML =
-                dados.proximoMedicamento
-                    ? dados.proximoMedicamento.horarioPrevisto
-                    : "-";
+                document.getElementById("resumoDiario").innerHTML =
+                    "Consumidos: " + (dados.consumidosHoje ?? 0) +
+                    "<br>Pendentes: " + (dados.pendentes ?? 0);
 
-            document.getElementById("situacaoHoje").innerHTML =
-                "Atrasados: " + dados.atrasados;
+                document.getElementById("adesao").innerHTML =
+                    ((dados.adesao ?? 0).toFixed(1)) + "%";
+
+                document.getElementById("compartimentos").innerHTML =
+                    (dados.compartimentosOcupados ?? 0) +
+                    " / " +
+                    ((dados.compartimentosOcupados ?? 0) +
+                        (dados.compartimentosVazios ?? 0));
+
+                document.getElementById("statusCamera").innerHTML =
+                    dados.statusSensor ?? "OFFLINE";
+
+                document.getElementById("proximosHorarios").innerHTML =
+                    dados.proximoMedicamento
+                        ? dados.proximoMedicamento.horarioPrevisto
+                        : "-";
+
+                document.getElementById("situacaoHoje").innerHTML =
+                    "Atrasados: " + (dados.atrasados ?? 0);
+
+            } catch (erro) {
+
+                console.error("Erro ao carregar dashboard:", erro);
+
+            }
         }
 
         async function graficoHorarios() {
@@ -677,7 +696,7 @@
 
             new Chart(
 
-                document.getElementById("graficoadesao"),
+                document.getElementById("graficoAdesao"),
 
                 {
 
@@ -735,35 +754,52 @@
 
         async function graficoStatus() {
 
-            const usuario = localStorage.getItem("usuario");
+            try {
 
-            console.log("Usuário:", usuario);
+                const usuario = localStorage.getItem("usuario");
 
-            const resposta = await fetch(
-                `${API}/grafico-status?usuario=${encodeURIComponent(usuario)}`
-            );
+                if (!usuario) {
+                    console.error("Usuário não encontrado no localStorage.");
+                    return;
+                }
 
-            if (!resposta.ok) {
-                console.error("Erro:", resposta.status);
-                const texto = await resposta.text();
-                console.error(texto);
-                return;
-            }
+                console.log("Usuário:", usuario);
 
-            const dados = await resposta.json();
+                const resposta = await fetch(
+                    `${API}/grafico-status?usuario=${encodeURIComponent(usuario)}`
+                );
 
-            new Chart(
-                document.getElementById("graficoStatus"),
-                {
+                if (!resposta.ok) {
+                    console.error("Erro HTTP:", resposta.status);
+                    console.error(await resposta.text());
+                    return;
+                }
+
+                const dados = await resposta.json();
+
+                const canvas = document.getElementById("graficoStatus");
+
+                if (!canvas) {
+                    console.error("Canvas 'graficoStatus' não encontrado.");
+                    return;
+                }
+
+                new Chart(canvas, {
                     type: "doughnut",
                     data: {
                         labels: Object.keys(dados),
                         datasets: [{
+                            label: "Medicamentos",
                             data: Object.values(dados)
                         }]
                     }
-                }
-            );
+                });
+
+            } catch (erro) {
+
+                console.error("Erro ao carregar gráfico:", erro);
+
+            }
         }
 
 
