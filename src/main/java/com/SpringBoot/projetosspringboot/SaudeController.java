@@ -65,13 +65,6 @@ public class SaudeController {
                                         registro.setMedicamento(novo.getMedicamento());
                                         registro.setCompartimento(novo.getCompartimento());
                                         registro.setHorarioPrevisto(novo.getHorarioPrevisto());
-                                        registro.setHorarioConsumido(novo.getHorarioConsumido());
-                                        registro.setConsumido(novo.getConsumido());
-                                        registro.setAtrasado(novo.getAtrasado());
-                                        registro.setCompartimentoVazio(novo.getCompartimentoVazio());
-                                        registro.setStatusSensor(novo.getStatusSensor());
-                                        registro.setUltimaLeituraCamera(novo.getUltimaLeituraCamera());
-                                        registro.setUsuario(novo.getUsuario());
 
                                         return ResponseEntity.ok(repository.save(registro));
 
