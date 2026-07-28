@@ -527,6 +527,11 @@
                     <canvas id="graficoAdesao"></canvas>
                 </div>
 
+                <div class="grafico">
+                    <h3>📊 Status dos Medicamentos</h3>
+                    <canvas id="graficoStatus"></canvas>
+                </div>
+
             </section>
 
             <!-- TABELA -->
@@ -561,7 +566,7 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com";
+        const API = "https://projeto-springboot.onrender.com/saude";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -587,7 +592,7 @@
 
             let usuario = localStorage.getItem("usuario");
 
-            const resposta = await fetch(API + "/saude/dashboard?usuario=" + usuario);
+            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
             const dados = await resposta.json();
 
             document.getElementById("proximoMedicamento").innerHTML =
@@ -636,7 +641,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/saude/grafico-horarios?usuario=" + usuario);
+                await fetch(API + "/grafico-horarios?usuario=" + usuario);
 
             const dados = await resposta.json();
 
@@ -665,7 +670,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/saude/grafico-adesao?usuario=" + usuario);
+                await fetch(API + "/grafico-adesao?usuario=" + usuario);
 
             const dados =
                 await resposta.json();
@@ -700,7 +705,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/saude/grafico-medicamentos?usuario=" + usuario);
+                await fetch(API + "/grafico-medicamentos?usuario=" + usuario);
 
             const dados =
                 await resposta.json();
@@ -730,35 +735,35 @@
 
         async function graficoStatus() {
 
-            let usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-            const resposta =
-                await fetch(API + "/saude/grafico-status?usuario=" + usuario);
+            console.log("Usuário:", usuario);
 
-            const dados =
-                await resposta.json();
+            const resposta = await fetch(
+                `${API}/grafico-status?usuario=${encodeURIComponent(usuario)}`
+            );
+
+            if (!resposta.ok) {
+                console.error("Erro:", resposta.status);
+                const texto = await resposta.text();
+                console.error(texto);
+                return;
+            }
+
+            const dados = await resposta.json();
 
             new Chart(
-
                 document.getElementById("graficoStatus"),
-
                 {
-
                     type: "doughnut",
-
                     data: {
-
                         labels: Object.keys(dados),
-
                         datasets: [{
-
                             data: Object.values(dados)
-
                         }]
                     }
-
-                });
-
+                }
+            );
         }
 
 
@@ -786,7 +791,7 @@
             try {
 
                 const resposta = await fetch(
-                    API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
+                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
                 );
 
                 if (!resposta.ok) {
@@ -926,7 +931,7 @@
 
             try {
 
-                const resposta = await fetch(API + "/saude/" + id);
+                const resposta = await fetch(API + "/" + id);
 
                 if (!resposta.ok) {
                     throw new Error("Registro não encontrado");
@@ -950,7 +955,7 @@
 
         async function editarStatus(id, status) {
 
-            const resposta = await fetch(`${API}/saude/${id}/status`, {
+            const resposta = await fetch(`${API}/${id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
