@@ -834,52 +834,39 @@
 
         }
 
-        async function editar(id) {
+        async function editar() {
 
             const usuario = localStorage.getItem("usuario");
+            const id = document.getElementById("id").value;
 
             if (!usuario) {
                 alert("Usuário não encontrado.");
                 return;
             }
 
+            if (!id) {
+                alert("Informe o ID do medicamento.");
+                return;
+            }
+
             try {
 
-                // Busca o registro atual
-                const resposta = await fetch(`${API}/saude/${id}`);
+                const resposta = await fetch(
+                    API + "/saude/" + id
+                );
 
                 if (!resposta.ok) {
                     throw new Error("Medicamento não encontrado.");
                 }
 
-                const saude = await resposta.json();
+                const medicamento = await resposta.json();
 
-                // Altera apenas os campos do formulário
-                saude.medicamento = document.getElementById("medicamento").value;
-                saude.compartimento = document.getElementById("compartimento").value;
-                saude.horarioPrevisto = document.getElementById("horarioPrevisto").value;
+                document.getElementById("id").value = medicamento.id;
+                document.getElementById("medicamento").value = medicamento.medicamento;
+                document.getElementById("compartimento").value = medicamento.compartimento;
+                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
 
-                // Envia o objeto atualizado
-                const respostaPut = await fetch(`${API}/saude/${id}`, {
-
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(saude)
-
-                });
-
-                if (!respostaPut.ok) {
-                    throw new Error("Erro ao atualizar medicamento.");
-
-                }
-
-                alert("Medicamento atualizado com sucesso!");
-
-                listarTodos();
+                alert("Dados carregados para edição!");
 
             } catch (erro) {
 
@@ -887,7 +874,6 @@
                 alert(erro.message);
 
             }
-
         }
 
         // ======================================
