@@ -495,6 +495,7 @@
             <!-- FORMULÁRIO -->
             <div class="grid">
 
+                <input type="text" id="id" placeholder="ID">
                 <input type="text" id="medicamento" placeholder="Medicamento">
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
@@ -777,51 +778,51 @@
 
             try {
 
-            event.preventDefault();
+                event.preventDefault();
 
-            let dados = {
+                let dados = {
 
-                medicamento:
-                    document.getElementById("medicamento").value,
+                    medicamento:
+                        document.getElementById("medicamento").value,
 
-                compartimento:
-                    document.getElementById("compartimento").value,
+                    compartimento:
+                        document.getElementById("compartimento").value,
 
-                horarioPrevisto:
-                    document.getElementById("horarioPrevisto").value,
+                    horarioPrevisto:
+                        document.getElementById("horarioPrevisto").value,
 
-                horarioConsumido: null,
+                    horarioConsumido: null,
 
-                consumido: document.getElementById("consumido").value,
+                    consumido: document.getElementById("consumido").value,
 
-                atrasado: false,
+                    atrasado: false,
 
-                compartimentoVazio: false,
+                    compartimentoVazio: false,
 
-                statusSensor:
-                    document.getElementById("statusSensor").value,
+                    statusSensor:
+                        document.getElementById("statusSensor").value,
 
-                ultimaLeituraCamera: null,
+                    ultimaLeituraCamera: null,
 
-                usuario:
-                    localStorage.getItem("usuario")
+                    usuario:
+                        localStorage.getItem("usuario")
 
-            };
+                };
 
-            const resposta = await fetch(API + "/saude", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
-            });
+                const resposta = await fetch(API + "/saude", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                });
 
-            if (resposta.ok) {
+                if (resposta.ok) {
 
-                alert("Medicamento cadastrado.");
-                limparCampos();
+                    alert("Medicamento cadastrado.");
+                    limparCampos();
 
-            }
+                }
 
             } catch (erro) {
 
@@ -844,23 +845,46 @@
 
             try {
 
-                const resposta = await fetch(API + "/saude/" + id);
+                // Busca o registro atual
+                const resposta = await fetch(`${API}/saude/${id}`);
 
                 if (!resposta.ok) {
-                    throw new Error("Registro não encontrado");
+                    throw new Error("Medicamento não encontrado.");
                 }
 
-                const medicamento = await resposta.json();
+                const saude = await resposta.json();
 
-                document.getElementById("medicamento").value = medicamento.medicamento;
-                document.getElementById("compartimento").value = medicamento.compartimento;
-                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
-                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("consumido").value = medicamento.consumido;
+                // Altera apenas os campos do formulário
+                saude.medicamento = document.getElementById("medicamento").value;
+                saude.compartimento = document.getElementById("compartimento").value;
+                saude.horarioPrevisto = document.getElementById("horarioPrevisto").value;
 
-            } catch (e) {
+                // Envia o objeto atualizado
+                const respostaPut = await fetch(`${API}/saude/${id}`, {
 
-                console.log(e);
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(saude)
+
+                });
+
+                if (!respostaPut.ok) {
+                    throw new Error("Erro ao atualizar medicamento.");
+
+                }
+
+                alert("Medicamento atualizado com sucesso!");
+
+                listarTodos();
+
+            } catch (erro) {
+
+                console.error(erro);
+                alert(erro.message);
 
             }
 
