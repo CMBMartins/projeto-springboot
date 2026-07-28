@@ -444,19 +444,19 @@
                     <button class="btn btn-logout" onclick="logout()">Sair</button>
                     <button class="btn btn-cadastro" onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
 
-            <label>Medicamento Consumido:</label>
+                    <label>Medicamento Consumido:</label>
 
-            <select id="consumido">
-            <option value="false">Não</option>
-            <option value="true">Sim</option>
-            </select>
+                    <select id="consumido">
+                        <option value="false">Não</option>
+                        <option value="true">Sim</option>
+                    </select>
 
-            <label>Status Sensor:</label>
+                    <label>Status Sensor:</label>
 
-            <select id="statusSensor">
-            <option>ONLINE</option>
-            <option>OFFLINE</option>
-            </select>
+                    <select id="statusSensor">
+                        <option>ONLINE</option>
+                        <option>OFFLINE</option>
+                    </select>
                 </div>
 
             </div>
@@ -510,7 +510,7 @@
 
                 <div class="card">
                     <h3>📊 Hoje</h3>
-                    <p id="situacaohoje">-</p>
+                    <p id="situacaoHoje">-</p>
                 </div>
 
             </section>
@@ -542,7 +542,7 @@
                             <th>🧪 Compartimento</th>
                             <th>⏰ Horario Previsto</th>
                             <th>✅ Horario Consumido</th>
-                            <th>💊 Consumido</th>                            
+                            <th>💊 Consumido</th>
                             <th>📷 Status</th>
                             <th>💾 Ação</th>
                         </tr>
@@ -561,7 +561,7 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com/saude";
+        const API = "https://projeto-springboot.onrender.com";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -587,7 +587,7 @@
 
             let usuario = localStorage.getItem("usuario");
 
-            const resposta = await fetch(API + "/dashboard?usuario=" + usuario);
+            const resposta = await fetch(API + "/saude/dashboard?usuario=" + usuario);
             const dados = await resposta.json();
 
             document.getElementById("proximoMedicamento").innerHTML =
@@ -636,7 +636,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/grafico-horarios?usuario=" + usuario);
+                await fetch(API + "/saude/grafico-horarios?usuario=" + usuario);
 
             const dados = await resposta.json();
 
@@ -665,14 +665,14 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/grafico-adesao?usuario=" + usuario);
+                await fetch(API + "/saude/grafico-adesao?usuario=" + usuario);
 
             const dados =
                 await resposta.json();
 
             new Chart(
 
-                document.getElementById("graficoAdesao"),
+                document.getElementById("graficoadesao"),
 
                 {
 
@@ -700,7 +700,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/grafico-medicamentos?usuario=" + usuario);
+                await fetch(API + "/saude/grafico-medicamentos?usuario=" + usuario);
 
             const dados =
                 await resposta.json();
@@ -733,7 +733,7 @@
             let usuario = localStorage.getItem("usuario");
 
             const resposta =
-                await fetch(API + "/grafico-status?usuario=" + usuario);
+                await fetch(API + "/saude/grafico-status?usuario=" + usuario);
 
             const dados =
                 await resposta.json();
@@ -786,7 +786,7 @@
             try {
 
                 const resposta = await fetch(
-                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
+                    API + "/saude/usuario?usuario=" + encodeURIComponent(usuario)
                 );
 
                 if (!resposta.ok) {
@@ -938,7 +938,7 @@
                 document.getElementById("compartimento").value = medicamento.compartimento;
                 document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
                 document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("consumido").value = medicamento.consumido;                
+                document.getElementById("consumido").value = medicamento.consumido;
 
             } catch (e) {
 
