@@ -1,10 +1,12 @@
 package com.SpringBoot.projetosspringboot;
 
+import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/saude")
@@ -90,37 +92,6 @@ public class SaudeController {
 
         }
 
-        @PutMapping("/{id}/status")
-        public ResponseEntity<Saude> atualizarStatus(
-        @PathVariable Integer id,
-        @RequestBody StatusSaudeDTO dto) {
-
-       Saude saude = repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Medicamento não encontrado."));
-
-    switch (dto.getStatus()) {
-
-        case "CONSUMIDO":
-            saude.setConsumido(true);
-            saude.setAtrasado(false);
-            break;
-
-        case "ATRASADO":
-            saude.setConsumido(false);
-            saude.setAtrasado(true);
-            break;
-
-        case "PENDENTE":
-            saude.setConsumido(false);
-            saude.setAtrasado(false);
-            break;
-    }
-
-    repository.save(saude);
-
-    return ResponseEntity.ok(saude);
-    }
-
         // ============================
         // CONSULTAS
         // ============================
@@ -199,7 +170,69 @@ public class SaudeController {
                 dto.setAtrasados(
                                 repository.countByUsuarioAndAtrasadoTrue(usuario));
 
+                dto.setCompartimentosVazios(
+                                repository.countByUsuarioAndCompartimentoVazioTrue(usuario));
+
+                dto.setCompartimentosOcupados(
+                                repository.countByUsuarioAndCompartimentoVazioFalse(usuario));
+
+                long total = dto.getConsumidosHoje() + dto.getPendentes();
+
+                if (total == 0) {
+                        dto.setAdesao(0.0);
+                } else {
+                        dto.setAdesao((dto.getConsumidosHoje() * 100.0) / total);
+                }
+
+                dto.setStatusSensor("ONLINE");
+
                 return dto;
+        }
+
+        @GetMapping("/grafico-medicamentos")
+        public Map<String, Long> graficoMedicamentos(@RequestParam String usuario) {
+
+                return repository.findByUsuario(usuario)
+                                .stream()
+                                .collect(Collectors.groupingBy(
+                                                s -> s.getMedicamento() != null
+                                                                ? s.getMedicamento()
+                                                                : "Não informado",
+                                                Collectors.counting()));
+        }
+
+        @GetMapping("/grafico-status")
+        public Map<String, Long> graficoStatus(@RequestParam String usuario) {
+
+                return repository.findByUsuario(usuario)
+                                .stream()
+                                .collect(Collectors.groupingBy(
+                                                s -> s.getConsumido() ? "Consumido" : "Pendente",
+                                                Collectors.counting()));
+        }
+
+        @GetMapping("/grafico-adesao")
+        public Map<String, Double> graficoAdesao(@RequestParam String usuario) {
+
+                long total = repository.findByUsuario(usuario).size();
+                long consumidos = repository.countByUsuarioAndConsumidoTrue(usuario);
+                double adesao = total == 0 ? 0 : (consumidos * 100.0) / total;
+
+                Map<String, Double> retorno = new HashMap<>();
+
+                retorno.put("Adesão", adesao);
+                return retorno;
+        }
+
+        @GetMapping("/grafico-horarios")
+        public Map<String, Long> graficoHorarios(@RequestParam String usuario) {
+
+                return repository.findByUsuario(usuario)
+                                .stream()
+                                .filter(s -> s.getHorarioPrevisto() != null)
+                                .collect(Collectors.groupingBy(
+                                                s -> String.format("%02d:00", s.getHorarioPrevisto().getHour()),
+                                                Collectors.counting()));
         }
 
 }
