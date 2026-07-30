@@ -569,7 +569,7 @@
         const API = "https://projeto-springboot.onrender.com/saude";
 
         const eventos = new EventSource(
-            API + "/saude/eventos"
+            API + "/eventos"
         );
 
         eventos.addEventListener("atualizacao", () => {
@@ -577,16 +577,11 @@
             console.log("Atualizando dashboard...");
 
             carregarDashboard();
-
             listarTodos();
-
-            carregarGraficoAdesao();
-
-            carregarGraficoHorarios();
-
-            carregarGraficoMedicamentos();
-
-            carregarGraficoStatus();
+            graficoAdesao();
+            graficoHorarios();
+            graficoMedicamentos();
+            graficoStatus();
 
         });
 
@@ -1190,10 +1185,11 @@
 
             carregarDashboard();
             listarTodos();
-            carregarGraficoAdesao();
-            carregarGraficoHorarios();
-            carregarGraficoMedicamentos();
-            carregarGraficoStatus();
+            //graficoHorarios();
+            //graficoAdesao();
+            //graficoMedicamentos();
+            //graficoStatus();
+            //listarTodos();
 
         }, 5000);
 
