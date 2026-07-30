@@ -122,12 +122,11 @@ public class SaudeController {
 
         @GetMapping("/ultimo")
         public Saude ultimoConsumido(
-                        @RequestParam String usuario) {
+        @RequestParam String usuario) {
 
-                return repository
-                                .findTopByUsuarioAndConsumidoTrueOrderByHorarioConsumidoDesc(usuario)
-                                .orElse(null);
-
+        return repository
+        .findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(usuario)
+        .orElse(null);
         }
 
         @GetMapping("/consumidos-hoje")
