@@ -568,6 +568,28 @@
 
         const API = "https://projeto-springboot.onrender.com/saude";
 
+        const eventos = new EventSource(
+            API + "/saude/eventos"
+        );
+
+        eventos.addEventListener("atualizacao", () => {
+
+            console.log("Atualizando dashboard...");
+
+            carregarDashboard();
+
+            listarTodos();
+
+            carregarGraficoAdesao();
+
+            carregarGraficoHorarios();
+
+            carregarGraficoMedicamentos();
+
+            carregarGraficoStatus();
+
+        });
+
 
         // FUNÇÃO FETCH SEGURO
         function fetchSeguro(url) {
@@ -819,10 +841,6 @@
 
             const usuario = localStorage.getItem("usuario");
 
-            if (!usuario) {
-                alert("Usuário não encontrado.");
-                return;
-            }
 
             try {
 
@@ -1167,6 +1185,17 @@
 
             doc.save("relatorio_saude.pdf");
         }
+
+        setInterval(() => {
+
+            carregarDashboard();
+            listarTodos();
+            carregarGraficoAdesao();
+            carregarGraficoHorarios();
+            carregarGraficoMedicamentos();
+            carregarGraficoStatus();
+
+        }, 5000);
 
         //window.login = login;
 
