@@ -17,6 +17,8 @@ public class SaudeController {
 
         @Autowired
         private SaudeRepository repository;
+
+        @Autowired
         private EventoSaudeService eventoSaudeService;
 
         // ============================
@@ -58,10 +60,11 @@ public class SaudeController {
                                 .orElse(ResponseEntity.notFound().build());
         }
 
-        @GetMapping("/eventos")
+        @GetMapping(value = "/eventos", produces = "text/event-stream")
         public SseEmitter eventos() {
 
                 return eventoSaudeService.conectar();
+
         }
 
         @PutMapping("/{id}")
