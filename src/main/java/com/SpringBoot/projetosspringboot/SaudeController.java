@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,7 @@ public class SaudeController {
 
         @Autowired
         private SaudeRepository repository;
+        private EventoSaudeService eventoSaudeService;
 
         // ============================
         // CRUD
@@ -37,6 +40,7 @@ public class SaudeController {
                 medicamento.setUltimaLeituraCamera(leitura.getDataHora());
 
                 repository.save(medicamento);
+                eventoSaudeService.notificarAtualizacao();
 
                 return ResponseEntity.ok("Leitura da câmera registrada com sucesso.");
         }
@@ -52,6 +56,12 @@ public class SaudeController {
                 return repository.findById(id)
                                 .map(ResponseEntity::ok)
                                 .orElse(ResponseEntity.notFound().build());
+        }
+
+        @GetMapping("/eventos")
+        public SseEmitter eventos() {
+
+                return eventoSaudeService.conectar();
         }
 
         @PutMapping("/{id}")
