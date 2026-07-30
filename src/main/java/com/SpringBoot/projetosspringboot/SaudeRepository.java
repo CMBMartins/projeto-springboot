@@ -25,7 +25,7 @@ public interface SaudeRepository extends JpaRepository<Saude, Integer> {
     Optional<Saude> findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(String usuario);
 
     // Último medicamento consumido
-    Optional<Saude> findTopByUsuarioAndConsumidoTrueOrderByHorarioConsumidoDesc(String usuario);
+   Optional<Saude> findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(String usuario);
 
     // Quantidade consumida
     Long countByUsuarioAndConsumidoTrue(String usuario);

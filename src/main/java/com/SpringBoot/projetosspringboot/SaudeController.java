@@ -163,9 +163,9 @@ public class SaudeController {
                                 repository.findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(usuario)
                                                 .orElse(null));
 
-                dto.setUltimoConsumido(
-                                repository.findTopByUsuarioAndConsumidoTrueOrderByHorarioConsumidoDesc(usuario)
-                                                .orElse(null));
+               dto.setUltimoConsumido(
+                                repository.findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(usuario)
+                                .orElse(null));
 
                 dto.setConsumidosHoje(
                                 repository.countByUsuarioAndConsumidoTrue(usuario));
