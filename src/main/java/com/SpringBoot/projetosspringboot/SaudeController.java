@@ -66,21 +66,36 @@ public class SaudeController {
                                 }).orElse(ResponseEntity.notFound().build());
         }
 
+        
+
         @PutMapping("/{id}/status")
         public ResponseEntity<Saude> editarStatus(
         @PathVariable Integer id,
-        @RequestBody Saude novo) {
+        @RequestBody Map<String, String> body) {
 
-             return repository.findById(id)
+        return repository.findById(id)
             .map(registro -> {
 
-                registro.setConsumido(novo.getConsumido());
+                String status = body.get("status");
+
+                if ("CONSUMIDO".equals(status)) {
+                    registro.setConsumido(true);
+                    registro.setAtrasado(false);
+
+                } else if ("ATRASADO".equals(status)) {
+                    registro.setConsumido(false);
+                    registro.setAtrasado(true);
+
+                } else {
+                    registro.setConsumido(false);
+                    registro.setAtrasado(false);
+                }
 
                 return ResponseEntity.ok(repository.save(registro));
 
             })
             .orElse(ResponseEntity.notFound().build());
-            }
+        }
 
 
         @DeleteMapping("/{id}")
@@ -97,14 +112,15 @@ public class SaudeController {
 
         }
 
+        
+        // ============================
+        // METODOS GET
+        // ============================
          @GetMapping
         public List<Saude> listar() {
                 return repository.findAll();
         }
-
-        // ============================
-        // METODOS GET
-        // ============================
+        
         @GetMapping("/{id}")
         public ResponseEntity<Saude> buscar(@PathVariable Integer id) {
 
