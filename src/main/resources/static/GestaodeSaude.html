@@ -1028,33 +1028,41 @@
 
         console.error(e);
         alert(e.message);
-
+        }
     }
 
+     // ======================================
+     // EDITAR STATUS DO MEDICAMENTO
+     // ======================================
+    async function editarStatus(id, status) {
+
+    const usuario = localStorage.getItem("usuario");
+
+    if (!usuario) {
+        alert("Faça Login para executar essa funcionalidade!");
+        return;
+    }
+
+    const resposta = await fetch(`${API}/saude/${id}/status`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            status: status
+        })
+    });
+
+    if (resposta.ok) {
+
+        listarTodos();
+
+    } else {
+
+        alert("Erro ao atualizar o status.");
+
+    }
 }
-
-        async function editarStatus(id, status) {
-
-            const resposta = await fetch(`${API}/${id}/status`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    status: status
-                })
-            });
-
-            if (resposta.ok) {
-
-                listarTodos();
-
-            } else {
-
-                alert("Erro ao atualizar o status.");
-
-            }
-        }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {

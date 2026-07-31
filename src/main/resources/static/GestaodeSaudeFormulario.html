@@ -523,7 +523,7 @@
 
                 <button id="salvar" onclick="salvar()">💾Salvar</button>
                 <button id="editar" onclick="editar()">✏️Editar</button>
-                <button id="deletar" onclick="deletar()">✏️Excluir</button>
+                <button id="deletar" onclick="excluir()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
                 <button id="buscarCategoria" onclick="buscarCategoria()">📋Buscar Categoria</button>
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Medicamentos</button>
@@ -635,6 +635,7 @@
                 });
         }
 
+        //FUNÇÃO PARA INICIAR MEDICAMENTO
         async function carregarMedicamento(id) {
 
             const resposta = await fetch(API + "/saude/" + id);
@@ -772,7 +773,12 @@
             const usuario = localStorage.getItem("usuario");
 
             if (!usuario) {
-                alert("Usuário não encontrado.");
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
+
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade.");
                 return;
             }
 
@@ -835,8 +841,15 @@
         }
 
 
-        // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
+    // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
     async function editar() {
+
+        const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
 
     if (!confirm("Deseja realmente editar este medicamento?")) {
         return;
@@ -893,6 +906,13 @@
         // ======================================
         async function excluir(id) {
 
+            const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
+
             if (!confirm("Deseja realmente excluir este medicamento?")) {
                 return;
             }
@@ -920,30 +940,188 @@
             }
         }
 
-        // ======================================
-        // EDITAR SATATUS DO MEDICAMENTO
-        // ======================================
-        async function editarStatus(id, status) {
+    // ======================================
+    // EDITAR STATUS DO MEDICAMENTO
+    // ======================================
+    async function editarStatus(id, status) {
 
-            const resposta = await fetch(`${API}/saude/${id}/status`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    status: status
-                })
-            });
+    const usuario = localStorage.getItem("usuario");
 
-            if (resposta.ok) {
+    if (!usuario) {
+        alert("Faça Login para executar essa funcionalidade!");
+        return;
+    }
 
-                listarTodos();
+    const resposta = await fetch(`${API}/saude/${id}/status`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            status: status
+        })
+    });
 
-            } else {
+    if (resposta.ok) {
 
-                alert("Erro ao atualizar o status.");
+        listarTodos();
 
+    } else {
+
+        alert("Erro ao atualizar o status.");
+        }
+    }
+
+        // 🔍 FUNÇÃO PARA CONSULTAR POR MEDICAMENTOS ATRASADOS
+        function buscarMedicamento() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
             }
+
+            // 🔥 PEGA A CATEGORIA DO INPUT
+            const medicamento = document.getElementById("medicamento").value.trim();
+
+            if (!medicamento) {
+                alert("⚠️ Informe o medicamento!");
+                return;
+            }
+
+            fetchSeguro(
+                `${API}/saude/buscar/atrasados?categoria=${encodeURIComponent(medicamento)}&usuario=${encodeURIComponent(usuario)}`
+            )
+
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaSaude");
+
+                    if (!tabela) {
+                        console.error("Tabela não encontrada!");
+                        return;
+                    }
+
+                    if (!Array.isArray(data)) {
+                        tabela.innerHTML =
+                            "<tr><td colspan='8'>Nenhum dado encontrado</td></tr>";
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    // 🔥 ORDENA E LIMITA
+                    const ultimasSaude = data
+                        .sort((a, b) => new Date(b.data) - new Date(a.data))
+                        .slice(0, 30);
+
+                    ultimasSaude.forEach(saude => {
+
+                        const valor = Number(saude.valor) || 0;
+
+                        const dataFormatada = saude.data
+                            ? new Date(saude.data).toLocaleDateString("pt-BR")
+                            : "";
+
+                        const status = (saude.status || "")
+                            .toUpperCase()
+                            .trim();
+
+                        let classeLinha = "";
+                        let botao = "";
+
+                        // 🔥 PENDENTE
+                        if (status === "PENDENTE") {
+
+                            classeLinha = "linha-pendente";
+
+                            botao = `
+                    <button class="btn-alterar"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        💰 Pagar
+                    </button>
+                `;
+
+                        }
+
+                        // 🔥 ATRASADO
+                        else if (
+                            status === "ATRASADO" ||
+                            status === "ATRASADO" ||
+                            status === "ATRASADO" ||
+                            status === "ATRASADO"
+                        ) {
+
+                            classeLinha = "linha-provisao";
+
+                            botao = `
+                    <button class="btn-receber"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        💵 Atualizar
+                    </button>
+                `;
+
+                        }
+
+                        // 🔥 CONSUMIDO
+                        else if (status === "CONSUMIDO") {
+
+                            classeLinha = "linha-paga";
+
+                            botao = `
+                    <span style="color:green;font-weight:bold;">
+                        ✔ Pago
+                    </span>
+                `;
+
+                        }
+
+                        // 🔥 CONSUMIDO
+                        else if (status === "CONSUMIDO") {
+
+                            classeLinha = "linha-recebido";
+
+                            botao = `
+                    <span style="color:blue;font-weight:bold;">
+                        ✔ Recebido
+                    </span>
+                `;
+
+                        }
+
+                        else {
+
+                            botao = "-";
+
+                        }
+
+                        linhas += `
+                <tr class="${classeLinha}">
+                    <td>${saude.id ?? ""}</td>
+                    <td>${dataFormatada}</td>
+                    <td>${saude.medicamento ?? ""}</td>
+                    <td>${saude.compartimento ?? ""}</td>
+                    <td>${saude.horarioConsumido ?? ""}</td>
+                    <td>
+                        ${valor.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL"
+                        })}
+                    </td>
+                    <td>${saude.status ?? ""}</td>
+                    <td>${botao}</td>
+                </tr>
+            `;
+                    });
+
+                    tabela.innerHTML = linhas;
+
+                })
+
+                .catch(err => {
+                    console.error("Erro ao buscar MEDICAMENTOS ATRASADOS:", err);
+                });
         }
 
 
@@ -1040,6 +1218,7 @@
             document.getElementById("medicamento").value = "";
             document.getElementById("compartimento").value = "";
             document.getElementById("horarioPrevisto").value = "";
+            alert("Campos limpos com sucesso!");
         }
 
         window.login = login;
