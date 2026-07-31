@@ -533,14 +533,14 @@
             <div class="legenda-categorias">
                 <h3>📌 Medicamentos Sugeridos e seus Compartimentos:</h3>
                 <div class="tags-categorias">
-                    <span class="tag exforge">💊 Exforge320/25/10:A1</span>
-                    <span class="tag metformina">💊 Metformina:A2</span>
-                    <span class="tag vitaminaB12">💊 Vitamina B12:A3</span>
-                    <span class="tag oleodeSementedeAbobora">💊 Oléo de Semente de Abobora:A4</span>
-                    <span class="tag coenzimaq10">💊 Coenzima Q10:A5</span>
-                    <span class="tag vitaminaD3">💊 Vitamina D3:A6</span>
-                    <span class="tag rosuvastatina">💊 Rosuvastatina+Ezetimiba 20/10:A7</span>
-                    <span class="tag tansulosina">💊 Tansulosina 0,4mg:A8</span>
+                    <span class="tag exforge">💊 Exforge320/25/10: A1</span>
+                    <span class="tag metformina">💊 Metformina: A2</span>
+                    <span class="tag vitaminaB12">💊 Vitamina B12: A3</span>
+                    <span class="tag coenzimaq10">💊 Coenzima Q10: A4</span>                   
+                    <span class="tag vitaminaD3">💊 Vitamina D3: A5</span>                    
+                    <span class="tag tansulosina">💊 Tansulosina 0,4mg: A6</span>
+                    <span class="tag rosuvastatina">💊 Rosuvastatina+Ezetimiba 20/10: A7</span>
+                    <span class="tag oleodeSementedeAbobora">💊 Oléo de Semente de Abobora: A8</span>
                 </div>
             </div>
 
@@ -656,7 +656,7 @@
             const usuario = localStorage.getItem("usuario");
 
             if (!usuario) {
-                alert("Usuário não encontrado.");
+                alert("Faça Login para executar essa funcionalidade!");
                 return;
             }
 
@@ -835,55 +835,58 @@
         }
 
 
-        async function editar() {
-            
-            if (!confirm("Deseja realmente editar este medicamento?")) {
-                return;
-                }
+        // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
+    async function editar() {
 
-                
-                const id = document.getElementById("id").value;
+    if (!confirm("Deseja realmente editar este medicamento?")) {
+        return;
+    }
 
-                if (!id) {
-                alert("Informe o ID do medicamento.");
-                return;
-                }
+    const id = document.getElementById("id").value;
 
-                const medicamento = {
-                medicamento: document.getElementById("medicamento").value,
-                compartimento: document.getElementById("compartimento").value,
-                horarioPrevisto: document.getElementById("horarioPrevisto").value
-                };
-                
-                try {
-                    
-                    const resposta = await fetch(API + "/" + id, {
+    if (!id) {
+        alert("Informe o ID do medicamento.");
+        return;
+    }
 
-                    method: "PUT",
+    const medicamento = {
+        medicamento: document.getElementById("medicamento").value,
+        compartimento: document.getElementById("compartimento").value,
+        horarioPrevisto: document.getElementById("horarioPrevisto").value
+    };
 
-                    headers: {
-                    "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(medicamento)
-                    });
-                    
-                    if (!resposta.ok) {
-                        throw new Error("Erro ao atualizar o medicamento.");
-                    }
+    try {
 
-                    alert("Medicamento atualizado com sucesso!");
+        const resposta = await fetch(API + "/saude/" + id, {
 
-                    listarTodos();
-                    limparCampos();
+            method: "PUT",
 
-                    } catch (e) {
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                        console.error(e);
-                        alert(e.message);
+            body: JSON.stringify(medicamento)
 
-                    }
-                }
-                
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao atualizar o medicamento.");
+        }
+
+        const atualizado = await resposta.json();
+
+        alert("Medicamento atualizado com sucesso!");
+
+        listarTodos();
+        limparCampos();
+        
+        } catch (erro) {
+
+            console.error(erro);
+            alert(erro.message);
+            }
+
+        }
 
         // ======================================
         // EXCLUIR MEDICAMENTO
@@ -917,6 +920,9 @@
             }
         }
 
+        // ======================================
+        // EDITAR SATATUS DO MEDICAMENTO
+        // ======================================
         async function editarStatus(id, status) {
 
             const resposta = await fetch(`${API}/saude/${id}/status`, {
