@@ -278,4 +278,15 @@ public class SaudeController {
                                                 Collectors.counting()));
         }
 
+        @GetMapping("/buscar/atrasados")
+        public List<Saude> buscarMedicamentosAtrasados(
+
+        @RequestParam String usuario,
+        @RequestParam String medicamento) {
+
+    return repository.findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
+            usuario,
+            medicamento);
+            }
+
 }

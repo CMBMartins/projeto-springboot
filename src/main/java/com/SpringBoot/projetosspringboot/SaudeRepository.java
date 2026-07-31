@@ -42,4 +42,8 @@ public interface SaudeRepository extends JpaRepository<Saude, Integer> {
     // Compartimentos ocupados
     Long countByUsuarioAndCompartimentoVazioFalse(String usuario);
 
+    List<Saude> findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
+        String usuario,
+        String medicamento);
+
 }
