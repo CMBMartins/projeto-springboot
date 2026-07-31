@@ -863,6 +863,7 @@
     }
 
     const medicamento = {
+        id: document.getElementById("id").value,
         medicamento: document.getElementById("medicamento").value,
         compartimento: document.getElementById("compartimento").value,
         horarioPrevisto: document.getElementById("horarioPrevisto").value
@@ -1169,10 +1170,11 @@
 
         // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
         function limparCampos() {
+            document.getElementById("id").value = "";
             document.getElementById("medicamento").value = "";
             document.getElementById("compartimento").value = "";
             document.getElementById("horarioPrevisto").value = "";
-            alert("Campos limpos com sucesso!");
+            //alert("Campos limpos com sucesso!");
         }
 
         window.login = login;
