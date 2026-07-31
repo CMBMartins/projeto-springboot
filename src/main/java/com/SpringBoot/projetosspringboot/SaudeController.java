@@ -47,25 +47,6 @@ public class SaudeController {
                 return ResponseEntity.ok("Leitura da câmera registrada com sucesso.");
         }
 
-        @GetMapping
-        public List<Saude> listar() {
-                return repository.findAll();
-        }
-
-        @GetMapping("/{id}")
-        public ResponseEntity<Saude> buscar(@PathVariable Integer id) {
-
-                return repository.findById(id)
-                                .map(ResponseEntity::ok)
-                                .orElse(ResponseEntity.notFound().build());
-        }
-
-        @GetMapping(value = "/eventos", produces = "text/event-stream")
-        public SseEmitter eventos() {
-
-                return eventoSaudeService.conectar();
-
-        }
 
         @PutMapping("/{id}")
         public ResponseEntity<Saude> editar(
@@ -75,6 +56,7 @@ public class SaudeController {
                 return repository.findById(id)
                                 .map(registro -> {
 
+                                        registro.setId(novo.getId());
                                         registro.setMedicamento(novo.getMedicamento());
                                         registro.setCompartimento(novo.getCompartimento());
                                         registro.setHorarioPrevisto(novo.getHorarioPrevisto());
@@ -83,6 +65,23 @@ public class SaudeController {
 
                                 }).orElse(ResponseEntity.notFound().build());
         }
+
+        @PutMapping("/{id}/status")
+        public ResponseEntity<Saude> editarStatus(
+        @PathVariable Integer id,
+        @RequestBody Saude novo) {
+
+             return repository.findById(id)
+            .map(registro -> {
+
+                registro.setConsumido(novo.getConsumido());
+
+                return ResponseEntity.ok(repository.save(registro));
+
+            })
+            .orElse(ResponseEntity.notFound().build());
+            }
+
 
         @DeleteMapping("/{id}")
         public ResponseEntity<?> excluir(@PathVariable Integer id) {
@@ -95,6 +94,29 @@ public class SaudeController {
                                         return ResponseEntity.ok("Registro excluído.");
 
                                 }).orElse(ResponseEntity.notFound().build());
+
+        }
+
+         @GetMapping
+        public List<Saude> listar() {
+                return repository.findAll();
+        }
+
+        // ============================
+        // METODOS GET
+        // ============================
+        @GetMapping("/{id}")
+        public ResponseEntity<Saude> buscar(@PathVariable Integer id) {
+
+                return repository.findById(id)
+                                .map(ResponseEntity::ok)
+                                .orElse(ResponseEntity.notFound().build());
+        }
+
+        @GetMapping(value = "/eventos", produces = "text/event-stream")
+        public SseEmitter eventos() {
+
+                return eventoSaudeService.conectar();
 
         }
 
