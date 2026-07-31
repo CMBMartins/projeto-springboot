@@ -834,47 +834,56 @@
 
         }
 
+
         async function editar() {
-
-            const usuario = localStorage.getItem("usuario");
-            const id = document.getElementById("id").value;
-
-            if (!usuario) {
-                alert("Usuário não encontrado.");
+            
+            if (!confirm("Deseja realmente editar este medicamento?")) {
                 return;
-            }
-
-            if (!id) {
-                alert("Informe o ID do medicamento.");
-                return;
-            }
-
-            try {
-
-                const resposta = await fetch(
-                    API + "/saude/" + id
-                );
-
-                if (!resposta.ok) {
-                    throw new Error("Medicamento não encontrado.");
                 }
 
-                const medicamento = await resposta.json();
+                
+                const id = document.getElementById("id").value;
 
-                document.getElementById("id").value = medicamento.id;
-                document.getElementById("medicamento").value = medicamento.medicamento;
-                document.getElementById("compartimento").value = medicamento.compartimento;
-                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
+                if (!id) {
+                alert("Informe o ID do medicamento.");
+                return;
+                }
 
-                alert("Dados carregados para edição!");
+                const medicamento = {
+                medicamento: document.getElementById("medicamento").value,
+                compartimento: document.getElementById("compartimento").value,
+                horarioPrevisto: document.getElementById("horarioPrevisto").value
+                };
+                
+                try {
+                    
+                    const resposta = await fetch(API + "/" + id, {
 
-            } catch (erro) {
+                    method: "PUT",
 
-                console.error(erro);
-                alert(erro.message);
+                    headers: {
+                    "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(medicamento)
+                    });
+                    
+                    if (!resposta.ok) {
+                        throw new Error("Erro ao atualizar o medicamento.");
+                    }
 
-            }
-        }
+                    alert("Medicamento atualizado com sucesso!");
+
+                    listarTodos();
+                    limparCampos();
+
+                    } catch (e) {
+
+                        console.error(e);
+                        alert(e.message);
+
+                    }
+                }
+                
 
         // ======================================
         // EXCLUIR MEDICAMENTO

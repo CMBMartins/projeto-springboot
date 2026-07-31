@@ -982,31 +982,56 @@
         // ======================================
         // EDITAR MEDICAMENTO
         // ======================================
-        async function editar(id) {
+        async function editar() {
 
-            try {
+    if (!confirm("Deseja realmente editar este medicamento?")) {
+        return;
+    }
 
-                const resposta = await fetch(API + "/" + id);
+    const id = document.getElementById("id").value;
 
-                if (!resposta.ok) {
-                    throw new Error("Registro não encontrado");
-                }
+    if (!id) {
+        alert("Informe o ID do medicamento.");
+        return;
+    }
 
-                const medicamento = await resposta.json();
+    const medicamento = {
+        medicamento: document.getElementById("medicamento").value,
+        compartimento: document.getElementById("compartimento").value,
+        horarioPrevisto: document.getElementById("horarioPrevisto").value
+    };
 
-                document.getElementById("medicamento").value = medicamento.medicamento;
-                document.getElementById("compartimento").value = medicamento.compartimento;
-                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
-                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("consumido").value = medicamento.consumido;
+    try {
 
-            } catch (e) {
+        const resposta = await fetch(API + "/" + id, {
 
-                console.log(e);
+            method: "PUT",
 
-            }
+            headers: {
+                "Content-Type": "application/json"
+            },
 
+            body: JSON.stringify(medicamento)
+
+        });
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao atualizar o medicamento.");
         }
+
+        alert("Medicamento atualizado com sucesso!");
+
+        listarTodos();
+        limparCampos();
+
+    } catch (e) {
+
+        console.error(e);
+        alert(e.message);
+
+    }
+
+}
 
         async function editarStatus(id, status) {
 
