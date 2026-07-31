@@ -525,7 +525,7 @@
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="excluir()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
-                <button id="buscarCategoria" onclick="buscarCategoria()">📋Buscar Categoria</button>
+                <button id="buscarCategoria" onclick="buscarMedicamento()">📋Medicamentos Atrasados</button>
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Medicamentos</button>
             </div>
 
@@ -972,157 +972,111 @@
         }
     }
 
-        // 🔍 FUNÇÃO PARA CONSULTAR POR MEDICAMENTOS ATRASADOS
-        function buscarMedicamento() {
+    // 🔍 FUNÇÃO PARA CONSULTAR POR MEDICAMENTOS ATRASADOS
+    function buscarMedicamento() {
 
-            const usuario = getUsuario();
+    const usuario = getUsuario();
 
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
+    if (!usuario) {
+        alert("⚠️ Faça login para executar essa funcionalidade!");
+        return;
+    }
 
-            // 🔥 PEGA A CATEGORIA DO INPUT
-            const medicamento = document.getElementById("medicamento").value.trim();
+    const medicamento = document.getElementById("medicamento").value.trim();
 
-            if (!medicamento) {
-                alert("⚠️ Informe o medicamento!");
-                return;
-            }
+    if (!medicamento) {
+        alert("⚠️ Informe o medicamento.");
+        return;
+    }
 
-            fetchSeguro(
-                `${API}/saude/buscar/atrasados?categoria=${encodeURIComponent(medicamento)}&usuario=${encodeURIComponent(usuario)}`
-            )
+    fetchSeguro(
+    `${API}/saude/buscar/atrasados?usuario=${encodeURIComponent(usuario)}&medicamento=${encodeURIComponent(medicamento)}`
+    )
 
-                .then(data => {
+    .then(data => {
 
-                    const tabela = document.getElementById("tabelaSaude");
+        const tabela = document.getElementById("tabelaSaude");
 
-                    if (!tabela) {
-                        console.error("Tabela não encontrada!");
-                        return;
-                    }
+        if (!tabela) return;
 
-                    if (!Array.isArray(data)) {
-                        tabela.innerHTML =
-                            "<tr><td colspan='8'>Nenhum dado encontrado</td></tr>";
-                        return;
-                    }
+        if (!Array.isArray(data) || data.length === 0) {
 
-                    let linhas = "";
+            tabela.innerHTML =
+                "<tr><td colspan='8'>Nenhum medicamento encontrado.</td></tr>";
 
-                    // 🔥 ORDENA E LIMITA
-                    const ultimasSaude = data
-                        .sort((a, b) => new Date(b.data) - new Date(a.data))
-                        .slice(0, 30);
+            return;
+        }
 
-                    ultimasSaude.forEach(saude => {
+        let linhas = "";
 
-                        const valor = Number(saude.valor) || 0;
+        data.forEach(saude => {
 
-                        const dataFormatada = saude.data
-                            ? new Date(saude.data).toLocaleDateString("pt-BR")
-                            : "";
+            let classeLinha = "";
+            let status = "";
+            let botao = "";
 
-                        const status = (saude.status || "")
-                            .toUpperCase()
-                            .trim();
+            if (saude.consumido) {
 
-                        let classeLinha = "";
-                        let botao = "";
+                status = "✅ Consumido";
+                classeLinha = "linha-consumido";
 
-                        // 🔥 PENDENTE
-                        if (status === "PENDENTE") {
-
-                            classeLinha = "linha-pendente";
-
-                            botao = `
-                    <button class="btn-alterar"
-                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                        💰 Pagar
-                    </button>
-                `;
-
-                        }
-
-                        // 🔥 ATRASADO
-                        else if (
-                            status === "ATRASADO" ||
-                            status === "ATRASADO" ||
-                            status === "ATRASADO" ||
-                            status === "ATRASADO"
-                        ) {
-
-                            classeLinha = "linha-provisao";
-
-                            botao = `
-                    <button class="btn-receber"
-                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                        💵 Atualizar
-                    </button>
-                `;
-
-                        }
-
-                        // 🔥 CONSUMIDO
-                        else if (status === "CONSUMIDO") {
-
-                            classeLinha = "linha-paga";
-
-                            botao = `
+                botao = `
                     <span style="color:green;font-weight:bold;">
-                        ✔ Pago
+                        ✔ Consumido
                     </span>
                 `;
 
-                        }
+            } else if (saude.atrasado) {
 
-                        // 🔥 CONSUMIDO
-                        else if (status === "CONSUMIDO") {
+                status = "⚠️ Atrasado";
+                classeLinha = "linha-atrasado";
 
-                            classeLinha = "linha-recebido";
-
-                            botao = `
-                    <span style="color:blue;font-weight:bold;">
-                        ✔ Recebido
-                    </span>
+                botao = `
+                    <button class="btn-atrasado"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        ✔ Confirmar Consumo
+                    </button>
                 `;
 
-                        }
+            } else {
 
-                        else {
+                status = "⏰ Pendente";
+                classeLinha = "linha-pendente";
 
-                            botao = "-";
+                botao = `
+                    <button class="btn-pendente"
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
+                        ✔ Consumir
+                    </button>
+                `;
+            }
 
-                        }
-
-                        linhas += `
+            linhas += `
                 <tr class="${classeLinha}">
-                    <td>${saude.id ?? ""}</td>
-                    <td>${dataFormatada}</td>
+                    <td>${saude.id}</td>
                     <td>${saude.medicamento ?? ""}</td>
                     <td>${saude.compartimento ?? ""}</td>
-                    <td>${saude.horarioConsumido ?? ""}</td>
-                    <td>
-                        ${valor.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL"
-                        })}
-                    </td>
-                    <td>${saude.status ?? ""}</td>
+                    <td>${saude.horarioPrevisto ?? "-"}</td>
+                    <td>${saude.horarioConsumido ?? "-"}</td>
+                    <td>${status}</td>
+                    <td>${saude.statusSensor ?? "-"}</td>
                     <td>${botao}</td>
                 </tr>
             `;
-                    });
 
-                    tabela.innerHTML = linhas;
+        });
 
-                })
+        tabela.innerHTML = linhas;
 
-                .catch(err => {
-                    console.error("Erro ao buscar MEDICAMENTOS ATRASADOS:", err);
-                });
-        }
+    })
+
+    .catch(erro => {
+
+        console.error("Erro:", erro);
+
+        alert("Erro ao consultar medicamentos.");
+        });
+    }
 
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
