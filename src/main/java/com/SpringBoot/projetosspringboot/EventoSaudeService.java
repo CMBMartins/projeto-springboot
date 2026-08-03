@@ -52,11 +52,11 @@ public class EventoSaudeService {
         }
     }
 
-    public void atualizarMedicamentosAtrasados() {
+    public void atualizarMedicamentosAtrasados(String usuario) {
 
         LocalTime agora = LocalTime.now();
 
-        List<Saude> medicamentos = repository.findAll();
+        List<Saude> medicamentos = repository.findByUsuario(usuario);
 
         boolean alterou = false;
 
@@ -68,14 +68,17 @@ public class EventoSaudeService {
                     && !Boolean.TRUE.equals(medicamento.getAtrasado())) {
 
                 medicamento.setAtrasado(true);
-
                 alterou = true;
             }
         }
 
         if (alterou) {
+
             repository.saveAll(medicamentos);
+
             notificarAtualizacao();
+
+            System.out.println("Medicamentos atrasados atualizados para " + usuario);
         }
     }
 

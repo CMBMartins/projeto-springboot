@@ -47,7 +47,6 @@ public class SaudeController {
                 return ResponseEntity.ok("Leitura da câmera registrada com sucesso.");
         }
 
-
         @PutMapping("/{id}")
         public ResponseEntity<Saude> editar(
                         @PathVariable Integer id,
@@ -66,37 +65,34 @@ public class SaudeController {
                                 }).orElse(ResponseEntity.notFound().build());
         }
 
-        
-
         @PutMapping("/{id}/status")
         public ResponseEntity<Saude> editarStatus(
-        @PathVariable Integer id,
-        @RequestBody Map<String, String> body) {
+                        @PathVariable Integer id,
+                        @RequestBody Map<String, String> body) {
 
-        return repository.findById(id)
-            .map(registro -> {
+                return repository.findById(id)
+                                .map(registro -> {
 
-                String status = body.get("status");
+                                        String status = body.get("status");
 
-                if ("CONSUMIDO".equals(status)) {
-                    registro.setConsumido(true);
-                    registro.setAtrasado(false);
+                                        if ("CONSUMIDO".equals(status)) {
+                                                registro.setConsumido(true);
+                                                registro.setAtrasado(false);
 
-                } else if ("ATRASADO".equals(status)) {
-                    registro.setConsumido(false);
-                    registro.setAtrasado(true);
+                                        } else if ("ATRASADO".equals(status)) {
+                                                registro.setConsumido(false);
+                                                registro.setAtrasado(true);
 
-                } else {
-                    registro.setConsumido(false);
-                    registro.setAtrasado(false);
-                }
+                                        } else {
+                                                registro.setConsumido(false);
+                                                registro.setAtrasado(false);
+                                        }
 
-                return ResponseEntity.ok(repository.save(registro));
+                                        return ResponseEntity.ok(repository.save(registro));
 
-            })
-            .orElse(ResponseEntity.notFound().build());
+                                })
+                                .orElse(ResponseEntity.notFound().build());
         }
-
 
         @DeleteMapping("/{id}")
         public ResponseEntity<?> excluir(@PathVariable Integer id) {
@@ -112,15 +108,14 @@ public class SaudeController {
 
         }
 
-        
         // ============================
         // METODOS GET
         // ============================
-         @GetMapping
+        @GetMapping
         public List<Saude> listar() {
                 return repository.findAll();
         }
-        
+
         @GetMapping("/{id}")
         public ResponseEntity<Saude> buscar(@PathVariable Integer id) {
 
@@ -160,11 +155,12 @@ public class SaudeController {
 
         @GetMapping("/ultimo")
         public Saude ultimoConsumido(
-        @RequestParam String usuario) {
+                        @RequestParam String usuario) {
 
-        return repository
-        .findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(usuario)
-        .orElse(null);
+                return repository
+                                .findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(
+                                                usuario)
+                                .orElse(null);
         }
 
         @GetMapping("/consumidos-hoje")
@@ -194,15 +190,18 @@ public class SaudeController {
         @GetMapping("/dashboard")
         public DashboardSaudeDTO dashboard(@RequestParam String usuario) {
 
+                eventoSaudeService.atualizarMedicamentosAtrasados(usuario);
+
                 DashboardSaudeDTO dto = new DashboardSaudeDTO();
 
                 dto.setProximoMedicamento(
                                 repository.findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(usuario)
                                                 .orElse(null));
 
-               dto.setUltimoConsumido(
-                                repository.findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(usuario)
-                                .orElse(null));
+                dto.setUltimoConsumido(
+                                repository.findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(
+                                                usuario)
+                                                .orElse(null));
 
                 dto.setConsumidosHoje(
                                 repository.countByUsuarioAndConsumidoTrue(usuario));
@@ -281,12 +280,12 @@ public class SaudeController {
         @GetMapping("/buscar/atrasados")
         public List<Saude> buscarMedicamentosAtrasados(
 
-        @RequestParam String usuario,
-        @RequestParam String medicamento) {
+                        @RequestParam String usuario,
+                        @RequestParam String medicamento) {
 
-    return repository.findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
-            usuario,
-            medicamento);
-            }
+                return repository.findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
+                                usuario,
+                                medicamento);
+        }
 
 }
