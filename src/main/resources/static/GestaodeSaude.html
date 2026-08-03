@@ -397,6 +397,22 @@
         /* 🔥 aqui resolve o problema */
     }
 
+    .alerta-card {
+        border-left: 8px solid red;
+    }
+
+    .alerta-vermelho {
+        background-color: #ffdddd;
+        color: #b30000;
+        font-weight: bold;
+    }
+
+    .alerta-verde {
+        background-color: #ddffdd;
+        color: green;
+        font-weight: bold;
+    }
+
     /* RESPONSIVO */
     @media (max-width: 900px) {
         .cards {
@@ -512,6 +528,16 @@
                 <div class="card">
                     <h3>📊 Situação dos medicamentos hoje:</h3>
                     <p id="situacaoHoje">-</p>
+                </div>
+
+                <div class="card alerta-card" id="cardAlerta">
+
+                    <h3>🔔 Alertas</h3>
+
+                    <div id="alertaMedicamentos">
+                        Verificando...
+                    </div>
+
                 </div>
 
             </section>
@@ -1011,6 +1037,9 @@
 
         }
 
+        // ======================================
+        // EDITAR STATUS
+        // ======================================
         async function editarStatus(id, status) {
 
             const resposta = await fetch(`${API}/${id}/status`, {
@@ -1034,7 +1063,7 @@
             }
         }
 
-        // FUNÇÃO PARA INICIAR O MONITAMENTO DOS CARDS
+        // FUNÇÃO PARA INICIAR O MONITORAMENTO DOS CARDS
         function iniciarMonitoramento() {
 
             const eventos = new EventSource(API + "/eventos");
@@ -1050,6 +1079,7 @@
                 graficoMedicamentos();
                 graficoStatus();
                 carregarPendentesHoje();
+                carregarAlertas();
 
             });
 
@@ -1082,6 +1112,8 @@
 
             } else {
 
+                alert("Você tem medicamentos pendentes!");
+
                 html = "<b>⚠️ Medicamentos Pendentes</b><br><br>";
 
                 lista.forEach(item => {
@@ -1099,6 +1131,50 @@
 
             document.getElementById("situacaoHoje").innerHTML = html;
 
+        }
+
+
+        async function carregarAlertas() {
+
+            const resposta = await fetch(
+                API + "/pendentes-hoje?usuario=" + encodeURIComponent(usuario)
+            );
+
+            const lista = await resposta.json();
+
+            const div = document.getElementById("alertaMedicamentos");
+
+
+            if (lista.length === 0) {
+
+                div.innerHTML = `
+            <div class="alerta-verde">
+                ✅ Nenhum medicamento pendente
+            </div>
+        `;
+
+            } else {
+
+                let html = `
+            <div class="alerta-vermelho">
+                ⚠️ ${lista.length} medicamento(s) pendente(s)
+            </div>
+            <hr>
+        `;
+
+
+                lista.forEach(med => {
+
+                    html += `
+                💊 ${med.medicamento}<br>
+                ⏰ Horário: ${med.horarioPrevisto}<br><br>
+            `;
+
+                });
+
+
+                div.innerHTML = html;
+            }
         }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
@@ -1152,6 +1228,8 @@
                     graficoStatus();
                     listarTodos();
                     iniciarMonitoramento();
+                    carregarPendentesHoje();
+                    carregarAlertas();
 
                 })
                 .catch(error => {
