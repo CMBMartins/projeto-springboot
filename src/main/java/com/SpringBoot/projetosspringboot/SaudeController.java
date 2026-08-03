@@ -193,8 +193,22 @@ public class SaudeController {
 
     LocalTime agora = LocalTime.now();
 
-    return repository.findByUsuarioAndConsumidoFalse(usuario)
-            .stream()
+    System.out.println("Usuário: " + usuario);
+    System.out.println("Hora atual: " + agora);
+
+    List<Saude> lista = repository.findByUsuarioAndConsumidoFalse(usuario);
+
+    System.out.println("Medicamentos não consumidos: " + lista.size());
+
+    lista.forEach(m -> {
+        System.out.println(
+                m.getMedicamento()
+                + " | Horário: " + m.getHorarioPrevisto()
+                + " | Consumido: " + m.getConsumido()
+                + " | Atrasado: " + m.getAtrasado());
+    });
+
+    return lista.stream()
             .filter(m -> m.getHorarioPrevisto() != null)
             .filter(m -> m.getHorarioPrevisto().isBefore(agora))
             .toList();
