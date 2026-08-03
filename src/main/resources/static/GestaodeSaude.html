@@ -309,11 +309,11 @@
 
     /* TABELA */
     .tabela {
-    margin-top: 20px;
-    background: white;
-    color: black;
-    padding: 20px;
-    border-radius: 12px;
+        margin-top: 20px;
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 12px;
     }
 
     table {
@@ -329,7 +329,7 @@
 
     /* Linhas alternadas (zebra) */
     .linha-tabela:nth-child(even) {
-        background-color: red;
+        background-color: #f8f9fa;
     }
 
     .linha-tabela:nth-child(odd) {
@@ -543,7 +543,7 @@
             <!-- TABELA -->
             <section class="tabela">
 
-                <h3>📉 Lista de Medicamentos</h3>
+                <h3>📉 Últimos Medicamentos</h3>
 
                 <table>
                     <thead>
@@ -982,87 +982,78 @@
         // ======================================
         // EDITAR MEDICAMENTO
         // ======================================
-        async function editar() {
+        async function editar(id) {
 
-    if (!confirm("Deseja realmente editar este medicamento?")) {
-        return;
-    }
+            try {
 
-    const id = document.getElementById("id").value;
+                const resposta = await fetch(API + "/" + id);
 
-    if (!id) {
-        alert("Informe o ID do medicamento.");
-        return;
-    }
+                if (!resposta.ok) {
+                    throw new Error("Registro não encontrado");
+                }
 
-    const medicamento = {
-        medicamento: document.getElementById("medicamento").value,
-        compartimento: document.getElementById("compartimento").value,
-        horarioPrevisto: document.getElementById("horarioPrevisto").value
-    };
+                const medicamento = await resposta.json();
 
-    try {
+                document.getElementById("medicamento").value = medicamento.medicamento;
+                document.getElementById("compartimento").value = medicamento.compartimento;
+                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
+                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
+                document.getElementById("consumido").value = medicamento.consumido;
 
-        const resposta = await fetch(API + "/" + id, {
+            } catch (e) {
 
-            method: "PUT",
+                console.log(e);
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+            }
 
-            body: JSON.stringify(medicamento)
-
-        });
-
-        if (!resposta.ok) {
-            throw new Error("Erro ao atualizar o medicamento.");
         }
 
-        alert("Medicamento atualizado com sucesso!");
+        async function editarStatus(id, status) {
 
-        listarTodos();
-        limparCampos();
+            const resposta = await fetch(`${API}/${id}/status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            });
 
-    } catch (e) {
+            if (resposta.ok) {
 
-        console.error(e);
-        alert(e.message);
+                listarTodos();
+
+            } else {
+
+                alert("Erro ao atualizar o status.");
+
+            }
         }
-    }
 
-     // ======================================
-     // EDITAR STATUS DO MEDICAMENTO
-     // ======================================
-    async function editarStatus(id, status) {
+        function iniciarMonitoramento() {
 
-    const usuario = localStorage.getItem("usuario");
+            const eventos = new EventSource(API + "/saude/eventos");
 
-    if (!usuario) {
-        alert("Faça Login para executar essa funcionalidade!");
-        return;
-    }
+            eventos.addEventListener("atualizacao", function () {
 
-    const resposta = await fetch(`${API}/saude/${id}/status`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            status: status
-        })
-    });
+                console.log("Recebi atualização do servidor.");
 
-    if (resposta.ok) {
+                carregarDashboard();
+                listarTodos();
 
-        listarTodos();
+                graficoHorarios();
+                graficoAdesao();
+                graficoMedicamentos();
+                graficoStatus();
 
-    } else {
+            });
 
-        alert("Erro ao atualizar o status.");
+            eventos.onerror = function () {
+                console.log("Conexão SSE encerrada.");
+            };
 
-    }
-}
+        }
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA      
         function fazerLogin() {
@@ -1114,6 +1105,7 @@
                     graficoMedicamentos();
                     graficoStatus();
                     listarTodos();
+                    iniciarMonitoramento();
 
                 })
                 .catch(error => {
