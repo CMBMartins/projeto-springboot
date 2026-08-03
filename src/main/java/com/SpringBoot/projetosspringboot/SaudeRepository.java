@@ -12,7 +12,7 @@ public interface SaudeRepository extends JpaRepository<Saude, Integer> {
     // Listar por usuário
     List<Saude> findByUsuario(String usuario);
 
-    List<Saude> findByUsuarioAndConsumidoFalseAndAtrasadoTrue(String usuario);
+    List<Saude> findByUsuarioAndConsumidoFalseAndAtrasadoFalse(String usuario);
 
     // Últimos registros
     List<Saude> findTop5ByOrderByUltimaLeituraCameraDesc();
