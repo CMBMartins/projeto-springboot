@@ -192,7 +192,7 @@ public class SaudeController {
 
                 eventoSaudeService.atualizarMedicamentosAtrasados(usuario);
 
-                return repository.findByUsuarioAndConsumidoFalseAndAtrasadoTrue(usuario);
+                return repository.findByUsuarioAndConsumidoFalseAndAtrasadoFalse(usuario);
 
         }
 
