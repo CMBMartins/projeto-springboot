@@ -510,7 +510,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>📊 Hoje</h3>
+                    <h3>📊 Situação dos medicamentos hoje:</h3>
                     <p id="situacaoHoje">-</p>
                 </div>
 
@@ -668,8 +668,11 @@
                         ? dados.proximoMedicamento.horarioPrevisto
                         : "-";
 
-                document.getElementById("situacaoHoje").innerHTML =
-                    "Atrasados: " + (dados.atrasados ?? 0);
+                document.getElementById("situacaoHoje").innerHTML = `
+                <p>✅ Consumidos: ${dados.consumidosHoje ?? 0}</p>
+                <p>⏰ Pendentes: ${dados.pendentes ?? 0}</p>
+                <p>⚠️ Atrasados: ${dados.atrasados ?? 0}</p>
+                `;
 
             } catch (erro) {
 
