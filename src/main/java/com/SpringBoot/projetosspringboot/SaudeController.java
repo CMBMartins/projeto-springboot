@@ -1,5 +1,6 @@
 package com.SpringBoot.projetosspringboot;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,14 +188,17 @@ public class SaudeController {
 
         }
 
-        @GetMapping("/pendentes-hoje")
-        public List<Saude> pendentesHoje(@RequestParam String usuario) {
+    @GetMapping("/pendentes-hoje")
+    public List<Saude> pendentesHoje(@RequestParam String usuario) {
 
-                eventoSaudeService.atualizarMedicamentosAtrasados(usuario);
+    LocalTime agora = LocalTime.now();
 
-                return repository.findByUsuarioAndConsumidoFalseAndAtrasadoFalse(usuario);
-
-        }
+    return repository.findByUsuarioAndConsumidoFalse(usuario)
+            .stream()
+            .filter(m -> m.getHorarioPrevisto() != null)
+            .filter(m -> m.getHorarioPrevisto().isBefore(agora))
+            .toList();
+            }
 
         @GetMapping("/dashboard")
         public DashboardSaudeDTO dashboard(@RequestParam String usuario) {

@@ -12,6 +12,8 @@ public interface SaudeRepository extends JpaRepository<Saude, Integer> {
     // Listar por usuário
     List<Saude> findByUsuario(String usuario);
 
+    List<Saude> findByUsuarioAndConsumidoFalse(String usuario);
+
     List<Saude> findByUsuarioAndConsumidoFalseAndAtrasadoFalse(String usuario);
 
     // Últimos registros
