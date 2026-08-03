@@ -3,12 +3,17 @@ package com.SpringBoot.projetosspringboot;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.time.LocalTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Service
 public class EventoSaudeService {
+
+    @Autowired
+    private SaudeRepository repository;
 
     private final List<SseEmitter> clientes = new CopyOnWriteArrayList<>();
 
@@ -45,7 +50,33 @@ public class EventoSaudeService {
             }
 
         }
+    }
 
+    public void atualizarMedicamentosAtrasados() {
+
+        LocalTime agora = LocalTime.now();
+
+        List<Saude> medicamentos = repository.findAll();
+
+        boolean alterou = false;
+
+        for (Saude medicamento : medicamentos) {
+
+            if (Boolean.FALSE.equals(medicamento.getConsumido())
+                    && medicamento.getHorarioPrevisto() != null
+                    && medicamento.getHorarioPrevisto().isBefore(agora)
+                    && !Boolean.TRUE.equals(medicamento.getAtrasado())) {
+
+                medicamento.setAtrasado(true);
+
+                alterou = true;
+            }
+        }
+
+        if (alterou) {
+            repository.saveAll(medicamentos);
+            notificarAtualizacao();
+        }
     }
 
 }
