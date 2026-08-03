@@ -1031,9 +1031,10 @@
             }
         }
 
+        // FUNÇÃO PARA INICIAR O MONITAMENTO DOS CARDS
         function iniciarMonitoramento() {
 
-            const eventos = new EventSource(API + "/saude/eventos");
+            const eventos = new EventSource(API + "/eventos");
 
             eventos.addEventListener("atualizacao", function () {
 
@@ -1041,17 +1042,59 @@
 
                 carregarDashboard();
                 listarTodos();
-
                 graficoHorarios();
                 graficoAdesao();
                 graficoMedicamentos();
                 graficoStatus();
+                carregarPendentesHoje();
 
             });
 
             eventos.onerror = function () {
                 console.log("Conexão SSE encerrada.");
             };
+
+        }
+
+        // FUNÇÃO PARA MOSTRAR OS MEDICAMENTOS PENDENTES NO DIA
+        async function carregarPendentesHoje() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            const resposta = await fetch(
+                API + "/pendentes-hoje?usuario=" + encodeURIComponent(usuario)
+            );
+
+            const lista = await resposta.json();
+
+            let html = "";
+
+            if (lista.length === 0) {
+
+                html = `
+            <span style="color:green;font-weight:bold;">
+                ✅ Nenhum medicamento pendente
+            </span>
+        `;
+
+            } else {
+
+                html = "<b>⚠️ Medicamentos Pendentes</b><br><br>";
+
+                lista.forEach(item => {
+
+                    html += `
+                💊 <b>${item.medicamento}</b><br>
+                🕒 ${item.horarioPrevisto}<br><br>
+            `;
+
+                });
+
+                html += `<hr>Pendentes: <b>${lista.length}</b>`;
+
+            }
+
+            document.getElementById("situacaoHoje").innerHTML = html;
 
         }
 
