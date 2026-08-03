@@ -187,6 +187,15 @@ public class SaudeController {
 
         }
 
+        @GetMapping("/pendentes-hoje")
+        public List<Saude> pendentesHoje(@RequestParam String usuario) {
+
+                eventoSaudeService.atualizarMedicamentosAtrasados(usuario);
+
+                return repository.findByUsuarioAndConsumidoFalseAndAtrasadoTrue(usuario);
+
+        }
+
         @GetMapping("/dashboard")
         public DashboardSaudeDTO dashboard(@RequestParam String usuario) {
 
