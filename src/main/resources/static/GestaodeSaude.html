@@ -398,7 +398,7 @@
     }
 
     .alerta-card {
-        border-left: 8px solid red;
+        border-left: 10px solid red;
     }
 
     .alerta-vermelho {
@@ -1289,8 +1289,7 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
+            const usuario = localStorage.getItem("usuario");
 
             // Validação de campos vazios
             if (usuario === "" && senha === "") {
@@ -1311,7 +1310,11 @@
             const doc = new jsPDF();
 
             doc.setFontSize(16);
-            doc.text("Relatório de Saude", 14, 20);
+            doc.text("Relatório de Monitoramento de Medicamentos", 14, 20);
+
+            doc.setFontSize(10);
+            doc.text("Usuário: " + usuario, 14, 28);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 34);
 
             let y = 30;
 
@@ -1323,15 +1326,20 @@
 
                 if (colunas.length > 0) {
 
-                    const data = colunas[0].innerText;
-                    const descricao = colunas[1].innerText;
-                    const valor = colunas[2].innerText;
+                    const medicamento = colunas[0].innerText;
+                    const compartimento = colunas[1].innerText;
+                    const horario = colunas[2].innerText;
                     const status = colunas[3].innerText;
 
                     doc.setFontSize(10);
-                    doc.text(`${data} | ${descricao} | ${valor} | ${status}`, 14, y);
-
-                    y += 8;
+                    doc.text("Medicamento: " + medicamento, 14, y);
+                    y += 6;
+                    doc.text("Compartimento: " + compartimento, 14, y);
+                    y += 6;
+                    doc.text("Horário: " + horario, 14, y);
+                    y += 6;
+                    doc.text("Status: " + status, 14, y);
+                    y += 10;
 
                     // quebra de página
                     if (y > 280) {
@@ -1348,11 +1356,6 @@
 
             carregarDashboard();
             listarTodos();
-            //graficoHorarios();
-            //graficoAdesao();
-            //graficoMedicamentos();
-            //graficoStatus();
-            //listarTodos();
 
         }, 5000);
 

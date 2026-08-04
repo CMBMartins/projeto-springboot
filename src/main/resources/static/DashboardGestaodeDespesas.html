@@ -1046,8 +1046,9 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
+            //const usuario = document.getElementById("usuario").value;
+            //const senha = document.getElementById("senha").value;
+            const usuario = localStorage.getItem("usuario");
 
             // Validação de campos vazios
             if (usuario === "" && senha === "") {
@@ -1070,6 +1071,10 @@
             doc.setFontSize(16);
             doc.text("Relatório de Despesas", 14, 20);
 
+            doc.setFontSize(10);
+            doc.text("Usuário: " + usuario, 14, 28);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 34);
+
             let y = 30;
 
             const linhas = document.querySelectorAll("#ultimasDespesas tr");
@@ -1086,7 +1091,14 @@
                     const status = colunas[3].innerText;
 
                     doc.setFontSize(10);
-                    doc.text(`${data} | ${descricao} | ${valor} | ${status}`, 14, y);
+                    doc.text("Data: " + data, 14, y);
+                    y += 6;
+                    doc.text("Descriçao: " + descricao, 14, y);
+                    y += 6;
+                    doc.text("Valor: " + valor, 14, y);
+                    y += 6;
+                    doc.text("Status: " + status, 14, y);
+                    y += 10;
 
                     y += 8;
 
