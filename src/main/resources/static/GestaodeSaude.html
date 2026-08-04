@@ -1134,13 +1134,21 @@
         }
 
 
+        // FUNÇÃO PARA MOSTRAR OS ALERTAS
         async function carregarAlertas() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            console.log("Usuário enviado:", usuario);
 
             const resposta = await fetch(
                 API + "/pendentes-hoje?usuario=" + encodeURIComponent(usuario)
             );
 
             const lista = await resposta.json();
+
+            console.log("Usuário:", usuario);
+            console.log("Lista:", lista);
 
             const div = document.getElementById("alertaMedicamentos");
 
