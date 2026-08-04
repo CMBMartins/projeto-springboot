@@ -1309,16 +1309,16 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            doc.setFontSize(16);
-            doc.text("Relatório de Monitoramento de Medicamentos", 14, 20);
+            doc.setFontSize(14);
+            doc.text("Relatório de Monitoramento de Medicamentos", 14, 10);
 
-            doc.setFontSize(10);
-            doc.text("Usuário: " + usuario, 14, 28);
-            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 34);
+            doc.setFontSize(12);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
 
             let y = 30;
 
-            const linhas = document.querySelectorAll("#ultimasSaude tr");
+            const linhas = document.querySelectorAll("#tabelaSaude tr");
 
             linhas.forEach((linha, index) => {
 
@@ -1326,19 +1326,20 @@
 
                 if (colunas.length > 0) {
 
-                    const medicamento = colunas[0].innerText;
-                    const compartimento = colunas[1].innerText;
-                    const horario = colunas[2].innerText;
-                    const status = colunas[3].innerText;
+                    doc.setFontSize(10);
+                    const medicamento = colunas[1].innerText;
+                    const compartimento = colunas[2].innerText;
+                    const horarioPrevisto = colunas[3].innerText;
+                    const consumido = colunas[4].innerText;
 
                     doc.setFontSize(10);
                     doc.text("Medicamento: " + medicamento, 14, y);
                     y += 6;
                     doc.text("Compartimento: " + compartimento, 14, y);
                     y += 6;
-                    doc.text("Horário: " + horario, 14, y);
+                    doc.text("Horário: " + horarioPrevisto, 14, y);
                     y += 6;
-                    doc.text("Status: " + status, 14, y);
+                    doc.text("Consumido: " + consumido, 14, y);
                     y += 10;
 
                     // quebra de página
