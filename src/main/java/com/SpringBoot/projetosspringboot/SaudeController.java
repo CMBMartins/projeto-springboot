@@ -191,7 +191,8 @@ public class SaudeController {
         @GetMapping("/pendentes-hoje")
         public List<Saude> pendentesHoje(@RequestParam String usuario) {
 
-                LocalTime agora = LocalTime.now();
+                LocalTime agora = LocalTime.now(
+                                java.time.ZoneId.of("America/Belem"));
 
                 System.out.println("Usuário: " + usuario);
                 System.out.println("Hora atual: " + agora);

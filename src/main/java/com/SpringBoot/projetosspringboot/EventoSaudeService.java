@@ -54,7 +54,8 @@ public class EventoSaudeService {
 
     public void atualizarMedicamentosAtrasados(String usuario) {
 
-        LocalTime agora = LocalTime.now();
+        LocalTime agora = LocalTime.now(
+                java.time.ZoneId.of("America/Belem"));
 
         List<Saude> medicamentos = repository.findByUsuario(usuario);
 
