@@ -188,31 +188,45 @@ public class SaudeController {
 
         }
 
-    @GetMapping("/pendentes-hoje")
-    public List<Saude> pendentesHoje(@RequestParam String usuario) {
+        @GetMapping("/pendentes-hoje")
+        public List<Saude> pendentesHoje(@RequestParam String usuario) {
 
-    LocalTime agora = LocalTime.now();
+                LocalTime agora = LocalTime.now();
 
-    System.out.println("Usuário: " + usuario);
-    System.out.println("Hora atual: " + agora);
+                System.out.println("Usuário: " + usuario);
+                System.out.println("Hora atual: " + agora);
 
-    List<Saude> lista = repository.findByUsuarioAndConsumidoFalse(usuario);
+                List<Saude> lista = repository.findByUsuarioAndConsumidoFalse(usuario);
 
-    System.out.println("Medicamentos não consumidos: " + lista.size());
+                System.out.println("=================================");
+                System.out.println("Quantidade: " + lista.size());
 
-    lista.forEach(m -> {
-        System.out.println(
-                m.getMedicamento()
-                + " | Horário: " + m.getHorarioPrevisto()
-                + " | Consumido: " + m.getConsumido()
-                + " | Atrasado: " + m.getAtrasado());
-    });
+                for (Saude s : lista) {
 
-    return lista.stream()
-            .filter(m -> m.getHorarioPrevisto() != null)
-            .filter(m -> m.getHorarioPrevisto().isBefore(agora))
-            .toList();
-            }
+                        System.out.println(
+                                        s.getMedicamento()
+                                                        + " | Usuario=" + s.getUsuario()
+                                                        + " | Consumido=" + s.getConsumido()
+                                                        + " | Horário=" + s.getHorarioPrevisto());
+                }
+
+                System.out.println("=================================");
+
+                System.out.println("Medicamentos não consumidos: " + lista.size());
+
+                lista.forEach(m -> {
+                        System.out.println(
+                                        m.getMedicamento()
+                                                        + " | Horário: " + m.getHorarioPrevisto()
+                                                        + " | Consumido: " + m.getConsumido()
+                                                        + " | Atrasado: " + m.getAtrasado());
+                });
+
+                return lista.stream()
+                                .filter(m -> m.getHorarioPrevisto() != null)
+                                .filter(m -> m.getHorarioPrevisto().isBefore(agora))
+                                .toList();
+        }
 
         @GetMapping("/dashboard")
         public DashboardSaudeDTO dashboard(@RequestParam String usuario) {
