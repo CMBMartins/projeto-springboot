@@ -207,20 +207,13 @@ public class SaudeController {
                                         s.getMedicamento()
                                                         + " | Usuario=" + s.getUsuario()
                                                         + " | Consumido=" + s.getConsumido()
-                                                        + " | Horário=" + s.getHorarioPrevisto());
+                                                        + " | Horário=" + s.getHorarioPrevisto()
+                                                        + " | Agora=" + agora
+                                                        + " | isBefore=" + s.getHorarioPrevisto().isBefore(agora)
+                                                        + " | Atrasado=" + s.getAtrasado());
                 }
 
                 System.out.println("=================================");
-
-                System.out.println("Medicamentos não consumidos: " + lista.size());
-
-                lista.forEach(m -> {
-                        System.out.println(
-                                        m.getMedicamento()
-                                                        + " | Horário: " + m.getHorarioPrevisto()
-                                                        + " | Consumido: " + m.getConsumido()
-                                                        + " | Atrasado: " + m.getAtrasado());
-                });
 
                 return lista.stream()
                                 .filter(m -> m.getHorarioPrevisto() != null)
