@@ -1068,12 +1068,12 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            doc.setFontSize(16);
-            doc.text("Relatório de Despesas", 14, 20);
+            doc.setFontSize(14);
+            doc.text("Relatório de Despesas", 14, 10);
 
             doc.setFontSize(10);
-            doc.text("Usuário: " + usuario, 14, 28);
-            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 34);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
 
             let y = 30;
 
