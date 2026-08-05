@@ -1182,8 +1182,11 @@
             const doc = new jsPDF();
 
             doc.setFontSize(16);
+            doc.text("Quadro de Calculos Potências de Luz e Tomadas:", 14, 10);
 
-            doc.text("Quadro de Calculos Potências de Luz e Tomadas:", 14, 20);
+            doc.setFontSize(12);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
 
             let y = 30;
 
@@ -1196,29 +1199,39 @@
 
                 if (colunas.length > 0) {
 
-                    const projeto = colunas[0]?.innerText || "";
+                    const projeto = colunas[1]?.innerText || "";
 
-                    const ambiente = colunas[1]?.innerText || "";
+                    const ambiente = colunas[2]?.innerText || "";
 
-                    const tamanhodoambiente = colunas[2]?.innerText || "";
+                    const tamanhodoambiente = colunas[3]?.innerText || "";
 
-                    const potenciadeluz = colunas[3]?.innerText || "";
+                    const potenciadeluz = colunas[4]?.innerText || "";
 
-                    const tomadasdeusogeral = colunas[4]?.innerText || "";
+                    const tomadasdeusogeral = colunas[5]?.innerText || "";
 
-                    const tomadasdeusoespecifico = colunas[5]?.innerText || "";
+                    const tomadasdeusoespecifico = colunas[6]?.innerText || "";
 
-                    const tipodetomadastue = colunas[6]?.innerText || "";
+                    const tipodetomadastue = colunas[7]?.innerText || "";
+
+                    const tipodocircuito = colunas[8]?.innerText || "";
 
                     doc.setFontSize(10);
-
-                    doc.text(
-                        `${projeto} | ${ambiente} | ${tamanhodoambiente} | ${potenciadeluz} | ${tomadasdeusogeral} | ${tomadasdeusoespecifico} | ${tipodetomadastue}`,
-                        14,
-                        y
-                    );
-
-                    y += 8;
+                    doc.text("Projeto: " + projeto, 14, y);
+                    y += 6;
+                    doc.text("Ambiente: " + ambiente, 14, y);
+                    y += 6;
+                    doc.text("Tamanho do Ambiente: " + tamanhodoambiente, 14, y);
+                    y += 6;
+                    doc.text("Potencia de Luz: " + potenciadeluz, 14, y);
+                    y += 6;
+                    doc.text("Tomadas de Uso Geral: " + tomadasdeusogeral, 14, y);
+                    y += 6;
+                    doc.text("Tomadas Uso Especifico: " + tomadasdeusoespecifico, 14, y);
+                    y += 6;
+                    doc.text("Tipo de Tomadas TUE: " + tipodetomadastue, 14, y);
+                    y += 6;
+                    doc.text("Tipo do Circuito: " + tipodocircuito, 14, y);
+                    y += 10;
 
                     // QUEBRA DE PÁGINA
                     if (y > 280) {
