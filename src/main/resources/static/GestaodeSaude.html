@@ -238,7 +238,7 @@
     }
 
     #statusSensor {
-        width: 100px;
+        width: 140px;
         height: 35px;
         padding: 4px;
         font-size: 16px;
@@ -399,6 +399,8 @@
 
     .alerta-card {
         border-left: 10px solid red;
+        background-color: red;
+        color: #dc3545;
     }
 
     .alerta-vermelho {
@@ -437,7 +439,7 @@
                 <a href="#">📊 Dashboard</a>
                 <a href="GestaodeSaudeFormulario.html">➕ Cadastro dos Medicamentos</a>
                 <a href="#" onclick="gerarRelatorioPDF(); return false;" class="btn-nav">
-                    📄 Relatórios
+                    📄 Lista de MedicamentosPDF
                 </a>
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
@@ -471,8 +473,8 @@
                     <label>Status Sensor:</label>
 
                     <select id="statusSensor">
-                        <option>ONLINE</option>
-                        <option>OFFLINE</option>
+                        <option>🟢ONLINE</option>
+                        <option>🔴OFFLINE</option>
                     </select>
                 </div>
 
@@ -517,7 +519,7 @@
 
                 <div class="card">
                     <h3>📷 Status da Câmera</h3>
-                    <p id="statusCamera">ONLINE</p>
+                    <p id="statusCamera">🟢ONLINE</p>
                 </div>
 
                 <div class="card">
@@ -525,14 +527,14 @@
                     <p id="proximosHorarios">-</p>
                 </div>
 
-                <div class="card">
-                    <h3>📊 Situação dos medicamentos hoje:</h3>
+                <!--div class="card">
+                    <h3>📊 Resumo Diário:</h3>
                     <p id="situacaoHoje">-</p>
-                </div>
+                </div-->
 
                 <div class="card alerta-card" id="cardAlerta">
 
-                    <h3>🔔 Alertas</h3>
+                    <h3>🔔 ALERTAS!</h3>
 
                     <div id="alertaMedicamentos">
                         Verificando...
@@ -632,8 +634,15 @@
 
         //FUNÇÃO PARA INICIAR USUARIO
         function getUsuario() {
-            //return localStorage.getItem("usuario");
-            return document.getElementById("usuario").value;
+
+            const user = localStorage.getItem("usuario");
+
+            if (!user || user === "undefined" || user === "null") {
+
+                return null;
+            }
+
+            return user;
         }
 
         //DASHBOARD COMPLETO (usa endpoints específicos)
@@ -674,8 +683,9 @@
                         : "-";
 
                 document.getElementById("resumoDiario").innerHTML =
-                    "Consumidos: " + (dados.consumidosHoje ?? 0) +
-                    "<br>Pendentes: " + (dados.pendentes ?? 0);
+                    "✅Consumidos:" + (dados.consumidosHoje ?? 0) +
+                    "<br>⚠️Atrasados: " + (dados.atrasados ?? 0) +
+                    "<br>⏰Pendentes: " + (dados.pendentes ?? 0);
 
                 document.getElementById("adesao").innerHTML =
                     ((dados.adesao ?? 0).toFixed(1)) + "%";
@@ -686,8 +696,9 @@
                     ((dados.compartimentosOcupados ?? 0) +
                         (dados.compartimentosVazios ?? 0));
 
-                document.getElementById("statusCamera").innerHTML =
-                    dados.statusSensor ?? "OFFLINE";
+                document.getElementById("statusCamera").innerHTML = `
+                    <p> 🟢${dados.statusSensor ?? 0}</p>
+                    `;
 
                 document.getElementById("proximosHorarios").innerHTML =
                     dados.proximoMedicamento
@@ -1289,20 +1300,12 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = localStorage.getItem("usuario");
+            const usuario = getUsuario();
 
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
+            // VALIDA LOGIN
+            if (!usuario) {
+
                 alert("⚠️ Faça Login!");
-                return;
-            }
-
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
                 return;
             }
 
