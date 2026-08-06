@@ -785,6 +785,9 @@
                         "</small>"
                         : "-";
 
+                document.getElementById("ultimoMedicamento").innerHTML =
+                    "✅Último Consumido:" + (dados.consumidosHoje ?? 0);
+
                 document.getElementById("resumoDiario").innerHTML =
                     "✅Consumidos:" + (dados.consumidosHoje ?? 0) +
                     "<br>⚠️Atrasados: " + (dados.atrasados ?? 0) +
