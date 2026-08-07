@@ -1345,11 +1345,15 @@
         function cadastrarUsuarios() {
 
             const usuario = localStorage.getItem("usuario");
-            const logado = localStorage.getItem("logado");
+            //const logado = localStorage.getItem("logado");
 
             // Validação de campos vazios
-            if (logado !== "true" || !usuario) {
-                alert("⚠️ Faça Login!");
+            //if (logado !== "true" || !usuario) {
+                //alert("⚠️ Faça Login!");
+                //return;
+            //}
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
                 return;
             }
 

@@ -365,11 +365,12 @@
             //Função para pesquisar por Usuário
             function buscarUsuario() {
 
-                const usuario = document.getElementById("usuario").value;
+                const usuario = document.getElementById("usuario").value.trim(); 
+                const senha = document.getElementById("senha").value.trim();
 
-                if (!usuario) {
-                    alert("Informe o usuário!");
-                    return;
+                if (!usuario || !senha) 
+                { alert("Informe o usuário e a senha!"); 
+                return;
                 }
 
                 fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))

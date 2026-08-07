@@ -1157,6 +1157,14 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
+
+            const usuario = localStorage.getItem("usuario");
+            
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
+
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
