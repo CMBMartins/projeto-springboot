@@ -645,20 +645,35 @@
             return user;
         }
 
-        //DASHBOARD COMPLETO (usa endpoints específicos)
+        // =====================================================
+        // DASHBOARD COMPLETO
+        // Só carrega os dados se houver usuário logado
+        // =====================================================
         async function carregarDashboard() {
 
             try {
 
                 const usuario = localStorage.getItem("usuario");
 
+                if (!usuario || usuario.trim() === "") {
+
+                    console.log("Nenhum usuário logado. Dashboard não será carregado.");
+
+                    return;
+                }
+
+                console.log("Carregando dashboard para:", usuario);
+
+
                 const resposta = await fetch(
                     `${API}/dashboard?usuario=${encodeURIComponent(usuario)}`
                 );
 
                 if (!resposta.ok) {
-                    console.error("Erro:", resposta.status);
+
+                    console.error("Erro ao carregar dashboard:", resposta.status);
                     console.error(await resposta.text());
+
                     return;
                 }
 
@@ -666,58 +681,105 @@
 
                 console.log("Dashboard:", dados);
 
-                document.getElementById("proximoMedicamento").innerHTML =
-                    dados.proximoMedicamento
-                        ? dados.proximoMedicamento.medicamento +
-                        "<br><small>" +
-                        dados.proximoMedicamento.horarioPrevisto +
-                        "</small>"
-                        : "-";
 
-                document.getElementById("ultimoMedicamento").innerHTML =
-                    dados.ultimoConsumido
-                        ? dados.ultimoConsumido.medicamento +
-                        "<br><small>" +
-                        dados.ultimoConsumido.horarioConsumido +
-                        "</small>"
-                        : "-";
+                const proximoMedicamento =
+                    document.getElementById("proximoMedicamento");
 
-                document.getElementById("resumoDiario").innerHTML =
-                    "✅Consumidos:" + (dados.consumidosHoje ?? 0) +
-                    "<br>⚠️Atrasados: " + (dados.atrasados ?? 0) +
-                    "<br>⏰Pendentes: " + (dados.pendentes ?? 0);
+                if (proximoMedicamento) {
 
-                document.getElementById("adesao").innerHTML =
-                    ((dados.adesao ?? 0).toFixed(1)) + "%";
+                    proximoMedicamento.innerHTML =
+                        dados.proximoMedicamento
+                            ? dados.proximoMedicamento.medicamento +
+                            "<br><small>" +
+                            dados.proximoMedicamento.horarioPrevisto +
+                            "</small>"
+                            : "-";
+                }
 
-                document.getElementById("compartimentos").innerHTML =
-                    (dados.compartimentosOcupados ?? 0) +
-                    " / " +
-                    ((dados.compartimentosOcupados ?? 0) +
-                        (dados.compartimentosVazios ?? 0));
+                const ultimoMedicamento =
+                    document.getElementById("ultimoMedicamento");
 
-                document.getElementById("statusCamera").innerHTML = `
-                    <p> 🟢${dados.statusSensor ?? 0}</p>
-                    `;
+                if (ultimoMedicamento) {
 
-                document.getElementById("proximosHorarios").innerHTML =
-                    dados.proximoMedicamento
-                        ? dados.proximoMedicamento.horarioPrevisto
-                        : "-";
+                    ultimoMedicamento.innerHTML =
+                        dados.ultimoConsumido
+                            ? dados.ultimoConsumido.medicamento +
+                            "<br><small>" +
+                            dados.ultimoConsumido.horarioConsumido +
+                            "</small>"
+                            : "-";
+                }
 
-                //document.getElementById("situacaoHoje").innerHTML = `
-                //<p>✅ Consumidos: ${dados.consumidosHoje ?? 0}</p>
-                //<p>⏰ Pendentes: ${dados.pendentes ?? 0}</p>
-                //<p>⚠️ Atrasados: ${dados.atrasados ?? 0}</p>
-                //`;
+                const resumoDiario =
+                    document.getElementById("resumoDiario");
+
+                if (resumoDiario) {
+
+                    resumoDiario.innerHTML = `
+                <p>✅ Consumidos: ${dados.consumidosHoje ?? 0}</p>
+                <p>⚠️ Atrasados: ${dados.atrasados ?? 0}</p>
+                <p>⏰ Pendentes: ${dados.pendentes ?? 0}</p>
+            `;
+                }
+
+                const adesao =
+                    document.getElementById("adesao");
+
+                if (adesao) {
+
+                    adesao.innerHTML =
+                        ((dados.adesao ?? 0).toFixed(1)) + "%";
+                }
+
+                const compartimentos =
+                    document.getElementById("compartimentos");
+
+                if (compartimentos) {
+
+                    const ocupados =
+                        dados.compartimentosOcupados ?? 0;
+
+                    const vazios =
+                        dados.compartimentosVazios ?? 0;
+
+                    compartimentos.innerHTML =
+                        ocupados + " / " + (ocupados + vazios);
+                }
+
+                const statusCamera =
+                    document.getElementById("statusCamera");
+
+                if (statusCamera) {
+
+                    statusCamera.innerHTML = `
+                <p>🟢 ${dados.statusSensor ?? "OFFLINE"}</p>
+            `;
+                }
+
+                const proximosHorarios =
+                    document.getElementById("proximosHorarios");
+
+                if (proximosHorarios) {
+
+                    proximosHorarios.innerHTML =
+                        dados.proximoMedicamento
+                            ? dados.proximoMedicamento.horarioPrevisto
+                            : "-";
+                }
 
             } catch (erro) {
 
-                console.error("Erro ao carregar dashboard:", erro);
-
+                console.error(
+                    "Erro ao carregar dashboard:",
+                    erro
+                );
             }
         }
 
+        // =====================================================
+        // GRAFICOS
+        // =====================================================
+        // 📋 FUNÇÃO DO GRÁFICO HORÁRIOS
         async function graficoHorarios() {
 
             let usuario = localStorage.getItem("usuario");
@@ -747,6 +809,7 @@
                 });
         }
 
+        // 📋 FUNÇÃO DO GRÁFICO ADESÃO
         async function graficoAdesao() {
 
             let usuario = localStorage.getItem("usuario");
@@ -782,6 +845,7 @@
 
         }
 
+        // 📋 FUNÇÃO DO GRÁFICO MEDICAMENTOS
         async function graficoMedicamentos() {
 
             let usuario = localStorage.getItem("usuario");
@@ -815,6 +879,7 @@
 
         }
 
+        // 📋 FUNÇÃO DO GRÁFICO STATUS
         async function graficoStatus() {
 
             try {
@@ -866,11 +931,6 @@
         }
 
 
-        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-        window.onload = function () {
-            //carregarDashboard();
-        }
-
         function iniciarSistema() {
             console.log("Sistema iniciado");
             listarTodos();
@@ -881,7 +941,6 @@
         async function listarTodos() {
 
             const usuario = localStorage.getItem("usuario");
-
 
             try {
 
@@ -1024,6 +1083,10 @@
         // ======================================
         async function editar(id) {
 
+            if (!confirm("Deseja realmente EDITAR este medicamento?")) {
+                return;
+            }
+
             try {
 
                 const resposta = await fetch(API + "/" + id);
@@ -1052,6 +1115,10 @@
         // EDITAR STATUS
         // ======================================
         async function editarStatus(id, status) {
+
+            if (!confirm("Deseja realmente modifica o status desse medicamento?")) {
+                return;
+            }
 
             const resposta = await fetch(`${API}/${id}/status`, {
                 method: "PUT",
@@ -1358,12 +1425,25 @@
 
         setInterval(() => {
 
-            carregarDashboard();
-            listarTodos();
+            const usuario = localStorage.getItem("usuario");
+            const logado = localStorage.getItem("logado");
+
+            // ==========================================
+            // Só atualiza se houver usuário logado
+            // ==========================================
+
+            if (logado === "true" && usuario) {
+
+                carregarDashboard();
+                listarTodos();
+
+            } else {
+
+                console.log("⏸️ Sistema aguardando login...");
+
+            }
 
         }, 5000);
-
-        //window.login = login;
 
     </script>
 
