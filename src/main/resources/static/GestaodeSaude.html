@@ -964,46 +964,54 @@
                     let cor = "";
                     let botao = "";
 
-                    if (saude.consumido) {
+                    if (saude.consumido) { 
+                    status = "✅ Consumido"; 
+                    cor = "#d4edda"; 
+                    botao = ` <button class="btn-atrasado" 
+                    onclick="editarStatus(${saude.id}, 'ATRASADO')"> 
+                    ⚠️ Atrasado </button> 
+                    <button class="btn-consumido" 
+                    onclick="editarStatus(${saude.id}, 'PENDENTE')"> 
+                    ⏰ Pendente </button> 
+                    <button class="btn-excluir" 
+                    onclick="excluirMedicamento(${saude.id})"> 🗑️ Excluir 
+                    </button> `;
 
-                        status = "✅ Consumido";
-                        cor = "#d4edda";
-
-                        botao = `
-                    <span style="color:green;font-weight:bold">
-                        ✔ Consumido
-                    </span>
-                `;
-
-                    } else if (saude.atrasado) {
-
-                        status = "⚠️ Atrasado";
-                        cor = "#fff3cd";
-
-                        botao = `
-                    <button class="btn-atrasado"
-                        onclick="editarStatus(${saude.id}, 'PENDENTE')">
-                        ⏰ Marcar como Pendente
-                    </button>
-                `;
-
+                    } else if (saude.atrasado) { 
+                        status = "⚠️ Atrasado"; 
+                        cor = "#fff3cd"; 
+                        botao = ` <button class="btn-consumido" 
+                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')"> 
+                        ✅ Consumido 
+                        </button> 
+                        <button class="btn-atrasado" 
+                        onclick="editarStatus(${saude.id}, 'PENDENTE')"> 
+                        ⏰ Pendente </button> 
+                        <button class="btn-excluir" 
+                        onclick="excluirMedicamento(${saude.id})"> 🗑️ Excluir 
+                        </button> `;
                     } else {
 
                         status = "⏰ Pendente";
                         cor = "#f8d7da";
-
-                        botao = `
-                    <button class="btn-consumido"
+                        botao = `  <button class="btn-consumido"
                         onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
                         ✅ Consumido
-                    </button>
+                        </button>
 
-                    <button class="btn-atrasado"
+                        <button class="btn-atrasado"
                         onclick="editarStatus(${saude.id}, 'ATRASADO')">
                         ⚠️ Atrasado
-                    </button>
-                `;
+                        </button>;
                     }
+
+        <button class="btn-excluir"
+            onclick="excluirMedicamento(${saude.id})">
+            🗑️ Excluir
+        </button>
+        `;
+        }
+                    
 
                     tabela.innerHTML += `
 
@@ -1020,14 +1028,6 @@
                 <td>
 
                    ${botao}
-
-                    <button
-                        onclick="excluir(${saude.id})"
-                        class="btn-excluir">
-
-                        🗑 Excluir
-
-                    </button>
 
                 </td>
 
@@ -1345,13 +1345,7 @@
         function cadastrarUsuarios() {
 
             const usuario = localStorage.getItem("usuario");
-            //const logado = localStorage.getItem("logado");
-
-            // Validação de campos vazios
-            //if (logado !== "true" || !usuario) {
-                //alert("⚠️ Faça Login!");
-                //return;
-            //}
+            
             if (!usuario) {
                 alert("Faça Login para executar essa funcionalidade!");
                 return;
