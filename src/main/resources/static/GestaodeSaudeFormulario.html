@@ -235,7 +235,7 @@
     }
 
     #consumido {
-        width: 100px;
+        width: 120px;
         height: 35px;
         padding: 4px;
         font-size: 16px;
@@ -270,6 +270,26 @@
     }
 
     #statusSensor {
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    #quantidadeAbastecida {
+        width: 100px;
+        height: 35px;
+        padding: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #0d47a1;
+        background-color: #ffffff;
+        border: 2px solid #2196f3;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    #quantidadeAbastecida {
         text-align: center;
         letter-spacing: 1px;
     }
@@ -500,13 +520,20 @@
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
 
+                <label for="quantidadeAbastecida">Quantidade de doses abastecidas:</label>
+
+                <select id="quantidadeAbastecida">
+                    <option value="3">3 doses</option>
+                    <option value="5">5 doses</option>
+                </select>
+
             </div><br>
 
             <label>Medicamento Consumido:</label>
 
             <select id="consumido">
-                <option value="false">Não</option>
-                <option value="true">Sim</option>
+                <option value="false">Pendente</option>
+                <option value="true">Consumido</option>
             </select>
 
             <label>Status Sensor:</label>
@@ -536,8 +563,8 @@
                     <span class="tag exforge">💊 Exforge320/25/10: A1</span>
                     <span class="tag metformina">💊 Metformina: A2</span>
                     <span class="tag vitaminaB12">💊 Vitamina B12: A3</span>
-                    <span class="tag coenzimaq10">💊 Coenzima Q10: A4</span>                   
-                    <span class="tag vitaminaD3">💊 Vitamina D3: A5</span>                    
+                    <span class="tag coenzimaq10">💊 Coenzima Q10: A4</span>
+                    <span class="tag vitaminaD3">💊 Vitamina D3: A5</span>
                     <span class="tag tansulosina">💊 Tansulosina 0,4mg: A6</span>
                     <span class="tag rosuvastatina">💊 Rosuvastatina+Ezetimiba 20/10: A7</span>
                     <span class="tag oleodeSementedeAbobora">💊 Oléo de Semente de Abobora: A8</span>
@@ -777,14 +804,14 @@
                 return;
             }
 
-            if (!usuario) {
-                alert("Faça Login para executar essa funcionalidade.");
-                return;
-            }
-
             try {
 
                 event.preventDefault();
+
+
+                const quantidadeAbastecida = parseInt(document.getElementById("quantidadeAbastecida").value);
+
+                const dosesRestantes = quantidadeAbastecida;
 
                 let dados = {
 
@@ -799,7 +826,8 @@
 
                     horarioConsumido: null,
 
-                    consumido: document.getElementById("consumido").value,
+                    consumido:
+                        document.getElementById("consumido").value === "true",
 
                     atrasado: false,
 
@@ -811,9 +839,15 @@
                     ultimaLeituraCamera: null,
 
                     usuario:
-                        localStorage.getItem("usuario")
+                        localStorage.getItem("usuario"),
+
+                    quantidadeAbastecida: quantidadeAbastecida,
+
+                    dosesRestantes: dosesRestantes
 
                 };
+
+                console.log("Dados enviados:", dados);
 
                 const resposta = await fetch(API + "/saude", {
                     method: "POST",
@@ -825,7 +859,7 @@
 
                 if (resposta.ok) {
 
-                    alert("Medicamento cadastrado.");
+                    alert("Medicamento cadastrado com sucesso!");
                     limparCampos();
 
                 }
@@ -841,63 +875,63 @@
         }
 
 
-    // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
-    async function editar() {
+        // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
+        async function editar() {
 
-        const usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
             if (!usuario) {
                 alert("Faça Login para executar essa funcionalidade!");
                 return;
             }
 
-    if (!confirm("Deseja realmente editar este medicamento?")) {
-        return;
-    }
+            if (!confirm("Deseja realmente editar este medicamento?")) {
+                return;
+            }
 
-    const id = document.getElementById("id").value;
+            const id = document.getElementById("id").value;
 
-    if (!id) {
-        alert("Informe o ID do medicamento.");
-        return;
-    }
+            if (!id) {
+                alert("Informe o ID do medicamento.");
+                return;
+            }
 
-    const medicamento = {
-        id: document.getElementById("id").value,
-        medicamento: document.getElementById("medicamento").value,
-        compartimento: document.getElementById("compartimento").value,
-        horarioPrevisto: document.getElementById("horarioPrevisto").value
-    };
+            const medicamento = {
+                id: document.getElementById("id").value,
+                medicamento: document.getElementById("medicamento").value,
+                compartimento: document.getElementById("compartimento").value,
+                horarioPrevisto: document.getElementById("horarioPrevisto").value
+            };
 
-    try {
+            try {
 
-        const resposta = await fetch(API + "/saude/" + id, {
+                const resposta = await fetch(API + "/saude/" + id, {
 
-            method: "PUT",
+                    method: "PUT",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-            body: JSON.stringify(medicamento)
+                    body: JSON.stringify(medicamento)
 
-        });
+                });
 
-        if (!resposta.ok) {
-            throw new Error("Erro ao atualizar o medicamento.");
-        }
+                if (!resposta.ok) {
+                    throw new Error("Erro ao atualizar o medicamento.");
+                }
 
-        const atualizado = await resposta.json();
+                const atualizado = await resposta.json();
 
-        alert("Medicamento atualizado com sucesso!");
+                alert("Medicamento atualizado com sucesso!");
 
-        listarTodos();
-        limparCampos();
-        
-        } catch (erro) {
+                listarTodos();
+                limparCampos();
 
-            console.error(erro);
-            alert(erro.message);
+            } catch (erro) {
+
+                console.error(erro);
+                alert(erro.message);
             }
 
         }
@@ -941,118 +975,118 @@
             }
         }
 
-    // ======================================
-    // EDITAR STATUS DO MEDICAMENTO
-    // ======================================
-    async function editarStatus(id, status) {
+        // ======================================
+        // EDITAR STATUS DO MEDICAMENTO
+        // ======================================
+        async function editarStatus(id, status) {
 
-    const usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-    if (!usuario) {
-        alert("Faça Login para executar essa funcionalidade!");
-        return;
-    }
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
 
-    const resposta = await fetch(`${API}/saude/${id}/status`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            status: status
-        })
-    });
+            const resposta = await fetch(`${API}/saude/${id}/status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            });
 
-    if (resposta.ok) {
+            if (resposta.ok) {
 
-        listarTodos();
+                listarTodos();
 
-    } else {
+            } else {
 
-        alert("Erro ao atualizar o status.");
-        }
-    }
-
-    // 🔍 FUNÇÃO PARA CONSULTAR POR MEDICAMENTOS ATRASADOS
-    function buscarMedicamento() {
-
-    const usuario = getUsuario();
-
-    if (!usuario) {
-        alert("⚠️ Faça login para executar essa funcionalidade!");
-        return;
-    }
-
-    const medicamento = document.getElementById("medicamento").value.trim();
-
-    if (!medicamento) {
-        alert("⚠️ Informe o medicamento.");
-        return;
-    }
-
-    fetchSeguro(
-    `${API}/saude/buscar/atrasados?usuario=${encodeURIComponent(usuario)}&medicamento=${encodeURIComponent(medicamento)}`
-    )
-
-    .then(data => {
-
-        const tabela = document.getElementById("tabelaSaude");
-
-        if (!tabela) return;
-
-        if (!Array.isArray(data) || data.length === 0) {
-
-            tabela.innerHTML =
-                "<tr><td colspan='8'>Nenhum medicamento encontrado.</td></tr>";
-
-            return;
+                alert("Erro ao atualizar o status.");
+            }
         }
 
-        let linhas = "";
+        // 🔍 FUNÇÃO PARA CONSULTAR POR MEDICAMENTOS ATRASADOS
+        function buscarMedicamento() {
 
-        data.forEach(saude => {
+            const usuario = getUsuario();
 
-            let classeLinha = "";
-            let status = "";
-            let botao = "";
+            if (!usuario) {
+                alert("⚠️ Faça login para executar essa funcionalidade!");
+                return;
+            }
 
-            if (saude.consumido) {
+            const medicamento = document.getElementById("medicamento").value.trim();
 
-                status = "✅ Consumido";
-                classeLinha = "linha-consumido";
+            if (!medicamento) {
+                alert("⚠️ Informe o medicamento.");
+                return;
+            }
 
-                botao = `
+            fetchSeguro(
+                `${API}/saude/buscar/atrasados?usuario=${encodeURIComponent(usuario)}&medicamento=${encodeURIComponent(medicamento)}`
+            )
+
+                .then(data => {
+
+                    const tabela = document.getElementById("tabelaSaude");
+
+                    if (!tabela) return;
+
+                    if (!Array.isArray(data) || data.length === 0) {
+
+                        tabela.innerHTML =
+                            "<tr><td colspan='8'>Nenhum medicamento encontrado.</td></tr>";
+
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    data.forEach(saude => {
+
+                        let classeLinha = "";
+                        let status = "";
+                        let botao = "";
+
+                        if (saude.consumido) {
+
+                            status = "✅ Consumido";
+                            classeLinha = "linha-consumido";
+
+                            botao = `
                     <span style="color:green;font-weight:bold;">
                         ✔ Consumido
                     </span>
                 `;
 
-            } else if (saude.atrasado) {
+                        } else if (saude.atrasado) {
 
-                status = "⚠️ Atrasado";
-                classeLinha = "linha-atrasado";
+                            status = "⚠️ Atrasado";
+                            classeLinha = "linha-atrasado";
 
-                botao = `
+                            botao = `
                     <button class="btn-atrasado"
                         onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
                         ✔ Confirmar Consumo
                     </button>
                 `;
 
-            } else {
+                        } else {
 
-                status = "⏰ Pendente";
-                classeLinha = "linha-pendente";
+                            status = "⏰ Pendente";
+                            classeLinha = "linha-pendente";
 
-                botao = `
+                            botao = `
                     <button class="btn-pendente"
                         onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
                         ✔ Consumir
                     </button>
                 `;
-            }
+                        }
 
-            linhas += `
+                        linhas += `
                 <tr class="${classeLinha}">
                     <td>${saude.id}</td>
                     <td>${saude.medicamento ?? ""}</td>
@@ -1065,19 +1099,19 @@
                 </tr>
             `;
 
-        });
+                    });
 
-        tabela.innerHTML = linhas;
+                    tabela.innerHTML = linhas;
 
-    })
+                })
 
-    .catch(erro => {
+                .catch(erro => {
 
-        console.error("Erro:", erro);
+                    console.error("Erro:", erro);
 
-        alert("Erro ao consultar medicamentos.");
-        });
-    }
+                    alert("Erro ao consultar medicamentos.");
+                });
+        }
 
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
@@ -1157,14 +1191,6 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
-
-            const usuario = localStorage.getItem("usuario");
-            
-            if (!usuario) {
-                alert("Faça Login para executar essa funcionalidade!");
-                return;
-            }
-
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
