@@ -571,7 +571,7 @@
             <!-- TABELA -->
             <section class="tabela">
 
-                <h3>📉 Últimos Medicamentos</h3>
+                <h3>📉 Lista de Medicamentos</h3>
 
                 <table>
                     <thead>
@@ -767,6 +767,17 @@
                             : "-";
                 }
 
+                const alertaMedicamentos =
+                    document.getElementById("alertasMedicamentos");
+
+                if (alertaMedicamentos) {
+
+                    alertaMedicamentos.innerHTML =
+                        dados.alertaMedicamentos
+                            ? dados.alertaMedicamentos.horarioPrevisto
+                            : "-";
+                }
+
             } catch (erro) {
 
                 console.error(
@@ -931,6 +942,7 @@
         }
 
 
+        // 📋 FUNÇÃO INICIAR O SISTEMA (DASHBOARD)  
         function iniciarSistema() {
             console.log("Sistema iniciado");
             listarTodos();
@@ -964,10 +976,10 @@
                     let cor = "";
                     let botao = "";
 
-                    if (saude.consumido) { 
-                    status = "✅ Consumido"; 
-                    cor = "#d4edda"; 
-                    botao = ` <button class="btn-atrasado" 
+                    if (saude.consumido) {
+                        status = "✅ Consumido";
+                        cor = "#d4edda";
+                        botao = ` <button class="btn-atrasado" 
                     onclick="editarStatus(${saude.id}, 'ATRASADO')"> 
                     ⚠️ Atrasado </button> 
                     <button class="btn-consumido" 
@@ -977,9 +989,9 @@
                     onclick="excluirMedicamento(${saude.id})"> 🗑️ Excluir 
                     </button> `;
 
-                    } else if (saude.atrasado) { 
-                        status = "⚠️ Atrasado"; 
-                        cor = "#fff3cd"; 
+                    } else if (saude.atrasado) {
+                        status = "⚠️ Atrasado";
+                        cor = "#fff3cd";
                         botao = ` <button class="btn-consumido" 
                         onclick="editarStatus(${saude.id}, 'CONSUMIDO')"> 
                         ✅ Consumido 
@@ -1010,8 +1022,8 @@
             🗑️ Excluir
         </button>
         `;
-        }
-                    
+                    }
+
 
                     tabela.innerHTML += `
 
@@ -1345,7 +1357,7 @@
         function cadastrarUsuarios() {
 
             const usuario = localStorage.getItem("usuario");
-            
+
             if (!usuario) {
                 alert("Faça Login para executar essa funcionalidade!");
                 return;
@@ -1414,19 +1426,23 @@
             doc.save("relatorio_saude.pdf");
         }
 
-        setInterval(() => {
+        setInterval(async () => {
 
             const usuario = localStorage.getItem("usuario");
             const logado = localStorage.getItem("logado");
 
-            if (logado === "true" && usuario) {
+            if (logado !== "true" || !usuario) {
+                return;
+            }
 
-                carregarDashboard();
-                listarTodos();
+            try {
 
-            } else {
+                await carregarDashboard();
+                await carregarAlertas();
 
-                console.log("⏸️ Sistema aguardando login...");
+            } catch (erro) {
+
+                console.error("❌ Erro ao atualizar o sistema:", erro);
 
             }
 
