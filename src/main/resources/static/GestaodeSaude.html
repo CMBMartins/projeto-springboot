@@ -473,8 +473,8 @@
                     <label>Status Sensor:</label>
 
                     <select id="statusSensor">
-                        <option>🟢ONLINE</option>
                         <option>🔴OFFLINE</option>
+                        <option>🟢ONLINE</option>
                     </select>
                 </div>
 
@@ -519,7 +519,7 @@
 
                 <div class="card">
                     <h3>📷 Status da Câmera</h3>
-                    <p id="statusCamera">🟢ONLINE</p>
+                    <p id="statusCamera">🔴 OFFLINE</p>
                 </div>
 
                 <div class="card">
@@ -751,9 +751,32 @@
 
                 if (statusCamera) {
 
-                    statusCamera.innerHTML = `
-                <p>🟢 ${dados.statusSensor ?? "OFFLINE"}</p>
+                    const status = dados.statusSensor ?? "OFFLINE";
+
+                    if (status === "ONLINE") {
+
+                        statusCamera.innerHTML = `
+                <p style="color: green; font-weight: bold;">
+                🔴Câmera OFFLINE
+            </p>
             `;
+
+                    } else {
+
+                        statusCamera.innerHTML = `
+                <p style="color: red; font-weight: bold;">
+                🟢Câmera ONLINE                
+                </p>
+                `;
+                    }
+
+                } else {
+
+                    statusCamera.innerHTML = `
+            <p style="color: red; font-weight: bold;">
+                🔴Câmera OFFLINE
+            </p>
+        `;
                 }
 
                 const proximosHorarios =
