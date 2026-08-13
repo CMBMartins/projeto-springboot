@@ -48,6 +48,15 @@ public class SaudeController {
                 return ResponseEntity.ok("Leitura da câmera registrada com sucesso.");
         }
 
+        @PostMapping("/camera/status")
+        public ResponseEntity<String> statusCamera(
+                        @RequestBody Map<String, String> dados) {
+
+                eventoSaudeService.atualizarComunicacaoCamera();
+
+                return ResponseEntity.ok("Camera ONLINE");
+        }
+
         @PutMapping("/{id}")
         public ResponseEntity<Saude> editar(
                         @PathVariable Integer id,

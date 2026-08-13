@@ -3,7 +3,9 @@ package com.SpringBoot.projetosspringboot;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class EventoSaudeService {
     private SaudeRepository repository;
 
     private final List<SseEmitter> clientes = new CopyOnWriteArrayList<>();
+
+    private LocalDateTime ultimaComunicacaoCamera;
 
     public SseEmitter conectar() {
 
@@ -81,6 +85,18 @@ public class EventoSaudeService {
 
             System.out.println("Medicamentos atrasados atualizados para " + usuario);
         }
+    }
+
+    public void atualizarComunicacaoCamera() {
+
+        ultimaComunicacaoCamera = LocalDateTime.now(
+                ZoneId.of("America/Belem"));
+
+        System.out.println(
+                "📷 Última comunicação da câmera: "
+                        + ultimaComunicacaoCamera);
+
+        notificarAtualizacao();
     }
 
 }
