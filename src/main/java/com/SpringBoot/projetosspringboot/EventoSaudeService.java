@@ -99,4 +99,24 @@ public class EventoSaudeService {
         notificarAtualizacao();
     }
 
+    public String verificarStatusCamera() {
+
+        if (ultimaComunicacaoCamera == null) {
+            return "OFFLINE";
+        }
+
+        LocalDateTime agora = LocalDateTime.now(
+                ZoneId.of("America/Belem"));
+
+        long segundos = java.time.Duration.between(
+                ultimaComunicacaoCamera,
+                agora).getSeconds();
+
+        if (segundos <= 20) {
+            return "ONLINE";
+        }
+
+        return "OFFLINE";
+    }
+
 }

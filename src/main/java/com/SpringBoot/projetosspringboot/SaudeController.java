@@ -270,7 +270,8 @@ public class SaudeController {
                         dto.setAdesao((dto.getConsumidosHoje() * 100.0) / total);
                 }
 
-                dto.setStatusSensor("ONLINE");
+                dto.setStatusSensor(
+                                eventoSaudeService.verificarStatusCamera());
 
                 return dto;
         }
