@@ -44,7 +44,6 @@ def criar_compartimentos():
 # ==========================================================
 COMPARTIMENTOS = criar_compartimentos()
 
-
 def desenhar_compartimentos(frame):
 
     for nome, (x1, y1, x2, y2) in COMPARTIMENTOS.items():
@@ -64,7 +63,6 @@ def desenhar_compartimentos(frame):
 
 ESTADO_COMPARTIMENTOS = {nome: False for nome in COMPARTIMENTOS}
 
-
 ESTADO_ANTERIOR = {nome: False for nome in COMPARTIMENTOS}
 
 LIMIAR_AREA = 1000
@@ -81,7 +79,9 @@ def mostrar_compartimentos(frame):
 
         cv2.imshow(nome, roi)
 
-
+# ==========================================================
+# FUNÇÃO PARA SALVAR REFERENCIAS
+# ==========================================================
 def salvar_referencias(frame):
 
     print("===================================")
@@ -125,6 +125,8 @@ def detectar_medicamento(frame):
 
         # Cria a máscara
         _, mascara = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY_INV)
+
+        #cv2.imshow("Mascara " + nome, mascara)
 
         # Procura os contornos
         contornos, _ = cv2.findContours(
@@ -174,7 +176,6 @@ def detectar_medicamento(frame):
 
         # cv2.imshow("Máscara " + nome, mascara)
 
-
 ULTIMO_ENVIO = {}
 
 
@@ -210,29 +211,6 @@ def enviar_para_api(compartimento):
         print("Erro ao enviar:", e)
 
 
-# ==========================================================
-# FUNÇÃO PARA INFORMAR QUE A CÂMERA ESTÁ ONLINE
-# ==========================================================
-def enviar_status_camera():
-
-    try:
-
-        resposta = requests.post(
-            "https://projeto-springboot.onrender.com/saude/camera/status",
-            json={"status": "ONLINE"},
-            timeout=5,
-        )
-
-        if resposta.ok:
-            print("📷 Camera: ONLINE")
-        else:
-            print("⚠️ Erro ao enviar status:", resposta.status_code)
-
-    except Exception as e:
-
-        print("❌ Erro ao comunicar com o servidor:", e)
-
-
 # =====================================================
 # Programa principal
 # =====================================================
@@ -263,23 +241,19 @@ while True:
     sucesso, frame = camera.read()
 
     if not sucesso or frame is None:
-
-        print("Falha ao capturar. Tentando novamente...")
-
-        time.sleep(0.2)
-
+        print("Falha ao capturar imagem.")
         continue
 
-    # ==================================================
-    # ATUALIZAÇÃO DO STATUS DA CÂMERA
-    # ==================================================
-    agora = time.time()
+    desenhar_compartimentos(frame)
 
-    if agora - ultimo_status >= INTERVALO_STATUS:
+    detectar_medicamento(frame)    
 
-        enviar_status_camera()
+    cv2.imshow("Monitor de Medicamentos", frame)
 
-        ultimo_status = agora
+    tecla = cv2.waitKey(1) & 0xFF
+
+    if tecla == 27:
+        break
 
     # ==================================================
     # SALVA AS REFERÊNCIAS
@@ -296,9 +270,9 @@ while True:
     # ==================================================
     # PROCESSAMENTO DOS COMPARTIMENTOS
     # ==================================================
-    desenhar_compartimentos(frame)
+    #desenhar_compartimentos(frame)
 
-    detectar_medicamento(frame)
+    #detectar_medicamento(frame)
 
     # ------------------------------------------
     # MOSTRA A IMAGEM
