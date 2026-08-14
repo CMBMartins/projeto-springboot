@@ -755,27 +755,19 @@
                     if (status === "ONLINE") {
 
                         statusCamera.innerHTML = `
-                <p style="color: green; font-weight: bold;">
-                🔴Câmera OFFLINE
+            <p style="color: green; font-weight: bold;">
+                🟢 Câmera ONLINE
             </p>
-            `;
+        `;
 
                     } else {
 
                         statusCamera.innerHTML = `
-                <p style="color: red; font-weight: bold;">
-                🟢Câmera ONLINE                
-                </p>
-                `;
-                    }
-
-                } else {
-
-                    statusCamera.innerHTML = `
             <p style="color: red; font-weight: bold;">
-                🔴Câmera OFFLINE
+                🔴 Câmera OFFLINE
             </p>
         `;
+                    }
                 }
 
                 const proximosHorarios =
