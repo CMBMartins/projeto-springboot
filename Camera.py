@@ -44,6 +44,7 @@ def criar_compartimentos():
 # ==========================================================
 COMPARTIMENTOS = criar_compartimentos()
 
+
 def desenhar_compartimentos(frame):
 
     for nome, (x1, y1, x2, y2) in COMPARTIMENTOS.items():
@@ -78,6 +79,7 @@ def mostrar_compartimentos(frame):
         roi = frame[y1:y2, x1:x2]
 
         cv2.imshow(nome, roi)
+
 
 # ==========================================================
 # FUNÇÃO PARA SALVAR REFERENCIAS
@@ -126,7 +128,7 @@ def detectar_medicamento(frame):
         # Cria a máscara
         _, mascara = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY_INV)
 
-        #cv2.imshow("Mascara " + nome, mascara)
+        # cv2.imshow("Mascara " + nome, mascara)
 
         # Procura os contornos
         contornos, _ = cv2.findContours(
@@ -175,6 +177,7 @@ def detectar_medicamento(frame):
         print(f"{nome}: {status} - Área = {maior_area:.1f}")
 
         # cv2.imshow("Máscara " + nome, mascara)
+
 
 ULTIMO_ENVIO = {}
 
@@ -246,19 +249,12 @@ while True:
 
     desenhar_compartimentos(frame)
 
-    detectar_medicamento(frame)    
-
-    cv2.imshow("Monitor de Medicamentos", frame)
-
-    tecla = cv2.waitKey(1) & 0xFF
-
-    if tecla == 27:
-        break
+    detectar_medicamento(frame)
 
     # ==================================================
     # SALVA AS REFERÊNCIAS
     # ==================================================
-    # Aguarda 5 segundos e salva as referências uma única vez
+
     if not referencias_salvas and (time.time() - inicio) >= 5:
 
         print("Salvando imagens de referência...")
@@ -268,15 +264,9 @@ while True:
         referencias_salvas = True
 
     # ==================================================
-    # PROCESSAMENTO DOS COMPARTIMENTOS
-    # ==================================================
-    #desenhar_compartimentos(frame)
-
-    #detectar_medicamento(frame)
-
-    # ------------------------------------------
     # MOSTRA A IMAGEM
-    # ------------------------------------------
+    # ==================================================
+
     cv2.imshow("Monitor de Medicamentos", frame)
 
     tecla = cv2.waitKey(1) & 0xFF
