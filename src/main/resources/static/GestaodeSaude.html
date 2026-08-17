@@ -602,41 +602,40 @@
         const API = "https://projeto-springboot.onrender.com/saude";
 
         const eventos = new EventSource(
-    API + "/eventos"
-);
-
-    eventos.addEventListener("atualizacao", async () => {
-
-    const usuario = localStorage.getItem("usuario");
-    const logado = localStorage.getItem("logado");
-
-    // Não atualiza nada se não estiver logado
-    if (logado !== "true" || !usuario) {
-        return;
-    }
-
-    console.log("🔄 Atualizando dashboard...");
-
-    try {
-
-        await carregarDashboard();
-        await listarTodos();
-
-        await graficoAdesao();
-        await graficoHorarios();
-        await graficoMedicamentos();
-        await graficoStatus();
-
-        console.log("✅ Dashboard atualizado!");
-
-    } catch (erro) {
-
-        console.error(
-            "❌ Erro ao atualizar dashboard:",
-            erro
+            API + "/eventos"
         );
-    }
-    });
+
+        eventos.addEventListener("atualizacao", async () => {
+
+            const usuario = localStorage.getItem("usuario");
+            const logado = localStorage.getItem("logado");
+
+            // Não atualiza nada se não estiver logado
+            if (logado !== "true" || !usuario) {
+                return;
+            }
+
+            console.log("🔄 Atualizando dashboard...");
+
+            try {
+
+                await carregarDashboard();
+                await listarTodos();
+                await graficoAdesao();
+                await graficoHorarios();
+                await graficoMedicamentos();
+                await graficoStatus();
+
+                console.log("✅ Dashboard atualizado!");
+
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro ao atualizar dashboard:",
+                    erro
+                );
+            }
+        });
 
 
         // FUNÇÃO FETCH SEGURO
@@ -812,6 +811,34 @@
                             : "-";
                 }
 
+                const statusSensor = document.getElementById("statusSensor");
+
+                if (statusSensor) {
+
+                    if (dados.statusSensor === "ONLINE") {
+
+                        statusSensor.value = "🟢ONLINE";
+
+                    } else {
+
+                        statusSensor.value = "🔴OFFLINE";
+                    }
+                }
+
+                const consumido = document.getElementById("consumido");
+
+                if (consumido) {
+
+                    if (dados.consumido === "SIM") {
+
+                        consumido.value = "✅SIM";
+
+                    } else {
+
+                        consumido.value = "❌NÃO";
+                    }
+                }
+
             } catch (erro) {
 
                 console.error(
@@ -821,98 +848,98 @@
             }
         }
 
-    // =====================================================
-    // GRAFICOS
-    // =====================================================
-    // 📋 FUNÇÃO DO GRÁFICO HORÁRIOS
+        // =====================================================
+        // GRAFICOS
+        // =====================================================
+        // 📋 FUNÇÃO DO GRÁFICO HORÁRIOS
 
-let chartHorarios = null;
+        let chartHorarios = null;
 
-async function graficoHorarios() {
+        async function graficoHorarios() {
 
-    let usuario = localStorage.getItem("usuario");
+            let usuario = localStorage.getItem("usuario");
 
-    const resposta = await fetch(
-        API + "/grafico-horarios?usuario=" +
-        encodeURIComponent(usuario)
-    );
+            const resposta = await fetch(
+                API + "/grafico-horarios?usuario=" +
+                encodeURIComponent(usuario)
+            );
 
-    const dados = await resposta.json();
+            const dados = await resposta.json();
 
-    console.log("📊 Dados gráfico horários:", dados);
+            console.log("📊 Dados gráfico horários:", dados);
 
-    const ctx = document.getElementById("graficoHorarios");
+            const ctx = document.getElementById("graficoHorarios");
 
-    if (!ctx) {
-        console.log("❌ Canvas graficoHorarios não encontrado!");
-        return;
-    }
+            if (!ctx) {
+                console.log("❌ Canvas graficoHorarios não encontrado!");
+                return;
+            }
 
-    // Destrói o gráfico anterior antes de criar outro
-    if (chartHorarios) {
-        chartHorarios.destroy();
-    }
+            // Destrói o gráfico anterior antes de criar outro
+            if (chartHorarios) {
+                chartHorarios.destroy();
+            }
 
-    chartHorarios = new Chart(ctx, {
+            chartHorarios = new Chart(ctx, {
 
-        type: "bar",
+                type: "bar",
 
-        data: {
-            labels: Object.keys(dados),
+                data: {
+                    labels: Object.keys(dados),
 
-            datasets: [{
-                label: "Medicamentos por horário",
-                data: Object.values(dados)
-            }]
-        },
+                    datasets: [{
+                        label: "Medicamentos por horário",
+                        data: Object.values(dados)
+                    }]
+                },
 
-        options: {
-            responsive: true
+                options: {
+                    responsive: true
+                }
+            });
         }
-    });
-    }
 
 
-    let chartAdesao = null;
+        let chartAdesao = null;
 
-    // 📋 FUNÇÃO DO GRÁFICO ADESÃO
-    async function graficoAdesao() {
+        // 📋 FUNÇÃO DO GRÁFICO ADESÃO
+        async function graficoAdesao() {
 
-    let usuario = localStorage.getItem("usuario");
+            let usuario = localStorage.getItem("usuario");
 
-    const resposta = await fetch( API + "/grafico-adesao?usuario=" +
-            encodeURIComponent(usuario)
-        );
+            const resposta = await fetch(API + "/grafico-adesao?usuario=" +
+                encodeURIComponent(usuario)
+            );
 
-    const dados =
-        await resposta.json();
+            const dados =
+                await resposta.json();
 
-    const canvas =
-        document.getElementById("graficoAdesao");
+            const canvas =
+                document.getElementById("graficoAdesao");
 
-    if (!canvas) {
-        return;
-    }
+            if (!canvas) {
+                return;
+            }
 
-    // Destrói o gráfico anterior
-    if (chartAdesao) {
-        chartAdesao.destroy();
-    }
+            // Destrói o gráfico anterior
+            if (chartAdesao) {
+                chartAdesao.destroy();
+            }
 
-    // Cria o novo gráfico
-    chartAdesao = new Chart(
-        canvas,
-        {
+            // Cria o novo gráfico
+            chartAdesao = new Chart(
+                canvas,
+                {
 
-            type: "line",
+                    type: "line",
 
-            data: {
+                    data: {
 
-                labels: Object.keys(dados),
+                        labels: Object.keys(dados),
 
-                datasets: [{
+                        datasets: [{
 
-                    label: "Adesão",
+                            label: "Adesão",
                             data: Object.values(dados)
 
                         }]
@@ -922,99 +949,99 @@ async function graficoHorarios() {
 
         }
 
-    // 📋 FUNÇÃO DO GRÁFICO MEDICAMENTOS
-   let chartMedicamentos = null;
+        // 📋 FUNÇÃO DO GRÁFICO MEDICAMENTOS
+        let chartMedicamentos = null;
 
-   async function graficoMedicamentos() {
+        async function graficoMedicamentos() {
 
-    let usuario = localStorage.getItem("usuario");
+            let usuario = localStorage.getItem("usuario");
 
-    const resposta = await fetch(
-        API + "/grafico-medicamentos?usuario=" +
-        encodeURIComponent(usuario)
-    );
+            const resposta = await fetch(
+                API + "/grafico-medicamentos?usuario=" +
+                encodeURIComponent(usuario)
+            );
 
-    const dados = await resposta.json();
+            const dados = await resposta.json();
 
-    console.log("📊 Dados gráfico medicamentos:", dados);
+            console.log("📊 Dados gráfico medicamentos:", dados);
 
-    const ctx = document.getElementById("graficoMedicamentos");
+            const ctx = document.getElementById("graficoMedicamentos");
 
-    if (!ctx) {
-        console.log("❌ Canvas graficoMedicamentos não encontrado!");
-        return;
-    }
+            if (!ctx) {
+                console.log("❌ Canvas graficoMedicamentos não encontrado!");
+                return;
+            }
 
-    // Destrói o gráfico anterior
-    if (chartMedicamentos) {
-        chartMedicamentos.destroy();
-    }
+            // Destrói o gráfico anterior
+            if (chartMedicamentos) {
+                chartMedicamentos.destroy();
+            }
 
-    chartMedicamentos = new Chart(ctx, {
+            chartMedicamentos = new Chart(ctx, {
 
-        type: "bar",
+                type: "bar",
 
-        data: {
-            labels: Object.keys(dados),
+                data: {
+                    labels: Object.keys(dados),
 
-            datasets: [{
-                label: "Medicamentos",
-                data: Object.values(dados)
-            }]
-        },
+                    datasets: [{
+                        label: "Medicamentos",
+                        data: Object.values(dados)
+                    }]
+                },
 
-        options: {
-            responsive: true
+                options: {
+                    responsive: true
+                }
+            });
         }
-    });
-    }
 
-    // 📋 FUNÇÃO DO GRÁFICO STATUS
-    let chartStatus = null;
+        // 📋 FUNÇÃO DO GRÁFICO STATUS
+        let chartStatus = null;
 
-    async function graficoStatus() {
+        async function graficoStatus() {
 
-    let usuario = localStorage.getItem("usuario");
+            let usuario = localStorage.getItem("usuario");
 
-    const resposta = await fetch(
-        API + "/grafico-status?usuario=" +
-        encodeURIComponent(usuario)
-    );
+            const resposta = await fetch(
+                API + "/grafico-status?usuario=" +
+                encodeURIComponent(usuario)
+            );
 
-    const dados = await resposta.json();
+            const dados = await resposta.json();
 
-    console.log("📊 Dados gráfico status:", dados);
+            console.log("📊 Dados gráfico status:", dados);
 
-    const ctx = document.getElementById("graficoStatus");
+            const ctx = document.getElementById("graficoStatus");
 
-    if (!ctx) {
-        console.log("❌ Canvas graficoStatus não encontrado!");
-        return;
-    }
+            if (!ctx) {
+                console.log("❌ Canvas graficoStatus não encontrado!");
+                return;
+            }
 
-    // Destrói o gráfico anterior
-    if (chartStatus) {
-        chartStatus.destroy();
-    }
+            // Destrói o gráfico anterior
+            if (chartStatus) {
+                chartStatus.destroy();
+            }
 
-    chartStatus = new Chart(ctx, {
+            chartStatus = new Chart(ctx, {
 
-        type: "pie",
+                type: "pie",
 
-        data: {
-            labels: Object.keys(dados),
+                data: {
+                    labels: Object.keys(dados),
 
-            datasets: [{
-                label: "Status dos medicamentos",
-                data: Object.values(dados)
-            }]
-        },
+                    datasets: [{
+                        label: "Status dos medicamentos",
+                        data: Object.values(dados)
+                    }]
+                },
 
-        options: {
-            responsive: true
+                options: {
+                    responsive: true
+                }
+            });
         }
-    });
-    }
 
         // 📋 FUNÇÃO INICIAR O SISTEMA (DASHBOARD)  
         function iniciarSistema() {
@@ -1227,43 +1254,43 @@ async function graficoHorarios() {
             }
         }
 
-    // FUNÇÃO PARA INICIAR O MONITORAMENTO DOS CARDS
-    async function iniciarMonitoramento() {
+        // FUNÇÃO PARA INICIAR O MONITORAMENTO DOS CARDS
+        async function iniciarMonitoramento() {
 
-    const eventos = new EventSource(API + "/eventos");
+            const eventos = new EventSource(API + "/eventos");
 
-    eventos.addEventListener("atualizacao", async function () {
+            eventos.addEventListener("atualizacao", async function () {
 
-        console.log("🔔 Recebi atualização do servidor.");
+                console.log("🔔 Recebi atualização do servidor.");
 
-        try {
-            await carregarDashboard();
-            await listarTodos();
-            await carregarPendentesHoje();
-            await carregarAlertas();
-            await graficoHorarios();
-            await graficoAdesao();
-            await graficoMedicamentos();
-            await graficoStatus();
-            
-            console.log("✅ Dashboard atualizado após evento SSE.");
+                try {
+                    await carregarDashboard();
+                    await listarTodos();
+                    await carregarPendentesHoje();
+                    await carregarAlertas();
+                    await graficoHorarios();
+                    await graficoAdesao();
+                    await graficoMedicamentos();
+                    await graficoStatus();
 
-        } catch (erro) {
+                    console.log("✅ Dashboard atualizado após evento SSE.");
 
-            console.error(
-                "❌ Erro ao atualizar Dashboard via SSE:",
-                erro
-            );
+                } catch (erro) {
+
+                    console.error(
+                        "❌ Erro ao atualizar Dashboard via SSE:",
+                        erro
+                    );
+                }
+
+            });
+
+            eventos.onerror = function (erro) {
+
+                console.log("⚠️ Conexão SSE encerrada.", erro);
+
+            };
         }
-
-    });
-
-    eventos.onerror = function (erro) {
-
-        console.log("⚠️ Conexão SSE encerrada.", erro);
-
-    };
-    }
 
         // FUNÇÃO PARA MOSTRAR OS MEDICAMENTOS PENDENTES NO DIA
         async function carregarPendentesHoje() {
@@ -1286,7 +1313,7 @@ async function graficoHorarios() {
             </span>
         `;
 
-            } else {                
+            } else {
 
                 html = "<b>⚠️ Medicamentos Pendentes</b><br><br>";
 
