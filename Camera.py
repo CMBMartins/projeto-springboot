@@ -114,6 +114,12 @@ def salvar_referencias(frame):
 # ==========================================================
 def detectar_medicamento(frame):
 
+    global ULTIMO_LOG
+
+    agora = time.time()
+
+    mostrar_log = agora - ULTIMO_LOG >= INTERVALO_LOG
+
     for nome, (x1, y1, x2, y2) in COMPARTIMENTOS.items():
 
         # Recorta apenas o compartimento
@@ -127,8 +133,6 @@ def detectar_medicamento(frame):
 
         # Cria a máscara
         _, mascara = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY_INV)
-
-        # cv2.imshow("Mascara " + nome, mascara)
 
         # Procura os contornos
         contornos, _ = cv2.findContours(
@@ -174,12 +178,21 @@ def detectar_medicamento(frame):
         ESTADO_COMPARTIMENTOS[nome] = estado_atual
         ESTADO_ANTERIOR[nome] = estado_atual
 
-        print(f"{nome}: {status} - Área = {maior_area:.1f}")
+        # Mostra status somente a cada 2 segundos
+        if mostrar_log:
+            print(f"{nome}: {status} - Área = {maior_area:.1f}")
+
+    # Atualiza o relógio do log
+    if mostrar_log:
+        ULTIMO_LOG = agora
 
         # cv2.imshow("Máscara " + nome, mascara)
 
 
 ULTIMO_ENVIO = {}
+
+ULTIMO_LOG = 0
+INTERVALO_LOG = 2
 
 
 # ==========================================================
