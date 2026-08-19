@@ -68,6 +68,8 @@ ESTADO_ANTERIOR = {nome: False for nome in COMPARTIMENTOS}
 
 LIMIAR_AREA = 1000
 
+ULTIMO_ENVIO = {}
+
 
 # =====================================================
 # Exibe cada compartimento separadamente
@@ -114,12 +116,6 @@ def salvar_referencias(frame):
 # ==========================================================
 def detectar_medicamento(frame):
 
-    global ULTIMO_LOG
-
-    agora = time.time()
-
-    mostrar_log = agora - ULTIMO_LOG >= INTERVALO_LOG
-
     for nome, (x1, y1, x2, y2) in COMPARTIMENTOS.items():
 
         # Recorta apenas o compartimento
@@ -158,6 +154,7 @@ def detectar_medicamento(frame):
             status = "OCUPADO"
 
             if maior_contorno is not None:
+
                 cv2.drawContours(roi, [maior_contorno], -1, (0, 255, 0), 2)
 
         else:
@@ -178,21 +175,9 @@ def detectar_medicamento(frame):
         ESTADO_COMPARTIMENTOS[nome] = estado_atual
         ESTADO_ANTERIOR[nome] = estado_atual
 
-        # Mostra status somente a cada 2 segundos
-        if mostrar_log:
-            print(f"{nome}: {status} - Área = {maior_area:.1f}")
-
-    # Atualiza o relógio do log
-    if mostrar_log:
-        ULTIMO_LOG = agora
+        print(f"{nome}: {status} - Área = {maior_area:.1f}")
 
         # cv2.imshow("Máscara " + nome, mascara)
-
-
-ULTIMO_ENVIO = {}
-
-ULTIMO_LOG = 0
-INTERVALO_LOG = 2
 
 
 # ==========================================================
@@ -217,10 +202,11 @@ def enviar_para_api(compartimento):
         resposta = requests.post(
             "https://projeto-springboot.onrender.com/saude/camera",
             json=dados,
-            timeout=2,
+            timeout=5,
         )
 
         print(compartimento, "=>", resposta.status_code)
+        print("Resposta da API:", resposta.text)
 
     except Exception as e:
 
