@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Relatório de Despesas</title>
-    <link rel="stylesheet" href="DashboardGestaodeDespesas.css">
-    <link rel="stylesheet" href="dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -463,6 +461,7 @@
             return document.getElementById("usuario").value;
         }
 
+
         //DASHBOARD COMPLETO (usa endpoints específicos)
         function carregarDashboard() {
             const usuario = localStorage.getItem("usuario");
@@ -476,7 +475,6 @@
                 console.log("Sistema iniciado");
                 listarTodos();
             }
-
 
             // TOTAL
             fetch(API + "/despesas/total?usuario=" + encodeURIComponent(usuario))
@@ -1022,16 +1020,23 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
-            //const usuario = document.getElementById("usuario").value;
-            //const senha = document.getElementById("senha").value;
-            const usuario = localStorage.getItem("usuario");
+            const usuario = document.getElementById("usuario").value;
+            const senha = document.getElementById("senha").value;
 
             // Validação de campos vazios
-            if (!usuario) {
-                alert("Faça Login para executar essa funcionalidade!");
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
                 return;
             }
-            
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
