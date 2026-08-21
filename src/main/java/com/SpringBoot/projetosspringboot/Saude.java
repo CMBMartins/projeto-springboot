@@ -4,11 +4,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "bancosaude")
 
 public class Saude {
+
+    @NotBlank(message = "O medicamento é obrigatório.")
+    @Column(nullable = false)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +28,9 @@ public class Saude {
     private String statusSensor;
     private LocalDateTime ultimaLeituraCamera;
     private String usuario;
+    private Integer quantidadeAbastecida;
+    private Integer dosesRestantes;
+    private String dispositivo;
 
     public Integer getId() {
         return id;
@@ -111,6 +118,30 @@ public class Saude {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public Integer getQuantidadeAbastecida() {
+        return quantidadeAbastecida;
+    }
+
+    public void setQuantidadeAbastecida(Integer quantidadeAbastecida) {
+        this.quantidadeAbastecida = quantidadeAbastecida;
+    }
+
+    public Integer getDosesRestantes() {
+        return dosesRestantes;
+    }
+
+    public void setDosesRestantes(Integer dosesRestantes) {
+        this.dosesRestantes = dosesRestantes;
+    }
+
+    public String getDispositivo() {
+        return dispositivo;
+    }
+
+    public void setDispositivo(String dispositivo) {
+        this.dispositivo = dispositivo;
     }
 
 }
