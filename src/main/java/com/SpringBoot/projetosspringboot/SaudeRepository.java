@@ -7,48 +7,53 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SaudeRepository extends JpaRepository<Saude, Integer> {
 
-    Optional<Saude> findByCompartimento(String compartimento);
+        Optional<Saude> findByCompartimento(String compartimento);
 
-    // Listar por usuário
-    List<Saude> findByUsuario(String usuario);
+        Optional<Saude> findByUsuarioAndDispositivoAndCompartimento(
+                        String usuario,
+                        String dispositivo,
+                        String compartimento);
 
-    List<Saude> findByUsuarioAndConsumidoFalse(String usuario);
+        // Listar por usuário
+        List<Saude> findByUsuario(String usuario);
 
-    List<Saude> findByUsuarioAndConsumidoFalseAndAtrasadoFalse(String usuario);
+        List<Saude> findByUsuarioAndConsumidoFalse(String usuario);
 
-    // Últimos registros
-    List<Saude> findTop5ByOrderByUltimaLeituraCameraDesc();
+        List<Saude> findByUsuarioAndConsumidoFalseAndAtrasadoFalse(String usuario);
 
-    // Buscar medicamento
-    List<Saude> findByMedicamentoContainingIgnoreCase(String medicamento);
+        // Últimos registros
+        List<Saude> findTop5ByOrderByUltimaLeituraCameraDesc();
 
-    // Buscar compartimento
-    List<Saude> findByCompartimentoContainingIgnoreCase(String compartimento);
+        // Buscar medicamento
+        List<Saude> findByMedicamentoContainingIgnoreCase(String medicamento);
 
-    // Próximo medicamento
-    Optional<Saude> findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(String usuario);
+        // Buscar compartimento
+        List<Saude> findByCompartimentoContainingIgnoreCase(String compartimento);
 
-    // Último medicamento consumido
-    Optional<Saude> findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(
-            String usuario);
+        // Próximo medicamento
+        Optional<Saude> findTopByUsuarioAndConsumidoFalseOrderByHorarioPrevistoAsc(String usuario);
 
-    // Quantidade consumida
-    Long countByUsuarioAndConsumidoTrue(String usuario);
+        // Último medicamento consumido
+        Optional<Saude> findTopByUsuarioAndConsumidoTrueAndHorarioConsumidoIsNotNullOrderByHorarioConsumidoDesc(
+                        String usuario);
 
-    // Quantidade pendente
-    Long countByUsuarioAndConsumidoFalse(String usuario);
+        // Quantidade consumida
+        Long countByUsuarioAndConsumidoTrue(String usuario);
 
-    // Quantidade atrasada
-    Long countByUsuarioAndAtrasadoTrue(String usuario);
+        // Quantidade pendente
+        Long countByUsuarioAndConsumidoFalse(String usuario);
 
-    // Compartimentos vazios
-    Long countByUsuarioAndCompartimentoVazioTrue(String usuario);
+        // Quantidade atrasada
+        Long countByUsuarioAndAtrasadoTrue(String usuario);
 
-    // Compartimentos ocupados
-    Long countByUsuarioAndCompartimentoVazioFalse(String usuario);
+        // Compartimentos vazios
+        Long countByUsuarioAndCompartimentoVazioTrue(String usuario);
 
-    List<Saude> findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
-            String usuario,
-            String medicamento);
+        // Compartimentos ocupados
+        Long countByUsuarioAndCompartimentoVazioFalse(String usuario);
+
+        List<Saude> findByUsuarioAndMedicamentoContainingIgnoreCaseAndAtrasadoTrue(
+                        String usuario,
+                        String medicamento);
 
 }
