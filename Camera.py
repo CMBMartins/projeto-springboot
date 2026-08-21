@@ -185,6 +185,9 @@ def detectar_medicamento(frame):
 # ==========================================================
 def enviar_para_api(compartimento):
 
+    USUARIO = "Livia"
+    DISPOSITIVO = "CAIXA002"
+
     agora = datetime.now()
 
     if compartimento in ULTIMO_ENVIO:
@@ -196,7 +199,12 @@ def enviar_para_api(compartimento):
 
     ULTIMO_ENVIO[compartimento] = agora
 
-    dados = {"compartimento": compartimento, "dataHora": agora.isoformat()}
+    dados = {
+        "usuario": USUARIO,
+        "dispositivo": DISPOSITIVO,
+        "compartimento": compartimento,
+        "dataHora": agora.isoformat(),
+    }
     try:
 
         resposta = requests.post(
