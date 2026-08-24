@@ -180,6 +180,7 @@
         font-weight: bold;
         color: #0D47A1;
         font-family: Arial, Helvetica, sans-serif;
+        padding-left: 50px;
     }
 
     #salvar {
@@ -234,8 +235,8 @@
 
     #consumido {
         width: 120px;
-        height: 35px;
-        padding: 4px;
+        height: 28px;
+        padding: 0px;
         font-size: 16px;
         font-weight: bold;
         color: #0d47a1;
@@ -254,7 +255,7 @@
 
     #statusSensor {
         width: 100px;
-        height: 35px;
+        height: 28px;
         padding: 4px;
         font-size: 16px;
         font-weight: bold;
@@ -274,8 +275,8 @@
 
     #quantidadeAbastecida {
         width: 100px;
-        height: 35px;
-        padding: 4px;
+        height: 28px;
+        padding: 0px;
         font-size: 16px;
         font-weight: bold;
         color: #0d47a1;
@@ -288,6 +289,26 @@
     }
 
     #quantidadeAbastecida {
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    #dispositivo {
+        width: 225px;
+        height: 28px;
+        padding: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #0d47a1;
+        background-color: #ffffff;
+        border: 2px solid #2196f3;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    #dispositivo {
         text-align: center;
         letter-spacing: 1px;
     }
@@ -518,21 +539,21 @@
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
 
-                <label for="quantidadeAbastecida">Quantidade de doses abastecidas:</label>
+                </div><br>
 
+                <label for="quantidadeAbastecida">Quantidade de doses abastecidas:</label>
+                
                 <select id="quantidadeAbastecida">
                     <option value="3">3 doses</option>
                     <option value="5">5 doses</option>
-                </select>
-
-            </div><br>
+                </select>           
 
             <label>Medicamento Consumido:</label>
 
             <select id="consumido">
                 <option value="false">Pendente</option>
                 <option value="true">Consumido</option>
-            </select>
+            </select><br>
 
             <label>Status Sensor:</label>
 
@@ -540,6 +561,16 @@
                 <option>ONLINE</option>
                 <option>OFFLINE</option>
             </select>
+
+            <label for="dispositivo">Dispositivo:</label>
+            
+            <select id="dispositivo">
+            <option value="">Selecione o dispositivo</option>
+            <option value="CAIXA001">CAIXA001</option>
+            <option value="CAIXA002">CAIXA002</option>
+            <option value="CAIXA002">CAIXA003</option>
+            <option value="CAIXA002">CAIXA004</option>
+            </select>           
 
             </form>
 
