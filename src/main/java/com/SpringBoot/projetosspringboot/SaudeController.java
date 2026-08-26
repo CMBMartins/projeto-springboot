@@ -34,21 +34,35 @@ public class SaudeController {
         @PostMapping("/camera")
         public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
+                Saude registroDispositivo = repository
+                                .findTopByDispositivo(leitura.getDispositivo())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Dispositivo não encontrado: "
+                                                                + leitura.getDispositivo()));
+
+                String usuario = registroDispositivo.getUsuario();
+
                 Saude medicamento = repository
                                 .findByUsuarioAndDispositivoAndCompartimento(
-                                                leitura.getUsuario(),
+                                                usuario,
                                                 leitura.getDispositivo(),
                                                 leitura.getCompartimento())
                                 .orElseThrow(() -> new RuntimeException(
-                                                "Medicamento não encontrado para o usuário, dispositivo e compartimento."));
+                                                "Medicamento não encontrado para: "
+                                                                + "usuário=" + usuario
+                                                                + ", dispositivo=" + leitura.getDispositivo()
+                                                                + ", compartimento=" + leitura.getCompartimento()));
 
                 medicamento.setConsumido(true);
+
                 medicamento.setHorarioConsumido(
                                 leitura.getDataHora().toLocalTime());
+
                 medicamento.setUltimaLeituraCamera(
                                 leitura.getDataHora());
 
                 repository.save(medicamento);
+
                 eventoSaudeService.notificarAtualizacao();
 
                 return ResponseEntity.ok(

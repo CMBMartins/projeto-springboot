@@ -14,6 +14,8 @@ public interface SaudeRepository extends JpaRepository<Saude, Integer> {
                         String dispositivo,
                         String compartimento);
 
+        Optional<Saude> findTopByDispositivo(String dispositivo);
+
         // Listar por usuário
         List<Saude> findByUsuario(String usuario);
 
