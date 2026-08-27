@@ -30,15 +30,21 @@ public class SaudeController {
         public Saude salvar(@RequestBody Saude saude) {
                 return repository.save(saude);
         }
-
+        
+        
     @PostMapping("/camera")
     public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
     Saude medicamento = repository
-            .findByCompartimento(leitura.getCompartimento())
+            .findByUsuarioAndDispositivoAndCompartimento(
+                    leitura.getUsuario(),
+                    leitura.getDispositivo(),
+                    leitura.getCompartimento())
             .orElseThrow(() -> new RuntimeException(
                     "Medicamento não encontrado: "
-                            + leitura.getCompartimento()));
+                    + leitura.getUsuario() + " | "
+                    + leitura.getDispositivo() + " | "
+                    + leitura.getCompartimento()));
 
     medicamento.setConsumido(true);
     medicamento.setAtrasado(false);
