@@ -35,64 +35,34 @@ public class SaudeController {
     @PostMapping("/camera")
     public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
-    System.out.println("======================================");
-    System.out.println("📷 CÂMERA");
-    System.out.println("Usuário: [" + leitura.getUsuario() + "]");
-    System.out.println("Dispositivo: [" + leitura.getDispositivo() + "]");
-    System.out.println("Compartimento: [" + leitura.getCompartimento() + "]");
-    System.out.println("DataHora: [" + leitura.getDataHora() + "]");
+    Saude medicamento = repository
+            .findByUsuarioAndDispositivoAndCompartimento(
+                    leitura.getUsuario(),
+                    leitura.getDispositivo(),
+                    leitura.getCompartimento())
+            .orElseThrow(() -> new RuntimeException(
+                    "Medicamento não encontrado: "
+                    + leitura.getUsuario() + " | "
+                    + leitura.getDispositivo() + " | "
+                    + leitura.getCompartimento()));
 
-    try {
+    medicamento.setConsumido(true);
+    medicamento.setAtrasado(false);
+    medicamento.setCompartimentoVazio(true);
 
-        System.out.println("🔎 Procurando medicamento...");
+    medicamento.setHorarioConsumido(
+            leitura.getDataHora().toLocalTime());
 
-        Saude medicamento = repository
-                .findByUsuarioAndDispositivoAndCompartimento(
-                        leitura.getUsuario(),
-                        leitura.getDispositivo(),
-                        leitura.getCompartimento())
-                .orElseThrow(() -> new RuntimeException(
-                        "Medicamento não encontrado: "
-                        + leitura.getUsuario() + " | "
-                        + leitura.getDispositivo() + " | "
-                        + leitura.getCompartimento()));
+    medicamento.setUltimaLeituraCamera(
+            leitura.getDataHora());
 
-        System.out.println("✅ ENCONTRADO!");
-        System.out.println("ID: " + medicamento.getId());
-        System.out.println("Medicamento: " + medicamento.getMedicamento());
+    repository.save(medicamento);
 
-        medicamento.setConsumido(true);
-        medicamento.setAtrasado(false);
-        medicamento.setCompartimentoVazio(true);
+    eventoSaudeService.notificarAtualizacao();
 
-        medicamento.setHorarioConsumido(
-                leitura.getDataHora().toLocalTime());
-
-        medicamento.setUltimaLeituraCamera(
-                leitura.getDataHora());
-
-        System.out.println("💾 Salvando no banco...");
-
-        repository.save(medicamento);
-
-        System.out.println("✅ SALVO NO BANCO!");
-
-        eventoSaudeService.notificarAtualizacao();
-
-        System.out.println("📡 Evento SSE enviado!");
-
-        return ResponseEntity.ok("CÂMERA ONLINE");
-
-    } catch (Exception e) {
-
-        System.out.println("❌ ERRO NO /camera:");
-        e.printStackTrace();
-
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Erro: " + e.getMessage());
+    return ResponseEntity.ok("CÂMERA ONLINE");
     }
-    }
+
 
         @PostMapping("/camera/status")
         public ResponseEntity<String> statusCamera(
