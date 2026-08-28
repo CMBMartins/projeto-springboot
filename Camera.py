@@ -226,12 +226,16 @@ def enviar_status_camera(status):
     USUARIO = "Mardonio"
     DISPOSITIVO = "CAIXA001"
 
-    dados = {"usuario": USUARIO, "dispositivo": DISPOSITIVO, "statusSensor": status}
+    dados = {
+        "usuario": USUARIO,
+        "dispositivo": DISPOSITIVO,
+        "statusSensor": status
+    }
 
     try:
 
         resposta = requests.post(
-            "https://projeto-springboot.onrender.com/saude/status-camera",
+            "https://projeto-springboot.onrender.com/saude/camera/status",
             json=dados,
             timeout=5,
         )
