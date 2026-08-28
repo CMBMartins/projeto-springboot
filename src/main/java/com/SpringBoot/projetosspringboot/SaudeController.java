@@ -30,39 +30,44 @@ public class SaudeController {
         public Saude salvar(@RequestBody Saude saude) {
                 return repository.save(saude);
         }
-        
-        
-    @PostMapping("/camera")
-    public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
-    Saude medicamento = repository
-            .findByUsuarioAndDispositivoAndCompartimento(
-                    leitura.getUsuario(),
-                    leitura.getDispositivo(),
-                    leitura.getCompartimento())
-            .orElseThrow(() -> new RuntimeException(
-                    "Medicamento não encontrado: "
-                    + leitura.getUsuario() + " | "
-                    + leitura.getDispositivo() + " | "
-                    + leitura.getCompartimento()));
+        @PostMapping("/camera")
+        public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
-    medicamento.setConsumido(true);
-    medicamento.setAtrasado(false);
-    medicamento.setCompartimentoVazio(true);
+                Saude registroDispositivo = repository
+                                .findTopByDispositivo(leitura.getDispositivo())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Dispositivo não encontrado: "
+                                                                + leitura.getDispositivo()));
 
-    medicamento.setHorarioConsumido(
-            leitura.getDataHora().toLocalTime());
+                String usuario = registroDispositivo.getUsuario();
 
-    medicamento.setUltimaLeituraCamera(
-            leitura.getDataHora());
+                Saude medicamento = repository
+                                .findByUsuarioAndDispositivoAndCompartimento(
+                                                usuario,
+                                                leitura.getDispositivo(),
+                                                leitura.getCompartimento())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Medicamento não encontrado para: "
+                                                                + "usuário=" + usuario
+                                                                + ", dispositivo=" + leitura.getDispositivo()
+                                                                + ", compartimento=" + leitura.getCompartimento()));
 
-    repository.save(medicamento);
+                medicamento.setConsumido(true);
 
-    eventoSaudeService.notificarAtualizacao();
+                medicamento.setHorarioConsumido(
+                                leitura.getDataHora().toLocalTime());
 
-    return ResponseEntity.ok("CÂMERA ONLINE");
-    }
+                medicamento.setUltimaLeituraCamera(
+                                leitura.getDataHora());
 
+                repository.save(medicamento);
+
+                eventoSaudeService.notificarAtualizacao();
+
+                return ResponseEntity.ok(
+                                "CÂMERA ONLINE");
+        }
 
         @PostMapping("/camera/status")
         public ResponseEntity<String> statusCamera(
