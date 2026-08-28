@@ -185,8 +185,8 @@ def detectar_medicamento(frame):
 # ==========================================================
 def enviar_para_api(compartimento):
 
-    USUARIO = "Livia"
-    DISPOSITIVO = "CAIXA002"
+    USUARIO = "Mardonio"
+    DISPOSITIVO = "CAIXA001"
 
     agora = datetime.now()
 
