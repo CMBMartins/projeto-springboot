@@ -221,10 +221,33 @@ def enviar_para_api(compartimento):
         print("Erro ao enviar:", e)
 
 
+def enviar_status_camera(status):
+
+    USUARIO = "Mardonio"
+    DISPOSITIVO = "CAIXA001"
+
+    dados = {"usuario": USUARIO, "dispositivo": DISPOSITIVO, "statusSensor": status}
+
+    try:
+
+        resposta = requests.post(
+            "https://projeto-springboot.onrender.com/saude/status-camera",
+            json=dados,
+            timeout=5,
+        )
+
+        print("STATUS CÂMERA:", status)
+        print("Resposta:", resposta.text)
+
+    except Exception as e:
+
+        print("Erro ao enviar status da câmera:", e)
+
+
 # =====================================================
-# Programa principal
+# PROGRAMA PRINCIPAL
 # =====================================================
-# camera = cv2.VideoCapture(0)
+
 camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 time.sleep(2)
@@ -236,23 +259,35 @@ if not camera.isOpened():
 
 print("Webcam iniciada com sucesso!")
 
+# Informa ao servidor que a câmera está ONLINE
+enviar_status_camera("ONLINE")
+
 referencias_salvas = False
 inicio = time.time()
 
 ultimo_status = 0
 INTERVALO_STATUS = 10
 
-# ==========================================
-# Loop principal
-# ==========================================
+
+# =====================================================
+# LOOP PRINCIPAL
+# =====================================================
 
 while True:
 
     sucesso, frame = camera.read()
 
     if not sucesso or frame is None:
+
         print("Falha ao capturar imagem.")
         continue
+
+    # Envia ONLINE a cada 10 segundos
+    if time.time() - ultimo_status >= INTERVALO_STATUS:
+
+        enviar_status_camera("ONLINE")
+
+        ultimo_status = time.time()
 
     desenhar_compartimentos(frame)
 
@@ -279,10 +314,14 @@ while True:
     tecla = cv2.waitKey(1) & 0xFF
 
     if tecla == 27:
+
         break
 
-# ==========================================================
+
+# =====================================================
 # FINALIZAÇÃO
-# ==========================================================
+# =====================================================
+
 camera.release()
+
 cv2.destroyAllWindows()
