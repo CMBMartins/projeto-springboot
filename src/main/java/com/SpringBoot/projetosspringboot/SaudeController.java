@@ -31,43 +31,62 @@ public class SaudeController {
                 return repository.save(saude);
         }
 
-        @PostMapping("/camera")
-        public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
+    @PostMapping("/camera")
+    public ResponseEntity<?> leituraCamera(@RequestBody CameraDTO leitura) {
 
-                Saude registroDispositivo = repository
-                                .findTopByDispositivo(leitura.getDispositivo())
-                                .orElseThrow(() -> new RuntimeException(
-                                                "Dispositivo não encontrado: "
-                                                                + leitura.getDispositivo()));
+    System.out.println("=================================");
+    System.out.println("📷 LEITURA RECEBIDA DA CÂMERA");
+    System.out.println("Usuário: " + leitura.getUsuario());
+    System.out.println("Dispositivo: " + leitura.getDispositivo());
+    System.out.println("Compartimento: " + leitura.getCompartimento());
+    System.out.println("Data/Hora: " + leitura.getDataHora());
 
-                String usuario = registroDispositivo.getUsuario();
+    Saude medicamento = repository
+            .findByUsuarioAndDispositivoAndCompartimento(
+                    leitura.getUsuario(),
+                    leitura.getDispositivo(),
+                    leitura.getCompartimento()
+            )
+            .orElseThrow(() -> new RuntimeException(
+                    "Medicamento não encontrado: "
+                    + leitura.getUsuario() + " | "
+                    + leitura.getDispositivo() + " | "
+                    + leitura.getCompartimento()
+            ));
 
-                Saude medicamento = repository
-                                .findByUsuarioAndDispositivoAndCompartimento(
-                                                usuario,
-                                                leitura.getDispositivo(),
-                                                leitura.getCompartimento())
-                                .orElseThrow(() -> new RuntimeException(
-                                                "Medicamento não encontrado para: "
-                                                                + "usuário=" + usuario
-                                                                + ", dispositivo=" + leitura.getDispositivo()
-                                                                + ", compartimento=" + leitura.getCompartimento()));
+    medicamento.setConsumido(true);
+    medicamento.setAtrasado(false);
+    medicamento.setCompartimentoVazio(true);
 
-                medicamento.setConsumido(true);
+    medicamento.setHorarioConsumido(
+            leitura.getDataHora().toLocalTime()
+    );
 
-                medicamento.setHorarioConsumido(
-                                leitura.getDataHora().toLocalTime());
+    medicamento.setUltimaLeituraCamera(
+            leitura.getDataHora()
+    );
 
-                medicamento.setUltimaLeituraCamera(
-                                leitura.getDataHora());
+    medicamento.setStatusSensor("ONLINE");
 
-                repository.save(medicamento);
+    repository.save(medicamento);
 
-                eventoSaudeService.notificarAtualizacao();
+    System.out.println("✅ MEDICAMENTO SALVO");
+    System.out.println("ID: " + medicamento.getId());
+    System.out.println("Usuário: " + medicamento.getUsuario());
+    System.out.println("Dispositivo: " + medicamento.getDispositivo());
+    System.out.println("Compartimento: " + medicamento.getCompartimento());
+    System.out.println("Status Sensor: " + medicamento.getStatusSensor());
 
-                return ResponseEntity.ok(
-                                "CÂMERA ONLINE");
-        }
+    eventoSaudeService.notificarAtualizacao();
+
+    System.out.println("📡 SSE NOTIFICADO");
+    System.out.println("=================================");
+
+    return ResponseEntity.ok(
+            "Leitura da câmera registrada com sucesso."
+    );
+    }
+
 
         @PostMapping("/camera/status")
         public ResponseEntity<String> statusCamera(
