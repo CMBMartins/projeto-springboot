@@ -8,17 +8,16 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "bancosaude")
-
 public class Saude {
-
-    @NotBlank(message = "O medicamento é obrigatório.")
-    @Column(nullable = false)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "O medicamento é obrigatório.")
+    @Column(nullable = false)
     private String medicamento;
+
     private String compartimento;
     private LocalTime horarioPrevisto;
     private LocalTime horarioConsumido;
