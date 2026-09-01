@@ -70,6 +70,9 @@ LIMIAR_AREA = 1000
 
 ULTIMO_ENVIO = {}
 
+CONTADOR_VAZIO = {nome: 0 for nome in COMPARTIMENTOS}
+
+FRAMES_CONFIRMAR_RETIRADA = 10
 
 # =====================================================
 # Exibe cada compartimento separadamente
@@ -117,28 +120,29 @@ def salvar_referencias(frame):
 def detectar_medicamento(frame):
 
     for nome, (x1, y1, x2, y2) in COMPARTIMENTOS.items():
-
-        # Recorta apenas o compartimento
+       
         roi = frame[y1:y2, x1:x2]
-
-        # Converte para tons de cinza
+        
         cinza = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-
-        # Suaviza a imagem
+       
         blur = cv2.GaussianBlur(cinza, (5, 5), 0)
-
-        # Cria a máscara
-        _, mascara = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY_INV)
-
-        # Procura os contornos
+       
+        _, mascara = cv2.threshold(
+            blur,
+            120,
+            255,
+            cv2.THRESH_BINARY_INV
+        )
+        
         contornos, _ = cv2.findContours(
-            mascara, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+            mascara,
+            cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE
         )
 
         maior_area = 0
         maior_contorno = None
-
-        # Encontra o maior contorno
+        
         for contorno in contornos:
 
             area = cv2.contourArea(contorno)
@@ -146,38 +150,69 @@ def detectar_medicamento(frame):
             if area > maior_area:
                 maior_area = area
                 maior_contorno = contorno
-
-        # Verifica se há medicamento
+        
         if maior_area > LIMIAR_AREA:
 
             estado_atual = True
             status = "OCUPADO"
+           
+            CONTADOR_VAZIO[nome] = 0
 
             if maior_contorno is not None:
 
-                cv2.drawContours(roi, [maior_contorno], -1, (0, 255, 0), 2)
+                cv2.drawContours(
+                    roi,
+                    [maior_contorno],
+                    -1,
+                    (0, 255, 0),
+                    2
+                )
 
         else:
-
             estado_atual = False
             status = "VAZIO"
-
-        # Verifica mudança de estado
+           
+            CONTADOR_VAZIO[nome] += 1
+        
         estado_anterior = ESTADO_ANTERIOR[nome]
-
+       
         if estado_anterior and not estado_atual:
 
-            print(f"{nome}: POSSIVEL MEDICAMENTO RETIRADO!")
+            print(
+                f"⚠️ {nome}: VAZIO "
+                f"({CONTADOR_VAZIO[nome]}/"
+                f"{FRAMES_CONFIRMAR_RETIRADA}) "
+                f"| Área = {maior_area:.1f}"
+            )       
 
+        if (
+            estado_anterior
+            and not estado_atual
+            and CONTADOR_VAZIO[nome] >= FRAMES_CONFIRMAR_RETIRADA
+        ):
+
+            print(
+                f"🚨 RETIRADA CONFIRMADA: {nome} "
+                f"| Área = {maior_area:.1f}"
+            )
+
+            # Envia para o Spring Boot
             enviar_para_api(nome)
 
-        # Atualiza os estados
+            # Marca como vazio para não enviar novamente
+            ESTADO_ANTERIOR[nome] = False
+
         ESTADO_COMPARTIMENTOS[nome] = estado_atual
-        ESTADO_ANTERIOR[nome] = estado_atual
 
-        print(f"{nome}: {status} - Área = {maior_area:.1f}")
-
-        # cv2.imshow("Máscara " + nome, mascara)
+        # Se estiver ocupado, confirma novamente o estado
+        if estado_atual:
+            ESTADO_ANTERIOR[nome] = True
+       
+        print(
+            f"{nome}: {status} | "
+            f"Área = {maior_area:.1f} | "
+            f"Vazios consecutivos = {CONTADOR_VAZIO[nome]}"
+        )
 
 
 # ==========================================================
@@ -198,6 +233,7 @@ def enviar_para_api(compartimento):
             return
 
     ULTIMO_ENVIO[compartimento] = agora
+    print(f"📡 ENVIANDO PARA API: {compartimento}")
 
     dados = {
         "usuario": USUARIO,
@@ -209,8 +245,9 @@ def enviar_para_api(compartimento):
 
         resposta = requests.post(
             "https://projeto-springboot.onrender.com/saude/camera",
+            #"http://localhost:8084/saude/camera",
             json=dados,
-            timeout=5,
+            timeout=10,
         )
 
         print(compartimento, "=>", resposta.status_code)
