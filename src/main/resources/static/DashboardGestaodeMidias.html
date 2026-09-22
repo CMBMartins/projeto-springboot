@@ -539,8 +539,8 @@
                 </div>
 
                 <div class="grafico">
-                    <h3>📊 Midias Cadastradas</h3>
-                    <canvas id="graficoMidias"></canvas>
+                    <h3>📊 Gênero das Midias</h3>
+                    <canvas id="generoDasMidias"></canvas>
                 </div>
 
             </section>
@@ -780,150 +780,7 @@
         // =====================================================
         // GRAFICOS
         // =====================================================
-        // 📋 FUNÇÃO DO GRÁFICO HORÁRIOS
 
-        let chartHorarios = null;
-
-        async function graficoHorarios() {
-
-            let usuario = localStorage.getItem("usuario");
-
-            const resposta = await fetch(
-                API + "/grafico-horarios?usuario=" +
-                encodeURIComponent(usuario)
-            );
-
-            const dados = await resposta.json();
-
-            console.log("📊 Dados gráfico horários:", dados);
-
-            const ctx = document.getElementById("graficoHorarios");
-
-            if (!ctx) {
-                console.log("❌ Canvas graficoHorarios não encontrado!");
-                return;
-            }
-
-            // Destrói o gráfico anterior antes de criar outro
-            if (chartHorarios) {
-                chartHorarios.destroy();
-            }
-
-            chartHorarios = new Chart(ctx, {
-
-                type: "bar",
-
-                data: {
-                    labels: Object.keys(dados),
-
-                    datasets: [{
-                        label: "Medicamentos por horário",
-                        data: Object.values(dados)
-                    }]
-                },
-
-                options: {
-                    responsive: true
-                }
-            });
-        }
-
-
-        let chartAdesao = null;
-
-        // 📋 FUNÇÃO DO GRÁFICO ADESÃO
-        async function graficoAdesao() {
-
-            let usuario = localStorage.getItem("usuario");
-
-            const resposta = await fetch(API + "/grafico-adesao?usuario=" +
-                encodeURIComponent(usuario)
-            );
-
-            const dados =
-                await resposta.json();
-
-            const canvas =
-                document.getElementById("graficoAdesao");
-
-            if (!canvas) {
-                return;
-            }
-
-            // Destrói o gráfico anterior
-            if (chartAdesao) {
-                chartAdesao.destroy();
-            }
-
-            // Cria o novo gráfico
-            chartAdesao = new Chart(
-                canvas,
-                {
-
-                    type: "line",
-
-                    data: {
-
-                        labels: Object.keys(dados),
-
-                        datasets: [{
-
-                            label: "Adesão",
-                            data: Object.values(dados)
-
-                        }]
-                    }
-
-                });
-
-        }
-
-        // 📋 FUNÇÃO DO GRÁFICO MEDICAMENTOS
-        let chartMedicamentos = null;
-
-        async function graficoMedicamentos() {
-
-            let usuario = localStorage.getItem("usuario");
-
-            const resposta = await fetch(
-                API + "/grafico-medicamentos?usuario=" +
-                encodeURIComponent(usuario)
-            );
-
-            const dados = await resposta.json();
-
-            console.log("📊 Dados gráfico medicamentos:", dados);
-
-            const ctx = document.getElementById("graficoMedicamentos");
-
-            if (!ctx) {
-                console.log("❌ Canvas graficoMedicamentos não encontrado!");
-                return;
-            }
-
-            // Destrói o gráfico anterior
-            if (chartMedicamentos) {
-                chartMedicamentos.destroy();
-            }
-
-            chartMedicamentos = new Chart(ctx, {
-
-                type: "bar",
-
-                data: {
-                    labels: Object.keys(dados),
-
-                    datasets: [{
-                        label: "Medicamentos",
-                        data: Object.values(dados)
-                    }]
-                },
-
-                options: {
-                    responsive: true
-                }
-            });
-        }
 
         // 📋 FUNÇÃO DO GRÁFICO STATUS
         let chartStatus = null;
@@ -991,6 +848,97 @@
                 );
             }
         }
+
+
+        let chartGeneroMidias = null;
+
+        async function generoDasMidias() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                console.warn("⚠️ Usuário não definido!");
+                return;
+            }
+
+            try {
+
+                const resposta = await fetch(
+                    `${API}/shows/grafico-generos?usuario=${encodeURIComponent(usuario)}`
+                );
+
+                console.log("📡 Status gráfico gêneros:", resposta.status);
+
+                if (!resposta.ok) {
+                    console.error("❌ Erro ao carregar gráfico de gêneros:", resposta.status);
+                    console.error(await resposta.text());
+                    return;
+                }
+
+                const dados = await resposta.json();
+
+                console.log("📊 Dados gráfico gêneros:", dados);
+
+                const canvas = document.getElementById("generoDasMidias");
+
+                if (!canvas) {
+                    console.error("❌ Canvas generoDasMidias não encontrado!");
+                    return;
+                }
+
+                if (chartGeneroMidias) {
+                    chartGeneroMidias.destroy();
+                }
+
+                const generos = [
+                    "Show",
+                    "Filme",
+                    "Filme Infantil",
+                    "Pessoal",
+                    "Animação Infantil",
+                    "Musical infantil",
+                    "Filme infantil"
+                ];
+
+                const valores = generos.map(
+                    genero => dados[genero] ?? 0
+                );
+
+                chartGeneroMidias = new Chart(canvas, {
+                    type: "bar",
+
+                    data: {
+                        labels: generos,
+
+                        datasets: [{
+                            label: "Quantidade de mídias",
+                            data: valores
+                        }]
+                    },
+
+                    options: {
+                        responsive: true,
+
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro ao carregar gráfico de gêneros:",
+                    erro
+                );
+            }
+        }
+
 
         // 📋 FUNÇÃO INICIAR O SISTEMA (DASHBOARD)  
         function iniciarSistema() {
@@ -1249,6 +1197,7 @@
                     await carregarDashboard();
                     await listarTodos();
                     await graficoStatus();
+                    await generoDasMidias();
 
                     console.log("✅ Dashboard atualizado após evento SSE.");
 
@@ -1411,6 +1360,7 @@
                     graficoStatus();
                     listarTodos();
                     iniciarMonitoramento();
+                    generoDasMidias();
 
                 })
                 .catch(error => {
