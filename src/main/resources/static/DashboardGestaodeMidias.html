@@ -519,16 +519,6 @@
                     <p id="tipodaMidia">🔴 Mídia Fisica</p>
                 </div>
 
-                <!--div class="card">
-                    <h3>⏰ Próximos Horários</h3>
-                    <p id="proximosHorarios">-</p>
-                </!--div>
-
-                <div class="card">
-                    <h3>📊 Resumo Diário:</h3>
-                    <p id="situacaoHoje">-</p>
-                </div-->
-
                 <div class="card alerta-card" id="cardAlerta">
 
                     <h3>🔔 Monitor de Mídias emprestadas!</h3>
@@ -542,16 +532,6 @@
             </section>
 
             <section class="graficos">
-
-                <!--div class="grafico">
-                    <h3>⏰ Consumo por Horário</h3>
-                    <canvas id="graficoHorarios"></canvas>
-                </!--div>
-
-                <div-- class="grafico">
-                    <h3>📈 Adesão Semanal</h3>
-                    <canvas id="graficoAdesao"></canvas>
-                </div-->
 
                 <div class="grafico">
                     <h3>📊 Status das Midias</h3>
@@ -599,42 +579,6 @@
 
         const API = "https://projeto-springboot.onrender.com";
 
-        const eventos = new EventSource(
-            API + "/eventos"
-        );
-
-        eventos.addEventListener("atualizacao", async () => {
-
-            const usuario = localStorage.getItem("usuario");
-            const logado = localStorage.getItem("logado");
-
-            // Não atualiza nada se não estiver logado
-            if (logado !== "true" || !usuario) {
-                return;
-            }
-
-            console.log("🔄 Atualizando dashboard...");
-
-            try {
-
-                //await carregarDashboard();
-                await listarTodos();
-                //await graficoAdesao();
-                //await graficoHorarios();
-                await graficoMidias();
-                await graficoStatus();
-
-                console.log("✅ Dashboard atualizado!");
-
-            } catch (erro) {
-
-                console.error(
-                    "❌ Erro ao atualizar dashboard:",
-                    erro
-                );
-            }
-        });
-
 
         // FUNÇÃO FETCH SEGURO
         function fetchSeguro(url) {
@@ -672,29 +616,37 @@
                 const usuario = localStorage.getItem("usuario");
 
                 if (!usuario || usuario.trim() === "") {
-
                     console.log("Nenhum usuário logado. Dashboard não será carregado.");
-
                     return;
                 }
 
-                console.log("Carregando dashboard para:", usuario);
+                console.log("📊 Carregando dashboard de mídias para:", usuario);
 
-                const resposta = await fetch(`${API}/shows/dashboard?usuario=${encodeURIComponent(usuario)}`);
+                const resposta = await fetch(
+                    `${API}/shows/dashboard?usuario=${encodeURIComponent(usuario)}`
+                );
+
+                console.log("📡 Status dashboard:", resposta.status);
 
                 if (!resposta.ok) {
-                    console.error("Erro ao carregar dashboard:", resposta.status);
+                    console.error(
+                        "❌ Erro ao carregar dashboard:",
+                        resposta.status
+                    );
 
                     console.error(await resposta.text());
 
                     return;
                 }
 
-
                 const dados = await resposta.json();
 
-                console.log("Dashboard:", dados);
+                console.log("📊 Dashboard de mídias:", dados);
 
+
+                // =====================================================
+                // ÚLTIMA MÍDIA
+                // =====================================================
 
                 const proximoMedicamento =
                     document.getElementById("proximoMedicamento");
@@ -702,13 +654,15 @@
                 if (proximoMedicamento) {
 
                     proximoMedicamento.innerHTML =
-                        dados.proximoMedicamento
-                            ? dados.proximoMedicamento.medicamento +
-                            "<br><small>" +
-                            dados.proximoMedicamento.horarioPrevisto +
-                            "</small>"
+                        dados.ultimaMidia
+                            ? dados.ultimaMidia.titulo
                             : "-";
                 }
+
+
+                // =====================================================
+                // ÚLTIMA MÍDIA CADASTRADA
+                // =====================================================
 
                 const ultimoMedicamento =
                     document.getElementById("ultimoMedicamento");
@@ -716,13 +670,15 @@
                 if (ultimoMedicamento) {
 
                     ultimoMedicamento.innerHTML =
-                        dados.ultimoConsumido
-                            ? dados.ultimoConsumido.medicamento +
-                            "<br><small>" +
-                            dados.ultimoConsumido.horarioConsumido +
-                            "</small>"
+                        dados.ultimaMidiaCadastrada
+                            ? dados.ultimaMidiaCadastrada.titulo
                             : "-";
                 }
+
+
+                // =====================================================
+                // RESUMO DE MÍDIAS
+                // =====================================================
 
                 const resumoDiario =
                     document.getElementById("resumoDiario");
@@ -730,11 +686,16 @@
                 if (resumoDiario) {
 
                     resumoDiario.innerHTML = `
-                <p>✅ Consumidos: ${dados.consumidosHoje ?? 0}</p>
-                <p>⚠️ Atrasados: ${dados.atrasados ?? 0}</p>
-                <p>⏰ Pendentes: ${dados.pendentes ?? 0}</p>
+                Total: ${dados.totalMidias ?? 0}<br>
+                Disponíveis: ${dados.disponiveis ?? 0}<br>
+                Emprestadas: ${dados.emprestadas ?? 0}
             `;
                 }
+
+
+                // =====================================================
+                // PERCENTUAL DE MÍDIAS
+                // =====================================================
 
                 const adesao =
                     document.getElementById("adesao");
@@ -742,103 +703,75 @@
                 if (adesao) {
 
                     adesao.innerHTML =
-                        ((dados.adesao ?? 0).toFixed(1)) + "%";
+                        `${(dados.percentualMidias ?? 0).toFixed(1)}%`;
                 }
+
+
+                // =====================================================
+                // TIPOS DE MÍDIA
+                // =====================================================
 
                 const compartimentos =
                     document.getElementById("compartimentos");
 
                 if (compartimentos) {
 
-                    const ocupados =
-                        dados.compartimentosOcupados ?? 0;
-
-                    const vazios =
-                        dados.compartimentosVazios ?? 0;
-
                     compartimentos.innerHTML =
-                        ocupados + " / " + (ocupados + vazios);
+                        dados.totalTipos ?? 0;
                 }
 
-                const statusCamera =
-                    document.getElementById("statusCamera");
 
-                if (statusCamera) {
+                // =====================================================
+                // TIPO DE ARQUIVO
+                // =====================================================
 
-                    const status = dados.statusSensor ?? "OFFLINE";
+                const tipodaMidia =
+                    document.getElementById("tipodaMidia");
 
-                    if (status === "ONLINE") {
+                if (tipodaMidia) {
 
-                        statusCamera.innerHTML = `
-            <p style="color: green; font-weight: bold;">
-                🟢 Câmera ONLINE
-            </p>
-        `;
-
-                    } else {
-
-                        statusCamera.innerHTML = `
-            <p style="color: red; font-weight: bold;">
-                🔴 Câmera OFFLINE
-            </p>
-        `;
-                    }
-                }
-
-                const proximosHorarios =
-                    document.getElementById("proximosHorarios");
-
-                if (proximosHorarios) {
-
-                    proximosHorarios.innerHTML =
-                        dados.proximoMedicamento
-                            ? dados.proximoMedicamento.horarioPrevisto
+                    tipodaMidia.innerHTML =
+                        dados.tipoMaisUtilizado
+                            ? dados.tipoMaisUtilizado
                             : "-";
                 }
 
-                const alertaMedicamentos =
-                    document.getElementById("alertasMedicamentos");
 
-                if (alertaMedicamentos) {
+                // =====================================================
+                // MÍDIAS EMPRESTADAS
+                // =====================================================
 
-                    alertaMedicamentos.innerHTML =
-                        dados.alertaMedicamentos
-                            ? dados.alertaMedicamentos.horarioPrevisto
-                            : "-";
-                }
+                const avisosdeMidias =
+                    document.getElementById("avisosdeMidias");
 
-                const statusSensor = document.getElementById("statusSensor");
+                if (avisosdeMidias) {
 
-                if (statusSensor) {
+                    if (dados.midiasEmprestadas &&
+                        dados.midiasEmprestadas.length > 0) {
 
-                    if (dados.statusSensor === "ONLINE") {
-
-                        statusSensor.value = "🟢ONLINE";
-
-                    } else {
-
-                        statusSensor.value = "🔴OFFLINE";
-                    }
-                }
-
-                const consumido = document.getElementById("consumido");
-
-                if (consumido) {
-
-                    if (dados.consumido === true) {
-
-                        consumido.value = "✅SIM";
+                        avisosdeMidias.innerHTML =
+                            dados.midiasEmprestadas
+                                .map(midia => `
+                            <p>
+                                📀 <strong>${midia.titulo}</strong>
+                                ${midia.artista
+                                        ? " - " + midia.artista
+                                        : ""}
+                            </p>
+                        `)
+                                .join("");
 
                     } else {
 
-                        consumido.value = "❌NÃO";
+                        avisosdeMidias.innerHTML =
+                            "✅ Nenhuma mídia emprestada.";
                     }
                 }
 
             } catch (erro) {
 
                 console.error(
-                    "Erro ao carregar dashboard:",
+                    "❌ Erro ao carregar dashboard de mídias:",
                     erro
                 );
             }
@@ -1001,11 +934,11 @@
 
             if (!usuario) {
                 console.warn("⚠️ Usuário não definido!");
-
                 return;
             }
 
             try {
+
                 const resposta = await fetch(
                     `${API}/shows/grafico-status?usuario=${encodeURIComponent(usuario)}`
                 );
@@ -1013,12 +946,14 @@
                 console.log("📡 Status gráfico:", resposta.status);
 
                 if (!resposta.ok) {
-
                     console.error("❌ Erro ao carregar gráfico:", resposta.status);
-
                     console.error(await resposta.text());
                     return;
                 }
+
+                const dados = await resposta.json();
+
+                console.log("📊 Dados gráfico status:", dados);
 
                 const ctx = document.getElementById("graficoStatus");
 
@@ -1027,20 +962,18 @@
                     return;
                 }
 
-                // Destrói o gráfico anterior
                 if (chartStatus) {
                     chartStatus.destroy();
                 }
 
                 chartStatus = new Chart(ctx, {
-
                     type: "pie",
 
                     data: {
                         labels: Object.keys(dados),
 
                         datasets: [{
-                            label: "Status dos medicamentos",
+                            label: "Status das mídias",
                             data: Object.values(dados)
                         }]
                     },
@@ -1051,7 +984,11 @@
                 });
 
             } catch (erro) {
-                console.error("❌ Erro ao carregar gráfico de status:", erro);
+
+                console.error(
+                    "❌ Erro ao carregar gráfico de status:",
+                    erro
+                );
             }
         }
 
@@ -1302,7 +1239,7 @@
         // FUNÇÃO PARA INICIAR O MONITORAMENTO DOS CARDS
         async function iniciarMonitoramento() {
 
-            const eventos = new EventSource(API + "/eventos");
+            const eventos = new EventSource(`${API}/shows/eventos`)
 
             eventos.addEventListener("atualizacao", async function () {
 
@@ -1311,11 +1248,6 @@
                 try {
                     await carregarDashboard();
                     await listarTodos();
-                    //await carregarPendentesHoje();
-                    //await carregarAlertas();
-                    //await graficoHorarios();
-                    //await graficoAdesao();
-                    //await graficoMedicamentos();
                     await graficoStatus();
 
                     console.log("✅ Dashboard atualizado após evento SSE.");
@@ -1476,14 +1408,9 @@
 
                     carregarDashboard();
                     limparLogin();
-                    //graficoHorarios();
-                    //graficoAdesao();
-                    //graficoMedicamentos();
                     graficoStatus();
                     listarTodos();
                     iniciarMonitoramento();
-                    //carregarPendentesHoje();
-                    //carregarAlertas();
 
                 })
                 .catch(error => {
