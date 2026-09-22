@@ -52,6 +52,18 @@ public class ShowFilmeController {
                 return emitter;
         }
 
+        @GetMapping("/grafico-generos")
+        public Map<String, Long> graficoGeneros(@RequestParam String usuario) {
+
+                List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+
+                return shows.stream()
+                                .filter(show -> show.getGenero() != null)
+                                .collect(Collectors.groupingBy(
+                                                show -> show.getGenero(),
+                                                Collectors.counting()));
+        }
+
         @PutMapping("/{id}/situacao")
         public BancoShowFilmes atualizarSituacao(@PathVariable Long id, @RequestBody Map<String, String> dados) {
 
