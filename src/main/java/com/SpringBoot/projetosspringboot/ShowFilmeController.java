@@ -3,7 +3,7 @@ package com.SpringBoot.projetosspringboot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 import java.util.List;
 
 @RestController
@@ -59,6 +59,18 @@ public class ShowFilmeController {
     @GetMapping("/usuario")
     public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
         return repository.findByUsuario(usuario);
+    }
+
+    @GetMapping("/grafico-status")
+    public Map<String, Long> graficoStatus(@RequestParam String usuario) {
+
+        List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+
+        return shows.stream()
+                .filter(show -> show.getSituacao() != null)
+                .collect(Collectors.groupingBy(
+                        BancoShowFilmes::getSituacao,
+                        Collectors.counting()));
     }
 
     // SALVAR
