@@ -531,7 +531,7 @@
 
                 <div class="card alerta-card" id="cardAlerta">
 
-                    <h3>🔔 AVISOS!</h3>
+                    <h3>🔔 Monitor de Mídias emprestadas!</h3>
 
                     <div id="avisosdeMidias">
                         Verificando...
@@ -584,7 +584,7 @@
                         </tr>
                     </thead>
 
-                    <tbody id="tabelaSaude"></tbody>
+                    <tbody id="tabelaShows"></tbody>
                 </table>
 
             </section>
@@ -617,11 +617,11 @@
 
             try {
 
-                await carregarDashboard();
+                //await carregarDashboard();
                 await listarTodos();
-                await graficoAdesao();
-                await graficoHorarios();
-                await graficoMedicamentos();
+                //await graficoAdesao();
+                //await graficoHorarios();
+                await graficoMidias();
                 await graficoStatus();
 
                 console.log("✅ Dashboard atualizado!");
@@ -680,18 +680,16 @@
 
                 console.log("Carregando dashboard para:", usuario);
 
-
-                const resposta = await fetch(
-                    `${API}/dashboard?usuario=${encodeURIComponent(usuario)}`
-                );
+                const resposta = await fetch(`${API}/shows/dashboard?usuario=${encodeURIComponent(usuario)}`);
 
                 if (!resposta.ok) {
-
                     console.error("Erro ao carregar dashboard:", resposta.status);
+
                     console.error(await resposta.text());
 
                     return;
                 }
+
 
                 const dados = await resposta.json();
 
@@ -999,46 +997,62 @@
 
         async function graficoStatus() {
 
-            let usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-            const resposta = await fetch(
-                API + "/grafico-status?usuario=" +
-                encodeURIComponent(usuario)
-            );
+            if (!usuario) {
+                console.warn("⚠️ Usuário não definido!");
 
-            const dados = await resposta.json();
-
-            console.log("📊 Dados gráfico status:", dados);
-
-            const ctx = document.getElementById("graficoStatus");
-
-            if (!ctx) {
-                console.log("❌ Canvas graficoStatus não encontrado!");
                 return;
             }
 
-            // Destrói o gráfico anterior
-            if (chartStatus) {
-                chartStatus.destroy();
-            }
+            try {
+                const resposta = await fetch(
+                    `${API}/shows/grafico-status?usuario=${encodeURIComponent(usuario)}`
+                );
 
-            chartStatus = new Chart(ctx, {
+                console.log("📡 Status gráfico:", resposta.status);
 
-                type: "pie",
+                if (!resposta.ok) {
 
-                data: {
-                    labels: Object.keys(dados),
+                    console.error("❌ Erro ao carregar gráfico:", resposta.status);
 
-                    datasets: [{
-                        label: "Status dos medicamentos",
-                        data: Object.values(dados)
-                    }]
-                },
-
-                options: {
-                    responsive: true
+                    console.error(await resposta.text());
+                    return;
                 }
-            });
+
+                const ctx = document.getElementById("graficoStatus");
+
+                if (!ctx) {
+                    console.log("❌ Canvas graficoStatus não encontrado!");
+                    return;
+                }
+
+                // Destrói o gráfico anterior
+                if (chartStatus) {
+                    chartStatus.destroy();
+                }
+
+                chartStatus = new Chart(ctx, {
+
+                    type: "pie",
+
+                    data: {
+                        labels: Object.keys(dados),
+
+                        datasets: [{
+                            label: "Status dos medicamentos",
+                            data: Object.values(dados)
+                        }]
+                    },
+
+                    options: {
+                        responsive: true
+                    }
+                });
+
+            } catch (erro) {
+                console.error("❌ Erro ao carregar gráfico de status:", erro);
+            }
         }
 
         // 📋 FUNÇÃO INICIAR O SISTEMA (DASHBOARD)  
@@ -1048,114 +1062,147 @@
         }
 
 
-        // 📋 FUNÇÃO LISTAR TODOS OS MEDICAMENTOS (DASHBOARD)       
-        async function listarTodos() {
+        // 📋 FUNÇÃO LISTAR TODAS AS MÍDIAS (DASHBOARD)
+        function listarTodos() {
 
-            const usuario = localStorage.getItem("usuario");
+            const usuario = getUsuario();
 
-            try {
-
-                const resposta = await fetch(
-                    API + "/usuario?usuario=" + encodeURIComponent(usuario)
-                );
-
-                if (!resposta.ok) {
-                    throw new Error("Erro ao carregar medicamentos.");
-                }
-
-                const medicamentos = await resposta.json();
-
-                const tabela = document.getElementById("tabelaSaude");
-
-                tabela.innerHTML = "";
-
-                medicamentos.forEach(saude => {
-
-                    let status = "";
-                    let cor = "";
-                    let botao = "";
-
-                    if (saude.consumido) {
-                        status = "✅ Consumido";
-                        cor = "#d4edda";
-                        botao = ` <button class="btn-atrasado" 
-                    onclick="editarStatus(${saude.id}, 'ATRASADO')"> 
-                    ⚠️ Atrasado </button> 
-                    <button class="btn-consumido" 
-                    onclick="editarStatus(${saude.id}, 'PENDENTE')"> 
-                    ⏰ Pendente </button> 
-                    <button class="btn-excluir" 
-                    onclick="excluirMedicamento(${saude.id})"> 🗑️ Excluir 
-                    </button> `;
-
-                    } else if (saude.atrasado) {
-                        status = "⚠️ Atrasado";
-                        cor = "#fff3cd";
-                        botao = ` <button class="btn-consumido" 
-                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')"> 
-                        ✅ Consumido 
-                        </button> 
-                        <button class="btn-atrasado" 
-                        onclick="editarStatus(${saude.id}, 'PENDENTE')"> 
-                        ⏰ Pendente </button> 
-                        <button class="btn-excluir" 
-                        onclick="excluirMedicamento(${saude.id})"> 🗑️ Excluir 
-                        </button> `;
-                    } else {
-
-                        status = "⏰ Pendente";
-                        cor = "#f8d7da";
-                        botao = `  <button class="btn-consumido"
-                        onclick="editarStatus(${saude.id}, 'CONSUMIDO')">
-                        ✅ Consumido
-                        </button>
-
-                        <button class="btn-atrasado"
-                        onclick="editarStatus(${saude.id}, 'ATRASADO')">
-                        ⚠️ Atrasado
-                        </button>;
-                    }
-
-        <button class="btn-excluir"
-            onclick="excluirMedicamento(${saude.id})">
-            🗑️ Excluir
-        </button>
-        `;
-                    }
-
-
-                    tabela.innerHTML += `
-
-            <tr style="background:${cor}">
-
-                <td>${saude.id}</td>
-                <td>${saude.medicamento}</td>
-                <td>${saude.compartimento}</td>
-                <td>${saude.horarioPrevisto ?? "-"}</td>
-                <td>${saude.horarioConsumido ?? "-"}</td>                
-                <td>${saude.consumido ?? "-"}</td>
-                <td>${saude.statusSensor}</td> 
-
-                <td>
-
-                   ${botao}
-
-                </td>
-
-            </tr>
-
-            `;
-
-                });
-
-            } catch (erro) {
-
-                console.error(erro);
-
-                alert("Erro ao carregar medicamentos.");
-
+            if (!usuario) {
+                console.warn("Usuário não definido!");
+                alert("⚠️ Faça Login!");
+                return;
             }
+
+            console.log("🔎 Listando mídias do usuário:", usuario);
+
+            fetchSeguro(
+                `${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`
+            )
+
+                .then(data => {
+
+                    console.log("📦 Dados recebidos:", data);
+
+                    const tabela = document.getElementById("tabelaShows");
+
+                    // Verifica se a tabela existe
+                    if (!tabela) {
+                        console.error(
+                            "❌ Elemento 'tabelaShows' não encontrado no HTML."
+                        );
+                        return;
+                    }
+
+                    // Verifica se o retorno é uma lista
+                    if (!Array.isArray(data)) {
+
+                        console.error(
+                            "❌ Resposta inválida:",
+                            data
+                        );
+
+                        tabela.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            Erro ao carregar as mídias.
+                        </td>
+                    </tr>
+                `;
+
+                        return;
+                    }
+
+                    // Nenhuma mídia encontrada
+                    if (data.length === 0) {
+
+                        tabela.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            Nenhuma mídia cadastrada para este usuário.
+                        </td>
+                    </tr>
+                `;
+
+                        return;
+                    }
+
+                    let linhas = "";
+
+                    // Monta as linhas
+                    data.forEach(show => {
+
+                        const classeLinha =
+                            show.situacao === "Emprestado"
+                                ? "linha-emprestado"
+                                : "linha-emarquivo";
+
+                        const textoBotao =
+                            show.situacao === "Emprestado"
+                                ? "Devolver"
+                                : "Emprestar";
+
+                        linhas += `
+                    <tr class="${classeLinha}">
+
+                        <td>${show.id ?? ""}</td>
+
+                        <td>${show.codigo ?? ""}</td>
+
+                        <td>${show.titulo ?? ""}</td>
+
+                        <td>${show.artista ?? ""}</td>
+
+                        <td>${show.situacao ?? ""}</td>
+
+                        <td>${show.tipo ?? ""}</td>
+
+                        <td>${show.genero ?? ""}</td>
+
+                        <td>
+                            <button
+                                onclick="editarSituacao(
+                                    ${show.id},
+                                    '${show.situacao ?? ""}'
+                                )">
+                                ${textoBotao}
+                            </button>
+                        </td>
+
+                    </tr>
+                `;
+                    });
+
+                    // Exibe na tabela
+                    tabela.innerHTML = linhas;
+
+                    console.log(
+                        `✅ ${data.length} mídia(s) listada(s).`
+                    );
+                })
+
+                .catch(err => {
+
+                    console.error(
+                        "❌ Erro ao listar mídias:",
+                        err
+                    );
+
+                    const tabela =
+                        document.getElementById("tabelaShows");
+
+                    if (tabela) {
+
+                        tabela.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            Erro ao carregar dados.
+                        </td>
+                    </tr>
+                `;
+                    }
+                });
         }
+
 
         // ======================================
         // EXCLUIR MEDICAMENTO
@@ -1264,11 +1311,11 @@
                 try {
                     await carregarDashboard();
                     await listarTodos();
-                    await carregarPendentesHoje();
-                    await carregarAlertas();
-                    await graficoHorarios();
-                    await graficoAdesao();
-                    await graficoMedicamentos();
+                    //await carregarPendentesHoje();
+                    //await carregarAlertas();
+                    //await graficoHorarios();
+                    //await graficoAdesao();
+                    //await graficoMedicamentos();
                     await graficoStatus();
 
                     console.log("✅ Dashboard atualizado após evento SSE.");
@@ -1429,14 +1476,14 @@
 
                     carregarDashboard();
                     limparLogin();
-                    graficoHorarios();
-                    graficoAdesao();
-                    graficoMedicamentos();
+                    //graficoHorarios();
+                    //graficoAdesao();
+                    //graficoMedicamentos();
                     graficoStatus();
                     listarTodos();
                     iniciarMonitoramento();
-                    carregarPendentesHoje();
-                    carregarAlertas();
+                    //carregarPendentesHoje();
+                    //carregarAlertas();
 
                 })
                 .catch(error => {
