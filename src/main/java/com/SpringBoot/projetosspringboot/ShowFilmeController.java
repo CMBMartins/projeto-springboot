@@ -69,7 +69,7 @@ public class ShowFilmeController {
         return shows.stream()
                 .filter(show -> show.getSituacao() != null)
                 .collect(Collectors.groupingBy(
-                        BancoShowFilmes::getSituacao,
+                        show -> show.getSituacao(),
                         Collectors.counting()));
     }
 
