@@ -2,8 +2,13 @@ package com.SpringBoot.projetosspringboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.http.MediaType;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -13,150 +18,181 @@ import java.util.List;
 
 public class ShowFilmeController {
 
-    @Autowired
-    private ShowFilmeRepository repository;
+        @Autowired
+        private ShowFilmeRepository repository;
 
-    @PutMapping("/{id}/situacao")
-    public BancoShowFilmes atualizarSituacao(@PathVariable Long id, @RequestBody Map<String, String> dados) {
+        private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-        BancoShowFilmes show = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
+        // ==========================================================
+        // SSE - CONEXÃO DO DASHBOARD
+        // ==========================================================
+        @GetMapping(value = "/eventos", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+        public SseEmitter eventos() {
 
-        String novaSituacao = dados.get("situacao");
+                SseEmitter emitter = new SseEmitter(0L);
 
-        if (novaSituacao == null || novaSituacao.isEmpty()) {
-            throw new RuntimeException("Situação inválida");
+                emitters.add(emitter);
+
+                emitter.onCompletion(() -> emitters.remove(emitter));
+                emitter.onTimeout(() -> emitters.remove(emitter));
+                emitter.onError(erro -> emitters.remove(emitter));
+
+                try {
+
+                        emitter.send(
+                                        SseEmitter.event()
+                                                        .name("conectado")
+                                                        .data("Conexão SSE estabelecida"));
+
+                } catch (IOException erro) {
+
+                        emitters.remove(emitter);
+                }
+
+                return emitter;
         }
 
-        show.setSituacao(novaSituacao);
+        @PutMapping("/{id}/situacao")
+        public BancoShowFilmes atualizarSituacao(@PathVariable Long id, @RequestBody Map<String, String> dados) {
 
-        return repository.save(show);
-    }
+                BancoShowFilmes show = repository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
 
-    @PutMapping("/{id}")
-    public BancoShowFilmes atualizar(@PathVariable Long id, @RequestBody BancoShowFilmes novo) {
+                String novaSituacao = dados.get("situacao");
 
-        BancoShowFilmes existente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
+                if (novaSituacao == null || novaSituacao.isEmpty()) {
+                        throw new RuntimeException("Situação inválida");
+                }
 
-        existente.setCodigo(novo.getCodigo());
-        existente.setTitulo(novo.getTitulo());
-        existente.setArtista(novo.getArtista());
-        existente.setAnodelancamento(novo.getAnodelancamento());
-        existente.setDatadacompra(novo.getDatadacompra());
-        existente.setSituacao(novo.getSituacao());
-        existente.setTipo(novo.getTipo());
-        existente.setGenero(novo.getGenero());
-        existente.setUsuario(novo.getUsuario());
+                show.setSituacao(novaSituacao);
 
-        return repository.save(existente);
-    }
+                return repository.save(show);
+        }
 
-    @GetMapping
-    public List<BancoShowFilmes> listar() {
-        return repository.findAll();
-    }
+        @PutMapping("/{id}")
+        public BancoShowFilmes atualizar(@PathVariable Long id, @RequestBody BancoShowFilmes novo) {
 
-    @GetMapping("/usuario")
-    public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
-        return repository.findByUsuario(usuario);
-    }
+                BancoShowFilmes existente = repository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Registro não encontrado"));
 
-    @GetMapping("/dashboard")
-    public Map<String, Object> dashboard(@RequestParam String usuario) {
+                existente.setCodigo(novo.getCodigo());
+                existente.setTitulo(novo.getTitulo());
+                existente.setArtista(novo.getArtista());
+                existente.setAnodelancamento(novo.getAnodelancamento());
+                existente.setDatadacompra(novo.getDatadacompra());
+                existente.setSituacao(novo.getSituacao());
+                existente.setTipo(novo.getTipo());
+                existente.setGenero(novo.getGenero());
+                existente.setUsuario(novo.getUsuario());
 
-        List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+                return repository.save(existente);
+        }
 
-        Map<String, Object> dados = new HashMap<>();
+        @GetMapping
+        public List<BancoShowFilmes> listar() {
+                return repository.findAll();
+        }
 
-        long totalMidias = shows.size();
+        @GetMapping("/usuario")
+        public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
+                return repository.findByUsuario(usuario);
+        }
 
-        long disponiveis = shows.stream()
-                .filter(show -> "EmArquivo".equalsIgnoreCase(show.getSituacao()))
-                .count();
+        @GetMapping("/dashboard")
+        public Map<String, Object> dashboard(@RequestParam String usuario) {
 
-        long emprestadas = shows.stream()
-                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
-                .count();
+                List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
 
-        double percentualMidias = totalMidias > 0
-                ? (disponiveis * 100.0) / totalMidias
-                : 0.0;
+                Map<String, Object> dados = new HashMap<>();
 
-        BancoShowFilmes ultimaMidia = shows.isEmpty()
-                ? null
-                : shows.get(shows.size() - 1);
+                long totalMidias = shows.size();
 
-        BancoShowFilmes ultimaMidiaCadastrada = shows.isEmpty()
-                ? null
-                : shows.get(shows.size() - 1);
+                long disponiveis = shows.stream()
+                                .filter(show -> "EmArquivo".equalsIgnoreCase(show.getSituacao()))
+                                .count();
 
-        long totalTipos = shows.stream()
-                .map(show -> show.getTipo())
-                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
-                .distinct()
-                .count();
+                long emprestadas = shows.stream()
+                                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
+                                .count();
 
-        String tipoMaisUtilizado = shows.stream()
-                .map(show -> show.getTipo())
-                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
-                .collect(Collectors.groupingBy(
-                        tipo -> tipo,
-                        Collectors.counting()))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .map(entry -> entry.getKey())
-                .orElse("-");
+                double percentualMidias = totalMidias > 0
+                                ? (disponiveis * 100.0) / totalMidias
+                                : 0.0;
 
-        List<BancoShowFilmes> midiasEmprestadas = shows.stream()
-                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
-                .toList();
+                BancoShowFilmes ultimaMidia = shows.isEmpty()
+                                ? null
+                                : shows.get(shows.size() - 1);
 
-        dados.put("ultimaMidia", ultimaMidia);
-        dados.put("ultimaMidiaCadastrada", ultimaMidiaCadastrada);
+                BancoShowFilmes ultimaMidiaCadastrada = shows.isEmpty()
+                                ? null
+                                : shows.get(shows.size() - 1);
 
-        dados.put("totalMidias", totalMidias);
-        dados.put("disponiveis", disponiveis);
-        dados.put("emprestadas", emprestadas);
+                long totalTipos = shows.stream()
+                                .map(show -> show.getTipo())
+                                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
+                                .distinct()
+                                .count();
 
-        dados.put("percentualMidias", percentualMidias);
+                String tipoMaisUtilizado = shows.stream()
+                                .map(show -> show.getTipo())
+                                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
+                                .collect(Collectors.groupingBy(
+                                                tipo -> tipo,
+                                                Collectors.counting()))
+                                .entrySet()
+                                .stream()
+                                .max(Map.Entry.comparingByValue())
+                                .map(entry -> entry.getKey())
+                                .orElse("-");
 
-        dados.put("totalTipos", totalTipos);
-        dados.put("tipoMaisUtilizado", tipoMaisUtilizado);
+                List<BancoShowFilmes> midiasEmprestadas = shows.stream()
+                                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
+                                .toList();
 
-        dados.put("midiasEmprestadas", midiasEmprestadas);
+                dados.put("ultimaMidia", ultimaMidia);
+                dados.put("ultimaMidiaCadastrada", ultimaMidiaCadastrada);
 
-        return dados;
-    }
+                dados.put("totalMidias", totalMidias);
+                dados.put("disponiveis", disponiveis);
+                dados.put("emprestadas", emprestadas);
 
-    @GetMapping("/grafico-status")
-    public Map<String, Long> graficoStatus(@RequestParam String usuario) {
+                dados.put("percentualMidias", percentualMidias);
 
-        List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+                dados.put("totalTipos", totalTipos);
+                dados.put("tipoMaisUtilizado", tipoMaisUtilizado);
 
-        return shows.stream()
-                .filter(show -> show.getSituacao() != null)
-                .collect(Collectors.groupingBy(
-                        show -> show.getSituacao(),
-                        Collectors.counting()));
-    }
+                dados.put("midiasEmprestadas", midiasEmprestadas);
 
-    // SALVAR
-    @PostMapping
-    public BancoShowFilmes salvar(@RequestBody BancoShowFilmes show) {
-        return repository.save(show);
-    }
+                return dados;
+        }
 
-    // DELETAR
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        repository.deleteById(id);
-    }
+        @GetMapping("/grafico-status")
+        public Map<String, Long> graficoStatus(@RequestParam String usuario) {
 
-    // BUSCAR POR ARTISTA
-    @GetMapping("/buscar")
-    public List<BancoShowFilmes> buscar(@RequestParam String artista) {
-        return repository.findByArtistaContainingIgnoreCase(artista);
-    }
+                List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+
+                return shows.stream()
+                                .filter(show -> show.getSituacao() != null)
+                                .collect(Collectors.groupingBy(
+                                                show -> show.getSituacao(),
+                                                Collectors.counting()));
+        }
+
+        // SALVAR
+        @PostMapping
+        public BancoShowFilmes salvar(@RequestBody BancoShowFilmes show) {
+                return repository.save(show);
+        }
+
+        // DELETAR
+        @DeleteMapping("/{id}")
+        public void deletar(@PathVariable Long id) {
+                repository.deleteById(id);
+        }
+
+        // BUSCAR POR ARTISTA
+        @GetMapping("/buscar")
+        public List<BancoShowFilmes> buscar(@RequestParam String artista) {
+                return repository.findByArtistaContainingIgnoreCase(artista);
+        }
 }
