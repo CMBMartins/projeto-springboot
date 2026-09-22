@@ -2,6 +2,7 @@ package com.SpringBoot.projetosspringboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.List;
@@ -59,6 +60,74 @@ public class ShowFilmeController {
     @GetMapping("/usuario")
     public List<BancoShowFilmes> buscarPorUsuario(@RequestParam String usuario) {
         return repository.findByUsuario(usuario);
+    }
+
+    @GetMapping("/dashboard")
+    public Map<String, Object> dashboard(@RequestParam String usuario) {
+
+        List<BancoShowFilmes> shows = repository.findByUsuario(usuario);
+
+        Map<String, Object> dados = new HashMap<>();
+
+        long totalMidias = shows.size();
+
+        long disponiveis = shows.stream()
+                .filter(show -> "EmArquivo".equalsIgnoreCase(show.getSituacao()))
+                .count();
+
+        long emprestadas = shows.stream()
+                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
+                .count();
+
+        double percentualMidias = totalMidias > 0
+                ? (disponiveis * 100.0) / totalMidias
+                : 0.0;
+
+        BancoShowFilmes ultimaMidia = shows.isEmpty()
+                ? null
+                : shows.get(shows.size() - 1);
+
+        BancoShowFilmes ultimaMidiaCadastrada = shows.isEmpty()
+                ? null
+                : shows.get(shows.size() - 1);
+
+        long totalTipos = shows.stream()
+                .map(show -> show.getTipo())
+                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
+                .distinct()
+                .count();
+
+        String tipoMaisUtilizado = shows.stream()
+                .map(show -> show.getTipo())
+                .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
+                .collect(Collectors.groupingBy(
+                        tipo -> tipo,
+                        Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(entry -> entry.getKey())
+                .orElse("-");
+
+        List<BancoShowFilmes> midiasEmprestadas = shows.stream()
+                .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
+                .toList();
+
+        dados.put("ultimaMidia", ultimaMidia);
+        dados.put("ultimaMidiaCadastrada", ultimaMidiaCadastrada);
+
+        dados.put("totalMidias", totalMidias);
+        dados.put("disponiveis", disponiveis);
+        dados.put("emprestadas", emprestadas);
+
+        dados.put("percentualMidias", percentualMidias);
+
+        dados.put("totalTipos", totalTipos);
+        dados.put("tipoMaisUtilizado", tipoMaisUtilizado);
+
+        dados.put("midiasEmprestadas", midiasEmprestadas);
+
+        return dados;
     }
 
     @GetMapping("/grafico-status")
