@@ -131,9 +131,20 @@ public class ShowFilmeController {
                                 ? (disponiveis * 100.0) / totalMidias
                                 : 0.0;
 
-                BancoShowFilmes ultimaMidia = shows.isEmpty()
-                                ? null
-                                : shows.get(shows.size() - 1);
+                BancoShowFilmes ultimaDVD = shows.stream()
+                                .filter(show -> "DVD".equalsIgnoreCase(show.getTipo()))
+                                .reduce((primeiro, segundo) -> segundo)
+                                .orElse(null);
+
+                BancoShowFilmes ultimaBluRay = shows.stream()
+                                .filter(show -> "Blu-ray".equalsIgnoreCase(show.getTipo()))
+                                .reduce((primeiro, segundo) -> segundo)
+                                .orElse(null);
+
+                BancoShowFilmes ultimaDigital = shows.stream()
+                                .filter(show -> "Digital".equalsIgnoreCase(show.getTipo()))
+                                .reduce((primeiro, segundo) -> segundo)
+                                .orElse(null);
 
                 BancoShowFilmes ultimaMidiaCadastrada = shows.isEmpty()
                                 ? null
@@ -161,7 +172,9 @@ public class ShowFilmeController {
                                 .filter(show -> "Emprestado".equalsIgnoreCase(show.getSituacao()))
                                 .toList();
 
-                dados.put("ultimaMidia", ultimaMidia);
+                dados.put("ultimaMidiaDVD", ultimaDVD);
+                dados.put("ultimaMidiaBluRay", ultimaBluRay);
+                dados.put("ultimaMidiaDigital", ultimaDigital);
                 dados.put("ultimaMidiaCadastrada", ultimaMidiaCadastrada);
 
                 dados.put("totalMidias", totalMidias);
