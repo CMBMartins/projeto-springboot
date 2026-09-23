@@ -471,7 +471,7 @@
 
                     <select id="tipodeMidia">
                         <option>🔴Fisico</option>
-                        <option>🟢Eletrônica</option>
+                        <option>🟢Digital</option>
                     </select>
                 </div>
 
@@ -661,7 +661,7 @@
                         </div>
                         <div>
 
-                        💿 <strong>Blu-ray:</strong>
+                        💿 <strong>Blu ray:</strong>
                         ${dados.ultimaMidiaBluRay
                             ? dados.ultimaMidiaBluRay.titulo
                             : "-"}
@@ -738,7 +738,7 @@
 
                     compartimentos.innerHTML = `
                     <div>📀 DVD: ${dados.quantidadeDVD ?? 0}</div>
-                    <div>💿 Blu-ray: ${dados.quantidadeBluRay ?? 0}</div>
+                    <div>💿 Blu ray: ${dados.quantidadeBluRay ?? 0}</div>
                     <div>💻 Digital: ${dados.quantidadeDigital ?? 0}</div>
                     `;
                 }
