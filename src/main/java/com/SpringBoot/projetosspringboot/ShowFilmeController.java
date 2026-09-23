@@ -160,7 +160,7 @@ public class ShowFilmeController {
                                 .count();
 
                 long quantidadeBluRay = shows.stream()
-                                .filter(show -> "Blu-ray".equalsIgnoreCase(show.getTipo()))
+                                .filter(show -> "Blu ray".equalsIgnoreCase(show.getTipo()))
                                 .count();
 
                 long quantidadeDigital = shows.stream()
