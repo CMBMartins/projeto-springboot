@@ -234,8 +234,8 @@
         letter-spacing: 1px;
     }
 
-    #tipodeMidia {
-        width: 140px;
+    #nomeArtista {
+        width: 250px;
         height: 35px;
         padding: 4px;
         font-size: 16px;
@@ -249,7 +249,7 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
-    #tipodeMidia {
+    #nomeArtista {
         text-align: center;
         letter-spacing: 1px;
     }
@@ -460,19 +460,20 @@
                     <button class="btn btn-logout" onclick="logout()">Sair</button>
                     <button class="btn btn-cadastro" onclick="cadastrarUsuarios()">Cadastrar Usuarios</button>
 
-                    <label>Midia emprestada:</label>
+                    <!--label>Midia emprestada:</!--label>
 
-                    <select id="emprestada">
+                    <select-- id="emprestada">
                         <option value="false">❌Não</option>
                         <option value="true">✅Sim</option>
-                    </select>
+                    </select-->
 
-                    <label>Tipo de Arquivo:</label>
+                    <label for="nomeArtista">Pesquise o Artista:</label>
 
-                    <select id="tipodeMidia">
-                        <option>🔴Fisico</option>
-                        <option>🟢Digital</option>
-                    </select>
+                    <input type="text" id="nomeArtista" placeholder="Digite o nome do artista">
+
+                    <button type="button" onclick="buscarArtista()">
+                        🔍 Pesquisar
+                    </button>
                 </div>
 
             </div>
@@ -490,12 +491,12 @@
             <section class="cards">
 
                 <div class="card">
-                    <h3>📷 Ultimas Mídias</h3>
+                    <h3>📀 Ultimas Mídias</h3>
                     <p id="proximoMedicamento">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>✅ Última Midia cadastrada</h3>
+                    <h3>🎤 Artista pesquisado</h3>
                     <p id="ultimoMedicamento">-</p>
                 </div>
 
@@ -510,13 +511,13 @@
                 </div>
 
                 <div class="card">
-                    <h3>📷 Tipos de Mídias</h3>
+                    <h3>💿 Tipos de Mídias</h3>
                     <p id="compartimentos">0</p>
                 </div>
 
                 <div class="card">
-                    <h3>📷 Tipos de Arquivos mais utilizados</h3>
-                    <p id="tipodaMidia">🔴 Mídia Fisica</p>
+                    <h3>💻 Maior número de Mídias</h3>
+                    <p id="tipodaMidia">🔢</p>
                 </div>
 
                 <div class="card alerta-card" id="cardAlerta">
@@ -553,14 +554,14 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>🚪➡️ ID</th>
-                            <th>💊 Codigo</th>
-                            <th>🧪 Titulo</th>
-                            <th>⏰ Artista</th>
-                            <th>✅ Situação</th>
-                            <th>💊 Tipo</th>
-                            <th>📷 Gênero</th>
-                            <th>💾 Ação</th>
+                            <th>🆔 ID</th>
+                            <th>🔢 Codigo</th>
+                            <th>🎬 Titulo</th>
+                            <th>🎤 Artista</th>
+                            <th>📌 Situação</th>
+                            <th>💿Tipo</th>
+                            <th>🏷️ Gênero</th>
+                            <th>⚙️ Ação</th>
                         </tr>
                     </thead>
 
@@ -678,25 +679,6 @@
 
 
                 // =====================================================
-                // ÚLTIMA MÍDIA CADASTRADA
-                // =====================================================
-
-                const ultimoMedicamento =
-                    document.getElementById("ultimoMedicamento");
-
-                if (ultimoMedicamento) {
-
-                    ultimoMedicamento.innerHTML =
-                        dados.ultimaMidiaCadastrada
-                            ? `
-                            <strong>${dados.ultimaMidiaCadastrada.titulo}</strong><br>
-                            <small>Tipo: ${dados.ultimaMidiaCadastrada.tipo ?? " "}</small>
-                            `
-                            : "-";
-                }
-
-
-                // =====================================================
                 // RESUMO DE MÍDIAS
                 // =====================================================
 
@@ -712,7 +694,6 @@
             `;
                 }
 
-
                 // =====================================================
                 // PERCENTUAL DE MÍDIAS
                 // =====================================================
@@ -725,7 +706,6 @@
                     adesao.innerHTML =
                         `${(dados.percentualMidias ?? 0).toFixed(1)}%`;
                 }
-
 
                 // =====================================================
                 // TIPOS DE MÍDIA
@@ -743,7 +723,6 @@
                     `;
                 }
 
-
                 // =====================================================
                 // TIPO DE ARQUIVO MAIS UTILIZADOS
                 // =====================================================
@@ -758,7 +737,6 @@
                             ? dados.tipoMaisUtilizado
                             : "-";
                 }
-
 
                 // =====================================================
                 // MÍDIAS EMPRESTADAS
@@ -959,6 +937,77 @@
                     "❌ Erro ao carregar gráfico de gêneros:",
                     erro
                 );
+            }
+        }
+
+        function mostrarArtistaPesquisado(midias) {
+
+            const ultimoMedicamento =
+                document.getElementById("ultimoMedicamento");
+
+            if (!ultimoMedicamento) {
+                return;
+            }
+
+            if (!midias || midias.length === 0) {
+
+                ultimoMedicamento.innerHTML = `
+            <strong>❌ Artista não encontrado</strong>
+        `;
+
+                return;
+            }
+
+            ultimoMedicamento.innerHTML = midias.map(midia => `
+        
+        <div style="margin-bottom: 10px;">
+
+            <strong>🆔 ID: ${midia.id ?? "-"}</strong><br>
+
+            🎤 <strong>${midia.artista ?? "-"}</strong><br>
+
+            🎬 ${midia.titulo ?? "-"}
+
+        </div>
+        `).join("");
+        }
+
+        async function buscarArtista() {
+
+            const artista =
+                document.getElementById("nomeArtista").value.trim();
+
+            if (!artista) {
+                alert("Digite o nome do artista!");
+                return;
+            }
+
+            try {
+
+                console.log("🔎 Pesquisando artista:", artista);
+
+                const resposta = await fetch(
+                    `${API}/shows/buscar?artista=${encodeURIComponent(artista)}`
+                );
+
+                console.log("📡 Status da pesquisa:", resposta.status);
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao pesquisar artista.");
+                }
+
+                const dados = await resposta.json();
+
+                console.log("📦 Registros encontrados no banco:", dados);
+
+                // Mostra no card os dados REALMENTE retornados pelo banco
+                mostrarArtistaPesquisado(dados);
+
+            } catch (erro) {
+
+                console.error("❌ Erro na pesquisa:", erro);
+
+                alert("Erro ao pesquisar o artista.");
             }
         }
 
