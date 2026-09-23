@@ -137,7 +137,7 @@ public class ShowFilmeController {
                                 .orElse(null);
 
                 BancoShowFilmes ultimaBluRay = shows.stream()
-                                .filter(show -> "Blu-ray".equalsIgnoreCase(show.getTipo()))
+                                .filter(show -> "Blu ray".equalsIgnoreCase(show.getTipo()))
                                 .reduce((primeiro, segundo) -> segundo)
                                 .orElse(null);
 
