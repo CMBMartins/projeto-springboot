@@ -648,15 +648,32 @@
                 // ÚLTIMA MÍDIA
                 // =====================================================
 
-                const proximoMedicamento =
-                    document.getElementById("proximoMedicamento");
+                const proximoMedicamento = document.getElementById("proximoMedicamento");
 
                 if (proximoMedicamento) {
 
-                    proximoMedicamento.innerHTML =
-                        dados.ultimaMidia
-                            ? dados.ultimaMidia.titulo
-                            : "-";
+                    proximoMedicamento.innerHTML = `
+                    <div>
+                        📀 <strong>DVD:</strong>
+                        ${dados.ultimaMidiaDVD
+                            ? dados.ultimaMidiaDVD.titulo
+                            : "-"}
+                        </div>
+                        <div>
+
+                        💿 <strong>Blu-ray:</strong>
+                        ${dados.ultimaMidiaBluRay
+                            ? dados.ultimaMidiaBluRay.titulo
+                            : "-"}
+                        </div>
+                        <div>
+
+                        💻 <strong>Digital:</strong>
+                        ${dados.ultimaMidiaDigital
+                            ? dados.ultimaMidiaDigital.titulo
+                            : "-"}
+                        </div>
+                        `;
                 }
 
 
@@ -671,7 +688,10 @@
 
                     ultimoMedicamento.innerHTML =
                         dados.ultimaMidiaCadastrada
-                            ? dados.ultimaMidiaCadastrada.titulo
+                            ? `
+                            <strong>${dados.ultimaMidiaCadastrada.titulo}</strong><br>
+                            <small>Tipo: ${dados.ultimaMidiaCadastrada.tipo ?? "-"}</small>
+                            `
                             : "-";
                 }
 
