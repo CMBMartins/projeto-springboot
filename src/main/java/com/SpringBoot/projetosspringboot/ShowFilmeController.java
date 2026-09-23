@@ -155,6 +155,17 @@ public class ShowFilmeController {
                                 .filter(tipo -> tipo != null && !tipo.trim().isEmpty())
                                 .distinct()
                                 .count();
+                long quantidadeDVD = shows.stream()
+                                .filter(show -> "DVD".equalsIgnoreCase(show.getTipo()))
+                                .count();
+
+                long quantidadeBluRay = shows.stream()
+                                .filter(show -> "Blu-ray".equalsIgnoreCase(show.getTipo()))
+                                .count();
+
+                long quantidadeDigital = shows.stream()
+                                .filter(show -> "Digital".equalsIgnoreCase(show.getTipo()))
+                                .count();
 
                 String tipoMaisUtilizado = shows.stream()
                                 .map(show -> show.getTipo())
@@ -178,6 +189,9 @@ public class ShowFilmeController {
                 dados.put("ultimaMidiaCadastrada", ultimaMidiaCadastrada);
 
                 dados.put("totalMidias", totalMidias);
+                dados.put("quantidadeDVD", quantidadeDVD);
+                dados.put("quantidadeBluRay", quantidadeBluRay);
+                dados.put("quantidadeDigital", quantidadeDigital);
                 dados.put("disponiveis", disponiveis);
                 dados.put("emprestadas", emprestadas);
 
