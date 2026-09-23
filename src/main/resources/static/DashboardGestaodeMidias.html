@@ -490,7 +490,7 @@
             <section class="cards">
 
                 <div class="card">
-                    <h3>📷 Ultima Mídia</h3>
+                    <h3>📷 Ultimas Mídias</h3>
                     <p id="proximoMedicamento">-</p>
                 </div>
 
@@ -515,7 +515,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>📷 Tipo de Arquivo</h3>
+                    <h3>📷 Tipos de Arquivos mais utilizados</h3>
                     <p id="tipodaMidia">🔴 Mídia Fisica</p>
                 </div>
 
@@ -736,13 +736,16 @@
 
                 if (compartimentos) {
 
-                    compartimentos.innerHTML =
-                        dados.totalTipos ?? 0;
+                    compartimentos.innerHTML = `
+                    <div>📀 DVD: ${dados.quantidadeDVD ?? 0}</div>
+                    <div>💿 Blu-ray: ${dados.quantidadeBluRay ?? 0}</div>
+                    <div>💻 Digital: ${dados.quantidadeDigital ?? 0}</div>
+                    `;
                 }
 
 
                 // =====================================================
-                // TIPO DE ARQUIVO
+                // TIPO DE ARQUIVO MAIS UTILIZADOS
                 // =====================================================
 
                 const tipodaMidia =
