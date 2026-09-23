@@ -671,7 +671,7 @@
                         💻 <strong>Digital:</strong>
                         ${dados.ultimaMidiaDigital
                             ? dados.ultimaMidiaDigital.titulo
-                            : "-"}
+                            : " "}
                         </div>
                         `;
                 }
@@ -690,7 +690,7 @@
                         dados.ultimaMidiaCadastrada
                             ? `
                             <strong>${dados.ultimaMidiaCadastrada.titulo}</strong><br>
-                            <small>Tipo: ${dados.ultimaMidiaCadastrada.tipo ?? "-"}</small>
+                            <small>Tipo: ${dados.ultimaMidiaCadastrada.tipo ?? " "}</small>
                             `
                             : "-";
                 }
