@@ -453,6 +453,34 @@
             </div>
         </section> <br>
 
+        <script>
+            async function realizarPesquisa(event) {
+                event.preventDefault();
+                const campo = document.getElementById("searchQuery");
+                const resultados = document.getElementById("searchResults");
+                const query = campo.value.trim();
+                // Verifica se foi digitado algo 
+                if (query === "") {
+                    alert("Digite uma palavra para buscar.");
+                    campo.focus();
+                    return;
+                }
+                resultados.innerHTML = "<p>🔎 Pesquisando...</p>";
+                try {
+                    const response = await fetch("ApresentaçãoPessoal.php?query=" + encodeURIComponent(query));
+                    if (!response.ok) {
+                        throw new Error("Erro HTTP: " + response.status);
+                    }
+                    const result = await response.text();
+                    resultados.innerHTML = result;
+                }
+                catch (error) {
+                    console.error("Erro ao buscar:", error);
+                    resultados.innerHTML = "<p>❌ Erro ao realizar a pesquisa.</p>";
+                }
+            } 
+        </script>
+
         <section class="acompanhe">
             <div class="container">
                 <h3>🌐 Siga minhas redes sociais</h3>
