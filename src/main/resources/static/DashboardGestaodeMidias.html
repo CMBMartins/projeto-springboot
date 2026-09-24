@@ -99,7 +99,16 @@
     }
 
     label {
-        margin-left: 10px;
+        margin-left: 40px;
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    label1 {
+        margin-left: 5px;
         margin-bottom: 8px;
         font-size: 16px;
         font-weight: bold;
@@ -235,7 +244,7 @@
     }
 
     #nomeArtista {
-        width: 220px;
+        width: 250px;
         height: 22px;
         padding: 4px;
         font-size: 16px;
@@ -316,82 +325,69 @@
     table {
         width: 100%;
         border-collapse: collapse;
+        background-color: #f5f7fa;
     }
 
-    th,
+    th {
+        background-color: #2c3e50;
+        color: white;
+        padding: 10px;
+    }
+
     td {
         padding: 10px;
-        border-bottom: 1px solid #334155;
+        border-bottom: 1px solid #dcdcdc;
     }
 
-    /* Linhas alternadas (zebra) */
-    .linha-tabela:nth-child(even) {
-        background-color: #f8f9fa;
+    .linha-emarquivo {
+        background-color: #eaf7ea;
     }
 
-    .linha-tabela:nth-child(odd) {
-        background-color: #ffffff;
+    /* Fundo das linhas emprestadas */
+    .linha-emprestado {
+        background-color: #fff0f0;
+    }
+
+    button.botao-emprestar {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 13px;
+        transition: 0.3s;
+        width: auto;
+    }
+
+    button.botao-emprestar:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+    }
+
+    button.botao-devolver {
+        background-color: #27ae60;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 13px;
+        transition: 0.3s;
+        width: auto;
+    }
+
+    button.botao-devolver:hover {
+        background-color: #219150;
+        transform: scale(1.05);
     }
 
     /* Hover */
     .linha-tabela:hover {
         background-color: #e9ecef;
         transition: 0.2s;
-    }
-
-    .positivo {
-        color: #90a728;
-        font-weight: bold;
-    }
-
-    .negativo {
-        color: #dc3545;
-        font-weight: bold;
-    }
-
-    /* Valor */
-    .valor {
-        font-weight: bold;
-        color: #007bff;
-    }
-
-    /* Status */
-    .status-pago {
-        color: #28a745;
-        font-weight: bold;
-    }
-
-    .status-pendente {
-        color: #ffc107;
-        font-weight: bold;
-    }
-
-    #ultimasDespesas {
-        width: 100%;
-        border-collapse: collapse;
-        background: #ffffff;
-    }
-
-    #ultimasDespesas tr {
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    /* Linhas alternadas (efeito zebra) */
-    #ultimasDespesas tr:nth-child(even) {
-        background: #f7f9fc;
-    }
-
-    /* Hover bonito */
-    #ultimasDespesas tr:hover {
-        background: #eef3ff;
-    }
-
-    /* Células */
-    #ultimasDespesas td {
-        padding: 10px;
-        font-size: 14px;
-        color: #333;
-        /* 🔥 aqui resolve o problema */
     }
 
     .alerta-card {
@@ -449,7 +445,7 @@
 
             <!-- LOGO -->
             <div class="usuario">
-                <h1>LOGIN<label for="senha"></label>
+                <h1>Login<label1 for="senha"></label1>
                     <input type="text" id="usuario" placeholder="Usuario">
                     <input type="password" id="senha" placeholder="Senha">
                     <input type="text" id="usuariologado" placeholder="Usuario" readonly>
@@ -492,12 +488,12 @@
 
                 <div class="card">
                     <h3>📀 Ultimas Mídias</h3>
-                    <p id="proximoMedicamento">-</p>
+                    <p id="ultimaMidia">-</p>
                 </div>
 
                 <div class="card">
                     <h3>🎤 Artista pesquisado</h3>
-                    <p id="ultimoMedicamento">-</p>
+                    <p id="artistaPesquisado">-</p>
                 </div>
 
                 <div class="card">
@@ -512,12 +508,12 @@
 
                 <div class="card">
                     <h3>💿 Tipos de Mídias</h3>
-                    <p id="compartimentos">0</p>
+                    <p id="tipodeMidias">0</p>
                 </div>
 
                 <div class="card">
                     <h3>💻 Maior número de Mídias</h3>
-                    <p id="tipodaMidia">🔢</p>
+                    <p id="MaiornumerodeMidias">🔢</p>
                 </div>
 
                 <div class="card alerta-card" id="cardAlerta">
@@ -649,11 +645,11 @@
                 // ÚLTIMA MÍDIA
                 // =====================================================
 
-                const proximoMedicamento = document.getElementById("proximoMedicamento");
+                const ultimaMidia = document.getElementById("ultimaMidia");
 
-                if (proximoMedicamento) {
+                if (ultimaMidia) {
 
-                    proximoMedicamento.innerHTML = `
+                    ultimaMidia.innerHTML = `
                     <div>
                         📀 <strong>DVD:</strong>
                         ${dados.ultimaMidiaDVD
@@ -710,12 +706,12 @@
                 // TIPOS DE MÍDIA
                 // =====================================================
 
-                const compartimentos =
-                    document.getElementById("compartimentos");
+                const tipodeMidias =
+                    document.getElementById("tipodeMidias");
 
-                if (compartimentos) {
+                if (tipodeMidias) {
 
-                    compartimentos.innerHTML = `
+                    tipodeMidias.innerHTML = `
                     <div>📀 DVD: ${dados.quantidadeDVD ?? 0}</div>
                     <div>💿 Blu ray: ${dados.quantidadeBluRay ?? 0}</div>
                     <div>💻 Digital: ${dados.quantidadeDigital ?? 0}</div>
@@ -726,12 +722,12 @@
                 // TIPO DE ARQUIVO MAIS UTILIZADOS
                 // =====================================================
 
-                const tipodaMidia =
-                    document.getElementById("tipodaMidia");
+                const MaiornumerodeMidias =
+                    document.getElementById("MaiornumerodeMidias");
 
-                if (tipodaMidia) {
+                if (MaiornumerodeMidias) {
 
-                    tipodaMidia.innerHTML =
+                    MaiornumerodeMidias.innerHTML =
                         dados.tipoMaisUtilizado
                             ? dados.tipoMaisUtilizado
                             : "-";
@@ -780,7 +776,6 @@
         // =====================================================
         // GRAFICOS
         // =====================================================
-
 
         // 📋 FUNÇÃO DO GRÁFICO STATUS
         let chartStatus = null;
@@ -850,6 +845,7 @@
         }
 
 
+        // 📋 FUNÇÃO DO GRÁFICO DE GENERO DAS MÍDIAS
         let chartGeneroMidias = null;
 
         async function generoDasMidias() {
@@ -939,6 +935,7 @@
             }
         }
 
+        // 📋 FUNÇÃO PESQUISAR POR ARTISTA
         function mostrarArtistaPesquisado(midias) {
 
             const ultimoMedicamento =
@@ -961,7 +958,7 @@
         
         <div style="margin-bottom: 10px;">
 
-            <strong>🆔 Código: ${midia.codigo ?? "-"}</strong><br>
+            <strong>🆔 ID: ${midia.id ?? "-"}</strong><br>
 
             🎤 <strong>${midia.artista ?? "-"}</strong><br>
 
@@ -1118,6 +1115,11 @@
                                 ? "Devolver"
                                 : "Emprestar";
 
+                        const classeBotao =
+                            show.situacao === "Emprestado"
+                                ? "botao-devolver"
+                                : "botao-emprestar";
+
                         linhas += `
                     <tr class="${classeLinha}">
 
@@ -1137,7 +1139,8 @@
 
                         <td>
                             <button
-                                onclick="editarSituacao(
+                            class="${classeBotao}"
+                                onclick="editarStatus(
                                     ${show.id},
                                     '${show.situacao ?? ""}'
                                 )">
@@ -1247,34 +1250,70 @@
         }
 
         // ======================================
-        // EDITAR STATUS
+        // EDITAR SITUAÇÃO DA MÍDIA
         // ======================================
-        async function editarStatus(id, status) {
+        async function editarStatus(id, situacao) {
 
-            if (!confirm("Deseja realmente modifica o status desse medicamento?")) {
+            if (!confirm("Deseja realmente modificar a situação dessa mídia?")) {
                 return;
             }
 
-            const resposta = await fetch(`${API}/${id}/status`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    status: status
-                })
-            });
+            try {
 
-            if (resposta.ok) {
+                const novaSituacao =
+                    situacao === "Emprestado"
+                        ? "EmArquivo"
+                        : "Emprestado";
 
-                listarTodos();
+                console.log("🔄 Alterando situação:", {
+                    id: id,
+                    situacaoAtual: situacao,
+                    novaSituacao: novaSituacao
+                });
 
-            } else {
+                const resposta = await fetch(
+                    `${API}/shows/${id}/situacao`,
+                    {
+                        method: "PUT",
 
-                alert("Erro ao atualizar o status.");
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
 
+                        body: JSON.stringify({
+                            situacao: novaSituacao
+                        })
+                    }
+                );
+
+                console.log("📡 Status da alteração:", resposta.status);
+
+                if (resposta.ok) {
+
+                    console.log("✅ Situação alterada com sucesso!");
+
+                    await listarTodos();
+                    await graficoStatus();
+                    await carregarDashboard();
+
+                } else {
+
+                    const erro = await resposta.text();
+
+                    console.error("❌ Erro retornado pelo servidor:", erro);
+
+                    alert("Erro ao atualizar a situação.");
+
+                }
+
+            } catch (erro) {
+
+                console.error("❌ Erro ao alterar situação:", erro);
+
+                alert("Erro de comunicação com o servidor.");
             }
         }
+
 
         // FUNÇÃO PARA INICIAR O MONITORAMENTO DOS CARDS
         async function iniciarMonitoramento() {
