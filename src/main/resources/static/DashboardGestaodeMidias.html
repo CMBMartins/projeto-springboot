@@ -938,23 +938,23 @@
         // 📋 FUNÇÃO PESQUISAR POR ARTISTA
         function mostrarArtistaPesquisado(midias) {
 
-            const ultimoMedicamento =
-                document.getElementById("ultimoMedicamento");
+            const artistaPesquisado =
+                document.getElementById("artistaPesquisado");
 
-            if (!ultimoMedicamento) {
+            if (!artistaPesquisado) {
                 return;
             }
 
             if (!midias || midias.length === 0) {
 
-                ultimoMedicamento.innerHTML = `
+                artistaPesquisado.innerHTML = `
             <strong>❌ Artista não encontrado</strong>
         `;
 
                 return;
             }
 
-            ultimoMedicamento.innerHTML = midias.map(midia => `
+            artistaPesquisado.innerHTML = midias.map(midia => `
         
         <div style="margin-bottom: 10px;">
 
