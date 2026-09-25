@@ -51,9 +51,9 @@
         vertical-align: middle;
         margin-right: 8px;
         border-radius: 50%;
-    }
+        }
 
-    .painel-datahora {
+        .painel-datahora {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -62,7 +62,7 @@
         padding: 10px 25px;
         font-size: 17px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
+        }
 
     .data {
         font-weight: bold;
@@ -79,221 +79,546 @@
         padding: 0;
     }
 
-    .barra-menu {
-        display: flex;
-        justify-content: center;
-        align-items:
-            stretch;
-        gap: 30px;
-        background: linear-gradient(135deg, #4b5563, #374151);
-        padding: 30px 25px;
-        color: white;
+   .barra-menu {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 30px;
+    background: linear-gradient(135deg, #4b5563, #374151);
+    padding: 30px 25px;
+    color: white;
     }
-
+    
     .menu-item {
-        flex: 1;
-        max-width: 360px;
-        text-align: center;
-        background: rgba(255, 255, 255, 0.08);
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
-        transition: 0.3s ease;
+    flex: 1;
+    max-width: 360px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+    transition: 0.3s ease;
     }
 
     .menu-item:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.13);
-        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.13);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
     }
 
     .menu-item h2 {
-        margin-top: 0;
-        margin-bottom:
-            18px;
-        font-size: 20px;
-        color: white;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.25);
-        padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-size: 20px;
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+    padding-bottom: 10px;
     }
 
     .menu-item a {
-        display: block;
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 16px;
-        padding: 9px 10px;
-        margin: 4px 0;
-        border-radius: 6px;
-        transition: all 0.25s ease;
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 9px 10px;
+    margin: 4px 0;
+    border-radius: 6px;
+    transition: all 0.25s ease;
     }
-
+    
     .menu-item a:hover {
-        background: #ffffff;
-        color: #1f2a38;
-        transform: translateX(4px);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    color: #1f2a38;
+    transform: translateX(4px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
 
     .banner {
-        text-align: center;
-        background: #111;
-        padding: 0;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
     .banner img {
-        display: block;
-        width: 100%;
-        max-height: 350px;
-        object-fit: cover;
-        transition: transform 0.5s ease;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    object-position: center;
+    margin: 0 auto;
+    transition: transform 0.5s ease;
     }
 
     .banner:hover img {
-        transform: scale(1.02);
+    transform: scale(1.01);
     }
 
     .perfil {
-        display: flex;
-        padding: 30px;
-        align-items: center;
-        background: white;
-        margin: 30px auto;
-        max-width: 1200px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    max-width: 1800px;
+    margin: 35px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
     }
 
     .perfil img {
-        width: 500px;
-        max-width: 100%;
-        border-radius: 10px;
-        margin-right: 30px;
+    width: 700px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.20);
+    }
+
+    .perfil div {
+    flex: 1;
+    }
+
+    .perfil h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #1f2a38;
+    font-size: 28px;
+    }
+
+    .perfil p {
+    margin: 0;
+    color: #555;
+    font-size: 17px;
+    line-height: 1.7;
+    }
+    
+    footer {
+    background: #202b38;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    }
+    
+    .campo-pesquisa {
+    display: flex;
+    background: rgba(255, 255, 255, 0.08);
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 10px;
+    }
+
+    .campo-pesquisa input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s ease;
+    }
+
+    .campo-pesquisa input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.12);
+    }
+
+    .campo-pesquisa button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    background: #007bff;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    }
+
+    .campo-pesquisa button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    }
+
+    #searchResults {
+    max-width: 700px;
+    margin: 20px auto 0;
+    text-align: left;
+    }
+
+
+    .box-acompanhe {
+    width: 100%;
+    padding: 35px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    }
+
+    .box-acompanhe .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .box-acompanhe h3 {
+    margin: 0 0 25px;
+    text-align: center;
+    color: #1f2a38;
+    font-size: 22px;
+    }
+
+    .acompanhe {
+    width: 100%;
+    padding: 35px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    }
+
+    .acompanhe .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .acompanhe h3 {
+    margin: 0 0 25px;
+    text-align: center;
+    color: #1f2a38;
+    font-size: 22px;
+    }
+
+    .redes-sociais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    }
+
+    .redes-sociais a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    padding: 7px;
+    background: #f4f6f8;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    transition: 0.3s ease;
+    }
+
+    .redes-sociais a:hover {
+    transform: translateY(-5px) scale(1.05);
+    background: #ffffff;
+    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.20);
+    }
+
+    .ico-redesocial,.tv-ico {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    border-radius: 8px;
+    }
+
+    
+    .destaques {
+    width: 100%;
+    padding: 35px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    }
+
+    .destaques .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #f4f6f8;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .destaques h2 {
+    margin: 0 0 25px;
+    text-align: center;
+    color: #1f2a38;
+    font-size: 24px;
+    }
+
+    .destaques-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    }
+
+    .destaque-card {
+    overflow: hidden;
+    background: #f8f9fa;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+    transition: 0.3s ease;
+    }
+
+    .destaque-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .destaque-card img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    }
+
+    .destaque-card p {
+    margin: 0;
+    padding: 12px;
+    color: #1f2a38;
+    font-size: 15px;
+    font-weight: bold;
+    }
+
+    .box-radio {
+    width: 100%;
+    padding: 35px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    }
+
+    .box-radio .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    }
+
+    .box-radio h2 {
+    margin: 0 0 25px;
+    color: #1f2a38;
+    }
+
+    .radio-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    }
+
+    .play-radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.3s ease;
+    }
+
+    .play-radio:hover {
+    transform: scale(1.08);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .play-radio .icon {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    border-radius: 50%;
+    }
+
+    .info-radio {
+    text-align: left;
+    }
+
+    .info-radio p {
+    margin: 10px 0 15px;
+    font-size: 18px;
+    color: #333;
+    }
+
+    .aovivo {
+    display: inline-block;
+    background: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    }
+
+    .btn-radio {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    }
+
+    .btn-radio:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
     }
 
     .apps {
-        padding: 30px;
-        text-align: center;
+    width: 100%;
+    padding: 35px 20px;
+    background: rgba(255, 255, 255, 0.08);
     }
 
+    .apps .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .apps h2 {
+    margin: 0 0 25px;
+
+    text-align: center;
+    color: #1f2a38;
+    font-size: 24px;
+    }
+    
     .cards {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
     }
 
     .card {
-        background: white;
-        padding: 20px;
-        width: 220px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: 0.3s ease;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+    text-align: center;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .card button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.3s ease;
+    .card h3 {
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    color: #1f2a38;
     }
 
-    .card button:hover {
-        background: #0056b3;
-        transform: translateY(-2px);
+    .sistema-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e5e5;
     }
 
-    */ .btn-sistema {
-        display: inline-block;
-        background: #007bff;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bold;
-        transition: 0.3s ease;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    .sistema-item:last-child {
+    border-bottom: none;
+    }
+
+    .sistema-item p {
+    margin: 5px 0 12px;
+    color: #555;
+    font-size: 15px;
+    }
+
+    .btn-sistema {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    padding: 9px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     }
 
     .btn-sistema:hover {
-        background: #0056b3;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    background: #0056b3;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     }
-
-    */ footer {
-        background: #202b38;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        margin-top: 30px;
-    }
-
+    
     @media (max-width: 900px) {
-        .barra-menu {
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
 
-        .menu-item {
-            width: 90%;
-            max-width: 500px;
-        }
+    .destaques-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-        .painel-datahora {
-            font-size: 15px;
-        }
-
-        .hora {
-            font-size: 17px;
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media (max-width: 600px) {
-        header h2 {
-            font-size: 20px;
-        }
+    @media (max-width: 600px) {    
 
-        .painel-datahora {
-            flex-direction: column;
-            gap: 5px;
-            text-align: center;
+    .banner img {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+        object-fit: contain;
         }
+    
+    .box-acompanhe,
+    .acompanhe,
+    .destaques,
+    .box-radio,
+    .apps {
+        padding: 20px 10px;
+    }
 
-        .barra-menu {
-            padding: 20px 10px;
-        }
+    .box-acompanhe .container,
+    .acompanhe .container,
+    .destaques .container,
+    .box-radio .container,
+    .apps .container {
+        padding: 20px 15px;
+    }
 
-        .menu-item {
-            width: 100%;
-        }
+    .campo-pesquisa {
+        flex-direction: column;
+    }
 
-        .menu-item h2 {
-            font-size: 18px;
-        }
+    .campo-pesquisa input,
+    .campo-pesquisa button {
+        width: 100%;
+    }
 
-        .menu-item a {
-            font-size: 15px;
-        }
+    .destaques-grid,
+    .cards {
+        grid-template-columns: 1fr;
+    }
 
-        .banner img {
-            max-height: 250px;
+    .radio-card {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .info-radio {
+        text-align: center;
         }
     }
 </style>
@@ -311,6 +636,8 @@
     <nav>
 
         <body>
+
+            <div id="dataHora"></div>
 
             <div class="painel-datahora">
 
@@ -438,19 +765,19 @@
             </div>
         </section><br><br>
 
-         </section><br><br>
        <section class="box-acompanhe">
             <div class="container">
                 <h3>🔎 Pesquisar na Página</h3>
                 <form id="searchForm" onsubmit="realizarPesquisa(event)">
-                    <div class="campo-pesquisa"> <input type="text" id="searchQuery"
-                            placeholder="Digite sua pesquisa..." autocomplete="off"> <button type="submit"> <span
-                                class="fa fa-search"></span> Buscar </button>
+                    <div class="campo-pesquisa"> 
+                        <input type="text" id="searchQuery" placeholder="Digite sua pesquisa..." autocomplete="off"> 
+                        <button type="submit"> <span class="fa fa-search"></span>
+                            Buscar </button>
                     </div>
                 </form>
                 <div id="searchResults"></div>
             </div>
-        </section> <br>
+        </section>
 
         <script>
             async function realizarPesquisa(event) {
@@ -485,14 +812,14 @@
                 <h3>🌐 Siga minhas redes sociais</h3>
                 <div class="redes-sociais"> <a href="https://www.instagram.com/carlosmardoniomartins/" target="_blank"
                         rel="noopener noreferrer" title="Instagram"> <img src="Imagens/instagram4.jpg"
-                            class="ico-redesocial" alt="Instagram"> </a> <a href="http://www.youtube.com"
-                        target="_blank" rel="noopener noreferrer" title="YouTube"> <img src="Imagens/youtube.png"
-                            class="tv-ico" alt="YouTube"> </a> <a href="http://www.youtube.com/feed/playlists"
-                        target="_blank" rel="noopener noreferrer" title="Playlists do YouTube"> <img
-                            src="Imagens/youtube1.png" class="tv-ico" alt="Playlists"> </a> <a
-                        href="https://www.flickr.com" target="_blank" rel="noopener noreferrer" title="Flickr"> <img
-                            src="Imagens/flickr-ico.png" class="ico-redesocial" alt="Flickr"> </a> <a
-                        href="Contato.html" title="Entre em contato"> <img src="Imagens/carlos2.png"
+                            class="ico-redesocial" alt="Instagram"> </a> 
+                        <a href="http://www.youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube"> 
+                        <img src="Imagens/youtube.png" class="tv-ico" alt="YouTube"> </a> 
+                        <a href="http://www.youtube.com/feed/playlists" target="_blank" rel="noopener noreferrer" title="Playlists do YouTube"> 
+                        <img src="Imagens/youtube1.png" class="tv-ico" alt="Playlists"> </a> 
+                        <a href="https://www.flickr.com" target="_blank" rel="noopener noreferrer" title="Flickr"> 
+                        <img src="Imagens/flickr-ico.png" class="ico-redesocial" alt="Flickr"> </a> 
+                        <a href="Contato.html" title="Entre em contato"> <img src="Imagens/carlos2.png"
                             class="ico-redesocial" alt="Contato"> </a>
                 </div>
             </div>
@@ -500,121 +827,75 @@
 
         <!-- DESTAQUES -->
 
-        <div class="container destaques">
-
-            <h2>Destaques</h2>
-
-            <div class="row">
-
-                <div class="col-md-3">
-
-                    <img src="Imagens/patio.PNG" class="img-responsive">
-
-                    <p>Pátio Subestação 230kV</p>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <img src="Imagens/TechGov.jpg" class="img-responsive">
-
-                    <p>Tech Gov Forum</p>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <img src="Imagens/TechGov1.jpg" class="img-responsive">
-
-                    <p>Tech Gov Fórum</p>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <img src="Imagens/ALAPDIGITAL.jpg" class="img-responsive">
-
-                    <p>Destaques de Carlos Martins</p>
-
-                </div>
-
-            </div>
-
-        </div>
+        <section class="destaques"> 
+            <div class="container"> 
+                <h2>⭐ Destaques</h2> 
+                <div class="destaques-grid"> 
+                    <div class="destaque-card"> <img src="Imagens/patio.PNG" alt="Pátio Subestação 230kV" > 
+                        <p>Pátio Subestação 230kV</p> </div> 
+                        <div class="destaque-card"> <img src="Imagens/TechGov.jpg" alt="Tech Gov Forum" > 
+                        <p>Tech Gov Forum</p> </div> <div class="destaque-card"> 
+                        <img src="Imagens/TechGov1.jpg" alt="Tech Gov Fórum" > 
+                        <p>Tech Gov Fórum</p> </div> <div class="destaque-card"> 
+                        <img src="Imagens/ALAPDIGITAL.jpg" alt="Destaques de Carlos Martins" > 
+                        <p>Destaques de Carlos Martins</p> 
+                    </div> 
+                </div> 
+            </div> 
+        </section>
 
         <!--radio-->
 
-        <section class="box-radio"></section>
-        <div class="container">
-            <h2>Link para Rádio</h2>
-            <!--<div class="container radio">-->
-            <div class="play-radio">
-                <button id="playButton">
-                    <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" target="_blank"> <img
-                            src="Imagens/cbn.png" class="icon"></a>
-
-                    <!--<path d="youtube.png"></path>--> <!-- Ícone de play -->
-                    </svg>
-                </button>
-                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054"></a>
-            </div>
-            <div class="info-radio">
-                <div class="aovivo">ao vivo</div>
-                <p>93.9 FM <strong>Rádio CBN Macapá</strong> </p>
-            </div>
-        </div>
+        <section class="box-radio"> 
+            <div class="container"> 
+                <h2>📻 Rádio</h2> <div class="radio-card"> 
+                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" 
+                target="_blank" rel="noopener noreferrer" 
+                class="play-radio" title="Ouvir Rádio CBN Macapá" > <img src="Imagens/cbn.png" 
+                class="icon" alt="Rádio CBN Macapá" > </a> 
+                <div class="info-radio"> <span class="aovivo"> ● AO VIVO </span> 
+                <p> 93.9 FM <strong>Rádio CBN Macapá</strong> </p> 
+                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" 
+                target="_blank" rel="noopener noreferrer" 
+                class="btn-radio" > Ouvir Rádio </a> 
+                </div> 
+             </div> 
+         </div> 
+       </section>
 
         <!--end radio-->
 
-        <section class="apps">
-
-            <h2>Meus Sistemas</h2>
-
-            <div class="cards">
-
-                <div class="card">
-                    <h3>Sistema de Gestão</h3>
-                    <p>Cadastro de Mídias.</p>
-                    <a href="GestãodeMidias.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                    <p>Cadastro de Projetos.</p>
-                    <a href="GestãodeProjetos.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                    <p>Planilhas de Gastos Pessoais.</p>
-                    <a href="GestãodeDespesas.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                </div>
-
-                <div class="card">
-                    <h3>Simulador ALBRAS</h3>
-                    <p>Painel Principal do Simulador</p>
-                    <a href="SimuladorAlbras.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                    <p>Tela dos MTS.</p>
-                    <a href="telaMTS.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                </div>
-
-                <div class="card">
-                    <h3>Gestão de Usuários</h3>
-                    <p>Cadastro de usuários.</p>
-                    <a href="GestãodeUsuarios.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                    <p>Realizar Login</p>
-                    <a href="Login.html" class="btn-sistema">
-                        <i class="fa fa-users"></i> Acessar
-                    </a>
-                </div>
-
-            </div>
-
-        </section>
+        <section class="apps"> 
+            <div class="container"> <h2>💻 Meus Sistemas</h2> 
+                <div class="cards"> <!-- SISTEMAS DE GESTÃO --> 
+                    <div class="card"> <h3>📊 Sistemas de Gestão</h3> 
+                        <div class="sistema-item"> <p>Dashboard de Mídias</p> 
+                        <a href="DashboardGestaodeMidias.html" class="btn-sistema" > Acessar </a> 
+                    </div> <div class="sistema-item"> <p>Dashboard de Gestáo de Despesas</p> 
+                        <a href="DashboardGestaodeDespesas.html" class="btn-sistema" > Acessar </a> 
+                    </div> 
+                    <div class="sistema-item"> <p>Monitor Inteligente de Medicamentos</p> 
+                        <a href="GestaodeSaude.html" class="btn-sistema" > Acessar </a> 
+                    </div> 
+                    </div> 
+                    <!-- SIMULADOR ALBRAS --> <div class="card"> 
+                        <h3>⚡ Simulador ALBRAS</h3> <div class="sistema-item"> 
+                            <p>Tela Principal do Simulador</p> <a href="SimuladorAlbras.html" 
+                            class="btn-sistema" > Acessar </a> 
+                        </div> 
+                        <div class="sistema-item"> <p>Menu das Telas</p> <a href="menudeBarramentos.html" 
+                            class="btn-sistema" > Acessar </a> </div> </div> 
+                            <!-- GESTÃO DE USUÁRIOS --> 
+                             <div class="card"> <h3>👤 Gestão de Usuários</h3> 
+                                <div class="sistema-item"> <p>Cadastro de usuários</p> 
+                                    <a href="GestãodeUsuarios.html" class="btn-sistema" > Acessar </a>                                
+                                </div> <div class="sistema-item"> <p>Realizar Login</p> 
+                                    <a href="Login.html" class="btn-sistema" > Acessar </a> 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </section>
 
         <footer>
 
