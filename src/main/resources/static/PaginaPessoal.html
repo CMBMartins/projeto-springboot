@@ -11,7 +11,7 @@
     <!-- Adiciona o jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Adiciona o JavaScript do Bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>   
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/solid.css"
         integrity="sha384-Tv5i09RULyHKMwX0E8wJUqSOaXlyu3SQxORObAI08iUwIalMmN5L6AvlPX2LMoSE" crossorigin="anonymous" />
@@ -19,7 +19,6 @@
         integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous" />
 
 </head>
-
 
 <style>
     * {
@@ -50,11 +49,13 @@
 
     header img {
         vertical-align: middle;
+        width: 40px;
+        height: 40px;
         margin-right: 8px;
         border-radius: 50%;
-        }
+    }
 
-        .painel-datahora {
+    .painel-datahora {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -63,7 +64,7 @@
         padding: 10px 25px;
         font-size: 17px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
+    }
 
     .data {
         font-weight: bold;
@@ -80,546 +81,594 @@
         padding: 0;
     }
 
-   .barra-menu {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    gap: 30px;
-    background: linear-gradient(135deg, #4b5563, #374151);
-    padding: 30px 25px;
-    color: white;
+    .barra-menu {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        gap: 30px;
+        background: linear-gradient(135deg, #4b5563, #374151);
+        padding: 30px 25px;
+        color: white;
     }
-    
+
     .menu-item {
-    flex: 1;
-    max-width: 360px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
-    transition: 0.3s ease;
+        flex: 1;
+        max-width: 360px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.18);
+        transition: 0.3s ease;
     }
 
     .menu-item:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.13);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.13);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
     }
 
     .menu-item h2 {
-    margin-top: 0;
-    margin-bottom: 18px;
-    font-size: 20px;
-    color: white;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
-    padding-bottom: 10px;
+        margin-top: 0;
+        margin-bottom: 18px;
+        font-size: 20px;
+        color: white;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+        padding-bottom: 10px;
+        line-height: 1.4;
     }
 
     .menu-item a {
-    display: block;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 9px 10px;
-    margin: 4px 0;
-    border-radius: 6px;
-    transition: all 0.25s ease;
+        display: block;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 9px 10px;
+        margin: 4px 0;
+        border-radius: 6px;
+        transition: all 0.25s ease;
     }
-    
+
     .menu-item a:hover {
-    background: #ffffff;
-    color: #1f2a38;
-    transform: translateX(4px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        background: #ffffff;
+        color: #1f2a38;
+        transform: translateX(4px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
 
     .banner {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
     .banner img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 350px;
-    object-fit: contain;
-    object-position: center;
-    margin: 0 auto;
-    transition: transform 0.5s ease;
+        display: block;
+        width: 80%;
+        height: auto;
+        max-height: 380px;
+        object-fit: contain;
+        object-position: center;
+        margin: 0 auto;
+        transition: transform 0.5s ease;
     }
 
     .banner:hover img {
-    transform: scale(1.01);
+        transform: scale(1.01);
     }
 
     .perfil {
-    display: flex;
-    align-items: center;
-    gap: 35px;
-    max-width: 1800px;
-    margin: 35px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
+        display: flex;
+        align-items: center;
+        gap: 35px;
+        max-width: 1800px;
+        margin: 35px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.10);
     }
 
     .perfil img {
-    width: 700px;
-    height: 280px;
-    object-fit: cover;
-    border-radius: 14px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.20);
+        width: 700px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 14px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.20);
     }
 
     .perfil div {
-    flex: 1;
+        flex: 1;
     }
 
     .perfil h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #1f2a38;
-    font-size: 28px;
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #1f2a38;
+        font-size: 28px;
     }
 
     .perfil p {
-    margin: 0;
-    color: #555;
-    font-size: 17px;
-    line-height: 1.7;
+        margin: 0;
+        color: #555;
+        font-size: 17px;
+        line-height: 1.7;
     }
-    
+
     footer {
-    background: #202b38;
-    color: white;
-    text-align: center;
-    padding: 15px;
-    margin-top: 30px;
+        background: #202b38;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        margin-top: 30px;
     }
-    
+
     .campo-pesquisa {
-    display: flex;
-    background: rgba(255, 255, 255, 0.08);
-    max-width: 900px;
-    margin: 0 auto;
-    gap: 10px;
+        display: flex;
+        background: rgba(255, 255, 255, 0.08);
+        max-width: 900px;
+        margin: 0 auto;
+        gap: 10px;
     }
 
     .campo-pesquisa input {
-    flex: 1;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    font-size: 16px;
-    outline: none;
-    transition: 0.3s ease;
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        font-size: 16px;
+        outline: none;
+        transition: 0.3s ease;
     }
 
     .campo-pesquisa input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.12);
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.12);
     }
 
     .campo-pesquisa button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 7px;
-    background: #007bff;
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s ease;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 7px;
+        background: #007bff;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
     }
 
     .campo-pesquisa button:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
+        background: #0056b3;
+        transform: translateY(-2px);
     }
 
     #searchResults {
-    max-width: 700px;
-    margin: 20px auto 0;
-    text-align: left;
+        max-width: 900px;
+        margin: 20px auto 0;
+    }
+
+    .resultado-pesquisa {
+        padding: 15px 18px;
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        border-radius: 8px;
+        color: #1f2a38;
+        font-size: 16px;
+    }
+
+    .resultado-pesquisa strong {
+        color: #0056b3;
+    }
+
+    .sem-resultado {
+        border-left-color: #dc3545;
+    }
+
+    .sem-resultado strong {
+        color: #dc3545;
+    }
+
+    .btn-limpar-pesquisa {
+        margin-left: 15px;
+        padding: 7px 12px;
+        border: none;
+        border-radius: 6px;
+        background: #6c757d;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .btn-limpar-pesquisa:hover {
+        background: #495057;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 600px) {
+
+        .btn-limpar-pesquisa {
+            display: block;
+            margin: 12px 0 0;
+            width: 100%;
+        }
     }
 
 
     .box-acompanhe {
-    width: 100%;
-    padding: 35px 20px;
-    background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+        padding: 35px 20px;
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .box-acompanhe .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
     }
 
     .box-acompanhe h3 {
-    margin: 0 0 25px;
-    text-align: center;
-    color: #1f2a38;
-    font-size: 22px;
+        margin: 0 0 25px;
+        text-align: center;
+        color: #1f2a38;
+        font-size: 22px;
     }
 
     .acompanhe {
-    width: 100%;
-    padding: 35px 20px;
-    background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+        padding: 35px 20px;
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .acompanhe .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
     }
 
     .acompanhe h3 {
-    margin: 0 0 25px;
-    text-align: center;
-    color: #1f2a38;
-    font-size: 22px;
+        margin: 0 0 25px;
+        text-align: center;
+        color: #1f2a38;
+        font-size: 22px;
     }
 
     .redes-sociais {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
     }
 
     .redes-sociais a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    padding: 7px;
-    background: #f4f6f8;
-    border-radius: 12px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-    transition: 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        padding: 7px;
+        background: #f4f6f8;
+        border-radius: 12px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+        transition: 0.3s ease;
     }
 
     .redes-sociais a:hover {
-    transform: translateY(-5px) scale(1.05);
-    background: #ffffff;
-    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.20);
+        transform: translateY(-5px) scale(1.05);
+        background: #ffffff;
+        box-shadow: 0 7px 15px rgba(0, 0, 0, 0.20);
     }
 
-    .ico-redesocial,.tv-ico {
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    border-radius: 8px;
+    .ico-redesocial,
+    .tv-ico {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        border-radius: 8px;
     }
 
-    
+
     .destaques {
-    width: 100%;
-    padding: 35px 20px;
-    background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+        padding: 35px 20px;
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .destaques .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #f4f6f8;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #f4f6f8;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
     }
 
     .destaques h2 {
-    margin: 0 0 25px;
-    text-align: center;
-    color: #1f2a38;
-    font-size: 24px;
+        margin: 0 0 25px;
+        text-align: center;
+        color: #1f2a38;
+        font-size: 24px;
     }
 
     .destaques-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
     }
 
     .destaque-card {
-    overflow: hidden;
-    background: #f8f9fa;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
-    transition: 0.3s ease;
+        overflow: hidden;
+        background: #f8f9fa;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+        transition: 0.3s ease;
     }
 
     .destaque-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
     }
 
     .destaque-card img {
-    display: block;
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
+        display: block;
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
     }
 
     .destaque-card p {
-    margin: 0;
-    padding: 12px;
-    color: #1f2a38;
-    font-size: 15px;
-    font-weight: bold;
+        margin: 0;
+        padding: 12px;
+        color: #1f2a38;
+        font-size: 15px;
+        font-weight: bold;
     }
 
     .box-radio {
-    width: 100%;
-    padding: 35px 20px;
-    background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+        padding: 35px 20px;
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .box-radio .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
-    text-align: center;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        text-align: center;
     }
 
     .box-radio h2 {
-    margin: 0 0 25px;
-    color: #1f2a38;
+        margin: 0 0 25px;
+        color: #1f2a38;
     }
 
     .radio-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    padding: 25px;
-    background: #f8f9fa;
-    border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 12px;
     }
 
     .play-radio {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100px;
+        height: 100px;
+        background: #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: 0.3s ease;
     }
 
     .play-radio:hover {
-    transform: scale(1.08);
-    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.22);
+        transform: scale(1.08);
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.22);
     }
 
     .play-radio .icon {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        object-fit: contain;
+        border-radius: 50%;
     }
 
     .info-radio {
-    text-align: left;
+        text-align: left;
     }
 
     .info-radio p {
-    margin: 10px 0 15px;
-    font-size: 18px;
-    color: #333;
+        margin: 10px 0 15px;
+        font-size: 18px;
+        color: #333;
     }
 
     .aovivo {
-    display: inline-block;
-    background: #dc3545;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
+        display: inline-block;
+        background: #dc3545;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
     }
 
     .btn-radio {
-    display: inline-block;
-    background: #007bff;
-    color: white;
-    text-decoration: none;
-    padding: 9px 18px;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: 0.3s ease;
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        padding: 9px 18px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.3s ease;
     }
 
     .btn-radio:hover {
-    background: #0056b3;
-    transform: translateY(-2px);
+        background: #0056b3;
+        transform: translateY(-2px);
     }
 
     .apps {
-    width: 100%;
-    padding: 35px 20px;
-    background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+        padding: 35px 20px;
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .apps .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
     }
 
     .apps h2 {
-    margin: 0 0 25px;
+        margin: 0 0 25px;
 
-    text-align: center;
-    color: #1f2a38;
-    font-size: 24px;
+        text-align: center;
+        color: #1f2a38;
+        font-size: 24px;
     }
-    
+
     .cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
     }
 
     .card {
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: 0.3s ease;
-    text-align: center;
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: 0.3s ease;
+        text-align: center;
     }
 
     .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
     .card h3 {
-    margin-top: 0;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ddd;
-    color: #1f2a38;
+        margin-top: 0;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+        color: #1f2a38;
     }
 
     .sistema-item {
-    padding: 12px 0;
-    border-bottom: 1px solid #e5e5e5;
+        padding: 12px 0;
+        border-bottom: 1px solid #e5e5e5;
     }
 
     .sistema-item:last-child {
-    border-bottom: none;
+        border-bottom: none;
     }
 
     .sistema-item p {
-    margin: 5px 0 12px;
-    color: #555;
-    font-size: 15px;
+        margin: 5px 0 12px;
+        color: #555;
+        font-size: 15px;
     }
 
     .btn-sistema {
-    display: inline-block;
-    background: #007bff;
-    color: white;
-    padding: 9px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.3s ease;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 9px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.3s ease;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     }
 
     .btn-sistema:hover {
-    background: #0056b3;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
+        background: #0056b3;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.22);
     }
-    
+
     @media (max-width: 900px) {
 
-    .destaques-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+        .destaques-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
 
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media (max-width: 600px) {    
+    @media (max-width: 600px) {
 
-    .banner img {
-        width: 100%;
-        height: auto;
-        max-height: 250px;
-        object-fit: contain;
+        .banner img {
+            width: 100%;
+            height: auto;
+            max-height: 250px;
+            object-fit: contain;
         }
-    
-    .box-acompanhe,
-    .acompanhe,
-    .destaques,
-    .box-radio,
-    .apps {
-        padding: 20px 10px;
-    }
 
-    .box-acompanhe .container,
-    .acompanhe .container,
-    .destaques .container,
-    .box-radio .container,
-    .apps .container {
-        padding: 20px 15px;
-    }
+        .box-acompanhe,
+        .acompanhe,
+        .destaques,
+        .box-radio,
+        .apps {
+            padding: 20px 10px;
+        }
 
-    .campo-pesquisa {
-        flex-direction: column;
-    }
+        .box-acompanhe .container,
+        .acompanhe .container,
+        .destaques .container,
+        .box-radio .container,
+        .apps .container {
+            padding: 20px 15px;
+        }
 
-    .campo-pesquisa input,
-    .campo-pesquisa button {
-        width: 100%;
-    }
+        .campo-pesquisa {
+            flex-direction: column;
+        }
 
-    .destaques-grid,
-    .cards {
-        grid-template-columns: 1fr;
-    }
+        .campo-pesquisa input,
+        .campo-pesquisa button {
+            width: 100%;
+        }
 
-    .radio-card {
-        flex-direction: column;
-        gap: 15px;
-    }
+        .destaques-grid,
+        .cards {
+            grid-template-columns: 1fr;
+        }
 
-    .info-radio {
-        text-align: center;
+        .radio-card {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-radio {
+            text-align: center;
         }
     }
 </style>
@@ -630,7 +679,7 @@
 
     <header>
 
-        <h2><img src="Imagens/carlos1.gif" width="30">
+        <h2><img src="Imagens/iconeCarlos.png" width="40">
             Página Pessoal</h2>
     </header>
 
@@ -652,49 +701,12 @@
 
             </div>
 
-            <script>
-
-                function atualizarDataHora() {
-
-                    const agora = new Date();
-
-                    const dias = [
-                        "Domingo", "Segunda-feira", "Terça-feira",
-                        "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
-                    ];
-
-                    const meses = [
-                        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-                        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-                    ];
-
-                    const diaSemana = dias[agora.getDay()];
-                    const dia = agora.getDate();
-                    const mes = meses[agora.getMonth()];
-                    const ano = agora.getFullYear();
-
-                    const hora = agora.toLocaleTimeString("pt-BR");
-
-                    document.getElementById("dataCompleta").innerHTML =
-                        "📅 " + diaSemana + ", " + dia + " de " + mes + " de " + ano;
-
-                    document.getElementById("horaAtual").innerHTML =
-                        "⏰ " + hora;
-
-                }
-
-                setInterval(atualizarDataHora, 1000);
-
-                atualizarDataHora();
-
-            </script>
-
         </body>
 
         <div class="barra-menu">
 
             <div class="menu-item">
-                <h2>Aplicativos de Gestão</h2>
+                <h2>📊 Aplicativos de Gestão</h2>
                 <a href="GestãodeMidias.html">Mídias de Shows e Filmes</a><br>
                 <a href="GestãodeProjetos.html">Projetos Elétricos</a><br>
                 <a href="GestãodeDespesas.html">Cadastro de Despesas Pessoais</a><br>
@@ -704,7 +716,7 @@
             </div>
 
             <div class="menu-item">
-                <h2>Aplicativos Elétricos</h2>
+                <h2>⚡ Aplicativos Elétricos</h2>
                 <a href="PlanilhaEletrica.html">Planilha de Projetos Elétricos</a><br>
                 <a href="CalculosEletrico.html">Cálculos de Potência de Luz e Tomadas</a><br>
                 <a href="telaMTS.html">Diagrama Unifilar</a><br>
@@ -712,7 +724,7 @@
             </div>
 
             <div class="menu-item">
-                <h2>Galeria de Imagens</h2>
+                <h2>🖼️ Galeria de Imagens</h2>
                 <a href="AlbumPessoal.html">Album Pessoal</a><br>
                 <a href="Contato.html">Meus Contatos</a>
             </div>
@@ -722,6 +734,189 @@
         <div class="banner">
             <img id="bannerImg" src="Imagens/banner1.jpg">
         </div>
+
+        <section class="perfil">
+
+            <img src="Imagens/Carlosbanner1.png">
+
+            <div>
+
+                <h2>Carlos Mardônio Bezerra Martins</h2>
+
+                <p>
+                    Bem-vindo à minha página pessoal.
+                    Aqui estão disponíveis meus aplicativos de gestão,
+                    aplicativos elétricos e sistemas desenvolvidos.
+                </p>
+
+            </div>
+        </section><br><br>
+
+        <section class="box-acompanhe">
+            <div class="container">
+                <h3>🔎 Pesquisar na Página</h3>
+                <form id="searchForm" onsubmit="realizarPesquisa(event)">
+                    <div class="campo-pesquisa">
+                        <input type="text" id="searchQuery" placeholder="Digite sua pesquisa..." autocomplete="off">
+                        <button type="submit"> <span class="fa fa-search"></span>
+                            Buscar </button>
+                    </div>
+                </form>
+                <div id="searchResults"></div>
+            </div>
+        </section>
+
+        <section class="acompanhe">
+            <div class="container">
+                <h3>🌐 Siga minhas redes sociais</h3>
+                <div class="redes-sociais"> <a href="https://www.instagram.com/carlosmardoniomartins/" target="_blank"
+                        rel="noopener noreferrer" title="Instagram"> <img src="Imagens/instagram4.jpg"
+                            class="ico-redesocial" alt="Instagram"> </a>
+                    <a href="http://www.youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube">
+                        <img src="Imagens/youtube.png" class="tv-ico" alt="YouTube"> </a>
+                    <a href="http://www.youtube.com/feed/playlists" target="_blank" rel="noopener noreferrer"
+                        title="Playlists do YouTube">
+                        <img src="Imagens/youtube1.png" class="tv-ico" alt="Playlists"> </a>
+                    <a href="https://www.flickr.com" target="_blank" rel="noopener noreferrer" title="Flickr">
+                        <img src="Imagens/flickr-ico.png" class="ico-redesocial" alt="Flickr"> </a>
+                    <a href="Contato.html" title="Entre em contato"> <img src="Imagens/carlos2.png"
+                            class="ico-redesocial" alt="Contato"> </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESTAQUES -->
+
+        <section class="destaques">
+            <div class="container">
+                <h2>⭐ Destaques</h2>
+                <div class="destaques-grid">
+                    <div class="destaque-card"> <img src="Imagens/patio.PNG" alt="Pátio Subestação 230kV">
+                        <p>Pátio Subestação 230kV</p>
+                    </div>
+                    <div class="destaque-card"> <img src="Imagens/TechGov.jpg" alt="Tech Gov Forum">
+                        <p>Tech Gov Forum</p>
+                    </div>
+                    <div class="destaque-card">
+                        <img src="Imagens/TechGov1.jpg" alt="Tech Gov Fórum">
+                        <p>Tech Gov Fórum</p>
+                    </div>
+                    <div class="destaque-card">
+                        <img src="Imagens/ALAPDIGITAL.jpg" alt="Destaques de Carlos Martins">
+                        <p>Destaques de Carlos Martins</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--radio-->
+
+        <section class="box-radio">
+            <div class="container">
+                <h2>📻 Rádio</h2>
+                <div class="radio-card">
+                    <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" target="_blank"
+                        rel="noopener noreferrer" class="play-radio" title="Ouvir Rádio CBN Macapá"> <img
+                            src="Imagens/cbn.png" class="icon" alt="Rádio CBN Macapá"> </a>
+                    <div class="info-radio"> <span class="aovivo"> ● AO VIVO </span>
+                        <p> 93.9 FM <strong>Rádio CBN Macapá</strong> </p>
+                        <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" target="_blank"
+                            rel="noopener noreferrer" class="btn-radio"> Ouvir Rádio </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--end radio-->
+
+        <section class="apps">
+            <div class="container">
+                <h2>💻 Meus Sistemas</h2>
+                <div class="cards"> <!-- SISTEMAS DE GESTÃO -->
+                    <div class="card">
+                        <h3>📊 Sistemas de Gestão</h3>
+                        <div class="sistema-item">
+                            <p>Dashboard de Mídias</p>
+                            <a href="DashboardGestaodeMidias.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                        <div class="sistema-item">
+                            <p>Dashboard de Gestáo de Despesas</p>
+                            <a href="DashboardGestaodeDespesas.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                        <div class="sistema-item">
+                            <p>Monitor Inteligente de Medicamentos</p>
+                            <a href="GestaodeSaude.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                    </div>
+                    <!-- SIMULADOR ALBRAS -->
+                    <div class="card">
+                        <h3>⚡ Simulador ALBRAS</h3>
+                        <div class="sistema-item">
+                            <p>Tela Principal do Simulador</p> <a href="SimuladorAlbras.html" class="btn-sistema">
+                                Acessar </a>
+                        </div>
+                        <div class="sistema-item">
+                            <p>Menu das Telas</p> <a href="menudeBarramentos.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                    </div>
+                    <!-- GESTÃO DE USUÁRIOS -->
+                    <div class="card">
+                        <h3>👤 Gestão de Usuários</h3>
+                        <div class="sistema-item">
+                            <p>Cadastro de usuários</p>
+                            <a href="GestãodeUsuarios.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                        <div class="sistema-item">
+                            <p>Realizar Login</p>
+                            <a href="Login.html" class="btn-sistema"> Acessar </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+
+            <p>© 2026 Carlos Martins</p>
+
+        </footer>
+
+        <script>
+
+            function atualizarDataHora() {
+
+                const agora = new Date();
+
+                const dias = [
+                    "Domingo", "Segunda-feira", "Terça-feira",
+                    "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"
+                ];
+
+                const meses = [
+                    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+                ];
+
+                const diaSemana = dias[agora.getDay()];
+                const dia = agora.getDate();
+                const mes = meses[agora.getMonth()];
+                const ano = agora.getFullYear();
+
+                const hora = agora.toLocaleTimeString("pt-BR");
+
+                document.getElementById("dataCompleta").innerHTML =
+                    "📅 " + diaSemana + ", " + dia + " de " + mes + " de " + ano;
+
+                document.getElementById("horaAtual").innerHTML =
+                    "⏰ " + hora;
+
+            }
+
+            setInterval(atualizarDataHora, 1000);
+
+            atualizarDataHora();
+
+        </script>
 
         <script>
 
@@ -749,160 +944,234 @@
 
         </script>
 
-        <section class="perfil">
-
-            <img src="Imagens/Carlosbanner1.png">
-
-            <div>
-
-                <h2>Carlos Mardônio Bezerra Martins</h2>
-
-                <p>
-                    Bem-vindo à minha página pessoal.
-                    Aqui estão disponíveis meus aplicativos de gestão,
-                    aplicativos elétricos e sistemas desenvolvidos.
-                </p>
-
-            </div>
-        </section><br><br>
-
-       <section class="box-acompanhe">
-            <div class="container">
-                <h3>🔎 Pesquisar na Página</h3>
-                <form id="searchForm" onsubmit="realizarPesquisa(event)">
-                    <div class="campo-pesquisa"> 
-                        <input type="text" id="searchQuery" placeholder="Digite sua pesquisa..." autocomplete="off"> 
-                        <button type="submit"> <span class="fa fa-search"></span>
-                            Buscar </button>
-                    </div>
-                </form>
-                <div id="searchResults"></div>
-            </div>
-        </section>
-
         <script>
-            async function realizarPesquisa(event) {
+
+            let destaquesPesquisa = [];
+
+            function realizarPesquisa(event) {
+
                 event.preventDefault();
+
                 const campo = document.getElementById("searchQuery");
                 const resultados = document.getElementById("searchResults");
-                const query = campo.value.trim();
-                // Verifica se foi digitado algo 
-                if (query === "") {
-                    alert("Digite uma palavra para buscar.");
+
+                const termo = campo.value.trim();
+
+                if (termo === "") {
+                    alert("Digite uma palavra ou expressão para buscar.");
                     campo.focus();
                     return;
                 }
-                resultados.innerHTML = "<p>🔎 Pesquisando...</p>";
-                try {
-                    const response = await fetch("ApresentaçãoPessoal.php?query=" + encodeURIComponent(query));
-                    if (!response.ok) {
-                        throw new Error("Erro HTTP: " + response.status);
+
+                // Remove pesquisas anteriores
+                limparDestaques(false);
+
+                // Converte o termo para pesquisa sem diferenciar
+                // letras maiúsculas e minúsculas
+                const termoLower = termo.toLowerCase();
+
+                let quantidade = 0;
+
+                // Elementos que não devem ser pesquisados
+                const elementosIgnorados = [
+                    "SCRIPT",
+                    "STYLE",
+                    "NOSCRIPT",
+                    "INPUT",
+                    "TEXTAREA",
+                    "BUTTON"
+                ];
+
+                // Percorre todos os elementos da página
+                const elementos = document.body.querySelectorAll("*");
+
+                elementos.forEach(elemento => {
+
+                    // Ignora elementos técnicos
+                    if (elementosIgnorados.includes(elemento.tagName)) {
+                        return;
                     }
-                    const result = await response.text();
-                    resultados.innerHTML = result;
+
+                    // Só trabalha com elementos que possuem texto diretamente
+                    const possuiTexto = Array.from(elemento.childNodes).some(
+                        node => node.nodeType === Node.TEXT_NODE &&
+                            node.nodeValue.trim() !== ""
+                    );
+
+                    if (!possuiTexto) {
+                        return;
+                    }
+
+                    elemento.childNodes.forEach(node => {
+
+                        if (node.nodeType !== Node.TEXT_NODE) {
+                            return;
+                        }
+
+                        const texto = node.nodeValue;
+
+                        // Expressão regular para encontrar todas as ocorrências
+                        const regex = new RegExp(
+                            escapeRegExp(termo),
+                            "gi"
+                        );
+
+                        const ocorrencias = texto.match(regex);
+
+                        if (!ocorrencias) {
+                            return;
+                        }
+
+                        quantidade += ocorrencias.length;
+
+                        // Cria um fragmento com o texto destacado
+                        const fragmento = document.createDocumentFragment();
+
+                        let ultimaPosicao = 0;
+                        let resultado;
+
+                        regex.lastIndex = 0;
+
+                        while ((resultado = regex.exec(texto)) !== null) {
+
+                            // Texto antes da ocorrência
+                            fragmento.appendChild(
+                                document.createTextNode(
+                                    texto.substring(
+                                        ultimaPosicao,
+                                        resultado.index
+                                    )
+                                )
+                            );
+
+                            // Palavra encontrada
+                            const destaque = document.createElement("mark");
+
+                            destaque.textContent = resultado[0];
+
+                            destaque.style.backgroundColor = "#ffeb3b";
+                            destaque.style.color = "#000";
+                            destaque.style.padding = "2px 4px";
+                            destaque.style.borderRadius = "4px";
+                            destaque.style.fontWeight = "bold";
+
+                            fragmento.appendChild(destaque);
+
+                            destaquesPesquisa.push(destaque);
+
+                            ultimaPosicao =
+                                resultado.index + resultado[0].length;
+                        }
+
+                        // Texto depois da última ocorrência
+                        fragmento.appendChild(
+                            document.createTextNode(
+                                texto.substring(ultimaPosicao)
+                            )
+                        );
+
+                        node.parentNode.replaceChild(fragmento, node);
+                    });
+                });
+
+                if (quantidade > 0) {
+
+                    resultados.innerHTML = `
+                    <div class="resultado-pesquisa">
+                        🔎 Foram encontradas
+                        <strong>${quantidade}</strong>
+                        ocorrência${quantidade > 1 ? "s" : ""}
+                        para:
+                        <strong>"${escapeHtml(termo)}"</strong>
+        
+                        <button
+                            type="button"
+                            onclick="limparDestaques()"
+                            class="btn-limpar-pesquisa">
+                            ✖ Limpar pesquisa
+                        </button>
+                    </div>
+                `;
+
+                    // Vai até a primeira ocorrência
+                    destaquesPesquisa[0].scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                } else {
+
+                    resultados.innerHTML = `
+                    <div class="resultado-pesquisa sem-resultado">
+                        ❌ Nenhuma ocorrência encontrada para
+                        <strong>"${escapeHtml(termo)}"</strong>.
+        
+                        <button
+                            type="button"
+                            onclick="limparDestaques()"
+                            class="btn-limpar-pesquisa">
+                            ✖ Limpar
+                        </button>
+                    </div>
+                `;
                 }
-                catch (error) {
-                    console.error("Erro ao buscar:", error);
-                    resultados.innerHTML = "<p>❌ Erro ao realizar a pesquisa.</p>";
+            }
+
+            function limparDestaques(mostrarMensagem = true) {
+
+                // Substitui cada <mark> pelo texto original
+                destaquesPesquisa.forEach(destaque => {
+
+                    if (!destaque.parentNode) {
+                        return;
+                    }
+
+                    const texto = document.createTextNode(
+                        destaque.textContent
+                    );
+
+                    destaque.parentNode.replaceChild(
+                        texto,
+                        destaque
+                    );
+                });
+
+                destaquesPesquisa = [];
+
+                // Limpa o campo de pesquisa
+                document.getElementById("searchQuery").value = "";
+
+                // Limpa a mensagem de resultado
+                if (mostrarMensagem) {
+
+                    const resultados =
+                        document.getElementById("searchResults");
+
+                    resultados.innerHTML = "";
                 }
-            } 
+
+                // Coloca o cursor novamente no campo
+                document.getElementById("searchQuery").focus();
+            }
+
+            function escapeRegExp(texto) {
+
+                return texto.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&"
+                );
+            }
+
+            function escapeHtml(texto) {
+
+                const div = document.createElement("div");
+
+                div.textContent = texto;
+
+                return div.innerHTML;
+            }
+
         </script>
-
-        <section class="acompanhe">
-            <div class="container">
-                <h3>🌐 Siga minhas redes sociais</h3>
-                <div class="redes-sociais"> <a href="https://www.instagram.com/carlosmardoniomartins/" target="_blank"
-                        rel="noopener noreferrer" title="Instagram"> <img src="Imagens/instagram4.jpg"
-                            class="ico-redesocial" alt="Instagram"> </a> 
-                        <a href="http://www.youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube"> 
-                        <img src="Imagens/youtube.png" class="tv-ico" alt="YouTube"> </a> 
-                        <a href="http://www.youtube.com/feed/playlists" target="_blank" rel="noopener noreferrer" title="Playlists do YouTube"> 
-                        <img src="Imagens/youtube1.png" class="tv-ico" alt="Playlists"> </a> 
-                        <a href="https://www.flickr.com" target="_blank" rel="noopener noreferrer" title="Flickr"> 
-                        <img src="Imagens/flickr-ico.png" class="ico-redesocial" alt="Flickr"> </a> 
-                        <a href="Contato.html" title="Entre em contato"> <img src="Imagens/carlos2.png"
-                            class="ico-redesocial" alt="Contato"> </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- DESTAQUES -->
-
-        <section class="destaques"> 
-            <div class="container"> 
-                <h2>⭐ Destaques</h2> 
-                <div class="destaques-grid"> 
-                    <div class="destaque-card"> <img src="Imagens/patio.PNG" alt="Pátio Subestação 230kV" > 
-                        <p>Pátio Subestação 230kV</p> </div> 
-                        <div class="destaque-card"> <img src="Imagens/TechGov.jpg" alt="Tech Gov Forum" > 
-                        <p>Tech Gov Forum</p> </div> <div class="destaque-card"> 
-                        <img src="Imagens/TechGov1.jpg" alt="Tech Gov Fórum" > 
-                        <p>Tech Gov Fórum</p> </div> <div class="destaque-card"> 
-                        <img src="Imagens/ALAPDIGITAL.jpg" alt="Destaques de Carlos Martins" > 
-                        <p>Destaques de Carlos Martins</p> 
-                    </div> 
-                </div> 
-            </div> 
-        </section>
-
-        <!--radio-->
-
-        <section class="box-radio"> 
-            <div class="container"> 
-                <h2>📻 Rádio</h2> <div class="radio-card"> 
-                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" 
-                target="_blank" rel="noopener noreferrer" 
-                class="play-radio" title="Ouvir Rádio CBN Macapá" > <img src="Imagens/cbn.png" 
-                class="icon" alt="Rádio CBN Macapá" > </a> 
-                <div class="info-radio"> <span class="aovivo"> ● AO VIVO </span> 
-                <p> 93.9 FM <strong>Rádio CBN Macapá</strong> </p> 
-                <a href="https://www.radios.com.br/aovivo/radio-cbn-macapa-933-fm/33054" 
-                target="_blank" rel="noopener noreferrer" 
-                class="btn-radio" > Ouvir Rádio </a> 
-                </div> 
-             </div> 
-         </div> 
-       </section>
-
-        <!--end radio-->
-
-        <section class="apps"> 
-            <div class="container"> <h2>💻 Meus Sistemas</h2> 
-                <div class="cards"> <!-- SISTEMAS DE GESTÃO --> 
-                    <div class="card"> <h3>📊 Sistemas de Gestão</h3> 
-                        <div class="sistema-item"> <p>Dashboard de Mídias</p> 
-                        <a href="DashboardGestaodeMidias.html" class="btn-sistema" > Acessar </a> 
-                    </div> <div class="sistema-item"> <p>Dashboard de Gestáo de Despesas</p> 
-                        <a href="DashboardGestaodeDespesas.html" class="btn-sistema" > Acessar </a> 
-                    </div> 
-                    <div class="sistema-item"> <p>Monitor Inteligente de Medicamentos</p> 
-                        <a href="GestaodeSaude.html" class="btn-sistema" > Acessar </a> 
-                    </div> 
-                    </div> 
-                    <!-- SIMULADOR ALBRAS --> <div class="card"> 
-                        <h3>⚡ Simulador ALBRAS</h3> <div class="sistema-item"> 
-                            <p>Tela Principal do Simulador</p> <a href="SimuladorAlbras.html" 
-                            class="btn-sistema" > Acessar </a> 
-                        </div> 
-                        <div class="sistema-item"> <p>Menu das Telas</p> <a href="menudeBarramentos.html" 
-                            class="btn-sistema" > Acessar </a> </div> </div> 
-                            <!-- GESTÃO DE USUÁRIOS --> 
-                             <div class="card"> <h3>👤 Gestão de Usuários</h3> 
-                                <div class="sistema-item"> <p>Cadastro de usuários</p> 
-                                    <a href="GestãodeUsuarios.html" class="btn-sistema" > Acessar </a>                                
-                                </div> <div class="sistema-item"> <p>Realizar Login</p> 
-                                    <a href="Login.html" class="btn-sistema" > Acessar </a> 
-                                </div> 
-                            </div> 
-                        </div> 
-                    </div> 
-                </section>
-
-        <footer>
-
-            <p>© 2026 Carlos Martins</p>
-
-        </footer>
 
         <script src="js/script.js">
 
