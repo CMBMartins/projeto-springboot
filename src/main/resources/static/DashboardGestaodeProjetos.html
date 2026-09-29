@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard de Mídias Musicais</title>
+    <title>Dashboard de Projetos Elétricos</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -243,7 +243,7 @@
         letter-spacing: 1px;
     }
 
-    #nomeArtista {
+    #nomeCliente {
         width: 250px;
         height: 22px;
         padding: 4px;
@@ -258,7 +258,7 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
-    #nomeArtista {
+    #nomecliente {
         text-align: center;
         letter-spacing: 1px;
     }
@@ -426,13 +426,13 @@
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <h2>💾 Gestão de Mídias Musicais</h2>
+            <h2>💾 Gestão de Projetos Elétricos</h2>
 
             <nav>
                 <a href="#">📊 Dashboard</a>
-                <a href="GestãodeMidias.html">➕ Cadastro de Midias</a>
+                <a href="GestãodeProjetos.html">➕ Cadastro de Projetos</a>
                 <a href="#" onclick="gerarRelatorioPDF(); return false;" class="btn-nav">
-                    📄 Lista de MidiasPDF
+                    📄 Lista de ProjetosPDF
                 </a>
                 <a href="PaginaPessoal.html" class="btn-home">
                     ⬅ Página Principal
@@ -463,11 +463,11 @@
                         <option value="true">✅Sim</option>
                     </select-->
 
-                    <label for="nomeArtista">Pesquise o Artista:</label>
+                    <label for="nomeCliente">Pesquise o Cliente:</label>
 
-                    <input type="text" id="nomeArtista" placeholder="Digite o nome do artista">
+                    <input type="text" id="nomeCliente" placeholder="Digite o nome do Cliente">
 
-                    <button class="btn btn-login" onclick="buscarArtista()">
+                    <button class="btn btn-login" onclick="buscarCliente()">
                         🔍 Pesquisar
                     </button>
                 </div>
@@ -476,8 +476,8 @@
 
             <div class="logo">
                 <h1>
-                    <img src="Imagens/coneCarlos.png" width="50">
-                    Dashboard de Mídias
+                    <img src="Imagens/iconeCarlos.png" width="50">
+                    Dashboard de Projetos
                 </h1>
             </div>
 
@@ -487,40 +487,40 @@
             <section class="cards">
 
                 <div class="card">
-                    <h3>📀 Ultimas Mídias</h3>
-                    <p id="ultimaMidia">-</p>
+                    <h3>📂 Ultimos Projetos</h3>
+                    <p id="ultimoProjeto">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>🎤 Artista pesquisado</h3>
-                    <p id="artistaPesquisado">-</p>
+                    <h3>🔍 Projeto pesquisado</h3>
+                    <p id="projetoPesquisado">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>📅 Resumo das Mídias</h3>
+                    <h3>📅 Resumo dos Projetos</h3>
                     <p id="resumoDiario">-</p>
                 </div>
 
                 <div class="card">
-                    <h3>📈 Percentual de Mídias</h3>
+                    <h3>📊 Percentual de Projetos</h3>
                     <p id="adesao">0%</p>
                 </div>
 
                 <div class="card">
-                    <h3>💿 Tipos de Mídias</h3>
-                    <p id="tipodeMidias">0</p>
+                    <h3>📂 Tipos de Projetos</h3>
+                    <p id="tipodeProjetos">0</p>
                 </div>
 
                 <div class="card">
-                    <h3>💻 Maior número de Mídias</h3>
-                    <p id="MaiornumerodeMidias">🔢</p>
+                    <h3>🔢 Maior número de Projetos</h3>
+                    <p id="MaiornumerodeProjetos">🔢</p>
                 </div>
 
                 <div class="card alerta-card" id="cardAlerta">
 
-                    <h3>🔔 Monitor de Mídias emprestadas!</h3>
+                    <h3>🔔 Monitor de Projetos entregues!</h3>
 
-                    <div id="avisosdeMidias">
+                    <div id="avisosdeProjetos">
                         Verificando...
                     </div>
 
@@ -531,13 +531,13 @@
             <section class="graficos">
 
                 <div class="grafico">
-                    <h3>📊 Status das Midias</h3>
+                    <h3>📊 Status de Projetos</h3>
                     <canvas id="graficoStatus"></canvas>
                 </div>
 
                 <div class="grafico">
-                    <h3>📊 Gênero das Midias</h3>
-                    <canvas id="generoDasMidias"></canvas>
+                    <h3>📊 Gênero dos Projetos</h3>
+                    <canvas id="generoDosProjetos"></canvas>
                 </div>
 
             </section>
@@ -545,23 +545,23 @@
             <!-- TABELA -->
             <section class="tabela">
 
-                <h3>📉 Lista de Mídias</h3>
+                <h3>📉 Lista de Projetos</h3>
 
                 <table>
                     <thead>
                         <tr>
-                            <th>🆔 ID</th>
-                            <th>🔢 Codigo</th>
-                            <th>🎬 Titulo</th>
-                            <th>🎤 Artista</th>
-                            <th>📌 Situação</th>
-                            <th>💿Tipo</th>
-                            <th>🏷️ Gênero</th>
-                            <th>⚙️ Ação</th>
+                            <th>🆔Id</th>
+                            <th>📝Título</th>
+                            <th>👤Cliente</th>
+                            <th>🏠T.doImovel</th>
+                            <th>💰Valor</th>
+                            <th>🏷️Tipo</th>
+                            <th>📂Gênero</th>
+                            <th>⚙️Ação</th>
                         </tr>
                     </thead>
 
-                    <tbody id="tabelaShows"></tbody>
+                    <tbody id="tabelaProjetos"></tbody>
                 </table>
 
             </section>
@@ -642,39 +642,39 @@
 
 
                 // =====================================================
-                // ÚLTIMA MÍDIA
+                // ÚLTIMO PROJETO
                 // =====================================================
 
-                const ultimaMidia = document.getElementById("ultimaMidia");
+                const ultimoProjeto = document.getElementById("ultimoProjeto");
 
-                if (ultimaMidia) {
+                if (ultimoProjeto) {
 
-                    ultimaMidia.innerHTML = `
+                    ultimoProjeto.innerHTML = `
                     <div>
-                        📀 <strong>DVD:</strong>
-                        ${dados.ultimaMidiaDVD
-                            ? dados.ultimaMidiaDVD.titulo
+                        📝 <strong>Cliente:</strong>
+                        ${dados.ultimoProjeto
+                            ? dados.ultimoProjeto.cliente
                             : "-"}
                         </div>
                         <div>
 
-                        💿 <strong>Blu ray:</strong>
-                        ${dados.ultimaMidiaBluRay
-                            ? dados.ultimaMidiaBluRay.titulo
+                        👤 <strong>Titulo:</strong>
+                        ${dados.ultimoProjeto
+                            ? dados.ultimoProjeto.titulo
                             : "-"}
                         </div>
                         <div>
 
-                        💻 <strong>Digital:</strong>
-                        ${dados.ultimaMidiaDigital
-                            ? dados.ultimaMidiaDigital.titulo
+                        🏷️ <strong>Gênero:</strong>
+                        ${dados.ultimoProjeto
+                            ? dados.ultimoProjeto.genero
                             : " "}
                         </div>
                         `;
                 }
 
                 // =====================================================
-                // RESUMO DE MÍDIAS
+                // RESUMO DE PROJETOS
                 // =====================================================
 
                 const resumoDiario =
@@ -683,14 +683,14 @@
                 if (resumoDiario) {
 
                     resumoDiario.innerHTML = `
-                Total: ${dados.totalMidias ?? 0}<br>
-                Disponíveis: ${dados.disponiveis ?? 0}<br>
-                Emprestadas: ${dados.emprestadas ?? 0}
+                Total: ${dados.totalProjetos ?? 0}<br>
+                emDesenvolvimento: ${dados.emdesenvolvimento ?? 0}<br>
+                Entregues: ${dados.entregues ?? 0}
             `;
                 }
 
                 // =====================================================
-                // PERCENTUAL DE MÍDIAS
+                // PERCENTUAL DE PROJETOS
                 // =====================================================
 
                 const adesao =
@@ -703,7 +703,7 @@
                 }
 
                 // =====================================================
-                // TIPOS DE MÍDIA
+                // TIPOS DE PROJETOS
                 // =====================================================
 
                 const tipodeMidias =
@@ -734,7 +734,7 @@
                 }
 
                 // =====================================================
-                // MÍDIAS EMPRESTADAS
+                // PROJETOS ENTREGUES
                 // =====================================================
 
                 const avisosdeMidias =
@@ -792,7 +792,7 @@
             try {
 
                 const resposta = await fetch(
-                    `${API}/shows/grafico-status?usuario=${encodeURIComponent(usuario)}`
+                    `${API}/projetos/grafico-status?usuario=${encodeURIComponent(usuario)}`
                 );
 
                 console.log("📡 Status gráfico:", resposta.status);
@@ -846,9 +846,9 @@
 
 
         // 📋 FUNÇÃO DO GRÁFICO DE GENERO DAS MÍDIAS
-        let chartGeneroMidias = null;
+        let chartGeneroProjetos = null;
 
-        async function generoDasMidias() {
+        async function generoDosProjetos() {
 
             const usuario = localStorage.getItem("usuario");
 
@@ -1050,14 +1050,14 @@
             console.log("🔎 Listando mídias do usuário:", usuario);
 
             fetchSeguro(
-                `${API}/shows/usuario?usuario=${encodeURIComponent(usuario)}`
+                `${API}/projetos/usuario?usuario=${encodeURIComponent(usuario)}`
             )
 
                 .then(data => {
 
                     console.log("📦 Dados recebidos:", data);
 
-                    const tabela = document.getElementById("tabelaShows");
+                    const tabela = document.getElementById("tabelaProjetos");
 
                     // Verifica se a tabela existe
                     if (!tabela) {
@@ -1078,7 +1078,7 @@
                         tabela.innerHTML = `
                     <tr>
                         <td colspan="8">
-                            Erro ao carregar as mídias.
+                            Erro ao carregar os Projetos.
                         </td>
                     </tr>
                 `;
@@ -1092,7 +1092,7 @@
                         tabela.innerHTML = `
                     <tr>
                         <td colspan="8">
-                            Nenhuma mídia cadastrada para este usuário.
+                            Nenhum projeto cadastrado para este usuário.
                         </td>
                     </tr>
                 `;
@@ -1103,39 +1103,39 @@
                     let linhas = "";
 
                     // Monta as linhas
-                    data.forEach(show => {
+                    data.forEach(projeto => {
 
                         const classeLinha =
-                            show.situacao === "Emprestado"
+                            projeto.genero === "Emprestado"
                                 ? "linha-emprestado"
                                 : "linha-emarquivo";
 
                         const textoBotao =
-                            show.situacao === "Emprestado"
+                            projeto.situacao === "Emprestado"
                                 ? "Devolver"
                                 : "Emprestar";
 
                         const classeBotao =
-                            show.situacao === "Emprestado"
+                            projeto.situacao === "Emprestado"
                                 ? "botao-devolver"
                                 : "botao-emprestar";
 
                         linhas += `
                     <tr class="${classeLinha}">
 
-                        <td>${show.id ?? ""}</td>
+                        <td>${projeto.id ?? ""}</td>
 
-                        <td>${show.codigo ?? ""}</td>
+                        <td>${projeto.titulo ?? ""}</td>
 
-                        <td>${show.titulo ?? ""}</td>
+                        <td>${projeto.cliente ?? ""}</td>
 
-                        <td>${show.artista ?? ""}</td>
+                        <td>${projeto.tamanhodoimovel ?? ""}</td>
 
-                        <td>${show.situacao ?? ""}</td>
+                        <td>${projeto.valordoimovel ?? ""}</td>
 
-                        <td>${show.tipo ?? ""}</td>
+                        <td>${projeto.tipo ?? ""}</td>
 
-                        <td>${show.genero ?? ""}</td>
+                        <td>${projeto.genero ?? ""}</td>
 
                         <td>
                             <button

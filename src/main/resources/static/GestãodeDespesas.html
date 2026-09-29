@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>Cadastro de Despesas Pessoais</title>
 
-    <link rel="stylesheet" href="dashboard.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -98,7 +96,9 @@
     .login input:focus {
 
         outline: none;
+
         border-color: #4e73df;
+
         box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
     }
 
@@ -270,7 +270,7 @@
     .legenda-categorias {
 
         width: 100%;
-        max-width: 880px;
+        max-width: 900px;
         margin-top: 10px;
         padding: 10px;
         height: 190px;
@@ -289,7 +289,7 @@
     .tags-categorias {
 
         width: 100%;
-        max-width: 880px;
+        max-width: 900px;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -299,9 +299,9 @@
 
     .tag {
 
-        min-width: 230px;
-        padding: 2px 25px;
-        border-radius: 15px;
+        min-width: 233px;
+        padding: 2px 28px;
+        border-radius: 10px;
         font-size: 14px;
         font-weight: bold;
         text-align: center;
@@ -460,14 +460,14 @@
 
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Data</th>
-                            <th>Descrição</th>
-                            <th>Categoria</th>
-                            <th>Tipo</th>
-                            <th>Valor</th>
-                            <th>Status</th>
-                            <th>Ação</th>
+                            <th>🆔ID</th>
+                            <th>📝Data</th>
+                            <th>📅Descrição</th>
+                            <th>📂Categoria</th>
+                            <th>🏷️Tipo</th>
+                            <th>💰Valor</th>
+                            <th>🏷️Status</th>
+                            <th>⚙️Ação</th>
                         </tr>
                     </thead>
 
@@ -1076,13 +1076,6 @@
 
         // FUNÇÃO CADASTRAR USUÁRIOS
         function cadastrarUsuarios() {
-        
-        const usuario = getUsuario();
-
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
             window.open("CadastrodeUsuarios.html", "_blank");
         }
 
