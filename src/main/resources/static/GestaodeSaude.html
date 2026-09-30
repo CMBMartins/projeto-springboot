@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard de Gestão de Saúde</title>
+    <title>Gestão de Saúde</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -479,7 +479,7 @@
 
             <div class="logo">
                 <h1>
-                    <img src="Imagens/carlos1.gif" width="50">
+                    <img src="Imagens/iconeCarlos.png" width="50">
                     Monitor Inteligente de Medicamentos
                 </h1>
             </div>
@@ -573,7 +573,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>🆔 ID</th>
+                            <th>🚪➡️ ID</th>
                             <th>💊 Medicamento</th>
                             <th>🧪 Compartimento</th>
                             <th>⏰ Horario Previsto</th>
@@ -597,7 +597,8 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com/saude";
+        //const API = "https://projeto-springboot.onrender.com/saude";
+        const API = "http://localhost:8084/saude";
 
         const eventos = new EventSource(
             API + "/eventos"
@@ -784,6 +785,19 @@
                 🔴 Câmera OFFLINE
             </p>
         `;
+        const consumido = document.getElementById("consumido");
+
+        if (consumido) {
+
+            if (dados.consumido === true) {
+
+                consumido.value = "✅ SIM";
+
+                } else {
+
+                consumido.value = "❌ NÃO";
+                }
+            }
                     }
                 }
 
