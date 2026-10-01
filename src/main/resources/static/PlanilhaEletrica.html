@@ -252,7 +252,7 @@
             </a>
 
             <div class="logo">
-                <h1><img src="Imagens/iconeCarlos.png" width="60">
+                <h1><img src="Imagens/carlos1.gif" width="60">
                     Planilha de Projeto Eletrico</h1>
             </div>
 
@@ -320,18 +320,18 @@
 
                     <tr>
 
-                        <th>🆔ID</th>
-                        <th>📁Projeto</th>
-                        <th>🔌Circuito</th>
-                        <th>📝Descrição</th>
-                        <th>⚡PotTotal</th>
-                        <th>⚡PotCorrigida</th>
-                        <th>🔀TipoCircuito</th>
-                        <th>⚡CorrenteIC</th>
-                        <th>⚡CorrenteIB</th>
-                        <th>🛡️Disjuntor</th>
-                        <th>🧵Condutor</th>
-                        <th>⚙️Ação</th>
+                        <th>ID</th>
+                        <th>Projeto</th>
+                        <th>Circuito</th>
+                        <th>Descrição</th>
+                        <th>PotTotal</th>
+                        <th>PotCorrigida</th>
+                        <th>TipoCircuito</th>
+                        <th>CorrenteIC</th>
+                        <th>CorrenteIB</th>
+                        <th>Disjuntor</th>
+                        <th>Condutor</th>
+                        <th>Ação</th>
 
                     </tr>
 
@@ -381,7 +381,10 @@
         }
 
 
-        //FUNÇÃO PARA LISTAR TODAS OS CIRCUITOS
+        // =====================================================
+        // FUNÇÃO PARA LISTAR TODOS OS CIRCUITOS
+        // =====================================================
+
         function listarTodos() {
 
             const usuario = getUsuario();
@@ -392,24 +395,42 @@
                 return;
             }
 
-            fetchSeguro(`${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`)
+            console.log("🔎 Listando circuitos do usuário:", usuario);
+
+            fetchSeguro(
+                `${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`
+            )
+
                 .then(response => {
 
-                    console.log("Status:", response.status);
+                    console.log("📡 Status:", response.status);
 
                     if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
+                        throw new Error(`Erro HTTP: ${response.status}`);
                     }
 
-                    return response.json(); // 🔥 ESSA LINHA FALTAVA
+                    return response.json();
                 })
+
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaPlanilha");
+                    console.log("📦 Dados recebidos:", data);
+
+                    const tabela =
+                        document.getElementById("tabelaPlanilha");
+
+                    if (!tabela) {
+                        console.error("❌ Elemento tabelaPlanilha não encontrado!");
+                        return;
+                    }
 
                     if (!Array.isArray(data)) {
-                        console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+
+                        console.error("❌ Resposta inválida:", data);
+
+                        tabela.innerHTML =
+                            "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
+
                         return;
                     }
 
@@ -417,67 +438,87 @@
 
                     data.forEach(planilha => {
 
-
-                        // 🎨 Classe da linha
                         const circuito =
-                            (planilha.circuito || "").toLowerCase();
+                            (planilha.circuito || "")
+                                .trim()
+                                .toLowerCase();
 
-                        const classeLinha =
+                        let classeLinha;
 
-                            circuito === "carga total instalada"
-                                ? "linha-carga-total"
+                        if (circuito === "carga total instalada") {
 
-                                : circuito === "iluminação"
-                                    ? "linha-iluminacao"
+                            classeLinha = "linha-carga-total";
 
-                                    : "linha-tomada";
+                        } else if (circuito === "iluminação") {
 
-                        planilha.circuito === "Carga Total Instalada"
-                            ? "linha-carga-total"
+                            classeLinha = "linha-iluminacao";
 
-                            : planilha.circuito === "Iluminação"
-                                ? "linha-iluminacao"
+                        } else {
 
-                                : "linha-tomada";
+                            classeLinha = "linha-tomada";
+                        }
 
-                        // 🔘 Texto do botão
                         const textoBotao =
-
-                            planilha.circuito === "Iluminação"
+                            circuito === "iluminação"
                                 ? "Tomadas"
-
-                                : "TrocarTipo";
+                                : "Trocar Tipo";
 
                         linhas += `
                 <tr class="${classeLinha}">
+
                     <td>${planilha.id ?? ""}</td>
                     <td>${planilha.projeto ?? ""}</td>
                     <td>${planilha.circuito ?? ""}</td>
                     <td>${planilha.descricao ?? ""}</td>
-                    <td>${Number(planilha.potenciatotal || 0).toFixed(2)}</td>
-                    <td>${Number(planilha.potenciacorrigida || 0).toFixed(2)}</td>
+                    <td>${Number(
+                            planilha.potenciatotal || 0
+                        ).toFixed(2)}</td>
+
+                    <td>${Number(
+                            planilha.potenciacorrigida || 0
+                        ).toFixed(2)}</td>
                     <td>${planilha.tipocircuito ?? ""}</td>
-                    <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
-                    <td>${Number(planilha.correnteib || 0).toFixed(2)}</td>
+                    <td>${Number(
+                            planilha.correnteic || 0
+                        ).toFixed(2)}</td>
+                    <td>${Number(
+                            planilha.correnteib || 0
+                        ).toFixed(2)}</td>
                     <td>${planilha.disjuntor ?? ""}</td>
                     <td>${planilha.condutor ?? ""}</td>
+
                     <td>
-                        <button onclick="editarCircuito(${planilha.id}, '${planilha.circuito}')">
+                        <button
+                            onclick="editarCircuito(
+                                ${planilha.id},
+                                '${planilha.circuito ?? ""}'
+                            )">
                             ${textoBotao}
                         </button>
                     </td>
-                </tr>`;
+                </tr>
+            `;
                     });
 
                     tabela.innerHTML = linhas;
 
-                })
-                .catch(err => {
-                    console.error("Erro ao listar:", err);
+                    console.log(
+                        `✅ ${data.length} circuitos carregados na tabela.`
+                    );
 
-                    const tabela = document.getElementById("tabelaPlanilha");
+                })
+
+                .catch(err => {
+
+                    console.error("❌ Erro ao listar circuitos:", err);
+
+                    const tabela =
+                        document.getElementById("tabelaPlanilha");
+
                     if (tabela) {
-                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+
+                        tabela.innerHTML =
+                            "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
                     }
                 });
         }
