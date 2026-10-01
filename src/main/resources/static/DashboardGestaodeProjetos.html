@@ -536,7 +536,7 @@
                 </div>
 
                 <div class="grafico">
-                    <h3>📊 Gênero dos Projetos</h3>
+                    <h3>📊 Tipos de Arquivos</h3>
                     <canvas id="generoDosProjetos"></canvas>
                 </div>
 
@@ -545,23 +545,23 @@
             <!-- TABELA -->
             <section class="tabela">
 
-                <h3>📉 Lista de Projetos</h3>
+                <h3>📉 Planilha do Projeto:</h3>
 
                 <table>
                     <thead>
                         <tr>
-                        <th>🆔ID</th>
-                        <th>📁Projeto</th>
-                        <th>🔌Circuito</th>
-                        <th>📝Descrição</th>
-                        <th>⚡PotTotal</th>
-                        <th>⚡PotCorrigida</th>
-                        <th>🔀TipoCircuito</th>
-                        <th>⚡CorrenteIC</th>
-                        <th>⚡CorrenteIB</th>
-                        <th>🛡️Disjuntor</th>
-                        <th>🧵Condutor</th>
-                        <th>⚙️Ação</th>
+                            <th>🆔ID</th>
+                            <th>📁Projeto</th>
+                            <th>🔌Circuito</th>
+                            <th>📝Descrição</th>
+                            <th>⚡PotTotal</th>
+                            <th>⚡PotCorrigida</th>
+                            <th>🔀TipoCircuito</th>
+                            <th>⚡CorrenteIC</th>
+                            <th>⚡CorrenteIB</th>
+                            <th>🛡️Disjuntor</th>
+                            <th>🧵Condutor</th>
+                            <th>⚙️Ação</th>
                         </tr>
                     </thead>
 
@@ -607,8 +607,7 @@
         }
 
         // =====================================================
-        // DASHBOARD COMPLETO
-        // Só carrega os dados se houver usuário logado
+        // DASHBOARD COMPLETO        
         // =====================================================
         async function carregarDashboard() {
 
@@ -617,21 +616,30 @@
                 const usuario = localStorage.getItem("usuario");
 
                 if (!usuario || usuario.trim() === "") {
-                    console.log("Nenhum usuário logado. Dashboard não será carregado.");
+                    console.log(
+                        "Nenhum usuário logado. Dashboard não será carregado."
+                    );
                     return;
                 }
 
-                console.log("📊 Carregando dashboard de mídias para:", usuario);
-
-                const resposta = await fetch(
-                    `${API}/planilha/dashboard?usuario=${encodeURIComponent(usuario)}`
+                console.log(
+                    "📊 Carregando dashboard de projetos para:",
+                    usuario
                 );
 
-                console.log("📡 Status dashboard:", resposta.status);
+                const resposta = await fetch(
+                    `${API}/projetos/usuario?usuario=${encodeURIComponent(usuario)}`
+                );
+
+                console.log(
+                    "📡 Status da API:",
+                    resposta.status
+                );
 
                 if (!resposta.ok) {
+
                     console.error(
-                        "❌ Erro ao carregar dashboard:",
+                        "❌ Erro ao carregar dashboard de projetos:",
                         resposta.status
                     );
 
@@ -640,151 +648,199 @@
                     return;
                 }
 
-                const dados = await resposta.json();
+                const projetos = await resposta.json();
 
-                console.log("📊 Dashboard de mídias:", dados);
+                console.log(
+                    "📊 Dashboard de Projetos:",
+                    projetos
+                );
+
+                if (!Array.isArray(projetos)) {
+                    console.error("❌ A API não retornou uma lista de projetos.");
+                    return;
+                }
+
+                // ===================================================== 
+                // TOTAL DE PROJETOS 
+                // ===================================================== 
+
+                const totalProjetos = projetos.length;
+
+                const projetosEntregues = projetos.filter(projeto => projeto.datadaentrega && projeto.datadaentrega.trim() !== "");
+
+                const entregues = projetosEntregues.length;
+
+                const emDesenvolvimento = projetos.filter(projeto => !projeto.datadaentrega || projeto.datadaentrega.trim() === "").length;
+
+                const percentualProjetos = totalProjetos > 0 ? (entregues / totalProjetos) * 100 : 0;
+
+                // ===================================================== 
+                // QUANTIDADE POR TIPO 
+                // ===================================================== 
+
+                const quantidadeEletrico = projetos.filter(projeto =>
+                    (projeto.tipo ?? "").toLowerCase().includes("elétrico")
+                    || (projeto.tipo ?? "").toLowerCase().includes("eletrico")).length;
+
+                const quantidadeHidraulico = projetos.filter(projeto =>
+                    (projeto.tipo ?? "").toLowerCase().includes("hidráulico")
+                    || (projeto.tipo ?? "").toLowerCase().includes("hidraulico")
+                    || (projeto.tipo ?? "").toLowerCase().includes("hidrossanitário")
+                    || (projeto.tipo ?? "").toLowerCase().includes("hidrossanitario")).length;
+                const quantidadeArquitetonico = projetos.filter(projeto =>
+                    (projeto.tipo ?? "").toLowerCase().includes("arquitetônico")
+                    || (projeto.tipo ?? "").toLowerCase().includes("arquitetonico")).length;
+
+                // ===================================================== 
+                // TIPO MAIS UTILIZADO 
+                // ===================================================== 
+
+                const quantidadePorTipo = {}; projetos.forEach(projeto => {
+                    const tipo = projeto.tipo?.trim();
+                    if (tipo) { quantidadePorTipo[tipo] = (quantidadePorTipo[tipo] ?? 0) + 1; }
+                });
+                let tipoMaisUtilizado = "-";
+                let maiorQuantidade = 0; Object.entries(quantidadePorTipo).forEach(([tipo, quantidade]) => {
+                    if (quantidade > maiorQuantidade) {
+                        maiorQuantidade = quantidade; tipoMaisUtilizado = tipo;
+
+                    }
+                });
 
 
                 // =====================================================
                 // ÚLTIMO PROJETO
                 // =====================================================
 
-                const ultimoProjeto = document.getElementById("ultimoProjeto");
+                const ultimoProjeto = projetos.length > 0 ? [...projetos].sort((a, b) => (b.id ?? 0) - (a.id ?? 0))[0] : null;
 
-                if (ultimoProjeto) {
+                const elementoUltimoProjeto = document.getElementById("ultimoProjeto");
 
-                    ultimoProjeto.innerHTML = `
-                    <div>
-                        📝 <strong>Cliente:</strong>
-                        ${dados.ultimoProjeto
-                            ? dados.ultimoProjeto.cliente
-                            : "-"}
-                        </div>
+                if (elementoUltimoProjeto) {
+                    if (ultimoProjeto) {
+                        elementoUltimoProjeto.innerHTML = ` 
+                    <div> 📝 <strong>Cliente:</strong> ${ultimoProjeto.cliente ?? "-"
+                            } 
+                        </div> 
                         <div>
+                             📐 <strong>Título:</strong> ${ultimoProjeto.titulo ?? "-"
+                            } 
+                             </div>
+                             
+                             <div> 🏷️ <strong>Tipo:</strong> ${ultimoProjeto.tipo ?? "-"
+                            } 
+                                </div>
 
-                        👤 <strong>Titulo:</strong>
-                        ${dados.ultimoProjeto
-                            ? dados.ultimoProjeto.titulo
-                            : "-"}
-                        </div>
-                        <div>
-
-                        🏷️ <strong>Gênero:</strong>
-                        ${dados.ultimoProjeto
-                            ? dados.ultimoProjeto.genero
-                            : " "}
-                        </div>
-                        `;
+                                <div> 
+                                    📂 <strong>Gênero:</strong> ${ultimoProjeto.genero ?? "-"} </div> `;
+                    } else {
+                        elementoUltimoProjeto.innerHTML = "📋 Nenhum projeto cadastrado.";
+                    }
                 }
 
-                // =====================================================
-                // RESUMO DE PROJETOS
-                // =====================================================
+                // ===================================================== 
+                // RESUMO DE PROJETOS 
+                // ===================================================== 
 
-                const resumoDiario =
-                    document.getElementById("resumoDiario");
+                const resumo = document.getElementById("resumo");
 
-                if (resumoDiario) {
+                if (resumo) {
+                    resumo.innerHTML = ` <div> 📊 <strong>Total:</strong> ${totalProjetos} 
+                    </div> 
 
-                    resumoDiario.innerHTML = `
-                Total: ${dados.totalProjetos ?? 0}<br>
-                emDesenvolvimento: ${dados.emdesenvolvimento ?? 0}<br>
-                Entregues: ${dados.entregues ?? 0}
-            `;
+                    <div> 🔄 <strong>Em desenvolvimento:</strong> ${emDesenvolvimento} 
+                        </div> 
+                        <div> ✅ <strong>Entregues:</strong> ${entregues} </div> `;
                 }
 
-                // =====================================================
-                // PERCENTUAL DE PROJETOS
-                // =====================================================
 
-                const adesao =
-                    document.getElementById("adesao");
+                // ===================================================== 
+                // PERCENTUAL 
+                // ===================================================== 
+
+                const adesao = document.getElementById("adesao");
 
                 if (adesao) {
+                    adesao.innerHTML = `${percentualProjetos.toFixed(1)}%`;
 
-                    adesao.innerHTML =
-                        `${(dados.percentualMidias ?? 0).toFixed(1)}%`;
                 }
 
-                // =====================================================
-                // TIPOS DE PROJETOS
-                // =====================================================
 
-                const tipodeMidias =
-                    document.getElementById("tipodeMidias");
+                // ===================================================== 
+                // TIPOS DE PROJETOS 
+                // ===================================================== 
+                // 
+                const tipodeProjetos = document.getElementById("tipodeProjetos");
 
-                if (tipodeMidias) {
-
-                    tipodeMidias.innerHTML = `
-                    <div>📀 DVD: ${dados.quantidadeDVD ?? 0}</div>
-                    <div>💿 Blu ray: ${dados.quantidadeBluRay ?? 0}</div>
-                    <div>💻 Digital: ${dados.quantidadeDigital ?? 0}</div>
-                    `;
+                if (tipodeProjetos) {
+                    tipodeProjetos.innerHTML = ` 
+                                        <div> 
+                                            ⚡ <strong>Elétrico:</strong> ${quantidadeEletrico} 
+                                            </div> 
+                                            
+                                            <div> 
+                                                💧 <strong>Hidrossanitário:</strong> ${quantidadeHidraulico} 
+                                                </div> 
+                                                
+                                                <div> 🏠 <strong>Arquitetônico:</strong> ${quantidadeArquitetonico} </div> `;
                 }
 
-                // =====================================================
-                // TIPO DE ARQUIVO MAIS UTILIZADOS
-                // =====================================================
+                // ===================================================== 
+                // TIPO MAIS UTILIZADO 
+                // ===================================================== 
+                // 
+                const MaiornumerodeArquivo = document.getElementById("MaiornumerodeArquivo");
 
-                const MaiornumerodeMidias =
-                    document.getElementById("MaiornumerodeMidias");
+                if (MaiornumerodeArquivo) {
+                    MaiornumerodeArquivo.innerHTML = tipoMaisUtilizado;
 
-                if (MaiornumerodeMidias) {
-
-                    MaiornumerodeMidias.innerHTML =
-                        dados.tipoMaisUtilizado
-                            ? dados.tipoMaisUtilizado
-                            : "-";
                 }
 
-                // =====================================================
-                // PROJETOS ENTREGUES
-                // =====================================================
+                // ===================================================== 
+                // PROJETOS ENTREGUES 
+                // ===================================================== 
 
-                const avisosdeMidias =
-                    document.getElementById("avisosdeMidias");
+                const avisosdeProjetos = document.getElementById("avisosdeProjetos");
 
-                if (avisosdeMidias) {
-
-                    if (dados.midiasEmprestadas &&
-                        dados.midiasEmprestadas.length > 0) {
-
-                        avisosdeMidias.innerHTML =
-                            dados.midiasEmprestadas
-                                .map(midia => `
-                            <p>
-                                📀 <strong>${midia.titulo}</strong>
-                                ${midia.artista
-                                        ? " - " + midia.artista
-                                        : ""}
-                            </p>
-                        `)
-                                .join("");
-
+                if (avisosdeProjetos) {
+                    if (projetosEntregues.length > 0) {
+                        avisosdeProjetos.innerHTML = projetosEntregues.map(projeto => ` <p> 
+                                                    ✅ <strong> ${projeto.titulo ?? "Projeto"} </strong> ${projeto.cliente ? " - " + projeto.cliente : ""
+                            } 
+                                                    </p> `).join("");
                     } else {
-
-                        avisosdeMidias.innerHTML =
-                            "✅ Nenhuma mídia emprestada.";
+                        avisosdeProjetos.innerHTML = "📋 Nenhum projeto entregue.";
                     }
                 }
 
-            } catch (erro) {
+                // ===================================================== 
+                // LOG FINAL 
+                // ===================================================== 
 
-                console.error(
-                    "❌ Erro ao carregar dashboard de mídias:",
-                    erro
+                console.log("📊 Resumo do Dashboard:",
+                    {
+                        totalProjetos,
+                        emDesenvolvimento,
+                        entregues,
+                        percentualProjetos,
+                        quantidadeEletrico,
+                        quantidadeHidraulico,
+                        quantidadeArquitetonico,
+                        tipoMaisUtilizado
+                    }
                 );
+
+            } catch (erro) {
+                console.error(
+                    "❌ Erro ao carregar dashboard de projetos:", erro);
             }
         }
 
-        // =====================================================
-        // GRAFICOS
-        // =====================================================
 
-        // 📋 FUNÇÃO DO GRÁFICO STATUS
-        let chartStatus = null;
+        // 📋 FUNÇÃO DO GRÁFICO DO TIPO DE ARQUIVOS
+        let chartTipoArquivos = null;
 
-        async function graficoStatus() {
+        async function tipodeArquivos() {
 
             const usuario = localStorage.getItem("usuario");
 
@@ -796,123 +852,50 @@
             try {
 
                 const resposta = await fetch(
-                    `${API}/projetos/grafico-status?usuario=${encodeURIComponent(usuario)}`
+                    `${API}/projetos/grafico-tipodearquivos?usuario=${encodeURIComponent(usuario)}`
                 );
 
-                console.log("📡 Status gráfico:", resposta.status);
+                console.log("📡 Status gráfico tipode arquivos:", resposta.status);
 
                 if (!resposta.ok) {
-                    console.error("❌ Erro ao carregar gráfico:", resposta.status);
+                    console.error("❌ Erro ao carregar gráfico do tipo de arquivos:", resposta.status);
                     console.error(await resposta.text());
                     return;
                 }
 
                 const dados = await resposta.json();
 
-                console.log("📊 Dados gráfico status:", dados);
+                console.log("📊 Dados gráfico dos tipos de arquivos:", dados);
 
-                const ctx = document.getElementById("graficoStatus");
-
-                if (!ctx) {
-                    console.log("❌ Canvas graficoStatus não encontrado!");
-                    return;
-                }
-
-                if (chartStatus) {
-                    chartStatus.destroy();
-                }
-
-                chartStatus = new Chart(ctx, {
-                    type: "pie",
-
-                    data: {
-                        labels: Object.keys(dados),
-
-                        datasets: [{
-                            label: "Status das mídias",
-                            data: Object.values(dados)
-                        }]
-                    },
-
-                    options: {
-                        responsive: true
-                    }
-                });
-
-            } catch (erro) {
-
-                console.error(
-                    "❌ Erro ao carregar gráfico de status:",
-                    erro
-                );
-            }
-        }
-
-
-        // 📋 FUNÇÃO DO GRÁFICO DE GENERO DAS MÍDIAS
-        let chartGeneroProjetos = null;
-
-        async function generoDosProjetos() {
-
-            const usuario = localStorage.getItem("usuario");
-
-            if (!usuario) {
-                console.warn("⚠️ Usuário não definido!");
-                return;
-            }
-
-            try {
-
-                const resposta = await fetch(
-                    `${API}/shows/grafico-generos?usuario=${encodeURIComponent(usuario)}`
-                );
-
-                console.log("📡 Status gráfico gêneros:", resposta.status);
-
-                if (!resposta.ok) {
-                    console.error("❌ Erro ao carregar gráfico de gêneros:", resposta.status);
-                    console.error(await resposta.text());
-                    return;
-                }
-
-                const dados = await resposta.json();
-
-                console.log("📊 Dados gráfico gêneros:", dados);
-
-                const canvas = document.getElementById("generoDasMidias");
+                const canvas = document.getElementById("tipodeArquivos");
 
                 if (!canvas) {
-                    console.error("❌ Canvas generoDasMidias não encontrado!");
+                    console.error("❌ Canvas tipo de Arquivos não encontrado!");
                     return;
                 }
 
-                if (chartGeneroMidias) {
-                    chartGeneroMidias.destroy();
+                if (chartTipoArquivos) {
+                    chartTipoArquivos.destroy();
                 }
 
-                const generos = [
-                    "Show",
-                    "Filme",
-                    "Filme Infantil",
-                    "Pessoal",
-                    "Animação Infantil",
-                    "Musical Infantil",
-                    "Anime Infantil"
+                const tipodearquivos = [
+                    "Arquivo DWG",
+                    "Arquivo CAD",
                 ];
 
-                const valores = generos.map(
+                const valores = arquivos.map(
                     genero => dados[genero] ?? 0
                 );
 
-                chartGeneroMidias = new Chart(canvas, {
+                chartTipoArquivos = new Chart(canvas, {
                     type: "bar",
 
                     data: {
-                        labels: generos,
+                        labels: arquivos,
 
                         datasets: [{
-                            label: "Quantidade de mídias",
-                            data: valores
+                            label: "Tipos de Arquivos",
+                            data: arquivos
                         }]
                     },
 
@@ -933,7 +916,7 @@
             } catch (erro) {
 
                 console.error(
-                    "❌ Erro ao carregar gráfico de gêneros:",
+                    "❌ Erro ao carregar gráfico do tipo de Arquivos",
                     erro
                 );
             }
@@ -1051,24 +1034,30 @@
                 return;
             }
 
-            fetchSeguro(`${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`)
-                .then(response => {
+            console.log("🔎 Listando circuitos do usuário:", usuario);
 
-                    console.log("Status:", response.status);
-
-                    if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
-                    }
-
-                    return response.json(); // 🔥 ESSA LINHA FALTAVA
-                })
+            fetchSeguro(
+                `${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`
+            )
                 .then(data => {
 
-                    const tabela = document.getElementById("tabelaPlanilha");
+                    console.log("📦 Dados recebidos:", data);
+
+                    const tabela =
+                        document.getElementById("tabelaPlanilha");
+
+                    if (!tabela) {
+                        console.error("❌ Elemento tabelaPlanilha não encontrado!");
+                        return;
+                    }
 
                     if (!Array.isArray(data)) {
-                        console.error("Resposta inválida:", data);
-                        tabela.innerHTML = "<tr><td colspan='7'>Erro ao carregar</td></tr>";
+
+                        console.error("❌ Resposta inválida:", data);
+
+                        tabela.innerHTML =
+                            "<tr><td colspan='12'>Erro ao carregar os dados.</td></tr>";
+
                         return;
                     }
 
@@ -1076,36 +1065,27 @@
 
                     data.forEach(planilha => {
 
-
-                        // 🎨 Classe da linha
                         const circuito =
-                            (planilha.circuito || "").toLowerCase();
+                            (planilha.circuito || "")
+                                .trim()
+                                .toLowerCase();
 
-                        const classeLinha =
+                        let classeLinha;
 
-                            circuito === "carga total instalada"
-                                ? "linha-carga-total"
+                        if (circuito === "carga total instalada") {
+                            classeLinha = "linha-carga-total";
 
-                                : circuito === "iluminação"
-                                    ? "linha-iluminacao"
+                        } else if (circuito === "iluminação") {
+                            classeLinha = "linha-iluminacao";
 
-                                    : "linha-tomada";
+                        } else {
+                            classeLinha = "linha-tomada";
+                        }
 
-                        planilha.circuito === "Carga Total Instalada"
-                            ? "linha-carga-total"
-
-                            : planilha.circuito === "Iluminação"
-                                ? "linha-iluminacao"
-
-                                : "linha-tomada";
-
-                        // 🔘 Texto do botão
                         const textoBotao =
-
-                            planilha.circuito === "Iluminação"
+                            circuito === "iluminação"
                                 ? "Tomadas"
-
-                                : "TrocarTipo";
+                                : "Trocar Tipo";
 
                         linhas += `
                 <tr class="${classeLinha}">
@@ -1121,25 +1101,39 @@
                     <td>${planilha.disjuntor ?? ""}</td>
                     <td>${planilha.condutor ?? ""}</td>
                     <td>
-                        <button onclick="editarCircuito(${planilha.id}, '${planilha.circuito}')">
+                        <button
+                            onclick="editarCircuito(
+                                ${planilha.id},
+                                '${planilha.circuito ?? ""}'
+                            )">
                             ${textoBotao}
                         </button>
                     </td>
-                </tr>`;
+                </tr>
+            `;
                     });
 
                     tabela.innerHTML = linhas;
 
+                    console.log(
+                        `✅ ${data.length} circuitos carregados na tabela.`
+                    );
+
                 })
                 .catch(err => {
-                    console.error("Erro ao listar:", err);
 
-                    const tabela = document.getElementById("tabelaPlanilha");
+                    console.error("❌ Erro ao listar circuitos:", err);
+
+                    const tabela =
+                        document.getElementById("tabelaPlanilha");
+
                     if (tabela) {
-                        tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
+                        tabela.innerHTML =
+                            "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
                     }
                 });
         }
+
 
         // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
         async function editarCircuito(id, tipoAtual) {
