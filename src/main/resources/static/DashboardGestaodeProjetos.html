@@ -339,12 +339,17 @@
         border-bottom: 1px solid #dcdcdc;
     }
 
-    .linha-emarquivo {
+    .linha-carga-total {
         background-color: #eaf7ea;
     }
 
     /* Fundo das linhas emprestadas */
-    .linha-emprestado {
+    .linha-iluminacao {
+        background-color: #fff0f0;
+    }
+
+    /* Fundo das linhas emprestadas */
+    .linha-tomada {
         background-color: #fff0f0;
     }
 
@@ -922,61 +927,61 @@
             }
         }
 
-        // 📋 FUNÇÃO PESQUISAR POR ARTISTA
-        function mostrarArtistaPesquisado(midias) {
+        // 📋 FUNÇÃO PESQUISAR POR CLIENTE
+        function mostrarClientePesquisado(projetos) {
 
-            const ultimoMedicamento =
-                document.getElementById("ultimoMedicamento");
+            const cliente =
+                document.getElementById("cliente");
 
-            if (!ultimoMedicamento) {
+            if (!cliente) {
                 return;
             }
 
-            if (!midias || midias.length === 0) {
+            if (!projetos || projetos.length === 0) {
 
-                ultimoMedicamento.innerHTML = `
-            <strong>❌ Artista não encontrado</strong>
+                cliente.innerHTML = `
+            <strong>❌ Cliente não encontrado</strong>
         `;
 
                 return;
             }
 
-            ultimoMedicamento.innerHTML = midias.map(midia => `
+            cliente.innerHTML = projetos.map(midia => `
         
         <div style="margin-bottom: 10px;">
 
-            <strong>🆔 ID: ${midia.id ?? "-"}</strong><br>
+            <strong>🆔 ID: ${projetos.id ?? "-"}</strong><br>
 
-            🎤 <strong>${midia.artista ?? "-"}</strong><br>
+            🎤 <strong>${projetos.cliente ?? "-"}</strong><br>
 
-            🎬 ${midia.titulo ?? "-"}
+            🎬 $projetos.titulo ?? "-"}
 
         </div>
         `).join("");
         }
 
-        async function buscarArtista() {
+        async function buscarCliente() {
 
-            const artista =
-                document.getElementById("nomeArtista").value.trim();
+            const cliente =
+                document.getElementById("nomeCliente").value.trim();
 
-            if (!artista) {
-                alert("Digite o nome do artista!");
+            if (!cliente) {
+                alert("Digite o nome do Cliente!");
                 return;
             }
 
             try {
 
-                console.log("🔎 Pesquisando artista:", artista);
+                console.log("🔎 Pesquisando cliente:", artista);
 
                 const resposta = await fetch(
-                    `${API}/shows/buscar?artista=${encodeURIComponent(artista)}`
+                    `${API}/projetos/buscar?cliente=${encodeURIComponent(cliente)}`
                 );
 
                 console.log("📡 Status da pesquisa:", resposta.status);
 
                 if (!resposta.ok) {
-                    throw new Error("Erro ao pesquisar artista.");
+                    throw new Error("Erro ao pesquisar cliente.");
                 }
 
                 const dados = await resposta.json();
@@ -984,13 +989,13 @@
                 console.log("📦 Registros encontrados no banco:", dados);
 
                 // Mostra no card os dados REALMENTE retornados pelo banco
-                mostrarArtistaPesquisado(dados);
+                mostrarClientePesquisado(dados);
 
             } catch (erro) {
 
                 console.error("❌ Erro na pesquisa:", erro);
 
-                alert("Erro ao pesquisar o artista.");
+                alert("Erro ao pesquisar o cliente.");
             }
         }
 
@@ -1006,11 +1011,11 @@
 
         });
 
-        document.getElementById("nomeArtista").addEventListener("keydown", function (event) {
+        document.getElementById("nomeCliente").addEventListener("keydown", function (event) {
 
             if (event.key === "Enter") {
                 event.preventDefault();
-                buscarArtista();
+                buscarCliente();
             }
 
         });
