@@ -279,7 +279,7 @@
     /* CARDS */
     .cards {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(6, 1fr);
         gap: 15px;
     }
 
@@ -498,12 +498,12 @@
 
                 <div class="card">
                     <h3>🔍 Projeto pesquisado</h3>
-                    <p id="projetoPesquisado">-</p>
+                    <p id="cliente">-</p>
                 </div>
 
                 <div class="card">
                     <h3>📅 Resumo dos Projetos</h3>
-                    <p id="resumoDiario">-</p>
+                    <p id="resumo">-</p>
                 </div>
 
                 <div class="card">
@@ -516,10 +516,10 @@
                     <p id="tipodeProjetos">0</p>
                 </div>
 
-                <div class="card">
+                <!--div class="card">
                     <h3>🔢 Maior número de Projetos</h3>
                     <p id="MaiornumerodeProjetos">0</p>
-                </div>
+                </!--div-->
 
                 <div class="card alerta-card" id="cardAlerta">
 
@@ -712,7 +712,6 @@
                     }
                 });
 
-
                 // =====================================================
                 // ÚLTIMO PROJETO
                 // =====================================================
@@ -769,7 +768,6 @@
                     adesao.innerHTML = `${percentualProjetos.toFixed(1)}%`;
 
                 }
-
 
                 // ===================================================== 
                 // TIPOS DE PROJETOS 
@@ -946,33 +944,55 @@
                 return;
             }
 
-            cliente.innerHTML = projetos.map(midia => `
+            cliente.innerHTML = projetos.map(projeto => `
         
         <div style="margin-bottom: 10px;">
 
-            <strong>🆔 ID: ${projetos.id ?? "-"}</strong><br>
+            <strong> 🆔 ID: ${projeto.id ?? "-"} 
+                </strong> <br> 
+                👤 <strong> Cliente: 
+                    </strong>
 
-            🎤 <strong>${projetos.cliente ?? "-"}</strong><br>
+                 ${projeto.cliente ?? "-"} <br>
+                 📐 <strong> Título: 
+                    </strong>
 
-            🎬 $projetos.titulo ?? "-"}
+                    ${projeto.titulo ?? "-"} <br> 
+                    🏷️ <strong> Tipo: 
+                        </strong> 
+                        ${projeto.tipo ?? "-"} <br>
 
-        </div>
-        `).join("");
+                    📂 <strong> Gênero: 
+                        </strong> 
+                        ${projeto.genero ?? "-"}
+
+                        </div>
+                        
+                        `).join("");
         }
 
+        // 📋 FUNÇÃO BUSCAR CLIENTE          
         async function buscarCliente() {
 
-            const cliente =
-                document.getElementById("nomeCliente").value.trim();
+            const campoCliente = document.getElementById("nomeCliente");
+
+            if (!campoCliente) {
+                console.error("❌ Campo nomeCliente não encontrado.");
+                return;
+            }
+
+            const cliente = campoCliente.value.trim();
 
             if (!cliente) {
                 alert("Digite o nome do Cliente!");
+
+                campoCliente.focus();
                 return;
             }
 
             try {
+                console.log("🔎 Pesquisando cliente:", cliente);
 
-                console.log("🔎 Pesquisando cliente:", artista);
 
                 const resposta = await fetch(
                     `${API}/projetos/buscar?cliente=${encodeURIComponent(cliente)}`
@@ -980,9 +1000,15 @@
 
                 console.log("📡 Status da pesquisa:", resposta.status);
 
+
                 if (!resposta.ok) {
-                    throw new Error("Erro ao pesquisar cliente.");
+                    const mensagem = await resposta.text();
+
+                    console.error("❌ Resposta da API:", mensagem);
+
+                    throw new Error(`Erro HTTP: ${resposta.status}`);
                 }
+
 
                 const dados = await resposta.json();
 
