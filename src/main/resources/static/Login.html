@@ -28,15 +28,10 @@
         .card-form {
 
             background: white;
-
             padding: 30px;
-
             border-radius: 10px;
-
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-
             max-width: 400px;
-
             margin: auto;
 
         }
@@ -46,29 +41,45 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
+    
+   .grid input {
+    width: 170px;
+    height: 35px;
+    padding: 0 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    }
+
+    .grid input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
 
         .botoes {
 
             margin-top: 20px;
-
             display: flex;
-
             flex-wrap: wrap;
-
             gap: 10px;
 
+        }
+
+        .botoes button {
+
+            width: 165px;
+            height: 35px;
         }
 
         .btn {
 
             min-width: 10px;
-
         }
 
         .home {
 
             margin-top: 20px;
-
         }
 
         /* TABELA */
@@ -101,7 +112,7 @@
             <span class="glyphicon glyphicon-home"></span> Página Principal
         </a>
 
-        <h2><img src="Imagens/carlos1.gif" class="logo">
+        <h2><img src="Imagens/iconeCarlos.png" class="logo">
             Realizar Login</h2>
 
         <div class="grid">
@@ -112,17 +123,16 @@
 
             <input type="text" id="senha" placeholder="senha">
 
-
         </div>
 
         <div class="botoes">
 
             <button class="btn btn-success" onclick="autenticar()">
-                <i class="fa fa-save"></i> Login
+                <i class="fa fa-save"></i> Realizar Login
             </button>
 
             <button class="btn btn-secondary" onclick="limparCampos()">
-                <i class="fa fa-eraser"></i> Limpar
+                <i class="fa fa-eraser"></i> Limpar campos
             </button>
 
             <button class="btn btn-primary" onclick="usuario()">
@@ -149,8 +159,7 @@
 
                         <th>ID</th>
                         <th>Usuário</th>
-                        <th>Perfil</th>
-                        <th>Ação</th>
+                        <th>Perfil</th>                        
 
                     </tr>
 
@@ -166,7 +175,8 @@
 
         <script>
 
-            const api = "http://localhost:8084/usuario";
+            //const API = "http://localhost:8084/usuario";
+            const API = "https://projeto-springboot.onrender.com/usuario";
 
             function carregar() {
                 //listarTodos();
@@ -175,7 +185,7 @@
             //Função para Listar todos os Usuários
             function listarTodos() {
 
-                fetch(api)
+                fetch(API)
                     .then(response => response.json())
                     .then(data => {
 
@@ -185,38 +195,37 @@
                         data.forEach(show => {
 
                             tabela.innerHTML += `
-<tr>
+                            <tr>                                
 
-<td>${show.id}</td>
-<td>${show.usuario}</td>
-<td>${show.perfil}</td>
+                             <td>${show.id}</td>
+                             <td>${show.usuario}</td>
+                             <td>${show.perfil}</td>
+                             
+                             <!--
+                             <td>
+                                <button class="btn btn-danger btn-sm"
+                                onclick="editar(${show.id})">
+                                Editar
+                                </button>
 
-<td>
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
+                                <button class="btn btn-danger btn-sm"
+                                onclick="deletar(${show.id})">
+                                Excluir
+                                </button>
+                                </td>
+                                -->                               
 
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
-
-</tr>
-`;
-
-                            limparCampos();
-
-                        });
-
-                    });
-
-            }
+                                </tr>
+                                `;
+                                
+                                limparCampos();
+                                });
+                            });
+                        }
 
 
-            //Função para realizar o Login
-            function autenticar() {
+               //Função para realizar o Login
+               function autenticar() {
 
                 const usuario = document.getElementById("usuario").value;
                 const senha = document.getElementById("senha").value;
@@ -240,7 +249,7 @@ Excluir
                 // Se passou na validação
                 //alert("✅ Dados preenchidos! Validando login...");
 
-                fetch("http://localhost:8084/usuario", {
+                fetch("http://localhost:8084/usuario/login", {
 
                     method: "POST",
 
@@ -304,44 +313,42 @@ Excluir
                         if (data.length === 0) {
 
                             tabela.innerHTML = `
-<tr>
-<td colspan="7">Nenhum resultado encontrado</td>
-</tr>
-`;
-
-                            return;
+                            <tr>
+                                <td colspan="7">Nenhum resultado encontrado</td>
+                                </tr>
+                                `;
+                                
+                                return;
                         }
 
                         data.forEach(show => {
-
+                            
                             tabela.innerHTML += `
-<tr>
-<td>${show.id}</td>
-<td>${show.usuario}</td>
-<td>${show.perfil}</td>
+                            <tr>
 
-<td>
+                                <td>${show.id}</td>
+                                <td>${show.usuario}</td>
+                                <td>${show.perfil}</td>
 
-<button class="btn btn-danger btn-sm"
-onclick="editar(${show.id})">
-Editar
-</button>
+                                <td>
 
-<button class="btn btn-danger btn-sm"
-onclick="deletar(${show.id})">
-Excluir
-</button>
-</td>
+                            <button class="btn btn-danger btn-sm"
+                            onclick="editar(${show.id})">
+                            Editar
+                            </button>
 
-</tr>
-`;
+                            <button class="btn btn-danger btn-sm"
+                            onclick="deletar(${show.id})">
+                            Excluir
+                            </button>
+                            </td>
+                            </tr>
+                            `;
                             limparCampos();
 
                         });
-
                     });
-
-            }
+                }
 
             //Função para limpaar os campos do formulario
             function limparCampos() {
@@ -350,9 +357,9 @@ Excluir
                 document.getElementById("senha").value = "";
 
             }
+            
+            </script>
+            
+            </body>
 
-        </script>
-
-</body>
-
-</html>
+            </html>

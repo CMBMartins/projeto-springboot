@@ -279,8 +279,8 @@
 
         <script>
 
-            //const api = "http://localhost:8084/usuario";
-            const API = "https://projeto-springboot.onrender.com/usuario";
+            //const API = "http://localhost:8084/usuario";
+              const API = "https://projeto-springboot.onrender.com/usuario";
 
             //Função carregar
             function carregar() {
@@ -413,45 +413,103 @@
 
             }
 
+    function deletar(id) {
+
+    if (!id) {
+        alert("ID inválido!");
+        return;
+    }
+
+    if (!confirm("Tem certeza que deseja excluir este usuário?")) {
+        return;
+    }
+
+    fetch(API + "/" + id, {
+        method: "DELETE"
+    })
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Erro ao excluir usuário");
+        }
+
+        return response.text();
+    })
+    .then(() => {
+
+        alert("Usuário excluído com sucesso!");
+
+        limparCampos();
+
+        listarTodos();
+    })
+    .catch(error => {
+
+        console.error("Erro ao excluir:", error);
+
+        alert("❌ Erro ao excluir usuário!");
+        });
+    }
+
             //Função para pesquisar por Usuário
             function buscarUsuario() {
 
                 const usuario = document.getElementById("usuario").value;
 
-                if (!usuario) {
-                    alert("Informe o usuário!");
+                if (usuario === "") {
+                    alert("⚠️ Informe o usuario a ser consultado!");
                     return;
                 }
 
-                fetch(API + "/buscar?usuario=" + encodeURIComponent(usuario))
-                    .then(res => res.json())
+                fetch("http://localhost:8084/usuario/buscar?usuario=" + encodeURIComponent(usuario))
+
+                    .then(response => response.json())
+
                     .then(data => {
 
                         const tabela = document.getElementById("tabelaUsuario");
+
                         tabela.innerHTML = "";
 
-                        if (!Array.isArray(data) || data.length === 0) {
-                            tabela.innerHTML = "<tr><td colspan='4'>Nenhum resultado</td></tr>";
-                            return;
+                        if (data.length === 0) {
+
+                            tabela.innerHTML = `
+                            <tr>
+                                <td colspan="7">Nenhum resultado encontrado</td>
+                                </tr>
+                                `;
+                                
+                                return;
                         }
 
                         data.forEach(show => {
+                            
                             tabela.innerHTML += `
-                <tr>
-                    <td>${show.id}</td>
-                    <td>${show.usuario}</td>
-                    <td>${show.perfil}</td>
-                    <td>
-                        <button onclick="editar(${show.id})">Editar</button>
-                        <button onclick="deletar(${show.id})">Excluir</button>
-                    </td>
-                </tr>
-            `;
-                        });
+                            <tr>
 
-                    })
-                    .catch(() => alert("Erro ao buscar usuários"));
-            }
+                                <td>${show.id}</td>
+                                <td>${show.usuario}</td>
+                                <td>${show.perfil}</td>
+
+                                <td>
+
+                            <button class="btn btn-danger btn-sm"
+                            onclick="editar(${show.id})">
+                            Editar
+                            </button>
+
+                            <button class="btn btn-danger btn-sm"
+                            onclick="deletar(${show.id})">
+                            Excluir
+                            </button>
+                            </td>
+                            </tr>
+                            `;
+                            limparCampos();
+
+                        });
+                    });
+                }
 
         </script>
 
