@@ -300,12 +300,16 @@
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         margin-top: 20px;
-    }
-
-    .grafico {
         background: #1e293b;
         padding: 20px;
         border-radius: 12px;
+    }
+
+    .graficos-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        margin: 10px auto 25px;
     }
 
     #tendencia {
@@ -535,14 +539,12 @@
 
             <section class="graficos">
 
-                <div class="grafico">
-                    <h3>📊 Status de Projetos</h3>
+                <div class="grafico-container">
                     <canvas id="graficoStatus"></canvas>
                 </div>
 
-                <div class="grafico">
-                    <h3>📊 Tipos de Arquivos</h3>
-                    <canvas id="generoDosProjetos"></canvas>
+                <div class="grafico-container">
+                    <canvas id="graficoGenero"></canvas>
                 </div>
 
             </section>
@@ -584,6 +586,7 @@
     <script>
 
         const API = "https://projeto-springboot.onrender.com";
+        //const API = "http://localhost:8084";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -840,10 +843,10 @@
         }
 
 
-        // 📋 FUNÇÃO DO GRÁFICO DO TIPO DE ARQUIVOS
-        let chartTipoArquivos = null;
+        // 📋 FUNÇÃO DO GRÁFICO DOS TIPOS DE PROJETOS
+        let chartTipoProjetos = null;
 
-        async function tipodeArquivos() {
+        async function graficoTiposProjetos() {
 
             const usuario = localStorage.getItem("usuario");
 
@@ -855,75 +858,268 @@
             try {
 
                 const resposta = await fetch(
-                    `${API}/projetos/grafico-tipodearquivos?usuario=${encodeURIComponent(usuario)}`
+                    `${API}/projetos/usuario?usuario=${encodeURIComponent(usuario)}`
                 );
 
-                console.log("📡 Status gráfico tipode arquivos:", resposta.status);
+                console.log(
+                    "📡 Status projetos para gráfico:",
+                    resposta.status
+                );
 
                 if (!resposta.ok) {
-                    console.error("❌ Erro ao carregar gráfico do tipo de arquivos:", resposta.status);
+                    console.error(
+                        "❌ Erro ao carregar projetos:",
+                        resposta.status
+                    );
+
                     console.error(await resposta.text());
                     return;
                 }
 
-                const dados = await resposta.json();
+                const projetos = await resposta.json();
 
-                console.log("📊 Dados gráfico dos tipos de arquivos:", dados);
+                console.log(
+                    "📊 Projetos recebidos para gráfico:",
+                    projetos
+                );
 
-                const canvas = document.getElementById("tipodeArquivos");
+                // Canvas do gráfico
+                const canvas =
+                    document.getElementById("graficoStatus");
 
                 if (!canvas) {
-                    console.error("❌ Canvas tipo de Arquivos não encontrado!");
+                    console.error(
+                        "❌ Canvas 'graficoStatus' não encontrado!"
+                    );
                     return;
                 }
 
-                if (chartTipoArquivos) {
-                    chartTipoArquivos.destroy();
-                }
+                // Conta os tipos
+                const tipos = {};
 
-                const tipodearquivos = [
-                    "Arquivo DWG",
-                    "Arquivo CAD",
-                ];
+                projetos.forEach(projeto => {
 
-                const valores = arquivos.map(
-                    genero => dados[genero] ?? 0
+                    const tipo = projeto.tipo || "Sem tipo";
+
+                    tipos[tipo] = (tipos[tipo] || 0) + 1;
+
+                });
+
+                console.log(
+                    "📊 Quantidade por tipo:",
+                    tipos
                 );
 
-                chartTipoArquivos = new Chart(canvas, {
+                const labels = Object.keys(tipos);
+                const valores = Object.values(tipos);
+
+                // Destrói gráfico anterior
+                if (chartTipoProjetos) {
+                    chartTipoProjetos.destroy();
+                }
+
+                // Cria gráfico
+                chartTipoProjetos = new Chart(canvas, {
+
                     type: "bar",
 
                     data: {
-                        labels: arquivos,
+
+                        labels: labels,
 
                         datasets: [{
-                            label: "Tipos de Arquivos",
-                            data: arquivos
+                            label: "Quantidade de Projetos",
+                            data: valores
                         }]
+
                     },
 
                     options: {
+
                         responsive: true,
 
+                        maintainAspectRatio: false,
+
                         scales: {
+
                             y: {
                                 beginAtZero: true,
+
                                 ticks: {
                                     stepSize: 1
                                 }
                             }
+
                         }
+
                     }
+
                 });
 
             } catch (erro) {
 
                 console.error(
-                    "❌ Erro ao carregar gráfico do tipo de Arquivos",
+                    "❌ Erro ao carregar gráfico dos tipos de projetos:",
                     erro
                 );
             }
         }
+
+
+        // 📋 FUNÇÃO DO GRÁFICO DOS TIPOS DE ARQUIVOS
+        let chartGeneroProjetos = null;
+
+        async function graficoGenero() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            if (!usuario) {
+                console.warn("⚠️ Usuário não definido!");
+                return;
+            }
+
+            try {
+
+                const resposta = await fetch(
+                    `${API}/projetos/usuario?usuario=${encodeURIComponent(usuario)}`
+                );
+
+                console.log(
+                    "📡 Status projetos para gráfico de arquivos:",
+                    resposta.status
+                );
+
+                if (!resposta.ok) {
+
+                    console.error(
+                        "❌ Erro ao carregar projetos:",
+                        resposta.status
+                    );
+
+                    console.error(await resposta.text());
+
+                    return;
+                }
+
+                const projetos = await resposta.json();
+
+                console.log(
+                    "📊 Projetos recebidos para gráfico de arquivos:",
+                    projetos
+                );
+
+                // Canvas do gráfico
+                const canvas =
+                    document.getElementById("graficoGenero");
+
+                if (!canvas) {
+
+                    console.error(
+                        "❌ Canvas 'graficoGenero' não encontrado!"
+                    );
+
+                    return;
+                }
+
+                let quantidadeDWG = 0;
+                let quantidadeOutros = 0;
+
+                projetos.forEach(projeto => {
+
+                    const genero =
+                        (projeto.genero || "")
+                            .trim()
+                            .toLowerCase();
+
+                    if (
+                        genero === "dwg" ||
+                        genero === "arquivo dwg"
+                    ) {
+
+                        quantidadeDWG++;
+
+                    } else {
+
+                        quantidadeOutros++;
+
+                    }
+
+                });
+
+                console.log(
+                    "📊 Arquivos DWG:",
+                    quantidadeDWG
+                );
+
+                console.log(
+                    "📊 Outros tipos:",
+                    quantidadeOutros
+                );
+
+                // Destrói gráfico anterior
+                if (chartGeneroProjetos) {
+
+                    chartGeneroProjetos.destroy();
+
+                }
+
+                chartGeneroProjetos = new Chart(canvas, {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [
+                            "Arquivo DWG",
+                            "Outros tipos"
+                        ],
+
+                        datasets: [{
+
+                            label: "Tipos de Arquivos",
+
+                            data: [
+                                quantidadeDWG,
+                                quantidadeOutros
+                            ]
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                ticks: {
+                                    stepSize: 1
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                });
+
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro ao carregar gráfico de tipos de arquivos:",
+                    erro
+                );
+            }
+        }
+
 
         // 📋 FUNÇÃO PESQUISAR POR CLIENTE
         function mostrarClientePesquisado(projetos) {
@@ -1348,10 +1544,11 @@
                 console.log("🔔 Recebi atualização do servidor.");
 
                 try {
+
                     await carregarDashboard();
                     await listarTodos();
-                    await graficoStatus();
-                    //await generoDasMidias();
+                    await graficoTiposProjetos();
+                    await graficoGenero();
 
                     console.log("✅ Dashboard atualizado após evento SSE.");
 
@@ -1394,6 +1591,7 @@
                 return;
             }
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                //fetch("http://localhost:8084/usuario/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -1418,7 +1616,8 @@
 
                     carregarDashboard();
                     limparLogin();
-                    //graficoStatus();
+                    graficoTiposProjetos();
+                    graficoGenero();
                     listarTodos();
 
                 })
