@@ -298,6 +298,7 @@
     <script>
 
         const API = "https://projeto-springboot.onrender.com";
+        //const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -450,52 +451,69 @@
         // FUNÇÃO PARA SALVAR
         function salvar() {
 
-            if (confirm("Tem certeza que deseja salvar esses dados?")) {
+        if (confirm("Tem certeza que deseja salvar esses dados?")) {
 
-                const titulo = document.getElementById("titulo").value;
-                const cliente = document.getElementById("cliente").value;
-                const tamanhodoimovel = document.getElementById("tamanhodoimovel").value;
-                const valordoprojeto = document.getElementById("valordoprojeto").value;
-                const datadaentrega = document.getElementById("datadaentrega").value;
-                const tipo = document.getElementById("tipo").value;
-                const genero = document.getElementById("genero").value;
+        const titulo = document.getElementById("titulo").value;
+        const cliente = document.getElementById("cliente").value;
+        const tamanhodoimovel = document.getElementById("tamanhodoimovel").value;
+        const valordoprojeto = document.getElementById("valordoprojeto").value;
+        const datadaentrega = document.getElementById("datadaentrega").value;
+        const tipo = document.getElementById("tipo").value;
+        const genero = document.getElementById("genero").value;
 
-                alert("Projeto salvo com sucesso!");
+        // Pega o usuário logado
+        const usuario = getUsuario();
 
-                fetch(api, {
+        console.log("👤 Usuário:", usuario);
 
-                    method: "POST",
+        fetch(`${API}/projetos`, {
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            method: "POST",
 
-                    body: JSON.stringify({
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                        titulo,
-                        cliente,
-                        tamanhodoimovel,
-                        valordoprojeto,
-                        datadaentrega,
-                        tipo,
-                        genero
+            body: JSON.stringify({
+                titulo,
+                cliente,
+                tamanhodoimovel,
+                valordoprojeto,
+                datadaentrega,
+                tipo,
+                genero,
+                usuario
+            })
+        })
 
-                    })
+        .then(response => {
 
-                })
-
-                    .then(response => response.json())
-
-                    .then(data => {
-
-                        limparCampos();
-
-                        listarTodos();
-
-                    });
-
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
             }
+
+            return response.json();
+        })
+
+        .then(data => {
+
+            console.log("✅ Projeto salvo:", data);
+
+            alert("Projeto salvo com sucesso!");
+
+            limparCampos();
+
+            listarTodos();
+        })
+
+        .catch(error => {
+
+            console.error("❌ Erro ao salvar:", error);
+
+            alert("❌ Erro ao salvar o projeto.");
+        });
         }
+    }
 
 
         // FUNÇÃO PARA EDITAR OS DADOS NA TABELA
@@ -503,43 +521,64 @@
 
             if (confirm("Tem certeza que deseja editar estes dados?")) {
 
-                const id = document.getElementById("id").value;
+            const id = document.getElementById("id").value;
 
-                const dados = {
+            const usuario = getUsuario();
 
-                    titulo: document.getElementById("titulo").value,
-                    cliente: document.getElementById("cliente").value,
-                    tamanhodoimovel: document.getElementById("tamanhodoimovel").value,
-                    valordoprojeto: document.getElementById("valordoprojeto").value,
-                    datadaentrega: document.getElementById("datadaentrega").value,
-                    tipo: document.getElementById("tipo").value,
-                    genero: document.getElementById("genero").value
+            const dados = {
 
-                };
+            titulo: document.getElementById("titulo").value,
+            cliente: document.getElementById("cliente").value,
+            tamanhodoimovel: document.getElementById("tamanhodoimovel").value,
+            valordoprojeto: document.getElementById("valordoprojeto").value,
+            datadaentrega: document.getElementById("datadaentrega").value,
+            tipo: document.getElementById("tipo").value,
+            genero: document.getElementById("genero").value,
+            usuario: usuario
+            };
 
-                fetch(api + "/" + id, {
+            console.log("✏️ Editando projeto:", dados);
 
-                    method: "PUT",
+            fetch(`${API}/projetos/${id}`, {
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            method: "PUT",
 
-                    body: JSON.stringify(dados)
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                })
+            body: JSON.stringify(dados)
 
-                    .then(() => {
+        })
 
-                        alert("Dados atualizados com sucesso!");
+        .then(response => {
 
-                        limparCampos();
-                        listarTodos();
-
-                    });
-
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
             }
+
+            return response.json();
+        })
+
+        .then(data => {
+
+            console.log("✅ Projeto atualizado:", data);
+
+            alert("Dados atualizados com sucesso!");
+
+            limparCampos();
+            listarTodos();
+        })
+
+        .catch(error => {
+
+            console.error("❌ Erro ao editar projeto:", error);
+
+            alert("❌ Erro ao atualizar os dados.");
+        });
         }
+    }
+
 
 
         // FUNÇÃO PARA EXCLUIR
@@ -547,7 +586,7 @@
 
             if (confirm("Tem certeza que deseja excluir este registro?")) {
 
-                fetch(`${api}/${id}`, {
+                fetch(`${API}/${id}`, {
                     method: "DELETE"
                 })
                     .then(() => {
@@ -669,6 +708,7 @@
             }
 
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            //fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
