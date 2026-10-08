@@ -1017,6 +1017,8 @@
                 }
 
                 let quantidadeDWG = 0;
+                let quantidadeDWT = 0;
+                let quantidadeBAK = 0;
                 let quantidadeOutros = 0;
 
                 projetos.forEach(projeto => {
@@ -1032,6 +1034,22 @@
                     ) {
 
                         quantidadeDWG++;
+                    }
+
+                    if (
+                        genero === "dwt" ||
+                        genero === "arquivo dwt"
+                    ) {
+
+                        quantidadeDWT++;
+                    }
+
+                    if (
+                        genero === "bak" ||
+                        genero === "arquivo bak"
+                    ) {
+
+                        quantidadeBAK++;
 
                     } else {
 
@@ -1044,6 +1062,16 @@
                 console.log(
                     "📊 Arquivos DWG:",
                     quantidadeDWG
+                );
+
+                console.log(
+                    "📊 Arquivos DWT:",
+                    quantidadeDWT
+                );
+
+                console.log(
+                    "📊 Arquivos BAK:",
+                    quantidadeBAK
                 );
 
                 console.log(
@@ -1066,6 +1094,8 @@
 
                         labels: [
                             "Arquivo DWG",
+                            "Arquivo DWT",
+                            "Arquivo BAK",
                             "Outros tipos"
                         ],
 
@@ -1075,6 +1105,8 @@
 
                             data: [
                                 quantidadeDWG,
+                                quantidadeDWT,
+                                quantidadeBAK,
                                 quantidadeOutros
                             ]
 
