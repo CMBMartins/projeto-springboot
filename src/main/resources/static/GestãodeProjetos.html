@@ -419,6 +419,8 @@
                     if (tabela) {
                         tabela.innerHTML = "<tr><td colspan='8'>Erro ao carregar dados</td></tr>";
                     }
+
+                    alert(`✅ ${status.length} circuitos carregados na tabela.`);
                 });
         }
 
@@ -509,7 +511,6 @@
                         alert("Projeto salvo com sucesso!");
 
                         limparCampos();
-
                         listarTodos();
                     })
 

@@ -351,6 +351,7 @@
 
 
         const API = "https://projeto-springboot.onrender.com";
+        //const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -505,6 +506,8 @@
                     console.log(
                         `✅ ${data.length} circuitos carregados na tabela.`
                     );
+
+                    alert(`✅ ${data.length} circuitos carregados na tabela.`);
 
                 })
 
@@ -1009,6 +1012,7 @@
             }
 
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                //fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
