@@ -258,7 +258,7 @@
 
             <div class="grid">
 
-                <input type="text" id="id" placeholder="ID - Não precisar inserir">
+                <input type="text" id="id" placeholder="ID - Não precisa inserir">
 
                 <input type="text" id="projeto" placeholder="Projeto">
 
@@ -524,54 +524,7 @@
                             "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
                     }
                 });
-        }
 
-
-        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
-        async function editarCircuito(id, tipoAtual) {
-            try {
-
-                // valida ID
-                if (!id || isNaN(id)) {
-                    alert("⚠️ ID inválido!");
-                    return;
-                }
-
-                // define novo tipo
-                const novoTipo =
-                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
-                        ? "Iluminação"
-                        : "Tomada";
-
-                // confirmação
-                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
-                    return;
-                }
-
-                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        tipocircuito: novoTipo
-                    })
-                });
-
-                console.log("Status:", response.status);
-
-                if (!response.ok) {
-                    const erro = await response.text();
-                    throw new Error(erro || "Erro ao atualizar");
-                }
-
-                alert("✅ Tipo de circuito atualizado!");
-                listarTodos();
-
-            } catch (error) {
-                console.error("Erro ao atualizar tipo:", error);
-                alert("❌ Erro ao atualizar Tipo do circuito");
-            }
         }
 
 
@@ -629,55 +582,6 @@
                     console.error(error);
                     alert("❌ Erro ao salvar");
                 });
-        }
-
-
-        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
-        function mostrarResultado(r) {
-
-            if (!r) return;
-
-            const card = document.getElementById("resultadoCard");
-
-            card.innerHTML = `
-        <h3>⚡ Resultado do Cálculo</h3>
-
-        <div class="card-grid">
-
-            <div class="item-card">
-                Potência Total<br>
-                ${r.potenciatotal || "0.00"} W
-            </div>
-
-            <div class="item-card">
-                Potência Corrigida<br>
-                ${r.potenciacorrigida || "0.00"} W
-            </div>
-
-            <div class="item-card">
-                Corrente Ic<br>
-                ${r.correnteic || "0.00"} A
-            </div>
-
-            <div class="item-card">
-                Corrente Ib<br>
-                ${r.correnteib || "0.00"} A
-            </div>
-
-            <div class="item-card">
-                Cabo Alimentador<br>
-                ${r.cabo || "-"}
-            </div>
-
-            <div class="item-card">
-                Disjuntor<br>
-                ${r.disjuntor || "-"}
-            </div>
-
-        </div>
-    `;
-
-            card.style.display = "block";
         }
 
 
@@ -796,6 +700,101 @@
                     console.error(error);
                     alert("❌ Erro ao excluir");
                 });
+        }
+
+        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
+        async function editarCircuito(id, tipoAtual) {
+            try {
+
+                // valida ID
+                if (!id || isNaN(id)) {
+                    alert("⚠️ ID inválido!");
+                    return;
+                }
+
+                // define novo tipo
+                const novoTipo =
+                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
+                        ? "Iluminação"
+                        : "Tomada";
+
+                // confirmação
+                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
+                    return;
+                }
+
+                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        tipocircuito: novoTipo
+                    })
+                });
+
+                console.log("Status:", response.status);
+
+                if (!response.ok) {
+                    const erro = await response.text();
+                    throw new Error(erro || "Erro ao atualizar");
+                }
+
+                alert("✅ Tipo de circuito atualizado!");
+                listarTodos();
+
+            } catch (error) {
+                console.error("Erro ao atualizar tipo:", error);
+                alert("❌ Erro ao atualizar Tipo do circuito");
+            }
+        }
+
+        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
+        function mostrarResultado(r) {
+
+            if (!r) return;
+
+            const card = document.getElementById("resultadoCard");
+
+            card.innerHTML = `
+        <h3>⚡ Resultado do Cálculo</h3>
+
+        <div class="card-grid">
+
+            <div class="item-card">
+                Potência Total<br>
+                ${r.potenciatotal || "0.00"} W
+            </div>
+
+            <div class="item-card">
+                Potência Corrigida<br>
+                ${r.potenciacorrigida || "0.00"} W
+            </div>
+
+            <div class="item-card">
+                Corrente Ic<br>
+                ${r.correnteic || "0.00"} A
+            </div>
+
+            <div class="item-card">
+                Corrente Ib<br>
+                ${r.correnteib || "0.00"} A
+            </div>
+
+            <div class="item-card">
+                Cabo Alimentador<br>
+                ${r.cabo || "-"}
+            </div>
+
+            <div class="item-card">
+                Disjuntor<br>
+                ${r.disjuntor || "-"}
+            </div>
+
+        </div>
+    `;
+
+            card.style.display = "block";
         }
 
 
