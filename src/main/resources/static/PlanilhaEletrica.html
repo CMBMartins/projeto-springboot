@@ -258,53 +258,29 @@
 
             <div class="grid">
 
-            <input type="text"
-           id="id"
-           placeholder="ID - gerado automaticamente">           
-    
-           <input type="text"
-           id="projeto"
-           placeholder="Projeto">
+                <input type="text" id="id" placeholder="ID - Não precisar inserir">
 
-           <input type="text"
-           id="circuito"
-           placeholder="Circuito">
+                <input type="text" id="projeto" placeholder="Projeto">
 
-           <input type="text"
-           id="descricao"
-           placeholder="Descrição">
+                <input type="text" id="circuito" placeholder="Circuito">
 
-           <input type="number"
-           id="potenciatotal"
-           placeholder="Potência Total (VA)"
-           step="0.01">
+                <input type="text" id="descricao" placeholder="Descrição">
 
-           <input type="text"
-           id="tipocircuito"
-           placeholder="Tipo de Circuito">
-    
-           <input type="text"
-           id="potenciacorrigida"
-           placeholder="Potencia Corrigida - Não é necessário informar">           
+                <input type="text" id="potenciatotal" placeholder="Pot. Total(VA)">
 
-           <input type="text"
-           id="correnteic"
-           placeholder="Corrente Ic - Não é necessário informar">
-           
+                <input type="text" id="potenciacorrigida" placeholder="Pot. Corrigida(W) - Não precisa inserir">
 
-           <input type="text"
-           id="correnteib"
-           placeholder="Corrente Ib - Não é necessário informar">
-          
-           <input type="text"
-           id="disjuntor"
-           placeholder="Disjuntor - Não é necessário informar">           
+                <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
 
-           <input type="text"
-           id="condutor"
-           placeholder="Condutor - Não é necessário informar">           
+                <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
 
-           </div>
+                <input type="text" id="correnteib" placeholder="CorrenteIB(A) - Não precisa inserir">
+
+                <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
+
+                <input type="text" id="condutor" placeholder="Condutor(mm2)" Não precisa inserir>
+
+            </div>
 
             <div class="botoes">
 
@@ -374,8 +350,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -1035,8 +1011,8 @@
                 return;
             }
 
-              fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
