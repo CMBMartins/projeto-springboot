@@ -278,7 +278,7 @@
 
                 <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
 
-                <input type="text" id="condutor" placeholder="Condutor(mm2) Não precisa inserir">
+                <input type="text" id="condutor" placeholder="Condutor(mm2) - Não precisa inserir">
 
             </div>
 
@@ -541,48 +541,53 @@
             if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
             const dados = {
-                projeto: document.getElementById("projeto")?.value.trim(),
-                circuito: document.getElementById("circuito")?.value.trim(),
-                descricao: document.getElementById("descricao")?.value.trim(),
-                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
-                tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                usuario: usuario
+            projeto: document.getElementById("projeto")?.value.trim(),
+            circuito: document.getElementById("circuito")?.value.trim(),
+            descricao: document.getElementById("descricao")?.value.trim(),
+            potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+            tipocircuito: document.getElementById("tipocircuito")?.value || "",
+            usuario: usuario
             };
 
-            const pc = parseFloat(document.getElementById("potenciatotal").value) || 0;
-
-            const resultado = calcularAlimentador();
-
-            mostrarResultado(resultado);
-
             fetchSeguro(`${API}/planilha`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
             })
-                .then(response => {
-                    console.log("STATUS REAL:", response.status);
+            .then(response => {
+            console.log("STATUS REAL:", response.status);
 
-                    if (!response.ok) {
-                        throw new Error(`Erro ${response.status}`);
-                    }
+            if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}`);
+            }
 
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Salvo:", data);
+            return response.json();
+            })
 
-                    alert("✅ Dados salvos com sucesso!");
-                    limparCampos();
-                    //calcularAlimentador();
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert("❌ Erro ao salvar");
+            .then(data => {
+                
+            console.log("Dados retornados pela API:", data);
+
+            mostrarResultado({
+            potenciatotal: data.potenciatotal,
+            potenciacorrigida: data.potenciacorrigida,
+            correnteic: data.correnteic,
+            correnteib: data.correnteib,
+            cabo: data.condutor,
+            disjuntor: data.disjuntor
+            });
+
+            alert("✅ Dados salvos com sucesso!");
+            limparCampos();
+
+            })
+            .catch(error => {
+                console.error(error);
+                alert("❌ Erro ao salvar");
                 });
-        }
+            }
 
 
         // FUNÇÃO PARA EDITAR
