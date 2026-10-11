@@ -208,6 +208,31 @@
         color: #000;
     }
 
+    .legenda-tipo {
+
+        margin-top: 10px;
+        padding: 15px;
+        width: 940px;
+        height: 100px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .legenda-tipo h3 {
+
+        margin-bottom: 12px;
+        color: #003366;
+        font-size: 18px;
+    }
+
+    .tags-tipo {
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
     .card-resultado {
         margin-top: 20px;
         padding: 20px;
@@ -306,6 +331,21 @@
 
             </div>
 
+             <!-- LEGENDA DE TIPO DE CIRCUITO -->
+            <div class="legenda-tipo">
+                <h3>📌 Principais tipos de circuitos:</h3>
+                <div class="tags-tipo">
+
+                    <span class="tag motor">⚙️ Motor</span>
+                    <span class="tag iluminacao">💡 Iluminacao</span>
+                    <span class="tag tomada">🔌 Tomada</span>
+                    <span class="tag monofasico">🏠 monofasico</span>
+                    <span class="tag bifasico">🔀 Bifasico</span>
+                    <span class="tag trifasico">⚡ Trifasico</span>
+                    
+                </div>
+            </div>
+
         </div>
 
         <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
@@ -350,8 +390,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -941,9 +981,21 @@
             let disjuntor = "";
 
             // dimensionamento
-            if (ib <= 21) {
+            if (ib <= 10) {
+                cabo = "2,5 mm²";
+                disjuntor = "10A";
+
+            } else if (ib <= 16) {
+                cabo = "2,5 mm²";
+                disjuntor = "16A";
+
+            } else if (ib <= 20) {
                 cabo = "2,5 mm²";
                 disjuntor = "20A";
+
+            } else if (ib <= 28) {
+                cabo = "4 mm²";
+                disjuntor = "25A";
 
             } else if (ib <= 28) {
                 cabo = "4 mm²";
@@ -1015,8 +1067,8 @@
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-            //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
