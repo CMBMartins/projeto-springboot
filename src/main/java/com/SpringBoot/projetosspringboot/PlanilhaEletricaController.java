@@ -85,13 +85,21 @@ public class PlanilhaEletricaController {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("10A");
 
+            } else if (ib <= 16) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("16A");
+
+            } else if (ib <= 20) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("20A");
+
             } else if (ib <= 20) {
                 novo.setCondutor("4 mm²");
                 novo.setDisjuntor("20A");
 
             } else if (ib <= 32) {
                 novo.setCondutor("4 mm²");
-                novo.setDisjuntor("35A");
+                novo.setDisjuntor("30A");
 
             } else {
                 novo.setCondutor("6 mm²");
