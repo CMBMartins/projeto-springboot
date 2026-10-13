@@ -390,8 +390,8 @@
     <script>
 
 
-        //const API = "https://projeto-springboot.onrender.com";
-        const API = "http://localhost:8084";
+        const API = "https://projeto-springboot.onrender.com";
+        //const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -974,7 +974,8 @@
 
             // cálculos
             const pCalculada = pt / fp;
-            const ic = pCalculada / (raiz3 * tensao);
+            const pCorrigida = pt * 0.66;
+            const ic = pCorrigida / (raiz3 * tensao);
             const ib = ic * 1.25;
 
             let cabo = "";
@@ -1067,8 +1068,8 @@
                 return;
             }
 
-            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
-            fetch("http://localhost:8084/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                //fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
