@@ -28,6 +28,9 @@ public class PlanilhaEletricaController {
         if ("Motor".equalsIgnoreCase(tipo)) {
             tensao = 220.0;
 
+        } else if ("Monofasico".equalsIgnoreCase(tipo)) {
+            tensao = 127.0;
+
         } else if ("Bifasico".equalsIgnoreCase(tipo)) {
             tensao = 220.0;
 
@@ -44,7 +47,7 @@ public class PlanilhaEletricaController {
         // Cálculos
         double pc = pt * 0.66;
         double ic = pc / tensao;
-        double ib = ic * 1.42;
+        double ib = ic * 1.10;
 
         novo.setPotenciacorrigida(arred(pc));
         novo.setCorrenteic(arred(ic));
@@ -53,7 +56,15 @@ public class PlanilhaEletricaController {
         // TOMADA
         if ("Tomada".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 20) {
+            if (ib <= 10) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("10A");
+
+            } else if (ib <= 16) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("16A");
+
+            } else if (ib <= 20) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("20A");
 
@@ -78,9 +89,34 @@ public class PlanilhaEletricaController {
                 novo.setCondutor("4 mm²");
                 novo.setDisjuntor("20A");
 
+            } else if (ib <= 32) {
+                novo.setCondutor("4 mm²");
+                novo.setDisjuntor("35A");
+
             } else {
                 novo.setCondutor("6 mm²");
-                novo.setDisjuntor("32A");
+                novo.setDisjuntor("40A");
+            }
+        }
+
+        // CIRCUITOS BIFASICOS
+        else if ("Monofasico".equalsIgnoreCase(tipo)) {
+
+            if (ib <= 10) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("10A");
+
+            } else if (ib <= 16) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("16A");
+
+            } else if (ib <= 20) {
+                novo.setCondutor("2,5 mm²");
+                novo.setDisjuntor("20A");
+
+            } else {
+                novo.setCondutor("4,0 mm²");
+                novo.setDisjuntor("30A");
             }
         }
 
@@ -92,6 +128,10 @@ public class PlanilhaEletricaController {
                 novo.setDisjuntor("65A");
 
             } else if (ib <= 70) {
+                novo.setCondutor("16 mm²");
+                novo.setDisjuntor("70A");
+
+            } else if (ib <= 80) {
                 novo.setCondutor("25 mm²");
                 novo.setDisjuntor("70A");
 
