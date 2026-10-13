@@ -199,7 +199,7 @@
         background-color: #e5ffe5;
     }
 
-    .linha-carga-total {
+    .alimentador-geral {
 
         background-color: #ffe08a;
 
@@ -331,18 +331,19 @@
 
             </div>
 
-             <!-- LEGENDA DE TIPO DE CIRCUITO -->
+            <!-- LEGENDA DE TIPO DE CIRCUITO -->
             <div class="legenda-tipo">
                 <h3>📌 Principais tipos de circuitos:</h3>
                 <div class="tags-tipo">
 
-                    <span class="tag motor">⚙️ Motor</span>
+                    <span class="tag motor">⚙️ Motor(Ar Condicionado e outros)</span>
                     <span class="tag iluminacao">💡 Iluminacao</span>
                     <span class="tag tomada">🔌 Tomada</span>
-                    <span class="tag monofasico">🏠 monofasico</span>
+                    <span class="tag monofasico">🏠 Monofasico</span>
                     <span class="tag bifasico">🔀 Bifasico</span>
                     <span class="tag trifasico">⚡ Trifasico</span>
-                    
+                    <span class="tag Alimentador Geral">⚡ Alimentador Geral</span>
+
                 </div>
             </div>
 
@@ -390,8 +391,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -486,9 +487,9 @@
 
                         let classeLinha;
 
-                        if (circuito === "carga total instalada") {
+                        if (circuito === "alg") {
 
-                            classeLinha = "linha-carga-total";
+                            classeLinha = "alimentador-geral";
 
                         } else if (circuito === "iluminação") {
 
@@ -581,53 +582,53 @@
             if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
             const dados = {
-            projeto: document.getElementById("projeto")?.value.trim(),
-            circuito: document.getElementById("circuito")?.value.trim(),
-            descricao: document.getElementById("descricao")?.value.trim(),
-            potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
-            tipocircuito: document.getElementById("tipocircuito")?.value || "",
-            usuario: usuario
+                projeto: document.getElementById("projeto")?.value.trim(),
+                circuito: document.getElementById("circuito")?.value.trim(),
+                descricao: document.getElementById("descricao")?.value.trim(),
+                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+                tipocircuito: document.getElementById("tipocircuito")?.value || "",
+                usuario: usuario
             };
 
             fetchSeguro(`${API}/planilha`, {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dados)
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
             })
-            .then(response => {
-            console.log("STATUS REAL:", response.status);
+                .then(response => {
+                    console.log("STATUS REAL:", response.status);
 
-            if (!response.ok) {
-            throw new Error(`Erro HTTP ${response.status}`);
-            }
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP ${response.status}`);
+                    }
 
-            return response.json();
-            })
+                    return response.json();
+                })
 
-            .then(data => {
-                
-            console.log("Dados retornados pela API:", data);
+                .then(data => {
 
-            mostrarResultado({
-            potenciatotal: data.potenciatotal,
-            potenciacorrigida: data.potenciacorrigida,
-            correnteic: data.correnteic,
-            correnteib: data.correnteib,
-            cabo: data.condutor,
-            disjuntor: data.disjuntor
-            });
+                    console.log("Dados retornados pela API:", data);
 
-            alert("✅ Dados salvos com sucesso!");
-            limparCampos();
+                    mostrarResultado({
+                        potenciatotal: data.potenciatotal,
+                        potenciacorrigida: data.potenciacorrigida,
+                        correnteic: data.correnteic,
+                        correnteib: data.correnteib,
+                        cabo: data.condutor,
+                        disjuntor: data.disjuntor
+                    });
 
-            })
-            .catch(error => {
-                console.error(error);
-                alert("❌ Erro ao salvar");
+                    alert("✅ Dados salvos com sucesso!");
+                    limparCampos();
+
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("❌ Erro ao salvar");
                 });
-            }
+        }
 
 
         // FUNÇÃO PARA EDITAR
@@ -1067,8 +1068,8 @@
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-            //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
