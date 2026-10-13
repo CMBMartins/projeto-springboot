@@ -344,7 +344,7 @@
     }
 
     .linha-carga-total {
-        background-color: #eaf7ea;
+        background-color: #ffe08a;
     }
 
     /* Fundo das linhas emprestadas */
@@ -580,8 +580,8 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -1326,7 +1326,7 @@
 
                         let classeLinha;
 
-                        if (circuito === "carga total instalada") {
+                        if (circuito === "alg") {
                             classeLinha = "linha-carga-total";
 
                         } else if (circuito === "iluminação") {
@@ -1447,8 +1447,8 @@
                 alert("⚠️ Informe a senha!");
                 return;
             }
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            fetch("http://localhost:8084/usuario/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
