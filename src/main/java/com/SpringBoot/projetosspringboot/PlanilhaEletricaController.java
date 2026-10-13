@@ -107,7 +107,7 @@ public class PlanilhaEletricaController {
             }
         }
 
-        // CIRCUITOS BIFASICOS
+        // CIRCUITOS MONOFASICOS
         else if ("Monofasico".equalsIgnoreCase(tipo)) {
 
             if (ib <= 10) {
@@ -135,7 +135,7 @@ public class PlanilhaEletricaController {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("65A");
 
-            } else if (ib <= 70) {
+            } else if (ib <= 73) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("70A");
 
