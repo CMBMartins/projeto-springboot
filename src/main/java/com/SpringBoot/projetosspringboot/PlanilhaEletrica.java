@@ -16,8 +16,8 @@ public class PlanilhaEletrica {
     private Double potenciatotal;
     private Double potenciacorrigida;
     private String tipocircuito;
-    private Double correnteic;
     private Double correnteib;
+    private Double correnteic;
     private String disjuntor;
     private String condutor;
     private String usuario;
@@ -80,20 +80,20 @@ public class PlanilhaEletrica {
         this.tipocircuito = tipocircuito;
     }
 
-    public Double getCorrenteic() {
-        return correnteic;
-    }
-
-    public void setCorrenteic(Double correnteic) {
-        this.correnteic = correnteic;
-    }
-
     public Double getCorrenteib() {
         return correnteib;
     }
 
     public void setCorrenteib(Double correnteib) {
         this.correnteib = correnteib;
+    }
+
+    public Double getCorrenteic() {
+        return correnteic;
+    }
+
+    public void setCorrenteic(Double correnteic) {
+        this.correnteic = correnteic;
     }
 
     public String getDisjuntor() {

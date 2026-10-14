@@ -44,14 +44,29 @@ public class PlanilhaEletricaController {
             tensao = 127.0;
         }
 
-        // Cálculos
-        double pc = pt * 0.66;
-        double ic = pc / tensao;
-        double ib = ic * 1.10;
+        // Cálculos elétricos conforme o tipo de circuito
+        double pc;
+        double ib;
+        double ic;
+
+        if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
+
+            // Circuito específico: considera a potência total
+            pc = pt;
+            ib = pc / tensao;
+            ic = ib * 1.10;
+
+        } else {
+
+            // Demais circuitos: aplica o fator de correção de 0,66
+            pc = pt * 0.66;
+            ib = pc / tensao;
+            ic = ib * 1.10;
+        }
 
         novo.setPotenciacorrigida(arred(pc));
-        novo.setCorrenteic(arred(ic));
         novo.setCorrenteib(arred(ib));
+        novo.setCorrenteic(arred(ic));
 
         // TOMADA
         if ("Tomada".equalsIgnoreCase(tipo)) {
@@ -78,32 +93,32 @@ public class PlanilhaEletricaController {
             }
         }
 
-        // MOTOR
+        // Circuito Especifico
         else if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 10) {
+            if (ic <= 10) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("10A");
 
-            } else if (ib <= 16) {
+            } else if (ic <= 16) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("16A");
 
-            } else if (ib <= 20) {
+            } else if (ic <= 20) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("20A");
 
-            } else if (ib <= 20) {
-                novo.setCondutor("4 mm²");
-                novo.setDisjuntor("20A");
-
-            } else if (ib <= 32) {
+            } else if (ic <= 30) {
                 novo.setCondutor("4 mm²");
                 novo.setDisjuntor("30A");
 
-            } else {
+            } else if (ic <= 40) {
                 novo.setCondutor("6 mm²");
                 novo.setDisjuntor("40A");
+
+            } else {
+                novo.setCondutor("10 mm²");
+                novo.setDisjuntor("50A");
             }
         }
 
