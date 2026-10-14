@@ -315,9 +315,9 @@
 
                 <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
 
-                <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
-
                 <input type="text" id="correnteib" placeholder="CorrenteIB(A) - Não precisa inserir">
+
+                <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
 
                 <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
 
@@ -385,8 +385,8 @@
                         <th>PotTotal</th>
                         <th>PotCorrigida</th>
                         <th>TipoCircuito</th>
-                        <th>CorrenteIC</th>
                         <th>CorrenteIB</th>
+                        <th>CorrenteIC</th>
                         <th>Disjuntor</th>
                         <th>Condutor</th>
                         <th>Ação</th>
@@ -408,8 +408,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -546,10 +546,10 @@
                         ).toFixed(2)}</td>
                     <td>${planilha.tipocircuito ?? ""}</td>
                     <td>${Number(
-                            planilha.correnteic || 0
+                            planilha.correnteib || 0
                         ).toFixed(2)}</td>
                     <td>${Number(
-                            planilha.correnteib || 0
+                            planilha.correnteic || 0
                         ).toFixed(2)}</td>
                     <td>${planilha.disjuntor ?? ""}</td>
                     <td>${planilha.condutor ?? ""}</td>
@@ -639,8 +639,8 @@
                     mostrarResultado({
                         potenciatotal: data.potenciatotal,
                         potenciacorrigida: data.potenciacorrigida,
-                        correnteic: data.correnteic,
                         correnteib: data.correnteib,
+                        correnteic: data.correnteic,
                         cabo: data.condutor,
                         disjuntor: data.disjuntor
                     });
@@ -688,8 +688,8 @@
                     potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
                     potenciacorrigida: parseFloat(document.getElementById("potenciacorrigida")?.value) || 0,
                     tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                    correnteic: parseFloat(document.getElementById("correnteic")?.value) || 0,
-                    correnteib: parseFloat(document.getElementById("correnteib")?.value) || 0,
+                    correnteic: parseFloat(document.getElementById("correnteib")?.value) || 0,
+                    correnteib: parseFloat(document.getElementById("correnteic")?.value) || 0,
 
                     disjuntor: String(document.getElementById("disjuntor")?.value || "").trim(),
                     condutor: String(document.getElementById("condutor")?.value || "").trim(),
@@ -843,13 +843,13 @@
             </div>
 
             <div class="item-card">
-                Corrente Ic<br>
-                ${r.correnteic || "0.00"} A
+                Corrente Ib<br>
+                ${r.correnteib || "0.00"} A
             </div>
 
             <div class="item-card">
-                Corrente Ib<br>
-                ${r.correnteib || "0.00"} A
+                Corrente IC<br>
+                ${r.correnteic || "0.00"} A
             </div>
 
             <div class="item-card">
@@ -1094,8 +1094,8 @@
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
