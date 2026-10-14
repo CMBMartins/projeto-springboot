@@ -25,8 +25,11 @@ public class PlanilhaEletricaController {
         // Define tensão conforme tipo do circuito
         double tensao = 127.0; // padrão iluminação / tomada
 
-        if ("Motor".equalsIgnoreCase(tipo)) {
+        if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
             tensao = 220.0;
+
+        } else if ("Tomada".equalsIgnoreCase(tipo)) {
+            tensao = 127.0;
 
         } else if ("Monofasico".equalsIgnoreCase(tipo)) {
             tensao = 127.0;
@@ -36,9 +39,6 @@ public class PlanilhaEletricaController {
 
         } else if ("Trifasico".equalsIgnoreCase(tipo)) {
             tensao = 380.0;
-
-        } else if ("Tomada".equalsIgnoreCase(tipo)) {
-            tensao = 127.0;
 
         } else if ("Iluminacao".equalsIgnoreCase(tipo)) {
             tensao = 127.0;
@@ -79,7 +79,7 @@ public class PlanilhaEletricaController {
         }
 
         // MOTOR
-        else if ("Motor".equalsIgnoreCase(tipo)) {
+        else if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
 
             if (ib <= 10) {
                 novo.setCondutor("2,5 mm²");
