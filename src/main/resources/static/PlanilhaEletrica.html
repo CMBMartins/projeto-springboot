@@ -199,9 +199,27 @@
         background-color: #e5ffe5;
     }
 
-    .alimentador-geral {
+    .linha-qdg {
 
         background-color: #ffe08a;
+
+        font-weight: bold;
+
+        color: #000;
+    }
+
+    .linha-qdl {
+
+        background-color: #8a96ff;
+
+        font-weight: bold;
+
+        color: #000;
+    }
+
+    .linha-qdp {
+
+        background-color: #ffb98a;
 
         font-weight: bold;
 
@@ -486,9 +504,17 @@
 
                         let classeLinha;
 
-                        if (circuito === "alg") {
+                        if (circuito === "qdg") {
 
-                            classeLinha = "alimentador-geral";
+                            classeLinha = "linha-qdg";
+
+                        } else if (circuito === "qdl") {
+
+                            classeLinha = "linha-qdl";
+
+                        } else if (circuito === "qdp") {
+
+                            classeLinha = "linha-qdp";
 
                         } else if (circuito === "iluminação") {
 
