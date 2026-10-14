@@ -84,29 +84,29 @@ public class PlanilhaEletricaController {
         // TOMADA
         if ("Tomada".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 10) {
+            if (ic <= 10) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("10A");
 
-            } else if (ib <= 16) {
+            } else if (ic <= 16) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("16A");
 
-            } else if (ib <= 20) {
+            } else if (ic <= 20) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("20A");
 
-            } else if (ib <= 28) {
+            } else if (ic <= 30) {
                 novo.setCondutor("4 mm²");
                 novo.setDisjuntor("25A");
 
             } else {
                 novo.setCondutor("6 mm²");
-                novo.setDisjuntor("32A");
+                novo.setDisjuntor("40A");
             }
         }
 
-        // Circuito Especifico
+        // CIRCUITO ESPECIFICO
         else if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
 
             if (ic <= 10) {
@@ -139,18 +139,22 @@ public class PlanilhaEletricaController {
             }
         }
 
-        // CIRCUITO ALIMENTADOR
+        // ALIMENTADOR GERAL
         else if ("Alimentadorgeral".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 60) {
+            if (ic <= 50) {
+                novo.setCondutor("10 mm²");
+                novo.setDisjuntor("50A");
+
+            } else if (ic <= 60) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("60A");
 
-            } else if (ib <= 73) {
+            } else if (ic <= 73) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("75A");
 
-            } else if (ib <= 80) {
+            } else if (ic <= 80) {
                 novo.setCondutor("25 mm²");
                 novo.setDisjuntor("80A");
 
@@ -163,15 +167,15 @@ public class PlanilhaEletricaController {
         // CIRCUITOS MONOFASICOS
         else if ("Monofasico".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 10) {
+            if (ic <= 10) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("10A");
 
-            } else if (ib <= 16) {
+            } else if (ic <= 16) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("16A");
 
-            } else if (ib <= 20) {
+            } else if (ic <= 20) {
                 novo.setCondutor("2,5 mm²");
                 novo.setDisjuntor("20A");
 
@@ -184,15 +188,19 @@ public class PlanilhaEletricaController {
         // CIRCUITOS BIFASICOS
         else if ("Bifasico".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 60) {
+            if (ic <= 50) {
+                novo.setCondutor("10 mm²");
+                novo.setDisjuntor("50A");
+
+            } else if (ic <= 60) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("60A");
 
-            } else if (ib <= 73) {
+            } else if (ic <= 73) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("75A");
 
-            } else if (ib <= 80) {
+            } else if (ic <= 80) {
                 novo.setCondutor("25 mm²");
                 novo.setDisjuntor("80A");
 
@@ -205,17 +213,17 @@ public class PlanilhaEletricaController {
         // CIRCUITOS TRIFASICOS
         else if ("Trifasico".equalsIgnoreCase(tipo)) {
 
-            if (ib <= 60) {
+            if (ic <= 70) {
                 novo.setCondutor("16 mm²");
-                novo.setDisjuntor("65A");
-
-            } else if (ib <= 89) {
-                novo.setCondutor("25 mm²");
                 novo.setDisjuntor("70A");
+
+            } else if (ic <= 90) {
+                novo.setCondutor("25 mm²");
+                novo.setDisjuntor("90A");
 
             } else {
                 novo.setCondutor("35 mm²");
-                novo.setDisjuntor("90A");
+                novo.setDisjuntor("100A");
             }
         }
 
