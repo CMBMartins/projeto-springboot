@@ -229,9 +229,9 @@
     .legenda-tipo {
 
         margin-top: 10px;
-        padding: 15px;
+        padding: 10px;
         width: 940px;
-        height: 100px;
+        height: 140px;
         background: #f8f9fa;
         border-radius: 10px;
         box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
@@ -360,6 +360,7 @@
                     <span class="tag bifasico">🔀 Bifasico</span>
                     <span class="tag trifasico">⚡ Trifasico</span>
                     <span class="tag motor">⚙️ Circuitoespecifico(Ar Condicionado, Chuveiro e outros)</span>
+                    <span class="tag Alimentadorgeral">⚡ Alimentadorgeral</span>
 
                 </div>
             </div>
@@ -408,8 +409,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -688,8 +689,8 @@
                     potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
                     potenciacorrigida: parseFloat(document.getElementById("potenciacorrigida")?.value) || 0,
                     tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                    correnteic: parseFloat(document.getElementById("correnteib")?.value) || 0,
-                    correnteib: parseFloat(document.getElementById("correnteic")?.value) || 0,
+                    correnteib: parseFloat(document.getElementById("correnteib")?.value) || 0,
+                    correnteic: parseFloat(document.getElementById("correnteic")?.value) || 0,
 
                     disjuntor: String(document.getElementById("disjuntor")?.value || "").trim(),
                     condutor: String(document.getElementById("condutor")?.value || "").trim(),
@@ -982,95 +983,7 @@
                         "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
                 });
         }
-
-        // FUNÇÃO PARA CALCULAR O ALIMENTADOR TOTAL
-        function calcularAlimentador() {
-
-            // pega valor digitado no formulário
-            const pt = parseFloat(document.getElementById("potenciatotal")?.value) || 0;
-
-            if (pt <= 0) {
-                alert("⚠️ Informe a Potência Total!");
-                return null;
-            }
-
-            const fp = 0.95;
-            const tensao = 380;
-            const raiz3 = 1.732;
-
-            // cálculos
-            const pCalculada = pt / fp;
-            const pCorrigida = pt * 0.66;
-            const ic = pCorrigida / (raiz3 * tensao);
-            const ib = ic * 1.25;
-
-            let cabo = "";
-            let disjuntor = "";
-
-            // dimensionamento
-            if (ib <= 10) {
-                cabo = "2,5 mm²";
-                disjuntor = "10A";
-
-            } else if (ib <= 16) {
-                cabo = "2,5 mm²";
-                disjuntor = "16A";
-
-            } else if (ib <= 20) {
-                cabo = "2,5 mm²";
-                disjuntor = "20A";
-
-            } else if (ib <= 28) {
-                cabo = "4 mm²";
-                disjuntor = "25A";
-
-            } else if (ib <= 28) {
-                cabo = "4 mm²";
-                disjuntor = "25A";
-
-            } else if (ib <= 36) {
-                cabo = "6 mm²";
-                disjuntor = "32A";
-
-            } else if (ib <= 50) {
-                cabo = "10 mm²";
-                disjuntor = "50A";
-
-            } else if (ib <= 68) {
-                cabo = "16 mm²";
-                disjuntor = "63A";
-
-            } else if (ib <= 89) {
-                cabo = "25 mm²";
-                disjuntor = "80A";
-
-            } else if (ib <= 110) {
-                cabo = "35 mm²";
-                disjuntor = "100A";
-
-            } else {
-                cabo = "50 mm²";
-                disjuntor = "125A";
-            }
-
-            // joga valores no formulário
-            document.getElementById("potenciacorrigida").value = pCalculada.toFixed(2);
-            document.getElementById("correnteic").value = ic.toFixed(2);
-            document.getElementById("correnteib").value = ib.toFixed(2);
-            document.getElementById("condutor").value = cabo;
-            document.getElementById("disjuntor").value = disjuntor;
-
-            // retorno opcional
-            return {
-                potenciatotal: pt.toFixed(2),
-                potenciacorrigida: pCalculada.toFixed(2),
-                correnteic: ic.toFixed(2),
-                correnteib: ib.toFixed(2),
-                cabo,
-                disjuntor
-            };
-        }
-
+        
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function autenticar() {
@@ -1094,8 +1007,8 @@
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
