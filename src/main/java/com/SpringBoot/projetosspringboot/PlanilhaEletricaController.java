@@ -59,21 +59,21 @@ public class PlanilhaEletricaController {
             double pCalculada = pt / fp;
             pc = pCalculada * 0.66;
             ib = pc / (raiz3 * tensao);
-            ic = ib * 1.10;
+            ic = ib * 1.15;
 
         } else if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
 
             // Circuito específico: considera a potência total
-            pc = pt;
+            pc = pt * 1;
             ib = pc / tensao;
-            ic = ib * 1.10;
+            ic = ib * 1.15;
 
         } else {
 
             // Demais circuitos: aplica o fator de correção de 0,66
             pc = pt * 0.66;
             ib = pc / tensao;
-            ic = ib * 1.10;
+            ic = ib * 1.42;
         }
 
         novo.setPotenciacorrigida(arred(pc));
