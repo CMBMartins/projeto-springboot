@@ -575,6 +575,7 @@
     <script>
 
         const API = "https://projeto-springboot.onrender.com";
+        //const API = "http://localhost:8084";
 
 
         // FUNÇÃO FETCH SEGURO
@@ -958,7 +959,7 @@
         
         <div style="margin-bottom: 10px;">
 
-            <strong>🆔 ID: ${midia.id ?? "-"}</strong><br>
+            <strong>🆔 Codigo: ${midia.codigo ?? "-"}</strong><br>
 
             🎤 <strong>${midia.artista ?? "-"}</strong><br>
 
@@ -1464,6 +1465,7 @@
                 return;
             }
             fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                //fetch("http://localhost:8084/usuario/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
