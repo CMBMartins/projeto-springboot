@@ -552,18 +552,18 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>🆔ID</th>
-                            <th>📁Projeto</th>
-                            <th>🔌Circuito</th>
-                            <th>📝Descrição</th>
-                            <th>⚡PotTotal</th>
-                            <th>⚡PotCorrigida</th>
-                            <th>🔀TipoCircuito</th>
-                            <th>⚡CorrenteIC</th>
-                            <th>⚡CorrenteIB</th>
-                            <th>🛡️Disjuntor</th>
-                            <th>🧵Condutor</th>
-                            <th>⚙️Ação</th>
+                            <th>ID</th>
+                            <th>Projeto</th>
+                            <th>Circuito</th>
+                            <th>Descrição</th>
+                            <th>PotTotal</th>
+                            <th>PotCorrigida</th>
+                            <th>TipoCircuito</th>
+                            <th>CorrenteIB</th>
+                            <th>CorrenteIC</th>
+                            <th>Disjuntor</th>
+                            <th>Condutor</th>
+                            <th>Ação</th>
                         </tr>
                     </thead>
 
@@ -577,6 +577,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 
     <script>
 
@@ -1350,8 +1352,8 @@
                     <td>${Number(planilha.potenciatotal || 0).toFixed(2)}</td>
                     <td>${Number(planilha.potenciacorrigida || 0).toFixed(2)}</td>
                     <td>${planilha.tipocircuito ?? ""}</td>
-                    <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
                     <td>${Number(planilha.correnteib || 0).toFixed(2)}</td>
+                    <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
                     <td>${planilha.disjuntor ?? ""}</td>
                     <td>${planilha.condutor ?? ""}</td>
                     <td>
@@ -1515,86 +1517,159 @@
         }
 
 
-        // FUNÇÃO PARA GERAR RELATÓRIO
+
+        // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA ELÉTRICA
         function gerarRelatorioPDF() {
 
+            // IDENTIFICA O USUÁRIO LOGADO
             const usuario = localStorage.getItem("usuario");
 
-            // VALIDA LOGIN
             if (!usuario) {
-
                 alert("⚠️ Faça Login!");
                 return;
             }
 
+            // VERIFICA AS BIBLIOTECAS
+            if (!window.jspdf || !window.jspdf.jsPDF) {
+                alert("❌ A biblioteca jsPDF não foi carregada!");
+                return;
+            }
+
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "mm",
+                format: "a4"
+            });
 
-            doc.setFontSize(14);
-            doc.text("Relatório de Projetos", 14, 10);
+            // LOCALIZA A TABELA
+            const tabela = document.getElementById("tabelaPlanilha");
 
-            doc.setFontSize(12);
-            doc.text("Usuário: " + usuario, 14, 15);
-            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
+            if (!tabela) {
+                alert("❌ A tabelaPlanilha não foi encontrada!");
+                return;
+            }
 
-            let y = 30;
+            // CAPTURA OS CABEÇALHOS
+            const tabelaHTML = tabela.closest("table");
 
-            const linhas = document.querySelectorAll("#tabelaPlanilha tr");
+            const cabecalhos = tabelaHTML
+                ? Array.from(tabelaHTML.querySelectorAll("thead th"))
+                    .map(th => th.innerText.trim())
+                : [];
 
-            linhas.forEach((linha, index) => {
+            // CAPTURA OS DADOS DOS CIRCUITOS
+            const linhas = tabela.querySelectorAll("tr");
+            const dados = [];
+
+            linhas.forEach(linha => {
 
                 const colunas = linha.querySelectorAll("td");
 
                 if (colunas.length > 0) {
 
-                    doc.setFontSize(10);
-                    const projeto = colunas[1].innerText;
-                    const circuito = colunas[2].innerText;
-                    const descricao = colunas[3].innerText;
-                    const potenciatotal = colunas[4].innerText;
+                    const valores = Array.from(colunas).map(coluna =>
+                        coluna.innerText.trim()
+                    );
 
-                    doc.setFontSize(10);
-                    doc.text("Projeto: " + projeto, 14, y);
-                    y += 6;
-                    doc.text("Circuito: " + circuito, 14, y);
-                    y += 6;
-                    doc.text("Descricao: " + descricao, 14, y);
-                    y += 6;
-                    doc.text("PotTotal: " + potenciatotal, 14, y);
-                    y += 10;
-
-                    // quebra de página
-                    if (y > 280) {
-                        doc.addPage();
-                        y = 20;
-                    }
+                    dados.push(valores);
                 }
             });
 
-            doc.save("relatorio_projetos.pdf");
-        }
-
-        setInterval(async () => {
-
-            const usuario = localStorage.getItem("usuario");
-            const logado = localStorage.getItem("logado");
-
-            if (logado !== "true" || !usuario) {
+            if (dados.length === 0) {
+                alert("⚠️ Não existem circuitos na tabela para gerar o relatório!");
                 return;
             }
 
-            try {
+            // CABEÇALHO DO RELATÓRIO
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
 
-                await carregarDashboard();
-                //await carregarAlertas();
+            doc.text("RELATÓRIO DA PLANILHA ELÉTRICA", 14, 15);
 
-            } catch (erro) {
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
 
-                console.error("❌ Erro ao atualizar o sistema:", erro);
+            doc.text("Usuário: " + usuario, 14, 23);
+            doc.text(
+                "Emitido em: " + new Date().toLocaleString("pt-BR"),
+                14, 29
+            );
 
+            doc.setFontSize(10);
+            doc.text("Quantidade de circuitos: " + dados.length, 14, 35);
+
+            // VERIFICA O PLUGIN DE TABELAS
+            if (typeof doc.autoTable !== "function") {
+                alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
+                return;
             }
 
-        }, 5000);
+            // GERA A TABELA NO PDF
+            doc.autoTable({
+
+                // Usa os cabeçalhos da tabela HTML, se existirem.
+                // Caso contrário, utiliza os nomes padrão.
+                head: [cabecalhos.length > 0 ? cabecalhos : [
+                    "ID",
+                    "Projeto",
+                    "Circuito",
+                    "Descrição",
+                    "Potência Total",
+                    "Potência Corrigida",
+                    "Tipo",
+                    "Corrente IB",
+                    "Corrente IC",
+                    "Disjuntor",
+                    "Condutor"
+                ]],
+
+                body: dados,
+
+                startY: 40,
+                theme: "grid",
+
+                styles: {
+                    font: "helvetica",
+                    fontSize: 8,
+                    cellPadding: 2,
+                    overflow: "linebreak"
+                },
+
+                headStyles: {
+                    fontStyle: "bold",
+                    halign: "center"
+                },
+
+                margin: {
+                    top: 12,
+                    right: 10,
+                    bottom: 15,
+                    left: 10
+                },
+
+                didDrawPage: function () {
+
+                    const pagina = doc.internal.getNumberOfPages();
+
+                    doc.setFontSize(8);
+                    doc.text(
+                        "Planilha Elétrica | Página " + pagina,
+                        280,
+                        200,
+                        { align: "right" }
+                    );
+                }
+            });
+
+            // SALVA O ARQUIVO
+            doc.save("relatorio_planilha_eletrica.pdf");
+
+            console.log(
+                "✅ Relatório elétrico gerado com " +
+                dados.length + " circuitos."
+            );
+        }
 
     </script>
 
