@@ -104,8 +104,8 @@
 
     /* padrão de botão */
     .botoes button {
-        width: 146px;
-        height: 40px;
+        width: 160px;
+        height: 45px;
         padding: 10px 18px;
         border: none;
         border-radius: 6px;
@@ -159,6 +159,11 @@
 
     #listarTodos {
         background: #2980b9;
+        color: white;
+    }
+
+    #gerarRelatorioPDF {
+        background: #29afb9;
         color: white;
     }
 
@@ -333,6 +338,7 @@
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
                 <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
                 <button id="listarTodos" onclick="listarTodos()">📋ListarTodos</button>
+                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋GerarRelatorio</button>
 
             </div>
 
@@ -405,6 +411,9 @@
         </div>
 
     </div>
+
+    <!-- Biblioteca para gerar arquivos PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
 
@@ -983,7 +992,7 @@
                         "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
                 });
         }
-        
+
 
         // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
         function autenticar() {
@@ -1084,6 +1093,106 @@
             document.getElementById("senha").value = "";
 
         }
+
+
+        // FUNÇÃO PARA GERAR RELATÓRIO
+        function gerarRelatorioPDF() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            // VALIDA LOGIN
+            if (!usuario) {
+
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(14);
+            doc.text("Relatório da Planilha Eletrica", 14, 10);
+
+            doc.setFontSize(12);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
+
+            let y = 30;
+
+            const linhas = document.querySelectorAll("#tabelaPlanilha tr");
+
+            linhas.forEach((linha, index) => {
+
+                const colunas = linha.querySelectorAll("td");
+
+                if (colunas.length > 0) {
+
+                    doc.setFontSize(10);
+                    const projeto = colunas[1].innerText;
+                    const circuito = colunas[2].innerText;
+                    const descricao = colunas[3].innerText;
+                    const potenciatotal = colunas[4].innerText;
+                    const potenciacorrigida = colunas[5].innerText;
+                    const tipocircuito = colunas[6].innerText;
+                    const correnteic = colunas[7].innerText;
+                    const correnteib = colunas[8].innerText;
+                    const disjuntor = colunas[9].innerText;
+                    const condutor = colunas[10].innerText;
+
+                    doc.setFontSize(10);
+                    doc.text("Projeto: " + projeto, 14, y);
+                    y += 6;
+                    doc.text("Circuito: " + circuito, 14, y);
+                    y += 6;
+                    doc.text("Descricao: " + descricao, 14, y);
+                    y += 6;
+                    doc.text("PotTotal: " + potenciatotal, 14, y);
+                    y += 6;
+                    doc.text("PotCorrigida: " + potenciacorrigida, 14, y);
+                    y += 6;
+                    doc.text("TipoCircuito: " + tipocircuito, 14, y);
+                    y += 6;
+                    doc.text("CorrenteIc: " + correnteic, 14, y);
+                    y += 6;
+                    doc.text("CorrenteIb: " + correnteib, 14, y);
+                    y += 6;
+                    doc.text("Disjuntor: " + disjuntor, 14, y);
+                    y += 6;
+                    doc.text("Condutor: " + condutor, 14, y);
+                    y += 10;
+
+                    // quebra de página
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                }
+            });
+
+            doc.save("relatorio_planilhaeletrica.pdf");
+        }
+
+        setInterval(async () => {
+
+            const usuario = localStorage.getItem("usuario");
+            const logado = localStorage.getItem("logado");
+
+            if (logado !== "true" || !usuario) {
+                return;
+            }
+
+            try {
+
+                await carregarDashboard();
+                //await carregarAlertas();
+
+            } catch (erro) {
+
+                console.error("❌ Erro ao atualizar o sistema:", erro);
+
+            }
+
+        }, 5000);
 
     </script>
 
