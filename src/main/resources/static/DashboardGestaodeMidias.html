@@ -1125,17 +1125,11 @@
                     <tr class="${classeLinha}">
 
                         <td>${show.id ?? ""}</td>
-
                         <td>${show.codigo ?? ""}</td>
-
                         <td>${show.titulo ?? ""}</td>
-
                         <td>${show.artista ?? ""}</td>
-
                         <td>${show.situacao ?? ""}</td>
-
                         <td>${show.tipo ?? ""}</td>
-
                         <td>${show.genero ?? ""}</td>
 
                         <td>
@@ -1217,38 +1211,6 @@
             }
         }
 
-        // ======================================
-        // EDITAR TITULO
-        // ======================================
-        async function editar(id) {
-
-            if (!confirm("Deseja realmente EDITAR este medicamento?")) {
-                return;
-            }
-
-            try {
-
-                const resposta = await fetch(API + "/" + id);
-
-                if (!resposta.ok) {
-                    throw new Error("Registro não encontrado");
-                }
-
-                const medicamento = await resposta.json();
-
-                document.getElementById("medicamento").value = medicamento.medicamento;
-                document.getElementById("compartimento").value = medicamento.compartimento;
-                document.getElementById("horarioPrevisto").value = medicamento.horarioPrevisto;
-                document.getElementById("horarioConsumido").value = medicamento.horarioConsumido;
-                document.getElementById("consumido").value = medicamento.consumido;
-
-            } catch (e) {
-
-                console.log(e);
-
-            }
-
-        }
 
         // ======================================
         // EDITAR SITUAÇÃO DA MÍDIA
@@ -1536,7 +1498,7 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = getUsuario();
+            const usuario = localStorage.getItem("usuario");
 
             // VALIDA LOGIN
             if (!usuario) {
@@ -1549,7 +1511,7 @@
             const doc = new jsPDF();
 
             doc.setFontSize(14);
-            doc.text("Relatório de Monitoramento de Medicamentos", 14, 10);
+            doc.text("Relatório de Mídias Shows e filmes", 14, 10);
 
             doc.setFontSize(12);
             doc.text("Usuário: " + usuario, 14, 15);
@@ -1557,7 +1519,7 @@
 
             let y = 30;
 
-            const linhas = document.querySelectorAll("#tabelaSaude tr");
+            const linhas = document.querySelectorAll("#tabelaShows tr");
 
             linhas.forEach((linha, index) => {
 
@@ -1566,19 +1528,19 @@
                 if (colunas.length > 0) {
 
                     doc.setFontSize(10);
-                    const medicamento = colunas[1].innerText;
-                    const compartimento = colunas[2].innerText;
-                    const horarioPrevisto = colunas[3].innerText;
-                    const consumido = colunas[4].innerText;
+                    const codigo = colunas[1].innerText;
+                    const titulo = colunas[2].innerText;
+                    const artista = colunas[3].innerText;
+                    const situacao = colunas[4].innerText;
 
                     doc.setFontSize(10);
-                    doc.text("Medicamento: " + medicamento, 14, y);
+                    doc.text("Codigo: " + codigo, 14, y);
                     y += 6;
-                    doc.text("Compartimento: " + compartimento, 14, y);
+                    doc.text("Titulo: " + titulo, 14, y);
                     y += 6;
-                    doc.text("Horário: " + horarioPrevisto, 14, y);
+                    doc.text("Artista: " + artista, 14, y);
                     y += 6;
-                    doc.text("Consumido: " + consumido, 14, y);
+                    doc.text("Situação: " + situacao, 14, y);
                     y += 10;
 
                     // quebra de página
@@ -1589,7 +1551,7 @@
                 }
             });
 
-            doc.save("relatorio_saude.pdf");
+            doc.save("relatorio_MidiasShows.pdf");
         }
 
         setInterval(async () => {

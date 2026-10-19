@@ -785,19 +785,19 @@
                 🔴 Câmera OFFLINE
             </p>
         `;
-        const consumido = document.getElementById("consumido");
+                        const consumido = document.getElementById("consumido");
 
-        if (consumido) {
+                        if (consumido) {
 
-            if (dados.consumido === true) {
+                            if (dados.consumido === true) {
 
-                consumido.value = "✅ SIM";
+                                consumido.value = "✅ SIM";
 
-                } else {
+                            } else {
 
-                consumido.value = "❌ NÃO";
-                }
-            }
+                                consumido.value = "❌ NÃO";
+                            }
+                        }
                     }
                 }
 
@@ -1493,7 +1493,7 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = getUsuario();
+            const usuario = localStorage.getItem("usuario");
 
             // VALIDA LOGIN
             if (!usuario) {
@@ -1516,7 +1516,7 @@
 
             const linhas = document.querySelectorAll("#tabelaSaude tr");
 
-            linhas.forEach((linha, index) => {
+            linhas.forEach((linha) => {
 
                 const colunas = linha.querySelectorAll("td");
 
@@ -1546,7 +1546,7 @@
                 }
             });
 
-            doc.save("relatorio_saude.pdf");
+            doc.save("relatorio_medicamentos.pdf");
         }
 
         setInterval(async () => {

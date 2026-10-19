@@ -1518,7 +1518,7 @@
         // FUNÇÃO PARA GERAR RELATÓRIO
         function gerarRelatorioPDF() {
 
-            const usuario = getUsuario();
+            const usuario = localStorage.getItem("usuario");
 
             // VALIDA LOGIN
             if (!usuario) {
@@ -1539,7 +1539,7 @@
 
             let y = 30;
 
-            const linhas = document.querySelectorAll("#tabelaProjetos tr");
+            const linhas = document.querySelectorAll("#tabelaPlanilha tr");
 
             linhas.forEach((linha, index) => {
 
@@ -1548,19 +1548,19 @@
                 if (colunas.length > 0) {
 
                     doc.setFontSize(10);
-                    const medicamento = colunas[1].innerText;
-                    const compartimento = colunas[2].innerText;
-                    const horarioPrevisto = colunas[3].innerText;
-                    const consumido = colunas[4].innerText;
+                    const projeto = colunas[1].innerText;
+                    const circuito = colunas[2].innerText;
+                    const descricao = colunas[3].innerText;
+                    const potenciatotal = colunas[4].innerText;
 
                     doc.setFontSize(10);
-                    doc.text("Medicamento: " + medicamento, 14, y);
+                    doc.text("Projeto: " + projeto, 14, y);
                     y += 6;
-                    doc.text("Compartimento: " + compartimento, 14, y);
+                    doc.text("Circuito: " + circuito, 14, y);
                     y += 6;
-                    doc.text("Horário: " + horarioPrevisto, 14, y);
+                    doc.text("Descricao: " + descricao, 14, y);
                     y += 6;
-                    doc.text("Consumido: " + consumido, 14, y);
+                    doc.text("PotTotal: " + potenciatotal, 14, y);
                     y += 10;
 
                     // quebra de página
@@ -1585,8 +1585,8 @@
 
             try {
 
-                //await carregarDashboard();
-                await carregarAlertas();
+                await carregarDashboard();
+                //await carregarAlertas();
 
             } catch (erro) {
 
