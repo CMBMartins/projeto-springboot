@@ -111,12 +111,16 @@
     }
 
     .botoes button {
-        flex: 1;
-        padding: 10px;
+        width: 172px;
+        height: 40px;
+        padding: 10px 18px;
         border: none;
-        border-radius: 5px;
-        color: white;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
         cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
     }
 
     /* LOGIN */
@@ -514,7 +518,6 @@
     .creatina {
         background: #28a745;
     }
-
 </style>
 
 </head>
@@ -545,7 +548,7 @@
             <!-- LOGO -->
             <div class="logo">
                 <h1>
-                    <img src="Imagens/iconeCarlos.png" width="60">
+                    <img src="Imagens/carlos1.gif" width="60">
                     Gestão de Saúde
                 </h1>
             </div>
@@ -560,14 +563,14 @@
                 <input type="text" id="compartimento" placeholder="Compartimento">
                 <input type="time" id="horarioPrevisto" placeholder="Horario Previsto">
 
-                </div><br>
+            </div><br>
 
-                <label for="quantidadeAbastecida">Quantidade de doses abastecidas:</label>
-                
-                <select id="quantidadeAbastecida">
-                    <option value="3">3 doses</option>
-                    <option value="5">5 doses</option>
-                </select>           
+            <label for="quantidadeAbastecida">Quantidade de doses abastecidas:</label>
+
+            <select id="quantidadeAbastecida">
+                <option value="3">3 doses</option>
+                <option value="5">5 doses</option>
+            </select>
 
             <label>Medicamento Consumido:</label>
 
@@ -584,13 +587,13 @@
             </select>
 
             <label for="dispositivo">Dispositivo:</label>
-            
-            <select id="dispositivo">            
-            <option value="CAIXA001">CAIXA001</option>
-            <option value="CAIXA002">CAIXA002</option>
-            <option value="CAIXA002">CAIXA003</option>
-            <option value="CAIXA002">CAIXA004</option>
-            </select>           
+
+            <select id="dispositivo">
+                <option value="CAIXA001">CAIXA001</option>
+                <option value="CAIXA002">CAIXA002</option>
+                <option value="CAIXA002">CAIXA003</option>
+                <option value="CAIXA002">CAIXA004</option>
+            </select>
 
             </form>
 
@@ -601,8 +604,8 @@
                 <button id="editar" onclick="editar()">✏️Editar</button>
                 <button id="deletar" onclick="excluir()">✏️Excluir</button>
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar Campos</button>
-                <button id="buscarCategoria" onclick="buscarMedicamento()">📋Medicamentos Atrasados</button>
-                <button id="listarTodos" onclick="listarTodos()">📋Listar Medicamentos</button>
+                <button id="buscarCategoria" onclick="buscarMedicamento()">📋Med. Atrasados</button>
+                <button id="listarTodos" onclick="listarTodos()">📋Listar Med.</button>
             </div>
 
             <!-- LEGENDA DE NOMES DE MEDICAMENTOS -->
@@ -614,16 +617,16 @@
                     <span class="tag vitaminaB12">💊 Vitamina B12: A3</span>
                     <span class="tag exforge">💊 Exforge320/25/10: A4</span>
                     <span class="tag metformina">💊 Glifage 850mg-Metformina: A5</span>
-                    <span class="tag coenzimaq10">💊 Coenzima Q10: A6</span>                    
-                    <span class="tag vitaminaD3">💊 Vitamina D3: A7</span>                    
-                    <span class="tag rosuvastatina">💊Trezete 20+10mg: A8</span>                    
+                    <span class="tag coenzimaq10">💊 Coenzima Q10: A6</span>
+                    <span class="tag vitaminaD3">💊 Vitamina D3: A7</span>
+                    <span class="tag rosuvastatina">💊Trezete 20+10mg: A8</span>
                     <span class="tag tansulosina">💊 Tansulosina 0,4mg: A9</span>
                     <span class="tag metformina">💊 Glifage 850mg-Metformina: A10</span>
-                    <span class="tag oleodeSementedeAbobora">💊 Cap.Oléo Semente Abobora: A11</span>                   
+                    <span class="tag oleodeSementedeAbobora">💊 Cap.Oléo Semente Abobora: A11</span>
                     <span class="tag maresisht">💊 Maresis HT: A12</span>
-                    <span class="tag avamis">💊 Avamis 27,5mg: A13</span>                    
+                    <span class="tag avamis">💊 Avamis 27,5mg: A13</span>
                     <span class="tag oleodeSementedeAbobora">💊 Oléo de Semente Abobora: A14</span>
-                    <span class="tag oleodeSementedeAbobora">💊 Doble de 10mg: A15</span>                   
+                    <span class="tag oleodeSementedeAbobora">💊 Doble de 10mg: A15</span>
                 </div>
             </div>
 
@@ -676,8 +679,7 @@
 
     <script>
 
-        //const API = "https://projeto-springboot.onrender.com";
-        const API = "http://localhost:8084";
+        const API = "https://projeto-springboot.onrender.com";
 
         const parametros = new URLSearchParams(window.location.search);
         const id = parametros.get("id");
@@ -854,92 +856,92 @@
         // 🔥 FUNÇÃO PARA SALVAR OS MEDICAMENTOS
         async function salvar() {
 
-    const usuario = localStorage.getItem("usuario");
+            const usuario = localStorage.getItem("usuario");
 
-    if (!usuario) {
-        alert("Faça Login para executar essa funcionalidade!");
-        return;
-    }
+            if (!usuario) {
+                alert("Faça Login para executar essa funcionalidade!");
+                return;
+            }
 
-    try {
+            try {
 
-        event.preventDefault();
+                event.preventDefault();
 
-        const DISPOSITIVO = "CAIXA001";
+                const DISPOSITIVO = "CAIXA001";
 
-        const quantidadeAbastecida =
-            parseInt(document.getElementById("quantidadeAbastecida").value);
+                const quantidadeAbastecida =
+                    parseInt(document.getElementById("quantidadeAbastecida").value);
 
-        const dosesRestantes = quantidadeAbastecida;
+                const dosesRestantes = quantidadeAbastecida;
 
-        let dados = {
+                let dados = {
 
-            medicamento:
-                document.getElementById("medicamento").value,
+                    medicamento:
+                        document.getElementById("medicamento").value,
 
-            compartimento:
-                document.getElementById("compartimento").value,
+                    compartimento:
+                        document.getElementById("compartimento").value,
 
-            horarioPrevisto:
-                document.getElementById("horarioPrevisto").value,
+                    horarioPrevisto:
+                        document.getElementById("horarioPrevisto").value,
 
-            horarioConsumido: null,
+                    horarioConsumido: null,
 
-            consumido:
-                document.getElementById("consumido").value === "true",
+                    consumido:
+                        document.getElementById("consumido").value === "true",
 
-            atrasado: false,
+                    atrasado: false,
 
-            compartimentoVazio: false,
+                    compartimentoVazio: false,
 
-            statusSensor:
-                document.getElementById("statusSensor").value,
+                    statusSensor:
+                        document.getElementById("statusSensor").value,
 
-            ultimaLeituraCamera: null,
+                    ultimaLeituraCamera: null,
 
-            usuario: usuario,
+                    usuario: usuario,
 
-            quantidadeAbastecida: quantidadeAbastecida,
+                    quantidadeAbastecida: quantidadeAbastecida,
 
-            dosesRestantes: dosesRestantes,
+                    dosesRestantes: dosesRestantes,
 
-            dispositivo: DISPOSITIVO
-        };
+                    dispositivo: DISPOSITIVO
+                };
 
-        console.log("Dados enviados:", dados);
+                console.log("Dados enviados:", dados);
 
-        const resposta = await fetch(API + "/saude", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dados)
-        });
+                const resposta = await fetch(API + "/saude", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(dados)
+                });
 
-        if (resposta.ok) {
+                if (resposta.ok) {
 
-            alert("Medicamento cadastrado com sucesso!");
-            limparCampos();
+                    alert("Medicamento cadastrado com sucesso!");
+                    limparCampos();
 
-        } else {
+                } else {
 
-            console.error(
-                "Erro HTTP:",
-                resposta.status,
-                await resposta.text()
-            );
+                    console.error(
+                        "Erro HTTP:",
+                        resposta.status,
+                        await resposta.text()
+                    );
 
-            alert("Erro ao salvar medicamento.");
+                    alert("Erro ao salvar medicamento.");
 
+                }
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                alert("Erro ao Salvar Medicamentos.");
+            }
         }
-
-    } catch (erro) {
-
-        console.error(erro);
-
-        alert("Erro ao Salvar Medicamentos.");
-        }
-    }
 
 
         // 🔥 FUNÇÃO PARA EDITAR OS MEDICAMENTOS
