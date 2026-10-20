@@ -100,7 +100,7 @@
 
     /* padrão de botão */
     .botoes button {
-        width: 130px;
+        width: 158px;
         height: 40px;
         padding: 10px 18px;
         border: none;
@@ -155,6 +155,11 @@
 
     #listarTodos {
         background: #2980b9;
+        color: white;
+    }
+
+    #gerarRelatorioPDF {
+        background: #3729b9;
         color: white;
     }
 
@@ -290,7 +295,7 @@
             </a>
 
             <div class="logo">
-                <h1><img src="Imagens/iconeCarlos.png" width="60">
+                <h1><img src="Imagens/carlos1.gif" width="60">
                     Gestão de Shows e Filmes</h1>
             </div>
 
@@ -326,6 +331,7 @@
                 <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
                 <button id="buscarArtista" onclick="buscarArtista()">🔍BusArtista</button>
                 <button id="listarTodos" onclick="listarTodos()">📋ListMidias</button>
+                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋Gerar Relatório</button>
 
             </div>
 
@@ -389,6 +395,8 @@
         </div>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
 
@@ -879,6 +887,75 @@
             document.getElementById("usuario").value = "";
             document.getElementById("senha").value = "";
 
+        }
+
+
+        // FUNÇÃO PARA GERAR RELATÓRIO
+        function gerarRelatorioPDF() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(14);
+            doc.text("Relatório de Midias de Shows", 14, 10);
+
+            doc.setFontSize(10);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
+
+            let y = 30;
+
+            const linhas = document.querySelectorAll("#tabelaShows tr");
+
+            linhas.forEach((linha, index) => {
+
+                const colunas = linha.querySelectorAll("td");
+
+                if (colunas.length > 0) {
+
+                    const codigo = colunas[1].innerText;
+                    const titulo = colunas[2].innerText;
+                    const artista = colunas[3].innerText;
+                    const situacao = colunas[4].innerText;
+
+                    doc.setFontSize(10);
+                    doc.text("Codigo: " + codigo, 14, y);
+                    y += 6;
+                    doc.text("Titulo: " + titulo, 14, y);
+                    y += 6;
+                    doc.text("Artista: " + artista, 14, y);
+                    y += 6;
+                    doc.text("Situação: " + situacao, 14, y);
+                    y += 10;
+
+                    y += 8;
+
+                    // quebra de página
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                }
+            });
+
+            doc.save("relatorio_midiasdeshows.pdf");
         }
 
     </script>

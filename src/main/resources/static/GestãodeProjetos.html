@@ -158,6 +158,11 @@
         color: white;
     }
 
+    #gerarRelatorioPDF {
+        background: #2b29b9;
+        color: white;
+    }
+
     .autenticar {
         background: #7827ae;
         color: white;
@@ -253,6 +258,8 @@
 
                 <button id="listarTodos" onclick="listarTodos()">📋Listar Projetos</button>
 
+                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋Gerar Relatório</button>
+
             </div>
 
             <div class="login">
@@ -285,7 +292,7 @@
                         <th>🏠T.doImovel</th>
                         <th>💰Valor</th>
                         <th>🏷️Tipo</th>
-                        <th>📂Gênero</th>
+                        <th>📂DataEntrega</th>
                         <th>⚙️Ação</th>
 
                     </tr>
@@ -301,6 +308,9 @@
         </div>
 
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 
     <script>
 
@@ -400,7 +410,7 @@
                     <td>${projeto.tamanhodoimovel ?? ""}</td>
                     <td>${projeto.valordoprojeto ?? ""}</td>
                     <td>${projeto.tipo ?? ""}</td>
-                    <td>${projeto.genero ?? ""}</td>
+                    <td>${projeto.datadaentrega ?? ""}</td>
                     <td>
                         <button onclick="editarGenero(${projeto.id}, '${projeto.genero}')">
                             ${textoBotao}
@@ -459,6 +469,13 @@
 
         // FUNÇÃO PARA SALVAR
         function salvar() {
+
+            const usuario = getUsuario();
+
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
+            }
 
             if (confirm("Tem certeza que deseja salvar esses dados?")) {
 
@@ -808,6 +825,74 @@
             document.getElementById("tipo").value = "";
             document.getElementById("genero").value = "";
 
+        }
+
+        // FUNÇÃO PARA GERAR RELATÓRIO
+        function gerarRelatorioPDF() {
+
+            const usuario = localStorage.getItem("usuario");
+
+            // Validação de campos vazios
+            if (usuario === "" && senha === "") {
+                alert("⚠️ Faça Login!");
+                return;
+            }
+
+            if (usuario === "") {
+                alert("⚠️ Informe o usuário!");
+                return;
+            }
+            if (senha === "") {
+                alert("⚠️ Informe a senha!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(14);
+            doc.text("Relatório de Projetos Elétricos", 14, 10);
+
+            doc.setFontSize(10);
+            doc.text("Usuário: " + usuario, 14, 15);
+            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
+
+            let y = 30;
+
+            const linhas = document.querySelectorAll("#tabelaProjetos tr");
+
+            linhas.forEach((linha, index) => {
+
+                const colunas = linha.querySelectorAll("td");
+
+                if (colunas.length > 0) {
+
+                    const codigo = colunas[0].innerText;
+                    const titulo = colunas[1].innerText;
+                    const cliente = colunas[2].innerText;
+                    const datadaentrega = colunas[6].innerText;
+
+                    doc.setFontSize(10);
+                    doc.text("Codigo: " + codigo, 14, y);
+                    y += 6;
+                    doc.text("Titulo: " + titulo, 14, y);
+                    y += 6;
+                    doc.text("Cliente: " + cliente, 14, y);
+                    y += 6;
+                    doc.text("Data da Entrega: " + datadaentrega, 14, y);
+                    y += 6;
+
+                    y += 8;
+
+                    // quebra de página
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                }
+            });
+
+            doc.save("relatorio_projetoseletricos.pdf");
         }
 
     </script>
