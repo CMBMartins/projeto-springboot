@@ -146,10 +146,9 @@
 
     .banner img {
         display: block;
-        width: 80%;
-        height: auto;
-        max-height: 380px;
-        object-fit: contain;
+        width: 100%;
+        height: 380px;
+        object-fit: cover;
         object-position: center;
         margin: 0 auto;
         transition: transform 0.5s ease;
@@ -632,6 +631,12 @@
             object-fit: contain;
         }
 
+        @media (max-width: 768px) {
+            .banner img {
+                height: 220px;
+            }
+        }
+
         .box-acompanhe,
         .acompanhe,
         .destaques,
@@ -730,7 +735,7 @@
         </div>
 
         <div class="banner">
-            <img id="bannerImg" src="Imagens/banner1.jpg">
+            <img id="bannerImg" src="Imagens/desenvolvimento.png">
         </div>
 
         <section class="perfil">
@@ -919,9 +924,9 @@
         <script>
 
             const banners = [
-                "Imagens/banner.jpg",
-                "Imagens/banner1.jpg",
-                "Imagens/monitor.jpg"
+                "Imagens/computacaoemnuvem.png",
+                "Imagens/segurancadainformacao.png",
+                "Imagens/redes.png"
             ];
 
             let i = 0;
