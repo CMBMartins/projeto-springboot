@@ -3,113 +3,309 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Álbum Pessoal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Álbum Pessoal - Carlos Martins</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <style>
+        /* CONFIGURAÇÕES GERAIS */
         body {
             background-color: #f6f6f6;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            max-width: 1100px;
+            width: 95%;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        /* CABEÇALHO */
+        .cabecalho {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 3px solid #337ab7;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .cabecalho img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .cabecalho h2 {
+            margin: 0;
+            color: #245580;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        /* FOTO DO PERFIL */
+        .perfil {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .perfil img {
+            width: 200px;
+            height: 200px;
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+            border: 4px solid #337ab7;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* BOTÃO PRINCIPAL */
+        .navegacao {
+            margin: 20px 0;
+        }
+
+        .navegacao .btn {
+            border-radius: 5px;
+            padding: 10px 16px;
+        }
+
+        /* TÍTULOS DAS SEÇÕES */
+        .titulo-secao {
+            color: #245580;
+            font-size: 22px;
+            font-weight: bold;
+            border-left: 5px solid #337ab7;
+            padding-left: 12px;
+            margin: 25px 0 20px;
+        }
+
+        /* MENU DE ÁLBUNS */
+        .menu-albuns {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 20px 0;
         }
 
         .dropdown {
             position: relative;
-            display: inline-block;
-            margin: 10px;
+            width: 100%;
+        }
+
+        .dropdown>button {
+            width: 100%;
+            min-height: 52px;
+            white-space: normal;
+            line-height: 1.4;
+            font-weight: bold;
+            border-radius: 6px;
+            padding: 12px;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f9f9f9;
-            min-width: 300px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 10px;
+            top: calc(100% + 5px);
+            left: 0;
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+            z-index: 1000;
         }
 
-        .dropdown:hover .dropdown-content {
+        .dropdown:hover .dropdown-content,
+        .dropdown:focus-within .dropdown-content {
             display: block;
         }
 
-        .text-center{
-        text-align: center;
-    }
-    
-    </style>
+        .dropdown-content img {
+            display: block;
+            width: 100%;
+            height: 190px;
+            object-fit: contain;
+            object-position: center;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
 
+        /* ÁLBUM EM DESTAQUE */
+        .album-destaque {
+            margin-top: 25px;
+        }
+
+        .album-destaque p {
+            font-size: 16px;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .foto-destaque {
+            display: block;
+            width: 100%;
+            max-width: 850px;
+            height: 420px;
+            object-fit: contain;
+            object-position: center;
+            background-color: #eee;
+            margin: 20px auto;
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* RODAPÉ */
+        .rodape {
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 18px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 600px) {
+            .container {
+                width: 96%;
+                margin: 10px auto;
+                padding: 15px;
+            }
+
+            .cabecalho h2 {
+                font-size: 21px;
+            }
+
+            .menu-albuns {
+                grid-template-columns: 1fr;
+            }
+
+            .dropdown-content {
+                position: relative;
+                top: auto;
+                margin-top: 5px;
+            }
+
+            .foto-destaque {
+                height: 280px;
+            }
+
+            .album-destaque p {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container">
+    <main class="container">
 
-        <div class="text-center">
-        <h2>
-            <img src="Imagens/iconeCarlos.png" width="60">
-            Álbum Pessoal
-        </h2>
-        </div>
+        <!-- CABEÇALHO -->
+        <header class="cabecalho">
+            <img src="Imagens/iconeCarlos.png" alt="Símbolo pessoal">
+            <h2>Álbum Pessoal</h2>
+        </header>
 
-        <!--div class="text-center">
-            <img src="Imagens/Carlos.png" class="img-responsive center-block" width="200">
-        </div-->
-        
-        <a href="PaginaPessoal.html" class="btn btn-default">
-            <span class="glyphicon glyphicon-home"></span> Página Principal
-        </a>
-        </div-->
+        <!-- FOTO DO PERFIL -->
+        <section class="perfil">
+            <img src="Imagens/Carlosbanner1.png" alt="Foto de Carlos Martins">
+        </section>
 
-        <hr>
-
-        <h3>Menu de Álbuns</h3>
-
-        <div class="dropdown">
-            <button class="btn btn-primary">Transformador de 209 MVA KV</button>
-
-            <div class="dropdown-content">
-                <img src="ImagensAlbras/Foto MT2.JPG" class="img-responsive">
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="btn btn-primary">Transformador Regulador 34 KVA</button>
-
-            <div class="dropdown-content">
-                <img src="ImagensAlbras/TF LVR.JPG" class="img-responsive">
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="btn btn-primary">Transformador Retificador de 13 KVA</button>
-
-            <div class="dropdown-content">
-                <img src="ImagensAlbras/RFT.JPG" class="img-responsive">
-            </div>
-        </div>
-
-
-        <div class="dropdown">
-            <button class="btn btn-primary">Sala de Controle da Subestação</button>
-
-            <div class="dropdown-content">
-                <img src="ImagensAlbras/Operador1.JPG" class="img-responsive">
-            </div>
-        </div>
+        <!-- NAVEGAÇÃO -->
+        <nav class="navegacao">
+            <a href="PaginaPessoal.html" class="btn btn-default">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                Página Principal
+            </a>
+        </nav>
 
         <hr>
 
-        <h3>Pátio da Subestação de Energia 230 KV da ALBRAS</h3>
+        <!-- MENU DE ÁLBUNS -->
+        <section>
+            <h3 class="titulo-secao">Menu de Álbuns</h3>
 
-        <p>
-            Operador realizando inspeção visual nos equipamentos da subestação
-            de 230 KV da ALBRAS no ano 2000.
-        </p>
+            <div class="menu-albuns">
 
-        <img src="Imagens/patio.PNG" class="img-responsive">
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary">
+                        Pátio da Subestação de 230 kV
+                    </button>
 
-        <p>© 2008 - Carlos Martins</p>
+                    <div class="dropdown-content">
+                        <img src="Imagens/patio.png" alt="Pátio da subestação de 230 kV">
+                    </div>
+                </div>
 
-    </div>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary">
+                        Transformador de 190 MVA
+                    </button>
+
+                    <div class="dropdown-content">
+                        <img src="Imagens/Foto MT2.JPG" alt="Transformador de 190 MVA">
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary">
+                        Transformador de 163 MVA
+                    </button>
+
+                    <div class="dropdown-content">
+                        <img src="Imagens/TF LVR.JPG" alt="Transformador de 163 MVA">
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary">
+                        Tela Principal da Estação de Operação
+                    </button>
+
+                    <div class="dropdown-content">
+                        <img src="Imagens/Simulador.PNG" alt="Tela principal da estação de operação">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ÁLBUM EM DESTAQUE -->
+        <section class="album-destaque">
+
+            <h3 class="titulo-secao">
+                Pátio da Subestação de Energia de 230 kV da ALBRAS
+            </h3>
+
+            <p>
+                Operador realizando inspeção visual nos equipamentos da
+                subestação de 230 kV da ALBRAS, no ano 2000.
+            </p>
+
+            <img src="Imagens/patio.png" class="foto-destaque"
+                alt="Inspeção visual no pátio da subestação de 230 kV da ALBRAS">
+
+        </section>
+
+        <!-- RODAPÉ -->
+        <footer class="rodape">
+            <p>&copy; 2008 - Carlos Martins</p>
+        </footer>
 
 </body>
 
