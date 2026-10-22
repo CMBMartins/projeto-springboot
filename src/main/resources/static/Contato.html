@@ -3,106 +3,350 @@
 
 <head>
 
-<meta charset="UTF-8">
-<title>Contato Pessoal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Bootstrap -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="description" content="Página de contato pessoal de Carlos Mardônio Bezerra Martins.">
 
-<!-- jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Contato Pessoal - Carlos Martins</title>
 
-<!-- Bootstrap JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<link rel="shortcut icon" href="icons/favicon.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 
-<link rel="stylesheet" href="styles/reset.css">
-<link rel="stylesheet" href="styles/vars.css">
-<link rel="stylesheet" href="styles/main-content.css">
-<link rel="stylesheet" href="styles/sidebar-footer.css">
-<link rel="stylesheet" href="styles/media-query.css">
+    <!-- Estilos gerais do site -->
+    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/vars.css">
+    <link rel="stylesheet" href="styles/main-content.css">
+    <link rel="stylesheet" href="styles/sidebar-footer.css">
+    <link rel="stylesheet" href="styles/media-query.css">
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <style>
+        /* CONFIGURAÇÕES GERAIS */
 
-<style>
+        body {
+            background-color: #f6f6f6;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+            min-height: 100vh;
+        }
 
-body{
-background:#f6f6f6;
-font-family:Arial;
-}
+        .pagina-contato {
+            max-width: 1100px;
+            width: 95%;
+            margin: 30px auto;
+        }
 
-.perfil-container{
-text-align:center;
-margin-top:60px;
-background:white;
-padding:40px;
-border-radius:10px;
-box-shadow:0px 4px 12px rgba(0,0,0,0.15);
-}
+        /* CARTÃO PRINCIPAL */
 
-.perfil-container h2{
-margin-bottom:20px;
-}
+        .perfil-container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 35px;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+            text-align: center;
+        }
 
-.info{
-font-size:16px;
-margin:5px;
-}
+        /* CABEÇALHO */
 
-.btn-home{
-margin-top:20px;
-}
+        .cabecalho-contato {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #337ab7;
+        }
 
-footer{
-text-align:center;
-margin-top:40px;
-color:#777;
-}
+        .cabecalho-contato img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
 
-</style>
+        .cabecalho-contato h1 {
+            color: #245580;
+            font-size: 27px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* IDENTIFICAÇÃO PROFISSIONAL */
+
+        .cargo {
+            color: #337ab7;
+            font-size: 19px;
+            font-weight: bold;
+            margin: 20px 0 12px;
+        }
+
+        .descricao-profissional {
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 0 auto 25px;
+            max-width: 650px;
+        }
+
+        /* INFORMAÇÕES DE CONTATO */
+
+        .lista-contato {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .item-contato {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: #f7f9fb;
+            border: 1px solid #e3e8ed;
+            border-radius: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .icone-contato {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            color: #fff;
+            background-color: #337ab7;
+            border-radius: 50%;
+            font-size: 18px;
+        }
+
+        .texto-contato {
+            min-width: 0;
+        }
+
+        .texto-contato strong {
+            display: block;
+            color: #245580;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .texto-contato p {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .texto-contato a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .texto-contato a:hover,
+        .texto-contato a:focus {
+            color: #337ab7;
+            text-decoration: underline;
+        }
+
+        /* BOTÃO DE NAVEGAÇÃO */
+
+        .navegacao {
+            margin-top: 30px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 11px 22px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        /* RODAPÉ */
+
+        .rodape {
+            max-width: 850px;
+            margin: 25px auto;
+            padding: 18px 10px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .rodape p {
+            margin: 0;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 600px) {
+
+            .pagina-contato {
+                width: 96%;
+                margin: 12px auto;
+            }
+
+            .perfil-container {
+                padding: 22px 15px;
+            }
+
+            .cabecalho-contato {
+                gap: 8px;
+            }
+
+            .cabecalho-contato img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .cabecalho-contato h1 {
+                font-size: 21px;
+            }
+
+            .cargo {
+                font-size: 17px;
+            }
+
+            .descricao-profissional {
+                font-size: 15px;
+            }
+
+            .item-contato {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .icone-contato {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .texto-contato p {
+                font-size: 14px;
+            }
+
+            .btn-home {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
 
 </head>
 
 <body>
 
-<div class="container">
+    <main class="pagina-contato">
 
-<div class="perfil-container">
+        <section class="perfil-container">
 
-<h1><img src="Imagens/iconeCarlos.png" width="40">
-    Carlos Mardônio Bezerra Martins</h1>
+            <!-- CABEÇALHO -->
 
-<p class="info"><strong>Analista de TI</strong></p>
+            <header class="cabecalho-contato">
 
-<p class="info">
-Chefe da Divisão de Análise e Desenvolvimento de Sistemas da ALAP
-</p>
+                <img src="Imagens/carlos1.gif" alt="Símbolo pessoal de Carlos Martins">
 
-<p class="info">
-<i class="fa fa-envelope"></i> cmardonioo@gmail.com
-</p>
+                <h1>Contato Pessoal</h1>
 
-<p class="info">
-<i class="fa fa-phone"></i> (91) 98802-5000
-</p>
+            </header>
 
-<a href="PaginaPessoal.html" class="btn btn-primary btn-home">
+            <!-- IDENTIFICAÇÃO PROFISSIONAL -->
 
-<i class="fa fa-home"></i> Página Principal
+            <section>
 
-</a>
+                <h2 class="cargo">
+                    Carlos Mardônio Bezerra Martins
+                </h2>
 
-</div>
+                <p class="descricao-profissional">
+                    Analista de TI<br>
+                    Chefe da Divisão de Análise e Desenvolvimento
+                    de Sistemas da ALAP
+                </p>
 
-</div>
+            </section>
 
+            <!-- INFORMAÇÕES DE CONTATO -->
 
-<footer>
+            <section class="lista-contato" aria-label="Informações de contato">
 
-<p>© 2026 - Carlos Martins</p>
+                <div class="item-contato">
 
-</footer>
+                    <span class="icone-contato" aria-hidden="true">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+
+                    <div class="texto-contato">
+
+                        <strong>E-mail</strong>
+
+                        <p>
+                            <a href="mailto:cmardonioo@gmail.com">
+                                cmardonioo@gmail.com
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="item-contato">
+
+                    <span class="icone-contato" aria-hidden="true">
+                        <i class="fas fa-phone"></i>
+                    </span>
+
+                    <div class="texto-contato">
+
+                        <strong>Telefone</strong>
+
+                        <p>
+                            <a href="tel:+5591988025000">
+                                (91) 98802-5000
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- NAVEGAÇÃO -->
+
+            <nav class="navegacao" aria-label="Navegação principal">
+
+                <a href="PaginaPessoal.html" class="btn btn-primary btn-home">
+
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                    Página Principal
+
+                </a>
+
+            </nav>
+
+        </section>
+
+        <!-- RODAPÉ -->
+
+        <footer class="rodape">
+
+            <p>&copy; 2026 - Carlos Martins</p>
+
+        </footer>
+
+    </main>
 
 </body>
 
