@@ -183,6 +183,17 @@
             color: white;
         }
 
+        .legenda-tipo {
+
+        margin-top: 10px;
+        padding: 10px;
+        width: 1300px;
+        height: 120px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
         /* TABELA */
 
         table {
@@ -328,7 +339,7 @@
             </div>
 
 
-            <!-- TOMADAS ESPECIAIS -->
+            <!-- TOMADAS DE USO ESPECIFICO -->
 
             <div class="col-md-4">
 
@@ -370,9 +381,9 @@
 
                 <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico(Quant.)">
 
-                <input type="text" id="tipodetomadastue" placeholder="Tipo de Tomadas TUE (Watts)">
+                <input type="text" id="tipodetomadastue" placeholder="Nome do Equipamento de Uso Especifico e Potência TUE(Watts)">
 
-                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico">
+                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico TUG">
 
             </div>
 
@@ -388,6 +399,16 @@
 
             </div>
 
+            <!-- PRINCIPAIS LEGENDAS DE TIPOS DE CIRCUITOS-->
+            <div class="legenda-tipo">
+                <h4>📌 Principais tipos de dados a serem inseridos:</h4>
+
+                <div class="tags-tipo">                    
+                    <span class="tag tomada">🔌 Nome do Equipamento de Uso Específico: Ar Condicionado/Chuveiro:</span><br>                    
+                    <span class="tag monofasico">🏠 Tipo do Circuito de Uso Especifico: Monofásico/Bifásico</span>
+                </div>
+            </div>
+
             <div class="login">
 
                 <h2>Realizar Login</h2>
@@ -399,7 +420,7 @@
                 <button onclick="autenticar()">🚪➡️Entrar</button>
                 <button onclick="logout()">🚪⬅️Sair</button>
 
-            </div>
+            </div>            
 
         </div>
 
