@@ -256,7 +256,7 @@
 
     <header>
 
-        <h2><img src="Imagens/iconeCarlos.png" width="40">
+        <h2><img src="Imagens/carlos1.gif" width="40">
             Cálculos de Potências de Luz e Quant. de Tomadas</h2>
         <p>NBR 5410 - Dimensionamentos básicos</p>
 
@@ -1165,85 +1165,190 @@
         }
 
 
-        // FUNÇÃO PARA GERAR RELATÓRIO
+
+        // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA DE CÁLCULOS ELÉTRICOS
         function gerarRelatorioPDF() {
 
-            const usuario = getUsuario();
+            // IDENTIFICA O USUÁRIO LOGADO
+            const usuario = localStorage.getItem("usuario");
 
-            // VALIDA LOGIN
             if (!usuario) {
-
                 alert("⚠️ Faça Login!");
+                return;
+            }
+
+            // VERIFICA A BIBLIOTECA jsPDF
+            if (!window.jspdf || !window.jspdf.jsPDF) {
+                alert("❌ A biblioteca jsPDF não foi carregada!");
+                console.error("Verifique a inclusão da biblioteca jsPDF.");
                 return;
             }
 
             const { jsPDF } = window.jspdf;
 
-            const doc = new jsPDF();
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "mm",
+                format: "a4"
+            });
 
-            doc.setFontSize(16);
-            doc.text("Quadro de Calculos Potências de Luz e Tomadas:", 14, 10);
+            // LOCALIZA A TABELA
+            const tabela = document.getElementById("tabelaCalculosEletrico");
 
-            doc.setFontSize(12);
-            doc.text("Usuário: " + usuario, 14, 15);
-            doc.text("Emitido em: " + new Date().toLocaleString("pt-BR"), 14, 20);
+            if (!tabela) {
+                alert("❌ A tabelaCalculosEletrico não foi encontrada!");
+                return;
+            }
 
-            let y = 30;
+            // LOCALIZA A TABELA HTML COMPLETA
+            const tabelaHTML = tabela.closest("table");
 
-            const linhas =
-                document.querySelectorAll("#tabelaCalculosEletrico tr");
+            if (!tabelaHTML) {
+                alert("❌ Não foi encontrada a tabela HTML correspondente!");
+                return;
+            }
 
-            linhas.forEach((linha) => {
+            // CAPTURA OS CABEÇALHOS
+            const cabecalhos = Array.from(
+                tabelaHTML.querySelectorAll("thead th")
+            )
+                .map(th => th.innerText.trim());
 
-                const colunas = linha.querySelectorAll("td");
+            // CAPTURA AS LINHAS E OS DADOS
+            const linhas = tabela.querySelectorAll("tr");
+            const dados = [];
+
+            linhas.forEach(linha => {
+
+                const colunas = Array.from(linha.querySelectorAll("td"));
 
                 if (colunas.length > 0) {
 
-                    const projeto = colunas[1]?.innerText || "";
+                    // EXCLUI A COLUNA AÇÃO, SE EXISTIR
+                    const indiceAcao = cabecalhos.findIndex(
+                        titulo => titulo.toLowerCase() === "ação" ||
+                            titulo.toLowerCase() === "acao"
+                    );
 
-                    const ambiente = colunas[2]?.innerText || "";
-
-                    const tamanhodoambiente = colunas[3]?.innerText || "";
-
-                    const potenciadeluz = colunas[4]?.innerText || "";
-
-                    const tomadasdeusogeral = colunas[5]?.innerText || "";
-
-                    const tomadasdeusoespecifico = colunas[6]?.innerText || "";
-
-                    const tipodetomadastue = colunas[7]?.innerText || "";
-
-                    const tipodocircuito = colunas[8]?.innerText || "";
-
-                    doc.setFontSize(10);
-                    doc.text("Projeto: " + projeto, 14, y);
-                    y += 6;
-                    doc.text("Ambiente: " + ambiente, 14, y);
-                    y += 6;
-                    doc.text("Tamanho do Ambiente: " + tamanhodoambiente, 14, y);
-                    y += 6;
-                    doc.text("Potencia de Luz: " + potenciadeluz, 14, y);
-                    y += 6;
-                    doc.text("Tomadas de Uso Geral: " + tomadasdeusogeral, 14, y);
-                    y += 6;
-                    doc.text("Tomadas Uso Especifico: " + tomadasdeusoespecifico, 14, y);
-                    y += 6;
-                    doc.text("Tipo de Tomadas TUE: " + tipodetomadastue, 14, y);
-                    y += 6;
-                    doc.text("Tipo do Circuito: " + tipodocircuito, 14, y);
-                    y += 10;
-
-                    // QUEBRA DE PÁGINA
-                    if (y > 280) {
-
-                        doc.addPage();
-
-                        y = 20;
+                    if (indiceAcao !== -1) {
+                        colunas.splice(indiceAcao, 1);
                     }
+
+                    const valores = colunas.map(coluna =>
+                        coluna.innerText.trim()
+                    );
+
+                    dados.push(valores);
                 }
             });
 
-            doc.save("relatorio_calculoseletrico.pdf");
+            // VERIFICA SE EXISTEM DADOS
+            if (dados.length === 0) {
+                alert("⚠️ Não existem cálculos na tabela para gerar o relatório!");
+                return;
+            }
+
+            // REMOVE O CABEÇALHO DA COLUNA AÇÃO
+            const cabecalhosPDF = cabecalhos.filter(
+                titulo => titulo.toLowerCase() !== "ação" &&
+                    titulo.toLowerCase() !== "acao"
+            );
+
+            // CABEÇALHO DO RELATÓRIO
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+
+            doc.text("RELATÓRIO DA PLANILHA DE CÁLCULOS ELÉTRICOS", 14, 15);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            doc.text("Usuário: " + usuario, 14, 23);
+
+            doc.text(
+                "Emitido em: " + new Date().toLocaleString("pt-BR"),
+                14, 29
+            );
+
+            doc.text("Quantidade de registros: " + dados.length, 14, 35);
+
+            // VERIFICA O PLUGIN AUTOTABLE
+            if (typeof doc.autoTable !== "function") {
+                alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
+                console.error("Verifique a inclusão da biblioteca jspdf-autotable.");
+                return;
+            }
+
+            // GERA A TABELA NO PDF
+            doc.autoTable({
+
+                head: [
+                    cabecalhosPDF.length > 0
+                        ? cabecalhosPDF
+                        : [
+                            "ID",
+                            "Projeto",
+                            "Ambiente",
+                            "Tamanho do Ambiente",
+                            "Potência Luz",
+                            "Tomadas Uso Geral",
+                            "Tomadas Uso Específico",
+                            "Tipo Tomadas Uso Específico",
+                            "Tipo Circuito"
+                        ]
+                ],
+
+                body: dados,
+
+                startY: 40,
+
+                theme: "grid",
+
+                styles: {
+                    font: "helvetica",
+                    fontSize: 8,
+                    cellPadding: 2,
+                    overflow: "linebreak",
+                    valign: "middle"
+                },
+
+                headStyles: {
+                    fontStyle: "bold",
+                    halign: "center"
+                },
+
+                margin: {
+                    top: 12,
+                    right: 10,
+                    bottom: 18,
+                    left: 10
+                },
+
+                didDrawPage: function () {
+
+                    const pagina = doc.internal.getNumberOfPages();
+                    const larguraPagina = doc.internal.pageSize.getWidth();
+                    const alturaPagina = doc.internal.pageSize.getHeight();
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(8);
+
+                    doc.text(
+                        "Planilha de Cálculos Elétricos | Página " + pagina,
+                        larguraPagina - 10,
+                        alturaPagina - 6,
+                        { align: "right" }
+                    );
+                }
+            });
+
+            // SALVA O PDF
+            doc.save("relatorio_calculos_eletricos.pdf");
+
+            console.log(
+                "✅ Relatório de cálculos elétricos gerado com " +
+                dados.length + " registros."
+            );
         }
 
 
