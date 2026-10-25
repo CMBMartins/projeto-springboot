@@ -365,25 +365,25 @@
 
             <div class="grid">
 
-                <input type="text" id="id" placeholder="ID">
+                <input type="text" id="id" placeholder="ID - Não precisa inserir">
 
                 <input type="text" id="projeto" placeholder="Projeto">
 
-                <input type="text" id="ambiente" placeholder="Ambiente">
+                <input type="text" id="ambiente" placeholder="Ambiente - nome do ambiente">
 
                 <input type="text" id="tamanhodoambiente" placeholder="Tamanho do Ambiente(mts²)">
 
                 <input type="text" id="perimetrodoambiente" placeholder="Perimetro do Ambiente(mts)">
 
-                <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA)">
+                <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA) - Não precisa inserir">
 
-                <input type="text" id="tomadasdeusogeral" placeholder="Tomadas de Uso Geral(Quant.)">
+                <input type="text" id="tomadasdeusogeral" placeholder="Tomadas de Uso Geral(Quant.) - Não precisa inserir">
 
-                <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico(Quant.)">
+                <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico - Não precisa inserir">
 
                 <input type="text" id="tipodetomadastue" placeholder="Nome do Equipamento de Uso Especifico e Potência TUE(Watts)">
 
-                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico TUG">
+                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico TUE">
 
             </div>
 
@@ -467,7 +467,8 @@
 
     <script>
 
-        const API = "https://projeto-springboot.onrender.com";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -665,7 +666,7 @@
                 parseFloat(document.getElementById("area")?.value) || 0;
 
             if (area <= 0) {
-                alert("⚠️ Informe a área corretamente.");
+                alert("⚠️ Informe a área do Ambiente.");
                 return;
             }
 
@@ -1189,8 +1190,8 @@
 
 
         
- // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA DE CÁLCULOS ELÉTRICOS
-function gerarRelatorioPDF() {
+    // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA DE CÁLCULOS ELÉTRICOS
+    function gerarRelatorioPDF() {
 
     // IDENTIFICA O USUÁRIO LOGADO
     const usuario = localStorage.getItem("usuario");
@@ -1372,7 +1373,7 @@ function gerarRelatorioPDF() {
         "✅ Relatório de cálculos elétricos gerado com " +
         dados.length + " registros."
     );
-}
+    }
 
 
 
@@ -1398,7 +1399,8 @@ function gerarRelatorioPDF() {
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
