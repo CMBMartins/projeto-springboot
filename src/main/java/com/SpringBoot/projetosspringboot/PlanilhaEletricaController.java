@@ -28,6 +28,9 @@ public class PlanilhaEletricaController {
         if ("Circuitoespecifico".equalsIgnoreCase(tipo)) {
             tensao = 220.0;
 
+        } else if ("Alimentadorgeral".equalsIgnoreCase(tipo)) {
+            tensao = 220.0;
+
         } else if ("Tomada".equalsIgnoreCase(tipo)) {
             tensao = 127.0;
 
