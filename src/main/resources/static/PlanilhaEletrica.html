@@ -205,29 +205,21 @@
     }
 
     .linha-qdg {
-
         background-color: #ffe08a;
-
         font-weight: bold;
-
         color: #000;
     }
 
     .linha-qdl {
-
         background-color: #8a96ff;
-
         font-weight: bold;
-
         color: #000;
     }
 
     .linha-qdp {
 
         background-color: #ffb98a;
-
         font-weight: bold;
-
         color: #000;
     }
 
@@ -420,8 +412,8 @@
     <script>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+        //const API = "https://projeto-springboot.onrender.com";
+        const API = "http://localhost:8084";
 
         //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
         window.onload = function () {
@@ -937,16 +929,16 @@
 
                         const classeLinha =
 
-                            circuito === "carga total instalada"
-                                ? "linha-carga-total"
+                            circuito === "qdg"
+                                ? "linha-qdg"
 
                                 : circuito === "iluminação"
                                     ? "linha-iluminacao"
 
                                     : "linha-tomada";
 
-                        planilha.circuito === "Carga Total Instalada"
-                            ? "linha-carga-total"
+                        planilha.circuito === "qdg"
+                            ? "linha-qdg"
 
                             : planilha.circuito === "Iluminação"
                                 ? "linha-iluminacao"
@@ -970,8 +962,8 @@
                         <td>${Number(planilha.potenciatotal || 0).toFixed(2)}</td>
                         <td>${Number(planilha.potenciacorrigida || 0).toFixed(2)}</td>
                         <td>${planilha.tipocircuito ?? ""}</td>
-                        <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
                         <td>${Number(planilha.correnteib || 0).toFixed(2)}</td>
+                        <td>${Number(planilha.correnteic || 0).toFixed(2)}</td>
                         <td>${planilha.disjuntor ?? ""}</td>
                         <td>${planilha.condutor ?? ""}</td>
                         <td>
@@ -984,6 +976,9 @@
                     });
 
                     tabela.innerHTML = linhas;
+
+                    alert("✅ Projeto encontrado!");
+                
                 })
 
                 .catch(error => {
@@ -1018,8 +1013,8 @@
                 return;
             }
 
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
+            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
@@ -1095,7 +1090,6 @@
             document.getElementById("senha").value = "";
 
         }
-
 
 
         // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA ELÉTRICA
