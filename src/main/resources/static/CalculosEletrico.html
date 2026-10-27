@@ -513,7 +513,7 @@
             justify-content: center;
 
             flex: 0 1 200px;
-            width: 160px;
+            width: 200px;
             min-width: 200px;
             max-width: 200px;
             height: 44px;
@@ -1070,6 +1070,7 @@
                     });
 
                     tabela.innerHTML = linhas;
+                    alert("Tabela carregada a baixo!");
                 })
                 .catch(error => {
 
@@ -1467,6 +1468,8 @@
                     if (data.length === 0) {
                         tabela.innerHTML =
                             "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
+
+                        alert("✅ Nenhum registro encontrado!");
                         return;
                     }
 
@@ -1512,6 +1515,7 @@
                     });
 
                     tabela.innerHTML = linhas;
+                    alert("✅ Tabela do Projeto pesquisado carregado abaixo!");
                 })
 
                 .catch(error => {
@@ -1582,13 +1586,15 @@
 
             let ambiente = document.getElementById("ambiente")?.value.trim() || "";
 
+            let tamanhodoambiente = document.getElementById("tamanhodoambiente")?.value.trim() || "";
+
             document.getElementById("resultadoTUG").innerHTML =
                 "Quantidade: " + resultado1 + " tomadas";
 
             mostrarResultado({
                 projeto: projeto,
                 ambiente: ambiente,
-                tamanhodoambiente: perimetro,
+                tamanhodoambiente: tamanhodoambiente,
                 tomadasdeusogeral: resultado1,
             });
 
