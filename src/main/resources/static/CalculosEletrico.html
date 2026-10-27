@@ -10,254 +10,733 @@
 
 
     <style>
+        /* Configuração geral */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             background: #f4f6f9;
+            color: #2c3e50;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
         }
 
-        header {
-            background: #1f2d3d;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        .resultado {
-            font-size: 22px;
-            font-weight: bold;
-            color: #0d6efd;
-            margin-top: 15px;
-        }
-
-        .card1 {
-            background: #f2f2f2;
-        }
-
-        /* LOGO */
-
-        .logo {
-            text-align: center;
-        }
-
-        .campo-direita {
-            text-align: right;
-        }
-
-        #usuariologado {
-            text-align: right;
-            float: right;
-            padding: 6px 10px;
-            text-align: right;
-            font-weight: bold;
-            font-size: 14px;
-            color: #003366;
-            background: #e6f2ff;
-            border: 2px solid #007bff;
-            border-radius: 6px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        /* INPUTS */
-
-        input {
+        .container {
             width: 100%;
-            padding: 8px;
-            margin-top: 8px;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 20px 30px;
         }
 
-        /* GRID FORM */
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, #1f2d3d, #34495e);
+            color: #fff;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
+        header h2 {
+            margin: 0 0 10px;
+            font-size: clamp(21px, 2.5vw, 30px);
+            line-height: 1.4;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dce6f1;
+            font-size: 15px;
+        }
+
+        /* Cards de cálculo */
+        .card {
+            height: 100%;
+            padding: 24px !important;
+            background: #fff;
+            border: 1px solid #e5eaf0;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(31, 45, 61, 0.09);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card h4 {
+            margin: 0 0 22px;
+            color: #1f2d3d;
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .card label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495867;
+        }
+
+        /* Campos */
+        input,
+        select,
+        textarea {
+            max-width: 100%;
+            border: 1px solid #ced6df;
+            border-radius: 7px;
+            background: #fff;
+            color: #2c3e50;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.14);
+        }
+
+        .card input {
+            width: 100%;
+            min-height: 42px;
+            padding: 10px 12px;
+            margin-top: 0;
+        }
+
+        /* Resultados dos cálculos */
+        .resultado {
+            min-height: 0;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #edf5ff;
+            color: #175a96;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        /* Resultado geral */
+        .card-resultado {
+            margin: 24px 0;
+            padding: 24px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #0d6efd, #175a96);
+            color: white;
+            box-shadow: 0 5px 16px rgba(13, 110, 253, 0.18);
+            overflow-wrap: anywhere;
+        }
+
+        .card-resultado h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+            line-height: 1.4;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+            gap: 14px;
+        }
+
+        .item-card {
+            min-width: 0;
+            padding: 16px;
+            border-radius: 10px;
+            background: #f4f7fb;
+            color: #2c3e50;
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+        }
+
+        /* Campos do formulário de cadastro */
         .grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            width: 100%;
+            margin-top: 25px;
         }
 
         .grid input,
         .grid select,
         .grid textarea {
-
-            height: 34px;
-            /* altura do campo */
-            padding: 4px 8px;
-            /* espaço interno */
+            width: 100%;
+            min-width: 0;
+            height: 42px;
+            margin-top: 0;
+            padding: 9px 12px;
+            border: 1px solid #ced6df;
+            border-radius: 7px;
+            background: white;
             font-size: 14px;
-            /* tamanho da fonte */
         }
 
-        .login input {
-            height: 34px;
+        /* Usuário logado */
+        .campo-direita {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
         }
 
+        #usuariologado {
+            float: none;
+            width: min(100%, 320px) !important;
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #b8d8f5;
+            border-radius: 8px;
+            background: #e6f2ff;
+            color: #003366;
+            font-weight: 700;
+        }
 
-        /* BOTÕES */
+        /* Navegação */
+        .home {
+            margin: 8px 0 18px;
+        }
 
+        .home .btn {
+            border-radius: 7px;
+            padding: 10px 16px;
+            font-weight: 600;
+        }
+
+        /* Botões de ação */
         .botoes {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             gap: 10px;
-            margin-top: 20px;
+            margin: 22px 0;
         }
 
-        /* padrão de botão */
-        .botoes button {
-            width: 176px;
-            height: 36px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-        }
-
-        /* padrão de botão */
+        .botoes button,
         .login button {
-            width: 148px;
-            height: 36px;
-            padding: 10px 18px;
+            width: auto;
+            min-width: 130px;
+            min-height: 42px;
+            height: auto;
+            padding: 10px 16px;
             border: none;
-            border-radius: 6px;
+            border-radius: 7px;
+            color: white;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            background-color: #007bff;
+            transition: filter 0.2s, transform 0.2s;
         }
 
-        #salvar {
-            background: #27ae60;
-            color: white;
+        .botoes button:hover,
+        .login button:hover {
+            filter: brightness(0.92);
+            transform: translateY(-1px);
         }
 
-        #editar {
-            background: #6fae27;
-            color: white;
+        .botoes button:focus-visible,
+        .login button:focus-visible {
+            outline: 3px solid #91c8ff;
+            outline-offset: 2px;
         }
 
-        #deletar {
-            background: #ae2b27;
-            color: white;
+        /* Login */
+        .login {
+            margin: 25px 0;
+            padding: 22px;
+            background: #fff;
+            border: 1px solid #e5eaf0;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
         }
 
-        #limparCampos {
-            background: #f39c12;
-            color: white;
+        .login h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #1f2d3d;
         }
 
-        #buscarAmbiente {
-            background: #f37712;
-            color: white;
+        .login input {
+            width: min(100%, 320px) !important;
+            min-height: 42px;
+            margin: 6px 8px 10px 0;
+            padding: 10px 12px;
+            border: 1px solid #ced6df;
+            border-radius: 7px;
         }
 
-        #buscarProjeto {
-            background: #f37712;
-            color: white;
-        }
-
-        #listarTodos {
-            background: #2980b9;
-            color: white;
-        }
-
-        #gerarRelatorioPDF {
-            background: #eb2923;
-            color: white;
-        }
-
-
-        .autenticar {
-            background: #7827ae;
-            color: white;
-        }
-
-        .logout {
-            background: #ae2b27;
-            color: white;
-        }
-
+        /* Legenda */
         .legenda-tipo {
-
-        margin-top: 10px;
-        padding: 10px;
-        width: 1300px;
-        height: 120px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: auto;
+            min-height: 100px;
+            margin: 20px 0;
+            padding: 18px;
+            background: #fff;
+            border: 1px solid #e5eaf0;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
         }
 
-        /* TABELA */
+        .legenda-tipo h4 {
+            margin-top: 0;
+            font-size: 17px;
+            line-height: 1.5;
+        }
 
-        table {
+        .tags-tipo {
+            line-height: 2;
+            overflow-wrap: anywhere;
+        }
+
+        /* Tabela */
+        .card1 {
+            width: 100%;
+            min-width: 0;
+            margin-top: 24px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e5eaf0;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(31, 45, 61, 0.08);
+        }
+
+        .card1 h2 {
+            margin: 0 0 20px;
+            font-size: clamp(19px, 2.2vw, 25px);
+            line-height: 1.4;
+        }
+
+        .card1 table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .card1 th,
+        .card1 td {
+            padding: 11px 12px;
+            border: 1px solid #dfe5eb;
             text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            overflow-wrap: anywhere;
         }
 
-        th {
+        .card1 th {
             background: #34495e;
             color: white;
+            font-weight: 700;
         }
 
-        .linha-monofasico {
-            background-color: #ffe5e5;
+        .card1 tbody tr:nth-child(even) {
+            background: #f5f8fb;
         }
 
-        .linha-bifasico {
-            background-color: #e5ffe5;
+        .card1 tbody tr:hover {
+            background: #eaf3fc;
         }
 
-        .card-resultado {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 12px;
-            background: #0d6efd;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            font-family: Arial;
-
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-        }
-
-        .item-card {
-            background: white;
-            color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .card1-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 10px;
-        }
-
-        .item-card {
-            background: #f4f4f4;
-            padding: 12px;
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-responsive table {
+            min-width: 900px;
+        }
+
+        @media (max-width: 991px) {
+            .container {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+
+            .card {
+                padding: 20px !important;
+            }
+
+            .botoes button {
+                flex: 1 1 145px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .card1 {
+                padding: 14px;
+            }
+
+            .card1 th,
+            .card1 td {
+                padding: 9px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            header {
+                padding: 20px 12px;
+                margin-bottom: 20px;
+            }
+
+            header h2 {
+                font-size: 21px;
+            }
+
+            header img {
+                width: 32px;
+                height: 32px;
+            }
+
+            header p {
+                font-size: 13px;
+            }
+
+            .container {
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+
+            .campo-direita {
+                margin-bottom: 8px;
+            }
+
+            .home .btn {
+                display: inline-block;
+                max-width: 100%;
+                white-space: normal;
+            }
+
+            .card {
+                padding: 18px !important;
+                border-radius: 11px;
+            }
+
+            .card h4 {
+                font-size: 18px;
+            }
+
+            .grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 11px;
+            }
+
+            .botoes {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 9px;
+            }
+
+            .botoes button {
+                width: 100%;
+                min-width: 0;
+                padding: 10px 7px;
+                font-size: 12px;
+                overflow-wrap: anywhere;
+            }
+
+            .login {
+                padding: 16px;
+            }
+
+            .login input {
+                width: 100% !important;
+                margin-right: 0;
+            }
+
+            .login button {
+                margin: 4px 4px 4px 0;
+            }
+
+            .legenda-tipo {
+                padding: 14px;
+            }
+
+            .card-resultado {
+                padding: 16px;
+            }
+
+            .card-resultado h3 {
+                font-size: 19px;
+            }
+
+            .card-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .card1 {
+                padding: 12px;
+            }
+
+            .card1 h2 {
+                font-size: 19px;
+            }
+
+            .card1 th,
+            .card1 td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+
+
+        .botoes {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 22px 0;
+        }
+
+        /* Tamanho e formato iguais */
+        .botoes button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            flex: 0 1 200px;
+            width: 160px;
+            min-width: 200px;
+            max-width: 200px;
+            height: 44px;
+
+            padding: 8px 10px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: center;
+            white-space: nowrap;
+
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+            transition: filter 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Salvar — verde */
+        .botoes #salvar {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        /* Editar — azul */
+        .botoes #editar {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        /* Excluir — vermelho */
+        .botoes #deletar {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        /* Limpar — laranja */
+        .botoes #limparCampos {
+            background-color: #fd7e14;
+            border-color: #fd7e14;
+        }
+
+        /* Buscar Projeto — roxo */
+        .botoes #buscarProjeto {
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+
+        /* Listar Todos — azul-petróleo */
+        .botoes #listarTodos {
+            background-color: #0f6b78;
+            border-color: #0f6b78;
+        }
+
+        /* Quadro PDF — cinza-escuro */
+        .botoes #gerarRelatorioPDF {
+            background-color: #495057;
+            border-color: #495057;
+        }
+
+        /* Efeito ao passar o mouse */
+        .botoes button:hover {
+            filter: brightness(0.90);
+            transform: translateY(-1px);
+        }
+
+        /* Efeito ao clicar */
+        .botoes button:active {
+            transform: translateY(0);
+        }
+
+        /* Acessibilidade */
+        .botoes button:focus-visible {
+            outline: 3px solid #80bdff;
+            outline-offset: 3px;
+        }
+
+        /* Tablets */
+        @media (max-width: 991px) {
+            .botoes button {
+                flex-basis: 150px;
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
+            }
+        }
+
+        /* Celulares */
+        @media (max-width: 576px) {
+            .botoes {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 9px;
+            }
+
+            .botoes button {
+                width: 100%;
+                min-width: 0;
+                max-width: none;
+                height: 44px;
+                padding: 8px 4px;
+                font-size: 12px;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+        }
+
+        .login button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 364px;
+            min-width: 364px;
+            max-width: 364px;
+            height: 40px;
+
+            margin: 4px 8px 4px 0;
+            padding: 8px 12px;
+
+            border: 1px solid transparent;
+            border-radius: 8px;
+
+            color: #ffffff !important;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
+            text-align: center;
+            white-space: nowrap;
+
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+            transition: filter 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Entrar — azul */
+        .login button[onclick="autenticar()"] {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
+
+        /* Sair — vermelho */
+        .login button[onclick="logout()"] {
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
+
+        /* Efeito ao passar o mouse */
+        .login button:hover {
+            filter: brightness(0.90);
+            transform: translateY(-1px);
+        }
+
+        /* Efeito ao clicar */
+        .login button:active {
+            transform: translateY(0);
+        }
+
+        /* Acessibilidade pelo teclado */
+        .login button:focus-visible {
+            outline: 3px solid #80bdff;
+            outline-offset: 3px;
+        }
+
+        /* Celulares */
+        @media (max-width: 576px) {
+            .login button {
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
+                height: 44px;
+                margin: 4px 6px 4px 0;
+                font-size: 13px;
+            }
+        }
+
+        /* Fundo geral da tabela */
+        .card1 table {
+            background-color: #ffffff;
+            border-collapse: collapse;
+        }
+
+        /* Cabeçalho */
+        .card1 thead th {
+            background-color: #34495e;
+            color: #ffffff;
+            padding: 12px;
+        }
+
+        /* Linhas alternadas */
+        .card1 tbody tr:nth-child(odd) {
+            background-color: #e8f2fc;
+        }
+
+        .card1 tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Efeito ao passar o mouse */
+        .card1 tbody tr:hover {
+            background-color: #cfe5fa;
+        }
+
+        /* Células */
+        .card1 tbody td {
+            color: #2c3e50;
+            border: 1px solid #d5e0eb;
+            padding: 11px 12px;
+
+        }
+
+        .row {
+            --bs-gutter-x: 12px;
+        }
+
+        /* EVITA ESPAÇAMENTO EXTRA NO CARD DA TABELA */
+        .card1 {
+            margin-left: 0;
+            margin-right: 0;
         }
     </style>
 
@@ -273,32 +752,29 @@
 
     </header>
 
-
     <div class="container">
 
-        <div class="row g-4">
+        <div class="row g-2">
 
-            <div class="campo-direita">
-                <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+            <!-- USUÁRIO LOGADO -->
+            <div class="col-12">
+                <div class="campo-direita">
+                    <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+                </div>
+
+                <div class="home text-start">
+                    <a href="PaginaPessoal.html" class="btn btn-secondary">
+                        <i class="fa fa-home"></i> Página Principal
+                    </a>
+                </div>
             </div>
 
-            <div class="home text-start">
-                <a href="PaginaPessoal.html" class="btn btn-secondary">
-                    <i class="fa fa-home"></i> Página Principal
-                </a>
-            </div>
-
-
-            <!-- CALCULO DE ILUMINAÇÃO -->
-
-            <div class="col-md-4">
-
+            <!-- CÁLCULO DE ILUMINAÇÃO -->
+            <div class="col-12 col-md-4">
                 <div class="card p-4">
-
                     <h4>Potência de Iluminação</h4>
 
-                    <label>Área do ambiente (m²)</label>
-
+                    <label for="area">Área do ambiente (m²)</label>
                     <input type="number" id="area" class="form-control">
 
                     <br>
@@ -308,22 +784,15 @@
                     </button>
 
                     <div id="resultadoLuz" class="resultado"></div>
-
                 </div>
-
             </div>
 
-
-            <!-- TOMADAS COMUNS -->
-
-            <div class="col-md-4">
-
+            <!-- TOMADAS DE USO GERAL -->
+            <div class="col-12 col-md-4">
                 <div class="card p-4">
-
                     <h4>Tomadas de Uso Comum</h4>
 
-                    <label>Perímetro do ambiente (m)</label>
-
+                    <label for="perimetro">Perímetro do ambiente (m)</label>
                     <input type="number" id="perimetro" class="form-control">
 
                     <br>
@@ -333,22 +802,15 @@
                     </button>
 
                     <div id="resultadoTUG" class="resultado"></div>
-
                 </div>
-
             </div>
 
-
-            <!-- TOMADAS DE USO ESPECIFICO -->
-
-            <div class="col-md-4">
-
+            <!-- TOMADAS DE USO ESPECÍFICO -->
+            <div class="col-12 col-md-4">
                 <div class="card p-4">
-
                     <h4>Tomadas de Uso Específico</h4>
 
-                    <label>Perímetro do ambiente (m)</label>
-
+                    <label for="especial">Perímetro do ambiente (m)</label>
                     <input type="number" id="especial" class="form-control">
 
                     <br>
@@ -358,108 +820,132 @@
                     </button>
 
                     <div id="resultadoTUE" class="resultado"></div>
+                </div>
+            </div>
+
+            <!-- CAMPOS DO FORMULÁRIO -->
+            <div class="col-12">
+                <div class="grid">
+
+                    <input type="text" id="id" placeholder="ID (insira o ID para excluir)">
+
+                    <input type="text" id="projeto" placeholder="Projeto (nome dos contratantes)">
+
+                    <input type="text" id="ambiente" placeholder="Ambiente (nome do ambiente)">
+
+                    <input type="text" id="tamanhodoambiente" placeholder="Tamanho do Ambiente (m²)">
+
+                    <input type="text" id="perimetrodoambiente" placeholder="Perímetro do Ambiente (m)">
+
+                    <input type="text" id="potenciadeluz" placeholder="Potência de Luz (VA) - Não precisa inserir">
+
+                    <input type="text" id="tomadasdeusogeral"
+                        placeholder="Tomadas de Uso Geral (quant.) - Não precisa inserir">
+
+                    <input type="text" id="tomadasdeusoespecifico"
+                        placeholder="Tomadas de Uso Específico - Não precisa inserir">
+
+                    <input type="text" id="tipodetomadastue"
+                        placeholder="Equipamento de Uso Específico e potência (W) - TUE">
+
+                    <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico - TUE">
+
+                </div>
+            </div>
+
+            <!-- BOTÕES DE AÇÃO -->
+            <div class="col-12">
+                <div class="botoes">
+
+                    <button id="salvar" onclick="salvar()">💾Salvar</button>
+                    <button id="editar" onclick="editar()">✏️Editar</button>
+                    <button id="deletar" onclick="deletar()">🗑️Excluir</button>
+                    <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
+                    <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
+                    <button id="listarTodos" onclick="listarTodos()">📋ListarTodos</button>
+                    <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋QuadroPDF</button>
+
+                </div>
+            </div>
+
+            <!-- LEGENDA -->
+            <div class="col-12">
+                <div class="legenda-tipo">
+                    <h4>📌 Principais tipos de dados a serem inseridos:</h4>
+
+                    <div class="tags-tipo">
+                        <span class="tag tomada">
+                            🔌 Nome do Equipamento de Uso Específico:
+                            Ar Condicionado/Chuveiro
+                        </span>
+                        <br>
+
+                        <span class="tag monofasico">
+                            🏠 Tipo do Circuito de Uso Específico:
+                            Monofásico/Bifásico
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGIN -->
+            <div class="col-12">
+                <div class="login">
+
+                    <h2>Realizar Login</h2>
+
+                    <input type="text" id="usuario" placeholder="Usuário" style="width:33%;">
+
+                    <input type="password" id="senha" placeholder="Senha" style="width:33%;">
+
+                    <button onclick="autenticar()">🚪➡️Entrar</button>
+                    <button onclick="logout()">🚪⬅️Sair</button>
+
+                </div>
+            </div>
+
+            <!-- RESULTADO GERAL -->
+            <div class="col-12">
+                <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
+            </div>
+
+            <!-- TABELA DE CÁLCULOS -->
+            <div class="col-12">
+
+                <div class="card1">
+
+                    <h2>Quadro de Cálculos de Potência de Luz e Quant. de TUG e TUE</h2>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Projeto</th>
+                                    <th>Ambiente</th>
+                                    <th>Tamanho do Ambiente</th>
+                                    <th>PotLuz</th>
+                                    <th>TomadasUsoGeral</th>
+                                    <th>TomadasUsoEspecifico</th>
+                                    <th>TipodeTomadasTUE</th>
+                                    <th>TipoCircuito</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tabelaCalculosEletrico">
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
 
             </div>
-
-            <div class="grid">
-
-                <input type="text" id="id" placeholder="ID (insira o ID para excluir)">
-
-                <input type="text" id="projeto" placeholder="Projeto (nome dos contratantes)">
-
-                <input type="text" id="ambiente" placeholder="Ambiente (nome do ambiente)">
-
-                <input type="text" id="tamanhodoambiente" placeholder="Tamanho do Ambiente(mts²)">
-
-                <input type="text" id="perimetrodoambiente" placeholder="Perimetro do Ambiente(mts)">
-
-                <input type="text" id="potenciadeluz" placeholder="Potência de Luz(VA) (Não precisa inserir)">
-
-                <input type="text" id="tomadasdeusogeral" placeholder="Tomadas de Uso Geral(Quant.) (Não precisa inserir)">
-
-                <input type="text" id="tomadasdeusoespecifico" placeholder="Tomadas de Uso Especifico (Não precisa inserir)">
-
-                <input type="text" id="tipodetomadastue" placeholder="Nome do Equipamento de Uso Especifico e Potência - TUE(Watts)">
-
-                <input type="text" id="tipodocircuito" placeholder="Tipo do Circuito de Uso Específico - TUE">
-
-            </div>
-
-            <div class="botoes">
-
-                <button id="salvar" onclick="salvar()">💾Salvar</button>
-                <button id="editar" onclick="editar()">✏️Editar</button>
-                <button id="deletar" onclick="deletar()">🗑️Excluir</button>
-                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
-                <button id="buscarProjeto" onclick="buscarProjeto()">🔍BusProjeto</button>
-                <button id="listarTodos" onclick="listarTodos()">📋ListarTodos</button>
-                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋QuadroPDF</button>
-
-            </div>
-
-            <!-- PRINCIPAIS LEGENDAS DE TIPOS DE CIRCUITOS-->
-            <div class="legenda-tipo">
-                <h4>📌 Principais tipos de dados a serem inseridos:</h4>
-
-                <div class="tags-tipo">                    
-                    <span class="tag tomada">🔌 Nome do Equipamento de Uso Específico: Ar Condicionado/Chuveiro:</span><br>                    
-                    <span class="tag monofasico">🏠 Tipo do Circuito de Uso Especifico: Monofásico/Bifásico</span>
-                </div>
-            </div>
-
-            <div class="login">
-
-                <h2>Realizar Login</h2>
-
-                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
-
-                <input type="password" id="senha" placeholder="Senha" style="width:33%;">
-
-                <button onclick="autenticar()">🚪➡️Entrar</button>
-                <button onclick="logout()">🚪⬅️Sair</button>
-
-            </div>            
-
-        </div>
-
-        <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
-
-        <div class="card1"><br>
-
-            <h2>Quadro de Calculos de Potência de Luz e Quant. de TUG e TUE</h2>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-                        <th>Projeto</th>
-                        <th>Ambiente</th>
-                        <th>Tamanho do Ambiente</th>
-                        <th>PotLuz</th>
-                        <th>TomadasUsoGeral</th>
-                        <th>TomadasUsoEspecifico</th>
-                        <th>TipodeTomadasTUE</th>
-                        <th>TipoCircuito</th>
-                        <th>Ação</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="tabelaCalculosEletrico">
-
-                </tbody>
-
-            </table>
 
         </div>
 
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -1189,191 +1675,191 @@
         }
 
 
-        
-    // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA DE CÁLCULOS ELÉTRICOS
-    function gerarRelatorioPDF() {
 
-    // IDENTIFICA O USUÁRIO LOGADO
-    const usuario = localStorage.getItem("usuario");
+        // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA DE CÁLCULOS ELÉTRICOS
+        function gerarRelatorioPDF() {
 
-    if (!usuario) {
-        alert("⚠️ Faça Login!");
-        return;
-    }
+            // IDENTIFICA O USUÁRIO LOGADO
+            const usuario = localStorage.getItem("usuario");
 
-    // VERIFICA A BIBLIOTECA jsPDF
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-        alert("❌ A biblioteca jsPDF não foi carregada!");
-        console.error("Verifique a inclusão da biblioteca jsPDF.");
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-
-    const doc = new jsPDF({
-        orientation: "landscape",
-        unit: "mm",
-        format: "a4"
-    });
-
-    // LOCALIZA A TABELA
-    const tabela = document.getElementById("tabelaCalculosEletrico");
-
-    if (!tabela) {
-        alert("❌ A tabelaCalculosEletrico não foi encontrada!");
-        return;
-    }
-
-    // LOCALIZA A TABELA HTML COMPLETA
-    const tabelaHTML = tabela.closest("table");
-
-    if (!tabelaHTML) {
-        alert("❌ Não foi encontrada a tabela HTML correspondente!");
-        return;
-    }
-
-    // CAPTURA OS CABEÇALHOS
-    const cabecalhos = Array.from(
-        tabelaHTML.querySelectorAll("thead th")
-    )
-    .map(th => th.innerText.trim());
-
-    // CAPTURA AS LINHAS E OS DADOS
-    const linhas = tabela.querySelectorAll("tr");
-    const dados = [];
-
-    linhas.forEach(linha => {
-
-        const colunas = Array.from(linha.querySelectorAll("td"));
-
-        if (colunas.length > 0) {
-
-            // EXCLUI A COLUNA AÇÃO, SE EXISTIR
-            const indiceAcao = cabecalhos.findIndex(
-                titulo => titulo.toLowerCase() === "ação" ||
-                          titulo.toLowerCase() === "acao"
-            );
-
-            if (indiceAcao !== -1) {
-                colunas.splice(indiceAcao, 1);
+            if (!usuario) {
+                alert("⚠️ Faça Login!");
+                return;
             }
 
-            const valores = colunas.map(coluna =>
-                coluna.innerText.trim()
+            // VERIFICA A BIBLIOTECA jsPDF
+            if (!window.jspdf || !window.jspdf.jsPDF) {
+                alert("❌ A biblioteca jsPDF não foi carregada!");
+                console.error("Verifique a inclusão da biblioteca jsPDF.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "mm",
+                format: "a4"
+            });
+
+            // LOCALIZA A TABELA
+            const tabela = document.getElementById("tabelaCalculosEletrico");
+
+            if (!tabela) {
+                alert("❌ A tabelaCalculosEletrico não foi encontrada!");
+                return;
+            }
+
+            // LOCALIZA A TABELA HTML COMPLETA
+            const tabelaHTML = tabela.closest("table");
+
+            if (!tabelaHTML) {
+                alert("❌ Não foi encontrada a tabela HTML correspondente!");
+                return;
+            }
+
+            // CAPTURA OS CABEÇALHOS
+            const cabecalhos = Array.from(
+                tabelaHTML.querySelectorAll("thead th")
+            )
+                .map(th => th.innerText.trim());
+
+            // CAPTURA AS LINHAS E OS DADOS
+            const linhas = tabela.querySelectorAll("tr");
+            const dados = [];
+
+            linhas.forEach(linha => {
+
+                const colunas = Array.from(linha.querySelectorAll("td"));
+
+                if (colunas.length > 0) {
+
+                    // EXCLUI A COLUNA AÇÃO, SE EXISTIR
+                    const indiceAcao = cabecalhos.findIndex(
+                        titulo => titulo.toLowerCase() === "ação" ||
+                            titulo.toLowerCase() === "acao"
+                    );
+
+                    if (indiceAcao !== -1) {
+                        colunas.splice(indiceAcao, 1);
+                    }
+
+                    const valores = colunas.map(coluna =>
+                        coluna.innerText.trim()
+                    );
+
+                    dados.push(valores);
+                }
+            });
+
+            // VERIFICA SE EXISTEM DADOS
+            if (dados.length === 0) {
+                alert("⚠️ Não existem cálculos na tabela para gerar o relatório!");
+                return;
+            }
+
+            // REMOVE O CABEÇALHO DA COLUNA AÇÃO
+            const cabecalhosPDF = cabecalhos.filter(
+                titulo => titulo.toLowerCase() !== "ação" &&
+                    titulo.toLowerCase() !== "acao"
             );
 
-            dados.push(valores);
-        }
-    });
+            // CABEÇALHO DO RELATÓRIO
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
 
-    // VERIFICA SE EXISTEM DADOS
-    if (dados.length === 0) {
-        alert("⚠️ Não existem cálculos na tabela para gerar o relatório!");
-        return;
-    }
-
-    // REMOVE O CABEÇALHO DA COLUNA AÇÃO
-    const cabecalhosPDF = cabecalhos.filter(
-        titulo => titulo.toLowerCase() !== "ação" &&
-                  titulo.toLowerCase() !== "acao"
-    );
-
-    // CABEÇALHO DO RELATÓRIO
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-
-    doc.text("RELATÓRIO DA PLANILHA DE CÁLCULOS ELÉTRICOS", 14, 15);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-
-    doc.text("Usuário: " + usuario, 14, 23);
-
-    doc.text(
-        "Emitido em: " + new Date().toLocaleString("pt-BR"),
-        14, 29
-    );
-
-    doc.text("Quantidade de registros: " + dados.length, 14, 35);
-
-    // VERIFICA O PLUGIN AUTOTABLE
-    if (typeof doc.autoTable !== "function") {
-        alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
-        console.error("Verifique a inclusão da biblioteca jspdf-autotable.");
-        return;
-    }
-
-    // GERA A TABELA NO PDF
-    doc.autoTable({
-
-        head: [
-            cabecalhosPDF.length > 0
-                ? cabecalhosPDF
-                : [
-                    "ID",
-                    "Projeto",
-                    "Ambiente",
-                    "Tamanho do Ambiente",
-                    "Potência Luz",
-                    "Tomadas Uso Geral",
-                    "Tomadas Uso Específico",
-                    "Tipo Tomadas Uso Específico",
-                    "Tipo Circuito"
-                ]
-        ],
-
-        body: dados,
-
-        startY: 40,
-
-        theme: "grid",
-
-        styles: {
-            font: "helvetica",
-            fontSize: 8,
-            cellPadding: 2,
-            overflow: "linebreak",
-            valign: "middle"
-        },
-
-        headStyles: {
-            fontStyle: "bold",
-            halign: "center"
-        },
-
-        margin: {
-            top: 12,
-            right: 10,
-            bottom: 18,
-            left: 10
-        },
-
-        didDrawPage: function () {
-
-            const pagina = doc.internal.getNumberOfPages();
-            const larguraPagina = doc.internal.pageSize.getWidth();
-            const alturaPagina = doc.internal.pageSize.getHeight();
+            doc.text("RELATÓRIO DA PLANILHA DE CÁLCULOS ELÉTRICOS", 14, 15);
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(8);
+            doc.setFontSize(10);
+
+            doc.text("Usuário: " + usuario, 14, 23);
 
             doc.text(
-                "Planilha de Cálculos Elétricos | Página " + pagina,
-                larguraPagina - 10,
-                alturaPagina - 6,
-                { align: "right" }
+                "Emitido em: " + new Date().toLocaleString("pt-BR"),
+                14, 29
+            );
+
+            doc.text("Quantidade de registros: " + dados.length, 14, 35);
+
+            // VERIFICA O PLUGIN AUTOTABLE
+            if (typeof doc.autoTable !== "function") {
+                alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
+                console.error("Verifique a inclusão da biblioteca jspdf-autotable.");
+                return;
+            }
+
+            // GERA A TABELA NO PDF
+            doc.autoTable({
+
+                head: [
+                    cabecalhosPDF.length > 0
+                        ? cabecalhosPDF
+                        : [
+                            "ID",
+                            "Projeto",
+                            "Ambiente",
+                            "Tamanho do Ambiente",
+                            "Potência Luz",
+                            "Tomadas Uso Geral",
+                            "Tomadas Uso Específico",
+                            "Tipo Tomadas Uso Específico",
+                            "Tipo Circuito"
+                        ]
+                ],
+
+                body: dados,
+
+                startY: 40,
+
+                theme: "grid",
+
+                styles: {
+                    font: "helvetica",
+                    fontSize: 8,
+                    cellPadding: 2,
+                    overflow: "linebreak",
+                    valign: "middle"
+                },
+
+                headStyles: {
+                    fontStyle: "bold",
+                    halign: "center"
+                },
+
+                margin: {
+                    top: 12,
+                    right: 10,
+                    bottom: 18,
+                    left: 10
+                },
+
+                didDrawPage: function () {
+
+                    const pagina = doc.internal.getNumberOfPages();
+                    const larguraPagina = doc.internal.pageSize.getWidth();
+                    const alturaPagina = doc.internal.pageSize.getHeight();
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(8);
+
+                    doc.text(
+                        "Planilha de Cálculos Elétricos | Página " + pagina,
+                        larguraPagina - 10,
+                        alturaPagina - 6,
+                        { align: "right" }
+                    );
+                }
+            });
+
+            // SALVA O PDF
+            doc.save("relatorio_calculos_eletricos.pdf");
+
+            console.log(
+                "✅ Relatório de cálculos elétricos gerado com " +
+                dados.length + " registros."
             );
         }
-    });
-
-    // SALVA O PDF
-    doc.save("relatorio_calculos_eletricos.pdf");
-
-    console.log(
-        "✅ Relatório de cálculos elétricos gerado com " +
-        dados.length + " registros."
-    );
-    }
 
 
 
@@ -1399,8 +1885,8 @@
                 return;
             }
 
-            //fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                fetch("http://localhost:8084/usuario/login", {
+            fetch("https://projeto-springboot.onrender.com/usuario/login", {
+                //fetch("http://localhost:8084/usuario/login", {
 
                 method: "POST",
 
