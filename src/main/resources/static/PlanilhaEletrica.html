@@ -14,186 +14,384 @@
 </head>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
-        font-family: Arial;
         margin: 0;
-        background: #f2f2f2;
+        background: #f4f6f9;
+        color: #2c3e50;
+        font-family: Arial, Helvetica, sans-serif;
+        overflow-x: hidden;
     }
 
-    /* BARRA SUPERIOR */
-
-    .topo {
-        background: #2c3e50;
-        color: white;
-        padding: 15px;
-        text-align: center;
-        font-size: 24px;
-    }
-
-    /* CONTAINER */
-
+    /* CONTAINER PRINCIPAL */
     .container {
-        width: 1000px;
-        margin: auto;
-        margin-top: 20px;
+        width: 95%;
+        max-width: 1400px;
+        margin: 25px auto;
     }
 
-    /* CARD */
-
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 8px gray;
-        margin-bottom: 20px;
-    }
-
-    .card1 {
-        background: #f2f2f2;
-    }
-
-    /* LOGO */
-
-    .logo {
+    /* Cabeçalho */
+    header {
+        background: linear-gradient(135deg, #1f2d3d, #34495e);
+        color: #fff;
+        padding: 24px 20px;
         text-align: center;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
+
+    header h2 {
+        margin: 0 0 10px;
+        font-size: clamp(21px, 2.5vw, 30px);
+        line-height: 1.4;
+        color: #ffffff;
+    }
+
+
+    header img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    header p {
+        margin: 0;
+        color: #dce6f1;
+        font-size: 15px;
+    }
+
+
+    /* CARD DA TABELA */
+    .card1 {
+        width: 100%;
+        min-width: 0;
+        padding: 24px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+        overflow-x: auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+
+
+    /* TABELA */
+    .card1 table {
+        width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+        border-collapse: collapse;
+        background: #ffffff;
+    }
+
+
+    /* CÉLULAS */
+    .card1 th,
+    .card1 td {
+        padding: 10px 8px;
+        border: 1px solid #dce3eb;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    /* CABEÇALHO */
+    .card1 th {
+        background: #34495e;
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    /* LINHAS ALTERNADAS */
+    .card1 tbody tr:nth-child(even) {
+        background: #f5f8fb;
+    }
+
+    /* EFEITO AO PASSAR O MOUSE */
+    .card1 tbody tr:hover {
+        background: #eaf3fc;
+    }
+
+    /* TÍTULO DO CARD */
+    .card1 h2 {
+        margin-top: 0;
+        color: #23476b;
+        font-size: 22px;
+    }
+
+    /* CABEÇALHO */
     .campo-direita {
-        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 15px;
     }
 
     #usuariologado {
-        text-align: right;
-        float: right;
-        padding: 6px 10px;
-        text-align: right;
+        width: 260px !important;
+        max-width: 100%;
+        padding: 10px 12px;
         font-weight: bold;
-        font-size: 14px;
         color: #003366;
         background: #e6f2ff;
-        border: 2px solid #007bff;
-        border-radius: 6px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        border: 1px solid #007bff;
+        border-radius: 8px;
+        text-align: center;
     }
 
-    /* INPUTS */
+    .logo {
+        text-align: center;
+        margin: 20px 0 28px;
+    }
+
+    .logo h1 {
+        color: #23476b;
+        font-size: 28px;
+        margin: 12px 0;
+        line-height: 1.4;
+    }
+
+    .logo img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        vertical-align: middle;
+    }
+
+    /* TÍTULOS */
+    h2 {
+        color: #23476b;
+        font-size: 22px;
+        margin: 10px 0 18px;
+    }
+
+    /* FORMULÁRIO */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
 
     input {
         width: 100%;
-        padding: 8px;
-        margin-top: 8px;
+        min-width: 0;
+        padding: 11px 12px;
+        margin: 0;
+        font-size: 14px;
+        color: #243447;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    /* GRID FORM */
+    input:focus {
+        border-color: #2980b9;
+        box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.14);
+    }
 
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+    input::placeholder {
+        color: #718096;
     }
 
     /* BOTÕES */
-
     .botoes {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-top: 20px;
-
+        margin-top: 22px;
     }
 
-    /* padrão de botão */
-    .botoes button {
-        width: 178px;
-        height: 40px;
-        padding: 10px 18px;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-    }
-
-    /* padrão de botão */
+    .botoes button,
     .login button {
-        width: 148px;
-        height: 40px;
-        padding: 10px 18px;
+        width: auto;
+        min-width: 185px;
+        min-height: 42px;
+        padding: 10px 16px;
         border: none;
-        border-radius: 6px;
+        border-radius: 7px;
         font-size: 14px;
         font-weight: bold;
+        color: #ffffff;
         cursor: pointer;
-        transition: all 0.3s ease;
-        color: white;
-        background-color: #007bff;
+        transition: filter 0.2s, transform 0.2s;
     }
 
+    .botoes button:hover,
+    .login button:hover {
+        filter: brightness(0.92);
+        transform: translateY(-1px);
+    }
 
     #salvar {
-        background: #27ae60;
-        color: white;
+        background: #198754;
     }
 
     #editar {
         background: #6fae27;
-        color: white;
     }
 
     #deletar {
-        background: #ae2b27;
-        color: white;
+        background: #b02a37;
     }
 
     #limparCampos {
-        background: #f39c12;
-        color: white;
+        background: #e69500;
     }
 
     #buscarProjeto {
-        background: #f37712;
-        color: white;
+        background: #ed7417;
     }
 
     #listarTodos {
         background: #2980b9;
-        color: white;
     }
 
     #gerarRelatorioPDF {
-        background: #3f29b9;
-        color: white;
+        background: #5140b8;
     }
 
-    .autenticar {
+    .login {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .login input {
+        width: 32% !important;
+        max-width: 100%;
+        margin: 0 8px 10px 0;
+    }
+
+    .login button {
+        width: auto;
+        min-width: 220px;
+        min-height: 42px;
+        height: auto;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: filter 0.2s, transform 0.2s;
         background: #7827ae;
-        color: white;
+        margin: 0 8px 10px 0;
     }
 
-    .logout {
+    .login button:last-child {
         background: #ae2b27;
-        color: white;
+    }
+
+    /* LEGENDA DOS CIRCUITOS */
+    .legenda-tipo {
+        margin-top: 28px;
+        padding: 20px;
+        width: 100%;
+        min-height: 0;
+        height: auto;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .legenda-tipo h3 {
+        margin: 0 0 16px;
+        color: #23476b;
+        font-size: 18px;
+    }
+
+    .tags-tipo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .tag {
+        width: auto;
+        min-width: 134px;
+        min-height: 35px;
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 13px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: bold;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .tag.iluminacao {
+        background: #ffe5e5;
+        color: #842029;
+    }
+
+    .tag.tomada {
+        background: #e5ffe5;
+        color: #176b35;
+    }
+
+    .tag.monofasico {
+        background: #e5f1ff;
+        color: #174a7e;
+    }
+
+    .tag.bifasico {
+        background: #e9e5ff;
+        color: #44318b;
+    }
+
+    .tag.trifasico {
+        background: #fff0d9;
+        color: #854d0e;
+    }
+
+    .tag.motor {
+        background: #f0e5ff;
+        color: #642a91;
+    }
+
+    .tag.Alimentadorgeral {
+        background: #ffedcc;
+        color: #854d0e;
+    }
+
+    /* CARD DE RESULTADOS */
+    .card-resultado {
+        margin-bottom: 24px;
+        padding: 24px;
+        border-radius: 12px;
+        background: #0d6efd;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+
+    .item-card {
+        background: #ffffff;
+        color: #243447;
+        padding: 18px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        overflow-wrap: anywhere;
     }
 
     /* TABELA */
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th,
-    td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-
-    th {
-        background: #34495e;
-        color: white;
+    .card1 h2 {
+        margin-top: 0;
     }
 
     .linha-iluminacao {
@@ -207,71 +405,59 @@
     .linha-qdg {
         background-color: #ffe08a;
         font-weight: bold;
-        color: #000;
+        color: #000000;
     }
 
     .linha-qdl {
         background-color: #8a96ff;
         font-weight: bold;
-        color: #000;
+        color: #000000;
     }
 
     .linha-qdp {
-
         background-color: #ffb98a;
         font-weight: bold;
-        color: #000;
+        color: #000000;
     }
 
-    .legenda-tipo {
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+        .container {
+            width: 96%;
+            margin: 12px auto;
+        }
 
-        margin-top: 10px;
-        padding: 10px;
-        width: 940px;
-        height: 140px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    }
+        .card,
+        .card1 {
+            padding: 15px;
+        }
 
-    .legenda-tipo h3 {
+        .logo h1 {
+            font-size: 22px;
+        }
 
-        margin-bottom: 12px;
-        color: #003366;
-        font-size: 18px;
-    }
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
 
-    .tags-tipo {
+        .botoes button {
+            flex: 1 1 145px;
+            width: auto;
+        }
 
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
+        .login input {
+            width: 100% !important;
+            margin-right: 0;
+        }
 
-    .card-resultado {
-        margin-top: 20px;
-        padding: 20px;
-        border-radius: 12px;
-        background: #0d6efd;
-        color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        font-family: Arial;
+        .login button {
+            margin-right: 5px;
+        }
 
-    }
-
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 15px;
-    }
-
-    .item-card {
-        background: white;
-        color: #333;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-        font-weight: bold;
+        .legenda-tipo {
+            padding: 15px;
+        }
     }
 </style>
 
@@ -279,262 +465,270 @@
 
 <body>
 
+    <header>
+
+        <h2><img src="Imagens/iconeCarlos.png" width="40">
+            Planilha de Projetos Elétrico</h2>
+        <p>NBR 5410 - Dimensionamentos básicos</p>
+
+    </header>
+
     <div class="container">
 
-        <div class="card">
 
-            <div class="campo-direita">
-                <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
-            </div>
 
-            <a href="PaginaPessoal.html" class="btn btn-default">
-                <span class="glyphicon glyphicon-home"></span> Página Principal
-            </a>
+        <div class="campo-direita">
+            <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+        </div>
 
-            <div class="logo">
-                <h1><img src="Imagens/iconeCarlos.png" width="60">
-                    Planilha de Projeto Eletrico</h1>
-            </div>
+        <a href="PaginaPessoal.html" class="btn btn-default">
+            <span class="glyphicon glyphicon-home"></span> Página Principal
+        </a>
 
-            <div class="grid">
+        <div class="logo">
+            <h1><img src="Imagens/iconeCarlos.png" width="60">
+                Planilha de Projeto Eletrico</h1>
+        </div>
 
-                <input type="text" id="id" placeholder="ID - Não precisa inserir">
+        <div class="grid">
 
-                <input type="text" id="projeto" placeholder="Projeto">
+            <input type="text" id="id" placeholder="ID - insira o ID para excluir">
 
-                <input type="text" id="circuito" placeholder="Circuito">
+            <input type="text" id="projeto" placeholder="Projeto - nome do contratante">
 
-                <input type="text" id="descricao" placeholder="Descrição">
+            <input type="text" id="circuito" placeholder="Circuito">
 
-                <input type="text" id="potenciatotal" placeholder="Pot. Total(VA)">
+            <input type="text" id="descricao" placeholder="Descrição - nome dos ambientes">
 
-                <input type="text" id="potenciacorrigida" placeholder="Pot. Corrigida(W) - Não precisa inserir">
+            <input type="text" id="potenciatotal" placeholder="Pot. Total(VA)">
 
-                <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
+            <input type="text" id="potenciacorrigida" placeholder="Pot. Corrigida(W) - Não precisa inserir">
 
-                <input type="text" id="correnteib" placeholder="CorrenteIB(A) - Não precisa inserir">
+            <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
 
-                <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
+            <input type="text" id="correnteib" placeholder="CorrenteIB(A) - Não precisa inserir">
 
-                <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
+            <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
 
-                <input type="text" id="condutor" placeholder="Condutor(mm2) - Não precisa inserir">
+            <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
 
-            </div>
-
-            <div class="botoes">
-
-                <button id="salvar" onclick="salvar()">💾Salvar</button>
-                <button id="editar" onclick="editar()">✏️Editar</button>
-                <button id="deletar" onclick="deletar()">🗑️Deletar</button>
-                <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
-                <button id="buscarProjeto" onclick="buscarProjeto()">🔍Buscar Projeto</button>
-                <button id="listarTodos" onclick="listarTodos()">📋ListarTodos</button>
-                <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋GerarPlanilhaPDF</button>
-
-            </div>
-
-            <div class="login">
-
-                <h2>Realizar Login</h2>
-
-                <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
-
-                <input type="password" id="senha" placeholder="Senha" style="width:33%;">
-
-                <button onclick="autenticar()">🚪➡️Entrar</button>
-                <button onclick="logout()">🚪⬅️Sair</button>
-
-            </div>
-
-            <!-- LEGENDA DE TIPO DE CIRCUITO -->
-            <div class="legenda-tipo">
-                <h3>📌 Principais tipos de circuitos:</h3>
-                <div class="tags-tipo">
-
-                    <span class="tag iluminacao">💡 Iluminacao</span>
-                    <span class="tag tomada">🔌 Tomada</span>
-                    <span class="tag monofasico">🏠 Monofasico</span>
-                    <span class="tag bifasico">🔀 Bifasico</span>
-                    <span class="tag trifasico">⚡ Trifasico</span>
-                    <span class="tag motor">⚙️ Circuitoespecifico(Ar Condicionado, Chuveiro e outros)</span>
-                    <span class="tag Alimentadorgeral">⚡ Alimentadorgeral</span>
-
-                </div>
-            </div>
+            <input type="text" id="condutor" placeholder="Condutor(mm2) - Não precisa inserir">
 
         </div>
 
-        <div id="resultadoCard" class="card-resultado" style="display:none;"></div>
+        <div class="botoes">
 
+            <button id="salvar" onclick="salvar()">💾Salvar</button>
+            <button id="editar" onclick="editar()">✏️Editar</button>
+            <button id="deletar" onclick="deletar()">🗑️Deletar</button>
+            <button id="limparCampos" onclick="limparCampos()">🧹Limpar</button>
+            <button id="buscarProjeto" onclick="buscarProjeto()">🔍Buscar Projeto</button>
+            <button id="listarTodos" onclick="listarTodos()">📋ListarTodos</button>
+            <button id="gerarRelatorioPDF" onclick="gerarRelatorioPDF()">📋GerarPlanilhaPDF</button>
+
+        </div>
+
+        <div class="login">
+
+            <h2>Realizar Login</h2>
+
+            <input type="text" id="usuario" placeholder="Usuario" style="width:33%;">
+            <input type="password" id="senha" placeholder="Senha" style="width:33%;">
+
+            <button onclick="autenticar()">🚪➡️Entrar</button>
+            <button onclick="logout()">🚪⬅️Sair</button>
+
+        </div>
+
+        <!-- LEGENDA DE TIPO DE CIRCUITO -->
+        <div class="legenda-tipo">
+            <h3>📌 Principais tipos de circuitos:</h3>
+
+            <div class="tags-tipo">
+                <span class="tag iluminacao">💡 Iluminação</span>
+                <span class="tag tomada">🔌 Tomada</span>
+                <span class="tag monofasico">🏠 Monofásico</span>
+                <span class="tag bifasico">🔀 Bifásico</span>
+                <span class="tag trifasico">⚡ Trifásico</span>
+                <span class="tag motor">
+                    ⚙️ Circuitoespecífico (Ar-condicionado, chuveiro e outros)
+                </span>
+                <span class="tag Alimentadorgeral">⚡ Alimentadorgeral</span>
+            </div>
+        </div>
+
+        <!-- CARD DE RESULTADOS -->
+        <div id="resultadoCard" class="card-resultado" style="display: none;">
+        </div>
+
+        <!-- CARD DA TABELA -->
         <div class="card1">
 
             <h2>Quadro de Cargas</h2>
 
-            <table>
+            <div class="table-responsive">
 
-                <thead>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Projeto</th>
+                            <th>Circuito</th>
+                            <th>Descrição</th>
+                            <th>PotTotal</th>
+                            <th>PotCorrigida</th>
+                            <th>TipoCircuito</th>
+                            <th>CorrenteIB</th>
+                            <th>CorrenteIC</th>
+                            <th>Disjuntor</th>
+                            <th>Condutor</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
 
-                    <tr>
+                    <tbody id="tabelaPlanilha">
+                    </tbody>
+                </table>
 
-                        <th>ID</th>
-                        <th>Projeto</th>
-                        <th>Circuito</th>
-                        <th>Descrição</th>
-                        <th>PotTotal</th>
-                        <th>PotCorrigida</th>
-                        <th>TipoCircuito</th>
-                        <th>CorrenteIB</th>
-                        <th>CorrenteIC</th>
-                        <th>Disjuntor</th>
-                        <th>Condutor</th>
-                        <th>Ação</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="tabelaPlanilha">
-
-                </tbody>
-
-            </table>
-
+            </div>
         </div>
 
     </div>
+</body>
 
-    <!-- Biblioteca para gerar arquivos PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-
-
-    <script>
+</html>
 
 
-        const API = "https://projeto-springboot.onrender.com";
-        //const API = "http://localhost:8084";
+<!-- Biblioteca para gerar arquivos PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
-        //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
-        window.onload = function () {
-            localStorage.removeItem("usuario");
-            localStorage.removeItem("loggedIn");
-        };
 
-        function iniciarSistema() {
-            console.log("Sistema iniciado");
+<script>
+
+    const API = "https://projeto-springboot.onrender.com";
+    //const API = "http://localhost:8084";
+
+    //FUNÇÃO PARA INICIAR A JANELA (PAGINA)
+    window.onload = function () {
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("loggedIn");
+    };
+
+    function iniciarSistema() {
+        console.log("Sistema iniciado");
+    }
+
+    //FUNÇÃO PARA INICIAR USUARIO
+    function getUsuario() {
+
+        const user = localStorage.getItem("usuario");
+
+        if (!user || user === "undefined" || user === "null") {
+
+            return null;
         }
 
-        //FUNÇÃO PARA INICIAR USUARIO
-        function getUsuario() {
+        return user;
+    }
 
-            const user = localStorage.getItem("usuario");
+    //FUNÇÃO PARA FECH SEGURO
+    function fetchSeguro(url, options = {}) {
+        return fetch(url, options); // ✔️ NÃO converte nada
+    }
 
-            if (!user || user === "undefined" || user === "null") {
 
-                return null;
-            }
+    // =====================================================
+    // FUNÇÃO PARA LISTAR TODOS OS CIRCUITOS
+    // =====================================================
 
-            return user;
+    function listarTodos() {
+
+        const usuario = getUsuario();
+
+        if (!usuario) {
+            console.warn("Usuário não definido!");
+            alert("⚠️ Faça Login!");
+            return;
         }
 
-        //FUNÇÃO PARA FECH SEGURO
-        function fetchSeguro(url, options = {}) {
-            return fetch(url, options); // ✔️ NÃO converte nada
-        }
+        console.log("🔎 Listando circuitos do usuário:", usuario);
 
+        fetchSeguro(
+            `${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`
+        )
 
-        // =====================================================
-        // FUNÇÃO PARA LISTAR TODOS OS CIRCUITOS
-        // =====================================================
+            .then(response => {
 
-        function listarTodos() {
+                console.log("📡 Status:", response.status);
 
-            const usuario = getUsuario();
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
 
-            if (!usuario) {
-                console.warn("Usuário não definido!");
-                alert("⚠️ Faça Login!");
-                return;
-            }
+                return response.json();
+            })
 
-            console.log("🔎 Listando circuitos do usuário:", usuario);
+            .then(data => {
 
-            fetchSeguro(
-                `${API}/planilha/usuario?usuario=${encodeURIComponent(usuario)}`
-            )
+                console.log("📦 Dados recebidos:", data);
 
-                .then(response => {
+                const tabela =
+                    document.getElementById("tabelaPlanilha");
 
-                    console.log("📡 Status:", response.status);
+                if (!tabela) {
+                    console.error("❌ Elemento tabelaPlanilha não encontrado!");
+                    return;
+                }
 
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP: ${response.status}`);
+                if (!Array.isArray(data)) {
+
+                    console.error("❌ Resposta inválida:", data);
+
+                    tabela.innerHTML =
+                        "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
+
+                    return;
+                }
+
+                let linhas = "";
+
+                data.forEach(planilha => {
+
+                    const circuito =
+                        (planilha.circuito || "")
+                            .trim()
+                            .toLowerCase();
+
+                    let classeLinha;
+
+                    if (circuito === "qdg") {
+
+                        classeLinha = "linha-qdg";
+
+                    } else if (circuito === "qdl") {
+
+                        classeLinha = "linha-qdl";
+
+                    } else if (circuito === "qdp") {
+
+                        classeLinha = "linha-qdp";
+
+                    } else if (circuito === "iluminação") {
+
+                        classeLinha = "linha-iluminacao";
+
+                    } else {
+
+                        classeLinha = "linha-tomada";
                     }
 
-                    return response.json();
-                })
+                    const textoBotao =
+                        circuito === "iluminação"
+                            ? "Tomadas"
+                            : "Trocar Tipo";
 
-                .then(data => {
-
-                    console.log("📦 Dados recebidos:", data);
-
-                    const tabela =
-                        document.getElementById("tabelaPlanilha");
-
-                    if (!tabela) {
-                        console.error("❌ Elemento tabelaPlanilha não encontrado!");
-                        return;
-                    }
-
-                    if (!Array.isArray(data)) {
-
-                        console.error("❌ Resposta inválida:", data);
-
-                        tabela.innerHTML =
-                            "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
-
-                        return;
-                    }
-
-                    let linhas = "";
-
-                    data.forEach(planilha => {
-
-                        const circuito =
-                            (planilha.circuito || "")
-                                .trim()
-                                .toLowerCase();
-
-                        let classeLinha;
-
-                        if (circuito === "qdg") {
-
-                            classeLinha = "linha-qdg";
-
-                        } else if (circuito === "qdl") {
-
-                            classeLinha = "linha-qdl";
-
-                        } else if (circuito === "qdp") {
-
-                            classeLinha = "linha-qdp";
-
-                        } else if (circuito === "iluminação") {
-
-                            classeLinha = "linha-iluminacao";
-
-                        } else {
-
-                            classeLinha = "linha-tomada";
-                        }
-
-                        const textoBotao =
-                            circuito === "iluminação"
-                                ? "Tomadas"
-                                : "Trocar Tipo";
-
-                        linhas += `
+                    linhas += `
                 <tr class="${classeLinha}">
 
                     <td>${planilha.id ?? ""}</td>
@@ -542,19 +736,19 @@
                     <td>${planilha.circuito ?? ""}</td>
                     <td>${planilha.descricao ?? ""}</td>
                     <td>${Number(
-                            planilha.potenciatotal || 0
-                        ).toFixed(2)}</td>
+                        planilha.potenciatotal || 0
+                    ).toFixed(2)}</td>
 
                     <td>${Number(
-                            planilha.potenciacorrigida || 0
-                        ).toFixed(2)}</td>
+                        planilha.potenciacorrigida || 0
+                    ).toFixed(2)}</td>
                     <td>${planilha.tipocircuito ?? ""}</td>
                     <td>${Number(
-                            planilha.correnteib || 0
-                        ).toFixed(2)}</td>
+                        planilha.correnteib || 0
+                    ).toFixed(2)}</td>
                     <td>${Number(
-                            planilha.correnteic || 0
-                        ).toFixed(2)}</td>
+                        planilha.correnteic || 0
+                    ).toFixed(2)}</td>
                     <td>${planilha.disjuntor ?? ""}</td>
                     <td>${planilha.condutor ?? ""}</td>
 
@@ -569,269 +763,268 @@
                     </td>
                 </tr>
             `;
-                    });
-
-                    tabela.innerHTML = linhas;
-
-                    console.log(
-                        `✅ ${data.length} circuitos carregados na tabela.`
-                    );
-
-                    alert(`✅ ${data.length} circuitos carregados na tabela.`);
-
-                })
-
-                .catch(err => {
-
-                    console.error("❌ Erro ao listar circuitos:", err);
-
-                    const tabela =
-                        document.getElementById("tabelaPlanilha");
-
-                    if (tabela) {
-
-                        tabela.innerHTML =
-                            "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
-                    }
                 });
 
-        }
+                tabela.innerHTML = linhas;
 
+                console.log(
+                    `✅ ${data.length} circuitos carregados na tabela.`
+                );
 
-        // FUNÇÃO PARA SALVAR
-        function salvar() {
+                alert(`✅ ${data.length} circuitos carregados na tabela.`);
 
-            const usuario = getUsuario();
-
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
-
-            if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
-
-            const dados = {
-                projeto: document.getElementById("projeto")?.value.trim(),
-                circuito: document.getElementById("circuito")?.value.trim(),
-                descricao: document.getElementById("descricao")?.value.trim(),
-                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
-                tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                usuario: usuario
-            };
-
-            fetchSeguro(`${API}/planilha`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados)
             })
-                .then(response => {
-                    console.log("STATUS REAL:", response.status);
 
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP ${response.status}`);
-                    }
+            .catch(err => {
 
-                    return response.json();
-                })
+                console.error("❌ Erro ao listar circuitos:", err);
 
-                .then(data => {
+                const tabela =
+                    document.getElementById("tabelaPlanilha");
 
-                    console.log("Dados retornados pela API:", data);
+                if (tabela) {
 
-                    mostrarResultado({
-                        potenciatotal: data.potenciatotal,
-                        potenciacorrigida: data.potenciacorrigida,
-                        correnteib: data.correnteib,
-                        correnteic: data.correnteic,
-                        cabo: data.condutor,
-                        disjuntor: data.disjuntor
-                    });
+                    tabela.innerHTML =
+                        "<tr><td colspan='12'>Erro ao carregar dados.</td></tr>";
+                }
+            });
+    }
 
-                    alert("✅ Dados salvos com sucesso!");
-                    limparCampos();
 
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert("❌ Erro ao salvar");
-                });
+    // FUNÇÃO PARA SALVAR
+    function salvar() {
+
+        const usuario = getUsuario();
+
+        if (!usuario) {
+            alert("⚠️ Faça Login!");
+            return;
         }
 
+        if (!confirm("Tem certeza que deseja salvar esses dados?")) return;
 
-        // FUNÇÃO PARA EDITAR
-        async function editar() {
-            try {
-                const usuario = getUsuario();
+        const dados = {
+            projeto: document.getElementById("projeto")?.value.trim(),
+            circuito: document.getElementById("circuito")?.value.trim(),
+            descricao: document.getElementById("descricao")?.value.trim(),
+            potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+            tipocircuito: document.getElementById("tipocircuito")?.value || "",
+            usuario: usuario
+        };
 
-                // Valida login
-                if (!usuario) {
-                    alert("⚠️ Faça Login!");
-                    return;
-                }
-
-                // Valida ID
-                const id = document.getElementById("id")?.value.trim();
-
-                if (!id || isNaN(id)) {
-                    alert("⚠️ ID inválido!");
-                    return;
-                }
-
-                // Confirma
-                if (!confirm("Tem certeza que deseja editar estes dados?")) {
-                    return;
-                }
-
-                // Captura TODOS os campos
-                const dados = {
-                    projeto: document.getElementById("projeto")?.value.trim() || "",
-                    circuito: document.getElementById("circuito")?.value.trim() || "",
-                    descricao: document.getElementById("descricao")?.value.trim() || "",
-                    potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
-                    potenciacorrigida: parseFloat(document.getElementById("potenciacorrigida")?.value) || 0,
-                    tipocircuito: document.getElementById("tipocircuito")?.value || "",
-                    correnteib: parseFloat(document.getElementById("correnteib")?.value) || 0,
-                    correnteic: parseFloat(document.getElementById("correnteic")?.value) || 0,
-
-                    disjuntor: String(document.getElementById("disjuntor")?.value || "").trim(),
-                    condutor: String(document.getElementById("condutor")?.value || "").trim(),
-
-                    usuario: usuario
-                };
-
-                console.log("Enviando:", dados);
-
-                const response = await fetchSeguro(`${API}/planilha/${id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(dados)
-                });
-
-                console.log("Status:", response.status);
+        fetchSeguro(`${API}/planilha`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        })
+            .then(response => {
+                console.log("STATUS REAL:", response.status);
 
                 if (!response.ok) {
-                    const erro = await response.text();
-                    throw new Error(erro || "Erro ao atualizar");
+                    throw new Error(`Erro HTTP ${response.status}`);
                 }
 
-                alert("✅ Dados atualizados com sucesso!");
+                return response.json();
+            })
 
+            .then(data => {
+
+                console.log("Dados retornados pela API:", data);
+
+                mostrarResultado({
+                    potenciatotal: data.potenciatotal,
+                    potenciacorrigida: data.potenciacorrigida,
+                    correnteib: data.correnteib,
+                    correnteic: data.correnteic,
+                    cabo: data.condutor,
+                    disjuntor: data.disjuntor
+                });
+
+                alert("✅ Dados salvos com sucesso!");
                 limparCampos();
-                listarTodos();
 
-            } catch (error) {
-                console.error("Erro ao editar:", error);
-                alert("❌ Erro ao atualizar dados");
-            }
-        }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("❌ Erro ao salvar");
+            });
+    }
 
 
-        // FUNÇÃO PARA EXCLUIR
-        function deletar() {
-
+    // FUNÇÃO PARA EDITAR
+    async function editar() {
+        try {
             const usuario = getUsuario();
 
+            // Valida login
             if (!usuario) {
                 alert("⚠️ Faça Login!");
                 return;
             }
 
-            const id = document.getElementById("id").value.trim();
-
-            console.log("ID recebido:", id);
+            // Valida ID
+            const id = document.getElementById("id")?.value.trim();
 
             if (!id || isNaN(id)) {
                 alert("⚠️ ID inválido!");
                 return;
             }
 
-            if (!confirm("Tem certeza que deseja excluir este registro?")) return;
+            // Confirma
+            if (!confirm("Tem certeza que deseja editar estes dados?")) {
+                return;
+            }
 
-            fetchSeguro(`${API}/planilha/${id}`, {
-                method: "DELETE"
-            })
-                .then(response => {
+            // Captura TODOS os campos
+            const dados = {
+                projeto: document.getElementById("projeto")?.value.trim() || "",
+                circuito: document.getElementById("circuito")?.value.trim() || "",
+                descricao: document.getElementById("descricao")?.value.trim() || "",
+                potenciatotal: parseFloat(document.getElementById("potenciatotal")?.value) || 0,
+                potenciacorrigida: parseFloat(document.getElementById("potenciacorrigida")?.value) || 0,
+                tipocircuito: document.getElementById("tipocircuito")?.value || "",
+                correnteib: parseFloat(document.getElementById("correnteib")?.value) || 0,
+                correnteic: parseFloat(document.getElementById("correnteic")?.value) || 0,
 
-                    console.log("Status:", response.status);
+                disjuntor: String(document.getElementById("disjuntor")?.value || "").trim(),
+                condutor: String(document.getElementById("condutor")?.value || "").trim(),
 
-                    if (!response.ok) {
-                        throw new Error("Erro ao excluir");
-                    }
+                usuario: usuario
+            };
 
-                    return response.text();
-                })
-                .then(() => {
+            console.log("Enviando:", dados);
 
-                    alert("✅ Registro excluído com sucesso!");
+            const response = await fetchSeguro(`${API}/planilha/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dados)
+            });
 
-                    limparCampos();
-                    listarTodos();
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert("❌ Erro ao excluir");
-                });
+            console.log("Status:", response.status);
+
+            if (!response.ok) {
+                const erro = await response.text();
+                throw new Error(erro || "Erro ao atualizar");
+            }
+
+            alert("✅ Dados atualizados com sucesso!");
+
+            limparCampos();
+            listarTodos();
+
+        } catch (error) {
+            console.error("Erro ao editar:", error);
+            alert("❌ Erro ao atualizar dados");
+        }
+    }
+
+
+    // FUNÇÃO PARA EXCLUIR
+    function deletar() {
+
+        const usuario = getUsuario();
+
+        if (!usuario) {
+            alert("⚠️ Faça Login!");
+            return;
         }
 
-        // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
-        async function editarCircuito(id, tipoAtual) {
-            try {
+        const id = document.getElementById("id").value.trim();
 
-                // valida ID
-                if (!id || isNaN(id)) {
-                    alert("⚠️ ID inválido!");
-                    return;
-                }
+        console.log("ID recebido:", id);
 
-                // define novo tipo
-                const novoTipo =
-                    tipoAtual === "Tomada" || tipoAtual === "Tomadas"
-                        ? "Iluminação"
-                        : "Tomada";
+        if (!id || isNaN(id)) {
+            alert("⚠️ ID inválido!");
+            return;
+        }
 
-                // confirmação
-                if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
-                    return;
-                }
+        if (!confirm("Tem certeza que deseja excluir este registro?")) return;
 
-                const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        tipocircuito: novoTipo
-                    })
-                });
+        fetchSeguro(`${API}/planilha/${id}`, {
+            method: "DELETE"
+        })
+            .then(response => {
 
                 console.log("Status:", response.status);
 
                 if (!response.ok) {
-                    const erro = await response.text();
-                    throw new Error(erro || "Erro ao atualizar");
+                    throw new Error("Erro ao excluir");
                 }
 
-                alert("✅ Tipo de circuito atualizado!");
+                return response.text();
+            })
+            .then(() => {
+
+                alert("✅ Registro excluído com sucesso!");
+
+                limparCampos();
                 listarTodos();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("❌ Erro ao excluir");
+            });
+    }
 
-            } catch (error) {
-                console.error("Erro ao atualizar tipo:", error);
-                alert("❌ Erro ao atualizar Tipo do circuito");
+    // FUNÇÃO PARA EDITAR TIPO DE CIRCUITO
+    async function editarCircuito(id, tipoAtual) {
+        try {
+
+            // valida ID
+            if (!id || isNaN(id)) {
+                alert("⚠️ ID inválido!");
+                return;
             }
+
+            // define novo tipo
+            const novoTipo =
+                tipoAtual === "Tomada" || tipoAtual === "Tomadas"
+                    ? "Iluminação"
+                    : "Tomada";
+
+            // confirmação
+            if (!confirm(`Deseja alterar para "${novoTipo}"?`)) {
+                return;
+            }
+
+            const response = await fetchSeguro(`${API}/planilha/${id}/tipocircuito`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    tipocircuito: novoTipo
+                })
+            });
+
+            console.log("Status:", response.status);
+
+            if (!response.ok) {
+                const erro = await response.text();
+                throw new Error(erro || "Erro ao atualizar");
+            }
+
+            alert("✅ Tipo de circuito atualizado!");
+            listarTodos();
+
+        } catch (error) {
+            console.error("Erro ao atualizar tipo:", error);
+            alert("❌ Erro ao atualizar Tipo do circuito");
         }
+    }
 
-        // FUNÇÃO PARA MOSTRAR OS RESULTADOS
-        function mostrarResultado(r) {
+    // FUNÇÃO PARA MOSTRAR OS RESULTADOS
+    function mostrarResultado(r) {
 
-            if (!r) return;
+        if (!r) return;
 
-            const card = document.getElementById("resultadoCard");
+        const card = document.getElementById("resultadoCard");
 
-            card.innerHTML = `
+        card.innerHTML = `
         <h3>⚡ Resultado do Cálculo</h3>
 
         <div class="card-grid">
@@ -869,91 +1062,91 @@
         </div>
     `;
 
-            card.style.display = "block";
+        card.style.display = "block";
+    }
+
+
+    // FUNÇÃO PARA BUSCAR PROJETO
+    function buscarProjeto() {
+
+        const usuario = getUsuario();
+
+        if (!usuario) {
+            alert("⚠️ Faça Login!");
+            return;
         }
 
+        const projeto = document.getElementById("projeto")?.value.trim();
 
-        // FUNÇÃO PARA BUSCAR PROJETO
-        function buscarProjeto() {
+        if (!projeto) {
+            alert("⚠️ Informe o Projeto a ser consultado!");
+            return;
+        }
 
-            const usuario = getUsuario();
+        fetchSeguro(`${API}/planilha/buscar?projeto=${encodeURIComponent(projeto)}`)
+            .then(response => {
 
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
+                console.log("Status:", response.status);
 
-            const projeto = document.getElementById("projeto")?.value.trim();
+                if (!response.ok) {
+                    throw new Error(`Erro: ${response.status}`);
+                }
 
-            if (!projeto) {
-                alert("⚠️ Informe o Projeto a ser consultado!");
-                return;
-            }
+                return response.json();
+            })
 
-            fetchSeguro(`${API}/planilha/buscar?projeto=${encodeURIComponent(projeto)}`)
-                .then(response => {
+            .then(data => {
 
-                    console.log("Status:", response.status);
+                const tabela = document.getElementById("tabelaPlanilha");
 
-                    if (!response.ok) {
-                        throw new Error(`Erro: ${response.status}`);
-                    }
+                if (!Array.isArray(data)) {
+                    tabela.innerHTML =
+                        "<tr><td colspan='11'>Erro ao carregar</td></tr>";
+                    return;
+                }
 
-                    return response.json();
-                })
+                if (data.length === 0) {
+                    tabela.innerHTML =
+                        "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
+                    return;
+                }
 
-                .then(data => {
+                let linhas = "";
 
-                    const tabela = document.getElementById("tabelaPlanilha");
-
-                    if (!Array.isArray(data)) {
-                        tabela.innerHTML =
-                            "<tr><td colspan='11'>Erro ao carregar</td></tr>";
-                        return;
-                    }
-
-                    if (data.length === 0) {
-                        tabela.innerHTML =
-                            "<tr><td colspan='11'>Nenhum registro encontrado</td></tr>";
-                        return;
-                    }
-
-                    let linhas = "";
-
-                    data.forEach(planilha => {
+                data.forEach(planilha => {
 
 
-                        // 🎨 Classe da linha
-                        const circuito =
-                            (planilha.circuito || "").toLowerCase();
+                    // 🎨 Classe da linha
+                    const circuito =
+                        (planilha.circuito || "").toLowerCase();
 
-                        const classeLinha =
+                    const classeLinha =
 
-                            circuito === "qdg"
-                                ? "linha-qdg"
-
-                                : circuito === "iluminação"
-                                    ? "linha-iluminacao"
-
-                                    : "linha-tomada";
-
-                        planilha.circuito === "qdg"
+                        circuito === "qdg"
                             ? "linha-qdg"
 
-                            : planilha.circuito === "Iluminação"
+                            : circuito === "iluminação"
                                 ? "linha-iluminacao"
 
                                 : "linha-tomada";
 
-                        // 🔘 Texto do botão
-                        const textoBotao =
+                    planilha.circuito === "qdg"
+                        ? "linha-qdg"
 
-                            planilha.circuito === "Iluminação"
-                                ? "Tomadas"
+                        : planilha.circuito === "Iluminação"
+                            ? "linha-iluminacao"
 
-                                : "TrocarTipo";
+                            : "linha-tomada";
 
-                        linhas += `
+                    // 🔘 Texto do botão
+                    const textoBotao =
+
+                        planilha.circuito === "Iluminação"
+                            ? "Tomadas"
+
+                            : "TrocarTipo";
+
+                    linhas += `
                     <tr class="${classeLinha}">
                         <td>${planilha.id ?? ""}</td>
                         <td>${planilha.projeto ?? ""}</td>
@@ -973,279 +1166,279 @@
                         </td>
                     </tr>
                 `;
-                    });
-
-                    tabela.innerHTML = linhas;
-
-                    alert("✅ Projeto encontrado!");
-                
-                })
-
-                .catch(error => {
-
-                    console.error("Erro ao buscar Projeto:", error);
-
-                    document.getElementById("tabelaPlanilha").innerHTML =
-                        "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
                 });
-        }
 
+                tabela.innerHTML = linhas;
 
-        // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
-        function autenticar() {
-
-            const usuario = document.getElementById("usuario").value;
-            const senha = document.getElementById("senha").value;
-
-            // Validação de campos vazios
-            if (usuario === "" && senha === "") {
-                alert("⚠️ Informe usuario e senha para realizar Login!");
-                return;
-            }
-
-            if (usuario === "") {
-                alert("⚠️ Informe o usuário!");
-                return;
-            }
-
-            if (senha === "") {
-                alert("⚠️ Informe a senha!");
-                return;
-            }
-
-            fetch("https://projeto-springboot.onrender.com/usuario/login", {
-                //fetch("http://localhost:8084/usuario/login", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    usuario,
-                    senha
-                })
+                alert("✅ Projeto encontrado!");
 
             })
 
-                .then(response => {
+            .catch(error => {
 
-                    if (!response.ok) {
-                        throw new Error("Login inválido");
-                    }
+                console.error("Erro ao buscar Projeto:", error);
 
-                    return response.json();
-
-                })
-
-                .then(data => {
-
-                    // Mostra o usuário no campo Default
-                    localStorage.setItem("usuario", data.usuario);
-                    document.getElementById("usuariologado").value = data.usuario;
-                    alert("Login realizado com sucesso!");
-                    limparLogin();
-
-                })
-
-
-                .catch(error => {
-
-                    alert("Usuário ou senha incorretos");
-
-                });
-
-        }
-
-
-        // FUNÇÃO EFETUAR O LOGOUT
-        function logout() {
-            localStorage.removeItem("usuariologado");
-            alert("🚪 Logout realizado com sucesso!");
-
-            window.location.href = "PlanilhaEletrica.html";
-        }
-
-
-        // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
-        function limparCampos() {
-            document.getElementById("id").value = "";
-            document.getElementById("projeto").value = "";
-            document.getElementById("circuito").value = "";
-            document.getElementById("descricao").value = "";
-            document.getElementById("potenciatotal").value = "";
-            document.getElementById("potenciacorrigida").value = "";
-            document.getElementById("tipocircuito").value = "";
-            document.getElementById("correnteic").value = "";
-            document.getElementById("correnteib").value = "";
-            document.getElementById("disjuntor").value = "";
-            document.getElementById("condutor").value = "";
-            //alert("Campos limpos sucesso!");
-        }
-
-        // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
-        function limparLogin() {
-            document.getElementById("usuario").value = "";
-            document.getElementById("senha").value = "";
-
-        }
-
-
-        // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA ELÉTRICA
-        function gerarRelatorioPDF() {
-
-            // IDENTIFICA O USUÁRIO LOGADO
-            const usuario = localStorage.getItem("usuario");
-
-            if (!usuario) {
-                alert("⚠️ Faça Login!");
-                return;
-            }
-
-            // VERIFICA AS BIBLIOTECAS
-            if (!window.jspdf || !window.jspdf.jsPDF) {
-                alert("❌ A biblioteca jsPDF não foi carregada!");
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: "landscape",
-                unit: "mm",
-                format: "a4"
+                document.getElementById("tabelaPlanilha").innerHTML =
+                    "<tr><td colspan='11'>Erro ao carregar dados</td></tr>";
             });
+    }
 
-            // LOCALIZA A TABELA
-            const tabela = document.getElementById("tabelaPlanilha");
 
-            if (!tabela) {
-                alert("❌ A tabelaPlanilha não foi encontrada!");
-                return;
-            }
+    // FUNÇÃO PARA AUTENTICAR O USUARIO NO BANCO E MOSTRAR NA TELA
+    function autenticar() {
 
-            // CAPTURA OS CABEÇALHOS
-            const tabelaHTML = tabela.closest("table");
+        const usuario = document.getElementById("usuario").value;
+        const senha = document.getElementById("senha").value;
 
-            const cabecalhos = tabelaHTML
-                ? Array.from(tabelaHTML.querySelectorAll("thead th"))
-                    .map(th => th.innerText.trim())
-                : [];
+        // Validação de campos vazios
+        if (usuario === "" && senha === "") {
+            alert("⚠️ Informe usuario e senha para realizar Login!");
+            return;
+        }
 
-            // CAPTURA OS DADOS DOS CIRCUITOS
-            const linhas = tabela.querySelectorAll("tr");
-            const dados = [];
+        if (usuario === "") {
+            alert("⚠️ Informe o usuário!");
+            return;
+        }
 
-            linhas.forEach(linha => {
+        if (senha === "") {
+            alert("⚠️ Informe a senha!");
+            return;
+        }
 
-                const colunas = linha.querySelectorAll("td");
+        fetch("https://projeto-springboot.onrender.com/usuario/login", {
+            //fetch("http://localhost:8084/usuario/login", {
 
-                if (colunas.length > 0) {
+            method: "POST",
 
-                    const valores = Array.from(colunas).map(coluna =>
-                        coluna.innerText.trim()
-                    );
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                    dados.push(valores);
+            body: JSON.stringify({
+                usuario,
+                senha
+            })
+
+        })
+
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Login inválido");
                 }
+
+                return response.json();
+
+            })
+
+            .then(data => {
+
+                // Mostra o usuário no campo Default
+                localStorage.setItem("usuario", data.usuario);
+                document.getElementById("usuariologado").value = data.usuario;
+                alert("Login realizado com sucesso!");
+                limparLogin();
+
+            })
+
+
+            .catch(error => {
+
+                alert("Usuário ou senha incorretos");
+
             });
 
-            if (dados.length === 0) {
-                alert("⚠️ Não existem circuitos na tabela para gerar o relatório!");
-                return;
-            }
+    }
 
-            // CABEÇALHO DO RELATÓRIO
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(16);
 
-            doc.text("RELATÓRIO DA PLANILHA ELÉTRICA", 14, 15);
+    // FUNÇÃO EFETUAR O LOGOUT
+    function logout() {
+        localStorage.removeItem("usuariologado");
+        alert("🚪 Logout realizado com sucesso!");
 
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(10);
+        window.location.href = "PlanilhaEletrica.html";
+    }
 
-            doc.text("Usuário: " + usuario, 14, 23);
-            doc.text(
-                "Emitido em: " + new Date().toLocaleString("pt-BR"),
-                14, 29
-            );
 
-            doc.setFontSize(10);
-            doc.text("Quantidade de circuitos: " + dados.length, 14, 35);
+    // FUNÇÃO LIMPAR OS CAMPOS DO FORMULÁRIO
+    function limparCampos() {
+        document.getElementById("id").value = "";
+        document.getElementById("projeto").value = "";
+        document.getElementById("circuito").value = "";
+        document.getElementById("descricao").value = "";
+        document.getElementById("potenciatotal").value = "";
+        document.getElementById("potenciacorrigida").value = "";
+        document.getElementById("tipocircuito").value = "";
+        document.getElementById("correnteic").value = "";
+        document.getElementById("correnteib").value = "";
+        document.getElementById("disjuntor").value = "";
+        document.getElementById("condutor").value = "";
+        //alert("Campos limpos sucesso!");
+    }
 
-            // VERIFICA O PLUGIN DE TABELAS
-            if (typeof doc.autoTable !== "function") {
-                alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
-                return;
-            }
+    // FUNÇÃO PARA LIMPAR OS CAMPOS DO LOGIN
+    function limparLogin() {
+        document.getElementById("usuario").value = "";
+        document.getElementById("senha").value = "";
 
-            // GERA A TABELA NO PDF
-            doc.autoTable({
+    }
 
-                // Usa os cabeçalhos da tabela HTML, se existirem.
-                // Caso contrário, utiliza os nomes padrão.
-                head: [cabecalhos.length > 0 ? cabecalhos : [
-                    "ID",
-                    "Projeto",
-                    "Circuito",
-                    "Descrição",
-                    "Potência Total",
-                    "Potência Corrigida",
-                    "Tipo",
-                    "Corrente IB",
-                    "Corrente IC",
-                    "Disjuntor",
-                    "Condutor"
-                ]],
 
-                body: dados,
+    // FUNÇÃO PARA GERAR RELATÓRIO PDF DA PLANILHA ELÉTRICA
+    function gerarRelatorioPDF() {
 
-                startY: 40,
-                theme: "grid",
+        // IDENTIFICA O USUÁRIO LOGADO
+        const usuario = localStorage.getItem("usuario");
 
-                styles: {
-                    font: "helvetica",
-                    fontSize: 8,
-                    cellPadding: 2,
-                    overflow: "linebreak"
-                },
-
-                headStyles: {
-                    fontStyle: "bold",
-                    halign: "center"
-                },
-
-                margin: {
-                    top: 12,
-                    right: 10,
-                    bottom: 15,
-                    left: 10
-                },
-
-                didDrawPage: function () {
-
-                    const pagina = doc.internal.getNumberOfPages();
-
-                    doc.setFontSize(8);
-                    doc.text(
-                        "Planilha Elétrica | Página " + pagina,
-                        280,
-                        200,
-                        { align: "right" }
-                    );
-                }
-            });
-
-            // SALVA O ARQUIVO
-            doc.save("relatorio_planilha_eletrica.pdf");
-
-            console.log(
-                "✅ Relatório elétrico gerado com " +
-                dados.length + " circuitos."
-            );
+        if (!usuario) {
+            alert("⚠️ Faça Login!");
+            return;
         }
 
-    </script>
+        // VERIFICA AS BIBLIOTECAS
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            alert("❌ A biblioteca jsPDF não foi carregada!");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4"
+        });
+
+        // LOCALIZA A TABELA
+        const tabela = document.getElementById("tabelaPlanilha");
+
+        if (!tabela) {
+            alert("❌ A tabelaPlanilha não foi encontrada!");
+            return;
+        }
+
+        // CAPTURA OS CABEÇALHOS
+        const tabelaHTML = tabela.closest("table");
+
+        const cabecalhos = tabelaHTML
+            ? Array.from(tabelaHTML.querySelectorAll("thead th"))
+                .map(th => th.innerText.trim())
+            : [];
+
+        // CAPTURA OS DADOS DOS CIRCUITOS
+        const linhas = tabela.querySelectorAll("tr");
+        const dados = [];
+
+        linhas.forEach(linha => {
+
+            const colunas = linha.querySelectorAll("td");
+
+            if (colunas.length > 0) {
+
+                const valores = Array.from(colunas).map(coluna =>
+                    coluna.innerText.trim()
+                );
+
+                dados.push(valores);
+            }
+        });
+
+        if (dados.length === 0) {
+            alert("⚠️ Não existem circuitos na tabela para gerar o relatório!");
+            return;
+        }
+
+        // CABEÇALHO DO RELATÓRIO
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+
+        doc.text("RELATÓRIO DA PLANILHA ELÉTRICA", 14, 15);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+
+        doc.text("Usuário: " + usuario, 14, 23);
+        doc.text(
+            "Emitido em: " + new Date().toLocaleString("pt-BR"),
+            14, 29
+        );
+
+        doc.setFontSize(10);
+        doc.text("Quantidade de circuitos: " + dados.length, 14, 35);
+
+        // VERIFICA O PLUGIN DE TABELAS
+        if (typeof doc.autoTable !== "function") {
+            alert("❌ A biblioteca jsPDF-AutoTable não foi carregada!");
+            return;
+        }
+
+        // GERA A TABELA NO PDF
+        doc.autoTable({
+
+            // Usa os cabeçalhos da tabela HTML, se existirem.
+            // Caso contrário, utiliza os nomes padrão.
+            head: [cabecalhos.length > 0 ? cabecalhos : [
+                "ID",
+                "Projeto",
+                "Circuito",
+                "Descrição",
+                "Potência Total",
+                "Potência Corrigida",
+                "Tipo",
+                "Corrente IB",
+                "Corrente IC",
+                "Disjuntor",
+                "Condutor"
+            ]],
+
+            body: dados,
+
+            startY: 40,
+            theme: "grid",
+
+            styles: {
+                font: "helvetica",
+                fontSize: 8,
+                cellPadding: 2,
+                overflow: "linebreak"
+            },
+
+            headStyles: {
+                fontStyle: "bold",
+                halign: "center"
+            },
+
+            margin: {
+                top: 12,
+                right: 10,
+                bottom: 15,
+                left: 10
+            },
+
+            didDrawPage: function () {
+
+                const pagina = doc.internal.getNumberOfPages();
+
+                doc.setFontSize(8);
+                doc.text(
+                    "Planilha Elétrica | Página " + pagina,
+                    280,
+                    200,
+                    { align: "right" }
+                );
+            }
+        });
+
+        // SALVA O ARQUIVO
+        doc.save("relatorio_planilha_eletrica.pdf");
+
+        console.log(
+            "✅ Relatório elétrico gerado com " +
+            dados.length + " circuitos."
+        );
+    }
+
+</script>
 
 </body>
 
