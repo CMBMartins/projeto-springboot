@@ -80,8 +80,6 @@
         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
     }
 
-
-
     /* TABELA */
     .card1 table {
         width: 100%;
@@ -125,6 +123,31 @@
         margin-top: 0;
         color: #23476b;
         font-size: 22px;
+    }
+
+
+    /* BOTÃO À ESQUERDA E USUÁRIO À DIREITA */
+    .barra-superior {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 15px;
+        margin-bottom: 24px;
+    }
+
+    /* BOTÃO */
+    .barra-superior .btn {
+        flex-shrink: 0;
+        margin: 0;
+    }
+
+    /* CAMPO DO USUÁRIO */
+    #usuariologado {
+        width: 260px;
+        max-width: 45%;
+        margin: 0;
+        text-align: center;
     }
 
     /* CABEÇALHO */
@@ -210,26 +233,26 @@
         margin-top: 22px;
     }
 
-   
+
     /* BOTÃO PÁGINA PRINCIPAL */
     a.btn.btn-default {
-    display: inline-block;
-    margin-bottom: 24px;
-    padding: 10px 16px;
-    background-color: #23476b;
-    color: #ffffff;
-    border: 1px solid #23476b;
-    border-radius: 7px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+        display: inline-block;
+        margin-bottom: 24px;
+        padding: 10px 16px;
+        background-color: #23476b;
+        color: #ffffff;
+        border: 1px solid #23476b;
+        border-radius: 7px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
     }
 
     /* EFEITO AO PASSAR O MOUSE */
     a.btn.btn-default:hover {
-    background-color: #34495e;
-    color: #ffffff;
-    border-color: #34495e;
+        background-color: #34495e;
+        color: #ffffff;
+        border-color: #34495e;
     }
 
     .botoes button,
@@ -497,33 +520,35 @@
 
     <div class="container">
 
-        <div class="campo-direita">
-            <input type="text" id="usuariologado" placeholder="Default" style="width:33%;">
+        <div class="barra-superior">
+
+            <a href="PaginaPessoal.html" class="btn btn-default">
+                <span class="glyphicon glyphicon-home"></span>
+                Página Principal
+            </a>
+
+            <input type="text" id="usuariologado" placeholder="Default">
+
         </div>
 
-        <a href="PaginaPessoal.html" class="btn btn-default">
-            <span class="glyphicon glyphicon-home"></span> Página Principal
-        </a>        
-
         <div class="grid">
-
             <input type="text" id="id" placeholder="ID - insira o ID para excluir">
 
             <input type="text" id="projeto" placeholder="Projeto - nome do contratante">
 
-            <input type="text" id="circuito" placeholder="Circuito">
+            <input type="text" id="circuito" placeholder="Circuito - nome do circuito">
 
             <input type="text" id="descricao" placeholder="Descrição - nome dos ambientes">
 
-            <input type="text" id="potenciatotal" placeholder="Pot. Total(VA)">
+            <input type="text" id="potenciatotal" placeholder="Potência Total(VA)">
 
-            <input type="text" id="potenciacorrigida" placeholder="Pot. Corrigida(W) - Não precisa inserir">
+            <input type="text" id="potenciacorrigida" placeholder="Potência Corrigida(W) - Não precisa inserir">
 
-            <input type="text" id="tipocircuito" placeholder="Tipo Circuito">
+            <input type="text" id="tipocircuito" placeholder="Tipo do Circuito">
 
-            <input type="text" id="correnteib" placeholder="CorrenteIB(A) - Não precisa inserir">
+            <input type="text" id="correnteib" placeholder="Corrente de Projeto - IB(A) - Não precisa inserir">
 
-            <input type="text" id="correnteic" placeholder="CorrenteIC(A) - Não precisa inserir">
+            <input type="text" id="correnteic" placeholder="Corrente Calculada - IC(A) - Não precisa inserir">
 
             <input type="text" id="disjuntor" placeholder="Disjuntor(A) - Não precisa inserir">
 
@@ -1186,6 +1211,7 @@
                 tabela.innerHTML = linhas;
 
                 alert("✅ Projeto encontrado!");
+                document.getElementById("projeto").value = "";
 
             })
 
