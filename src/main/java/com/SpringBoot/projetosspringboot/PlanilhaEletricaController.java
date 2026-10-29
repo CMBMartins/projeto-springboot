@@ -70,6 +70,13 @@ public class PlanilhaEletricaController {
             ib = pc / tensao;
             ic = ib * 1.15;
 
+        } else if ("Bifasico".equalsIgnoreCase(tipo)) {
+
+            // Circuito específico: considera a potência total
+            pc = pt * 0.50;
+            ib = pc / tensao;
+            ic = ib * 1.42;
+
         } else {
 
             // Demais circuitos: aplica o fator de correção de 0,66
@@ -189,24 +196,28 @@ public class PlanilhaEletricaController {
         // CIRCUITOS BIFASICOS
         else if ("Bifasico".equalsIgnoreCase(tipo)) {
 
-            if (ic <= 50) {
-                novo.setCondutor("10 mm²");
+            if (ic <= 40) {
+                novo.setCondutor("6 mm²");
                 novo.setDisjuntor("50A");
 
-            } else if (ic <= 60) {
-                novo.setCondutor("16 mm²");
+            } else if (ic <= 50) {
+                novo.setCondutor("10 mm²");
                 novo.setDisjuntor("60A");
 
-            } else if (ic <= 73) {
+            } else if (ic <= 60) {
+                novo.setCondutor("10 mm²");
+                novo.setDisjuntor("60A");
+
+            } else if (ic <= 70) {
                 novo.setCondutor("16 mm²");
                 novo.setDisjuntor("75A");
 
             } else if (ic <= 80) {
-                novo.setCondutor("25 mm²");
+                novo.setCondutor("16 mm²");
                 novo.setDisjuntor("80A");
 
             } else {
-                novo.setCondutor("35 mm²");
+                novo.setCondutor("25 mm²");
                 novo.setDisjuntor("90A");
             }
         }
