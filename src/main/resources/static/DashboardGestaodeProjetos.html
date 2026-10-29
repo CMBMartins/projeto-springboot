@@ -15,6 +15,36 @@
         color: #fff;
     }
 
+     /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, #1f2d3d, #34495e);
+            color: #fff;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h2 {
+            margin: 0 0 10px;
+            font-size: clamp(21px, 2.5vw, 30px);
+            line-height: 1.4;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        header p {
+            margin: 0;
+            color: #dce6f1;
+            font-size: 15px;
+        }
+
     .layout {
         display: flex;
     }
@@ -430,6 +460,14 @@
 </style>
 
 <body>
+
+    <header>
+
+        <h2><img src="Imagens/iconeCarlos.png" width="40">
+            Dashboard de Projetos e Planilhas Elétricas</h2>
+        <p>NBR 5410 - Dimensionamentos básicos</p>
+
+    </header>
 
     <div class="layout">
 
