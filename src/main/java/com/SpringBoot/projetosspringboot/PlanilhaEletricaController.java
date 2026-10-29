@@ -47,7 +47,6 @@ public class PlanilhaEletricaController {
             tensao = 127.0;
         }
 
-        
         // Cálculos elétricos conforme o tipo de circuito
         double pc;
         double ib;
@@ -60,7 +59,7 @@ public class PlanilhaEletricaController {
             double fp = 0.95;
 
             double pCalculada = pt / fp;
-            pc = pCalculada * 0.66;
+            pc = pCalculada * 0.45;
             ib = pc / (raiz3 * tensao);
             ic = ib * 1.15;
 
@@ -82,7 +81,6 @@ public class PlanilhaEletricaController {
         novo.setPotenciacorrigida(arred(pc));
         novo.setCorrenteib(arred(ib));
         novo.setCorrenteic(arred(ic));
-
 
         // TOMADA
         if ("Tomada".equalsIgnoreCase(tipo)) {
