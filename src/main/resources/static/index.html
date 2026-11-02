@@ -32,27 +32,37 @@
         color: #333;
     }
 
+    /* Cabeçalho */
     header {
-        background: linear-gradient(135deg, #202b38, #34495e);
-        color: white;
-        padding: 18px;
+        background: linear-gradient(135deg, #1f2d3d, #34495e);
+        color: #fff;
+        padding: 24px 20px;
         text-align: center;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+        margin-bottom: 28px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
+
 
     header h2 {
-        margin: 0;
-        font-size: 25px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
+        margin: 0 0 10px;
+        font-size: clamp(21px, 2.5vw, 30px);
+        line-height: 1.4;
+        color: #ffffff;
     }
 
+
     header img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
         vertical-align: middle;
-        width: 30px;
-        height: 30px;
         margin-right: 8px;
-        border-radius: 50%;
+    }
+
+    header p {
+        margin: 0;
+        color: #dce6f1;
+        font-size: 15px;
     }
 
     .painel-datahora {
@@ -683,9 +693,9 @@
 <body>
 
     <header>
-
         <h2><img src="Imagens/iconeCarlos.png" width="40">
             Página Pessoal</h2>
+        <p>Sistemas desenvolvidos: Aplicativos de gestão e elétricos </p>
     </header>
 
     <nav>
