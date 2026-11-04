@@ -447,9 +447,22 @@
     }
 
     @media (max-width: 1100px) {
+
+        html,
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
         header {
+            display: block;
+            width: 100%;
+            max-width: 100%;
             padding: 20px 12px;
-            margin-bottom: 20px;
+            margin: 0 0 20px 0;
+            box-sizing: border-box;
         }
 
         header h2 {
@@ -466,8 +479,9 @@
         }
     }
 
-    /* RESPONSIVO */
-    @media (max-width: 1100px) {
+    /* RESPONSIVO PARA TABLETS */
+    @media (max-width: 900px) {
+
         .cards {
             grid-template-columns: 1fr 1fr;
         }
